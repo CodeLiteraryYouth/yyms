@@ -14,6 +14,7 @@
         <module>yyms-framework-utils</module>
         <module>yyms-eureka-server</module>
         <module>yyms-service-api</module>
+        <module>test</module>
     </modules>
 
     <parent>
