@@ -1,5 +1,6 @@
 package com.leanin.api.test;
 
+import com.leanin.domain.vo.DiseaseInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,4 +20,7 @@ public interface TestApi {
     //普通传参方式
     @ApiOperation("测试接口二")
     public String test2(int param1,int param2);
+
+    @ApiOperation("测试本地数据库接口")
+    public DiseaseInfo findByDiseaseNum(String diseaseNum);
 }
