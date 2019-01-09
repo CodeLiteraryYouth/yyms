@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leanin.manager.patient.dao.ManagerPatientMapper">
+
+    <!--根据条件查询出住院患者的信息-->
+    <select id="findListByParam" resultType="java.util.Map">
+        select p.INHOS_NO,p.PATIENT_NAME,p.SEX,p.PHONE_NUMBER,r.DEPT,r.DIST,r.OUTHOS_DATE,r.DIAGNOSIS_NAME
+        from V_INHOS_PATINFO p,V_INHOS_RECORD r
+        where p.PATIENT_ID=r.PATIENT_ID and r.IN_OUT=#{paramMap.inOut}
+        <if test="paramMap.patientName !=null">
+            and p.PATIENT_NAME like CONCAT(CONCAT('%', #{paramMap.patientName}), '%')
+        </if>
+        <if test="paramMap.inhosNo != null">
+            and p.INHOS_NO like CONCAT(CONCAT('%', #{paramMap.inhosNo}), '%')
+        </if>
+        <if test="paramMap.dept != null ">
+            and r.DEPT like CONCAT(CONCAT('%', #{paramMap.dept}), '%')
+        </if>
+        <if test="paramMap.dist">
+            and r.DIST like CONCAT(CONCAT('%', #{paramMap.dist}), '%')
+        </if>
+        <if test="paramMap.startDate != null">
+            and r.OUTHOS_DATE &gt; #{paramMap.startDate}
+        </if>
+        <if test="paramMap.endDate != null ">
+            and r.OUTHOS_DATE &lt; #{paramMap.endDate}
+        </if>
+
+    </select>
+
+    <!--根据条件查询就诊患者的信息-->
+    <select id="findOutHosPatientByParam" resultType="java.util.Map">
+        SELECT vp.OUTHOS_NO,vp.PATIENT_NAME,vp.SEX,vp.PHONE_NUMBER,vr.HOS_DEPT,vr.HOS_DOCTOR,
+              vr.OUTHOS_DATE,vr.DIAGNOSIS_NAME
+        FROM V_OUTHOS_PATINFO vp,V_OUTHOS_RECORD vr
+        WHERE vp.PATIENT_ID=vr.PATIENT_ID
+        <if test="paramMap.patientName !=null ">
+            vp.PATIENT_NAME like CONCAT(CONCAT('%', #{paramMap.patientName}), '%')
+        </if>
+        <if test="paramMap.outHosNo != null">
+            vp.OUTHOS_NO like CONCAT(CONCAT('%', #{paramMap.outHosNo}), '%')
+        </if>
+        <if test="paramMap.hosDept != null">
+            vr.HOS_DEPT=#{paramMap.hosDept}
+        </if>
+        <if test="paramMap.diagnosisName">
+            vr.DIAGNOSIS_NAME like CONCAT(CONCAT('%', #{paramMap.diagnosisName}), '%')
+        </if>
+        <if test="paramMap.startDate != null">
+            and vr.OUTHOS_DATE &gt; #{paramMap.startDate}
+        </if>
+        <if test="paramMap.endDate != null ">
+            and vr.OUTHOS_DATE &lt; #{paramMap.endDate}
+        </if>
+    </select>
+</mapper>
