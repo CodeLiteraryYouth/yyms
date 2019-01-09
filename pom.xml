@@ -15,6 +15,7 @@
         <module>yyms-eureka-server</module>
         <module>yyms-service-api</module>
         <module>test</module>
+        <module>yyms-service-manager-patient</module>
     </modules>
 
     <parent>
