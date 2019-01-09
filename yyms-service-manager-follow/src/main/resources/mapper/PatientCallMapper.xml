@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.PatientCallMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PatientCallVo">
+    <id column="call_patient_id" jdbcType="BIGINT" property="callPatientId" />
+    <result column="call_id" jdbcType="VARCHAR" property="callId" />
+    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
+    <result column="patient_source" jdbcType="INTEGER" property="patientSource" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    call_patient_id, call_id, patient_id, patient_source, area_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_patient_call
+    where call_patient_id = #{callPatientId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from leanin_patient_call
+    where call_patient_id = #{callPatientId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.leanin.domain.vo.PatientCallVo">
+    insert into leanin_patient_call (call_patient_id, call_id, patient_id, 
+      patient_source, area_code)
+    values (#{callPatientId,jdbcType=BIGINT}, #{callId,jdbcType=VARCHAR}, #{patientId,jdbcType=BIGINT}, 
+      #{patientSource,jdbcType=INTEGER}, #{areaCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.leanin.domain.vo.PatientCallVo">
+    insert into leanin_patient_call
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="callPatientId != null">
+        call_patient_id,
+      </if>
+      <if test="callId != null">
+        call_id,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="patientSource != null">
+        patient_source,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="callPatientId != null">
+        #{callPatientId,jdbcType=BIGINT},
+      </if>
+      <if test="callId != null">
+        #{callId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="patientSource != null">
+        #{patientSource,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.PatientCallVo">
+    update leanin_patient_call
+    <set>
+      <if test="callId != null">
+        call_id = #{callId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="patientSource != null">
+        patient_source = #{patientSource,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where call_patient_id = #{callPatientId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.PatientCallVo">
+    update leanin_patient_call
+    set call_id = #{callId,jdbcType=VARCHAR},
+      patient_id = #{patientId,jdbcType=BIGINT},
+      patient_source = #{patientSource,jdbcType=INTEGER},
+      area_code = #{areaCode,jdbcType=VARCHAR}
+    where call_patient_id = #{callPatientId,jdbcType=BIGINT}
+  </update>
+</mapper>

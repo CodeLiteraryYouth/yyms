@@ -1,6 +1,6 @@
 package com.leanin.testmodel.service.impl;
 
-import com.leanin.domain.vo.DiseaseInfo;
+import com.leanin.domain.vo.DiseaseInfoVo;
 import com.leanin.testmodel.dao.DiseaseInfoRepository;
 import com.leanin.testmodel.service.DiseaseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class DiseaseInfoServiceImpl implements DiseaseInfoService {
      * @return
      */
     @Override
-    public DiseaseInfo findByDiseaseNum(String diseaseNum) {
+    public DiseaseInfoVo findByDiseaseNum(String diseaseNum) {
         return diseaseInfoRepository.findByDiseaseNum(diseaseNum);
     }
 }

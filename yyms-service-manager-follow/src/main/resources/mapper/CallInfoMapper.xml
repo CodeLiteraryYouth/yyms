@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.CallInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.CallInfoVo">
+    <id column="call_id" jdbcType="VARCHAR" property="callId" />
+    <result column="call_type" jdbcType="INTEGER" property="callType" />
+    <result column="call_number" jdbcType="VARCHAR" property="callNumber" />
+    <result column="call_addre" jdbcType="VARCHAR" property="callAddre" />
+    <result column="call_deal_status" jdbcType="INTEGER" property="callDealStatus" />
+    <result column="call_begin_date" jdbcType="TIMESTAMP" property="callBeginDate" />
+    <result column="call_end_date" jdbcType="TIMESTAMP" property="callEndDate" />
+    <result column="call_source_number" jdbcType="VARCHAR" property="callSourceNumber" />
+    <result column="call_deal_name" jdbcType="VARCHAR" property="callDealName" />
+    <result column="call_length" jdbcType="VARCHAR" property="callLength" />
+    <result column="call_creater" jdbcType="VARCHAR" property="callCreater" />
+    <result column="call_create_time" jdbcType="TIMESTAMP" property="callCreateTime" />
+    <result column="call_create_ward" jdbcType="VARCHAR" property="callCreateWard" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    call_id, call_type, call_number, call_addre, call_deal_status, call_begin_date, call_end_date, 
+    call_source_number, call_deal_name, call_length, call_creater, call_create_time, 
+    call_create_ward, remark, area_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_call_info
+    where call_id = #{callId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from leanin_call_info
+    where call_id = #{callId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.leanin.domain.vo.CallInfoVo">
+    insert into leanin_call_info (call_id, call_type, call_number, 
+      call_addre, call_deal_status, call_begin_date, 
+      call_end_date, call_source_number, call_deal_name, 
+      call_length, call_creater, call_create_time, 
+      call_create_ward, remark, area_code
+      )
+    values (#{callId,jdbcType=VARCHAR}, #{callType,jdbcType=INTEGER}, #{callNumber,jdbcType=VARCHAR}, 
+      #{callAddre,jdbcType=VARCHAR}, #{callDealStatus,jdbcType=INTEGER}, #{callBeginDate,jdbcType=TIMESTAMP}, 
+      #{callEndDate,jdbcType=TIMESTAMP}, #{callSourceNumber,jdbcType=VARCHAR}, #{callDealName,jdbcType=VARCHAR}, 
+      #{callLength,jdbcType=VARCHAR}, #{callCreater,jdbcType=VARCHAR}, #{callCreateTime,jdbcType=TIMESTAMP}, 
+      #{callCreateWard,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.leanin.domain.vo.CallInfoVo">
+    insert into leanin_call_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="callId != null">
+        call_id,
+      </if>
+      <if test="callType != null">
+        call_type,
+      </if>
+      <if test="callNumber != null">
+        call_number,
+      </if>
+      <if test="callAddre != null">
+        call_addre,
+      </if>
+      <if test="callDealStatus != null">
+        call_deal_status,
+      </if>
+      <if test="callBeginDate != null">
+        call_begin_date,
+      </if>
+      <if test="callEndDate != null">
+        call_end_date,
+      </if>
+      <if test="callSourceNumber != null">
+        call_source_number,
+      </if>
+      <if test="callDealName != null">
+        call_deal_name,
+      </if>
+      <if test="callLength != null">
+        call_length,
+      </if>
+      <if test="callCreater != null">
+        call_creater,
+      </if>
+      <if test="callCreateTime != null">
+        call_create_time,
+      </if>
+      <if test="callCreateWard != null">
+        call_create_ward,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="callId != null">
+        #{callId,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null">
+        #{callType,jdbcType=INTEGER},
+      </if>
+      <if test="callNumber != null">
+        #{callNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callAddre != null">
+        #{callAddre,jdbcType=VARCHAR},
+      </if>
+      <if test="callDealStatus != null">
+        #{callDealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="callBeginDate != null">
+        #{callBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callEndDate != null">
+        #{callEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callSourceNumber != null">
+        #{callSourceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callDealName != null">
+        #{callDealName,jdbcType=VARCHAR},
+      </if>
+      <if test="callLength != null">
+        #{callLength,jdbcType=VARCHAR},
+      </if>
+      <if test="callCreater != null">
+        #{callCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="callCreateTime != null">
+        #{callCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCreateWard != null">
+        #{callCreateWard,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.CallInfoVo">
+    update leanin_call_info
+    <set>
+      <if test="callType != null">
+        call_type = #{callType,jdbcType=INTEGER},
+      </if>
+      <if test="callNumber != null">
+        call_number = #{callNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callAddre != null">
+        call_addre = #{callAddre,jdbcType=VARCHAR},
+      </if>
+      <if test="callDealStatus != null">
+        call_deal_status = #{callDealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="callBeginDate != null">
+        call_begin_date = #{callBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callEndDate != null">
+        call_end_date = #{callEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callSourceNumber != null">
+        call_source_number = #{callSourceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callDealName != null">
+        call_deal_name = #{callDealName,jdbcType=VARCHAR},
+      </if>
+      <if test="callLength != null">
+        call_length = #{callLength,jdbcType=VARCHAR},
+      </if>
+      <if test="callCreater != null">
+        call_creater = #{callCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="callCreateTime != null">
+        call_create_time = #{callCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCreateWard != null">
+        call_create_ward = #{callCreateWard,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where call_id = #{callId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.CallInfoVo">
+    update leanin_call_info
+    set call_type = #{callType,jdbcType=INTEGER},
+      call_number = #{callNumber,jdbcType=VARCHAR},
+      call_addre = #{callAddre,jdbcType=VARCHAR},
+      call_deal_status = #{callDealStatus,jdbcType=INTEGER},
+      call_begin_date = #{callBeginDate,jdbcType=TIMESTAMP},
+      call_end_date = #{callEndDate,jdbcType=TIMESTAMP},
+      call_source_number = #{callSourceNumber,jdbcType=VARCHAR},
+      call_deal_name = #{callDealName,jdbcType=VARCHAR},
+      call_length = #{callLength,jdbcType=VARCHAR},
+      call_creater = #{callCreater,jdbcType=VARCHAR},
+      call_create_time = #{callCreateTime,jdbcType=TIMESTAMP},
+      call_create_ward = #{callCreateWard,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR}
+    where call_id = #{callId,jdbcType=VARCHAR}
+  </update>
+</mapper>

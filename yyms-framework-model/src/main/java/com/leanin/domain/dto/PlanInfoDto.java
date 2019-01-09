@@ -1,9 +1,9 @@
 package com.leanin.domain.dto;
 
 
-import com.leanin.domain.vo.FormInfo;
-import com.leanin.domain.vo.FormType;
-import com.leanin.domain.vo.RulesInfo;
+import com.leanin.domain.vo.FormInfoVo;
+import com.leanin.domain.vo.FormTypeVo;
+import com.leanin.domain.vo.RulesInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,11 +40,11 @@ public class PlanInfoDto {
 
 	    private Integer planSendType;	//（1：APP/短信 2：APP 3：短信）
 
-	    private FormType formType;	//表单分类ID
+	    private FormTypeVo formType;	//表单分类ID
 
-	    private FormInfo formInfo;	//表单号
+	    private FormInfoVo formInfo;	//表单号
 
-	    private RulesInfo rulesInfo;	//规则号
+	    private RulesInfoVo rulesInfo;	//规则号
 
 	    private Integer planSex;	//病人性别
 	    

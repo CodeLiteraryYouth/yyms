@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.CallBackMapper">	
+	<resultMap id="BaseResultMap" type="com.leanin.domain.dto.CallBackDto" >
+		<id column="deal_num" jdbcType="BIGINT" property="dealNum"/>
+		<result column="admin_name" jdbcType="VARCHAR" property="adminName"/>
+		<result column="accu_parise_condi" jdbcType="LONGVARCHAR" property="accuParisCondi"/>
+		<result column="solv_accu_parise" jdbcType="VARCHAR" property="solveAccu"/>
+		<result column="is_phone" jdbcType="INTEGER" property="isPhone"/>
+		<result column="is_satisfy" jdbcType="INTEGER" property="isSatisfy"/>
+		<result column="conn_result" jdbcType="LONGVARCHAR" property="connResult"/>
+		<result column="deal_name" jdbcType="VARCHAR" property="dealName"/>
+		<result column="deal_status" jdbcType="INTEGER" property="dealStatus"/>
+		<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+		<association property="callBack" column="call_back_num" javaType="com.leanin.domain.vo.CallBackVo">
+			<id column="call_back_num" jdbcType="VARCHAR" property="callBackNum"/>
+			<result column="call_back_ward" jdbcType="VARCHAR" property="callBackWard"/>
+			<result column="call_back_name" jdbcType="VARCHAR" property="callBackName"/>
+			<result column="call_back_text" jdbcType="LONGVARCHAR" property="callBackText"/>
+			<result column="patient_id" jdbcType="VARCHAR" property="patientId"/>
+			<result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+			<result column="patient_phone" jdbcType="VARCHAR" property="phone"/>
+			<result column="patient_source" jdbcType="INTEGER" property="source"/>
+			<result column="call_back_date" jdbcType="DATE" property="callBackDate"/>
+			<result column="accu_parise_name" jdbcType="VARCHAR" property="acuuPariseName"/>
+			<result column="patient_realtion" jdbcType="VARCHAR" property="relation"/>
+			<result column="accu_parise_source" jdbcType="VARCHAR" property="accuParRela"/>
+			<result column="call_back_target" jdbcType="VARCHAR" property="target"/>
+			<result column="push_ward" jdbcType="VARCHAR" property="pushWard"/>
+			<result column="push_name" jdbcType="VARCHAR" property="pushName"/>
+			<result column="push_date" jdbcType="TIMESTAMP" property="pushDate"/>
+			<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+			<result column="back_status" jdbcType="INTEGER" property="status"/>
+			<result column="accu_parise_type" jdbcType="INTEGER" property="callBackType"/>
+			<result column="assign_name" jdbcType="VARCHAR" property="assignName"/>
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.patient_phone,c.patient_source,c.call_back_date,
+		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.back_status,
+		d.deal_num,d.admin_name,d.accu_parise_condi,d.solv_accu_parise,d.is_phone,d.is_satisfy,d.conn_result,d.deal_name,d.deal_status,d.area_code,c.accu_parise_type,
+		c.assign_name,c.patient_name	
+	</sql>
+	
+	<select id="findBackList" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from leanin_call_back c,leanin_call_back_deal d where
+		c.call_back_num=d.call_back_num and c.back_status=#{status}
+		<if test="beginDate !=null">
+        	<![CDATA[and c.call_back_date >= #{beginDate,jdbcType=DATE}]]>
+      	</if>
+      	<if test="endDate !=null">
+        	<![CDATA[and c.call_back_date <= #{endDate,jdbcType=DATE}]]>
+      	</if>
+      	<if test="dealStatus !=null">
+      		and d.deal_status=#{dealStatus,jdbcType=INTEGER}
+      	</if>
+      	<if test="accuseWard !=null">
+      		and c.callBackWard=#{accuseWard,jdbcType=VARCHAR}
+      	</if>
+      	<if test="backNum !=null">
+      		and c.call_back_num like CONCAT('%',#{backNum,jdbcType=VARCHAR},'%')
+      	</if>
+	</select>
+	
+	<select id="findBackById" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from leanin_call_back c,leanin_call_back_deal d where c.back_status=#{status}
+		and c.call_back_num=d.call_back_num and c.call_back_num=#{backNum,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="addCallBack" parameterType="com.leanin.domain.vo.CallBackVo">
+		 insert into leanin_call_back
+    	 <trim prefix="(" suffix=")" suffixOverrides=",">
+    	 	<if test="callBackNum !=null">
+    	 		call_back_num,
+    	 	</if>
+    	 	<if test="callBackWard !=null">
+    	 		call_back_ward,
+    	 	</if>
+    	 	<if test="callBackName !=null">
+    	 		call_back_name,
+    	 	</if>
+    	 	<if test="callBackText !=null">
+    	 		call_back_text,
+    	 	</if>
+    	 	<if test="patientId !=null">
+    	 		patient_id,
+    	 	</if>
+    	 	<if test="patientName !=null">
+    	 		patient_name,
+    	 	</if>
+    	 	<if test="phone !=null">
+    	 		patient_phone,
+    	 	</if>
+    	 	<if test="source !=null">
+    	 		patient_source,
+    	 	</if>
+    	 	<if test="callBackDate !=null">
+    	 		call_back_date,
+    	 	</if>
+    	 	<if test="acuuPariseName !=null">
+    	 		accu_parise_name,
+    	 	</if>
+    	 	<if test="relation !=null">
+    	 		patient_realtion,
+    	 	</if>
+    	 	<if test="accuParRela !=null">
+    	 		accu_parise_source,
+    	 	</if>
+    	 	<if test="target !=null">
+    	 		call_back_target,
+    	 	</if>
+    	 	<if test="pushWard !=null">
+    	 		push_ward,
+    	 	</if>
+    	 	<if test="pushName !=null">
+    	 		push_name,
+    	 	</if>
+    	 	<if test="pushDate !=null">
+    	 		push_date,
+    	 	</if>
+    	 	<if test="areaCode !=null">
+    	 		area_code,
+    	 	</if>
+    	 	<if test="status !=null">
+    	 		back_status,
+    	 	</if>
+    	 	<if test="callBackType !=null">
+    	 		accu_parise_type,
+    	 	</if>
+    	 	<if test="assignName !=null">
+    	 		assign_name,
+    	 	</if>
+    	 </trim>
+    	 <trim prefix="values (" suffix=")" suffixOverrides=",">
+    	 	<if test="callBackNum !=null">
+    	 		#{callBackNum,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="callBackWard !=null">
+    	 		#{callBackWard,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="callBackName !=null">
+    	 		#{callBackName,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="callBackText !=null">
+    	 		#{callBackText,jdbcType=LONGVARCHAR},
+    	 	</if>
+    	 	<if test="patientId !=null">
+    	 		#{patientId,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="patientName !=null">
+    	 		#{patientName,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="phone !=null">
+    	 		#{phone,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="source !=null">
+    	 		#{source,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="callBackDate !=null">
+    	 		#{callBackDate,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="acuuPariseName !=null">
+    	 		#{acuuPariseName,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="relation !=null">
+    	 		#{relation,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="accuParRela !=null">
+    	 		#{accuParRela,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="target !=null">
+    	 		#{target,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="pushWard !=null">
+    	 		#{pushWard,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="pushName !=null">
+    	 		#{pushName,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="pushDate !=null">
+    	 		#{pushDate,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="areaCode !=null">
+    	 		#{areaCode,jdbcType=VARCHAR},
+    	 	</if>
+    	 	<if test="status !=null">
+    	 		#{status,jdbcType=INTEGER},
+    	 	</if>
+    	 	<if test="callBackType !=null">
+    	 		#{callBackType,jdbcType=INTEGER},
+    	 	</if>
+    	 	<if test="assignName !=null">
+    	 		#{assignName,jdbcType=VARCHAR},
+    	 	</if>
+    	 </trim>
+	</insert>
+	
+	<insert id="addCallBackDeal" parameterType="com.leanin.domain.vo.CallBackDealVo">
+		insert into leanin_call_back_deal
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="dealNum !=null">
+				deal_num,
+			</if>
+			<if test="callBackNum !=null">
+				call_back_num,
+			</if>
+			<if test="adminName !=null">
+				admin_name,
+			</if>
+			<if test="accuParisCondi !=null">
+				accu_parise_condi,
+			</if>
+			<if test="solveAccu !=null">
+				solv_accu_parise,
+			</if>
+			<if test="isPhone !=null">
+				is_phone,
+			</if>
+			<if test="isSatisfy !=null">
+				is_satisfy,
+			</if>
+			<if test="connResult !=null">
+				conn_result,
+			</if>
+			<if test="dealName !=null">
+				deal_name,
+			</if>
+			<if test="dealStatus !=null">
+				deal_status,
+			</if>
+			<if test="areaCode !=null">
+				area_code,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="dealNum !=null">
+				#{dealNum,jdbcType=VARCHAR},
+			</if>
+			<if test="callBackNum !=null">
+				#{callBackNum,jdbcType=VARCHAR},
+			</if>
+			<if test="adminName !=null">
+				#{adminName,jdbcType=VARCHAR},
+			</if>
+			<if test="accuParisCondi !=null">
+				#{accuParisCondi,jdbcType=VARCHAR},
+			</if>
+			<if test="solveAccu !=null">
+				#{solveAccu,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="isPhone !=null">
+				#{isPhone,jdbcType=INTEGER},
+			</if>
+			<if test="isSatisfy !=null">
+				#{isSatisfy,jdbcType=INTEGER},
+			</if>
+			<if test="connResult !=null">
+				#{connResult,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="dealName !=null">
+				#{dealName,jdbcType=VARCHAR},
+			</if>
+			<if test="dealStatus !=null">
+				#{dealStatus,jdbcType=INTEGER},
+			</if>
+			<if test="areaCode !=null">
+				#{areaCode,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateCallBackDeal" parameterType="com.leanin.domain.vo.CallBackDealVo">
+		update leanin_call_back_deal
+		<set>
+			<if test="dealNum !=null">
+				deal_num=#{dealNum,jdbcType=BIGINT},
+			</if>
+			<if test="callBackNum !=null">
+				call_back_num=#{callBackNum,jdbcType=VARCHAR},
+			</if>
+			<if test="adminName !=null">
+				admin_name=#{adminName,jdbcType=VARCHAR},
+			</if>
+			<if test="accuParisCondi !=null">
+				accu_parise_condi=#{accuParisCondi,jdbcType=VARCHAR},
+			</if>
+			<if test="solveAccu !=null">
+				solv_accu_parise=#{solveAccu,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="isPhone !=null">
+				is_phone=#{isPhone,jdbcType=INTEGER},
+			</if>
+			<if test="isSatisfy !=null">
+				is_satisfy=#{isSatisfy,jdbcType=INTEGER},
+			</if>
+			<if test="connResult !=null">
+				conn_result=#{connResult,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="dealName !=null">
+				deal_name=#{dealName,jdbcType=VARCHAR},
+			</if>
+			<if test="dealStatus !=null">
+				deal_status=#{dealStatus,jdbcType=INTEGER},
+			</if>
+			<if test="areaCode !=null">
+				area_code=#{areaCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where deal_num=#{dealNum,jdbcType=BIGINT}
+	</update>
+</mapper>

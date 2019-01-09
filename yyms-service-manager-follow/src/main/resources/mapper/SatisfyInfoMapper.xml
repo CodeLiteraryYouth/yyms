@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.SatisfyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.SatisfyInfoVo">
+    <id column="satisfy_num" jdbcType="VARCHAR" property="satisfyNum" />
+    <result column="satisfy_name" jdbcType="VARCHAR" property="satisfyName" />
+    <result column="satisfy_date" jdbcType="VARCHAR" property="satisfyDate" />
+    <result column="satisfy_status" jdbcType="INTEGER" property="satisfyStatus" />
+    <result column="satisfy_type_id" jdbcType="BIGINT" property="satisfyTypeId" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.SatisfyInfoVo">
+    <result column="satisfy_text" jdbcType="LONGVARCHAR" property="satisfyText" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    satisfy_num, satisfy_name, satisfy_date, satisfy_status, satisfy_type_id, area_code, 
+    creater
+  </sql>
+  <sql id="Blob_Column_List">
+    satisfy_text
+  </sql>
+  <select id="findSatisfyList" resultMap="ResultMapWithBLOBs">
+  	select
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_satisfy_info where satisfy_status>=0
+    <if test="satisfyName != null">
+        and satisfy_name like CONCAT('%',#{satisfyName},'%')
+    </if>
+    <if test="typeId != null">
+        and satisfy_type_id=#{typeId}
+    </if>
+  </select>
+  <select id="findSatisfyById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_satisfy_info where satisfy_status>=0
+    and satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
+  </select>
+  <select id="findSatisfyByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_satisfy_info where satisfy_status>=0
+    and satisfy_name = #{satisfyName,jdbcType=VARCHAR}
+  </select>
+  <update id="logoutSatisfyInfo" parameterType="java.lang.String">
+    update leanin_satisfy_info set satisfy_status=-1
+    where satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
+  </update>
+  <insert id="addSatisfyInfo" parameterType="com.leanin.domain.vo.SatisfyInfoVo">
+    insert into leanin_satisfy_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="satisfyNum != null">
+        satisfy_num,
+      </if>
+      <if test="satisfyName != null">
+        satisfy_name,
+      </if>
+      <if test="satisfyStatus != null">
+        satisfy_status,
+      </if>
+      <if test="satisfyTypeId != null">
+        satisfy_type_id,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="satisfyText != null">
+        satisfy_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="satisfyNum != null">
+        #{satisfyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfyName != null">
+        #{satisfyName,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfyStatus != null">
+        #{satisfyStatus,jdbcType=INTEGER},
+      </if>
+      <if test="satisfyTypeId != null">
+        #{satisfyTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfyText != null">
+        #{satisfyText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSatisfyInfo" parameterType="com.leanin.domain.vo.SatisfyInfoVo">
+    update leanin_satisfy_info
+    <set>
+      <if test="satisfyName != null">
+        satisfy_name = #{satisfyName,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfyStatus != null">
+        satisfy_status = #{satisfyStatus,jdbcType=INTEGER},
+      </if>
+      <if test="satisfyTypeId != null">
+        satisfy_type_id = #{satisfyTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfyText != null">
+        satisfy_text = #{satisfyText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
+  </update>
+</mapper>
