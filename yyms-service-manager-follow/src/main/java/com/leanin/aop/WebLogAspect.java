@@ -14,6 +14,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
+/**
+ * @author Administrator
+ */
 @Aspect
 @Component
 public class WebLogAspect {
@@ -28,7 +31,7 @@ public class WebLogAspect {
 	public void doBefore(JoinPoint joinPoint) {
 		ServletRequestAttributes attribuats=(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request=attribuats.getRequest();
-		logger.info("URL :"+request.getRequestURI().toString());
+		logger.info("URL :"+ request.getRequestURI());
 		logger.info("HTTP_METHOD :"+request.getMethod());
 		logger.info("IP :"+request.getRemoteAddr());
 		Enumeration<String> enu=request.getParameterNames();
@@ -39,7 +42,7 @@ public class WebLogAspect {
 	}
 	
 	@AfterReturning(returning="ret",pointcut="webLog()")
-	public void doAfterReturning(Object ret) throws Throwable {
+	public void doAfterReturning(Object ret) {
 		logger.info("RESPONSE :"+ret);
 	}
 }
