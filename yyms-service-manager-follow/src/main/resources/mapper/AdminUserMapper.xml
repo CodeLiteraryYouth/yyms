@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.AdminUserMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.AdminUserVo">
+    <id column="admin_id" jdbcType="BIGINT" property="adminId" />
+    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="admin_work_num" jdbcType="VARCHAR" property="workNum" />
+    <result column="admin_password" jdbcType="VARCHAR" property="password" />
+    <result column="admin_ward_code" jdbcType="VARCHAR" property="wardCode" />
+    <result column="admin_job_title" jdbcType="VARCHAR" property="jobTitle" />
+    <result column="admin_desc" jdbcType="VARCHAR" property="adminDesc" />
+    <result column="admin_phone" jdbcType="VARCHAR" property="phone" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="admin_id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="admin_sex" jdbcType="INTEGER" property="sex" />
+    <result column="admin_birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="organ_attri" jdbcType="VARCHAR" property="organAscri" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_id, admin_name, admin_work_num, admin_password, admin_ward_code, admin_job_title, 
+    admin_desc, admin_phone, area_code, admin_id_card,admin_sex,admin_birthday,organ_attri,
+    remark
+  </sql>
+  <select id="findUserinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from leanin_admin_user where admin_state>=0 
+  	<if test="userCode != null">
+        and admin_work_num like CONCAT('%',#{userCode},'%')
+    </if>
+  </select>
+  <select id="findAdminUserByPhone" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from leanin_admin_user where admin_state>=0 and admin_phone=#{phone,jdbcType=VARCHAR}
+  </select>
+  <insert id="insertAdminUser" parameterType="com.leanin.domain.vo.AdminUserVo">
+    insert into leanin_admin_user (admin_id, admin_name, admin_work_num, 
+      admin_password, admin_ward_code, admin_job_title,admin_desc,admin_phone,
+      area_code, admin_id_card, admin_sex,admin_birthday, organ_attri,admin_state,remark)
+    values (#{adminId,jdbcType=BIGINT},#{adminName,jdbcType=VARCHAR},#{workNum,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{wardCode,jdbcType=VARCHAR}, #{jobTitle,jdbcType=VARCHAR}, 
+      #{adminDesc,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR},#{sex,jdbcType=BIGINT},#{birthday,jdbcType=VARCHAR},#{organAscri,jdbcType=VARCHAR},0,
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateAdminUser" parameterType="com.leanin.domain.vo.AdminUserVo">
+    update leanin_admin_user
+    <set>
+      <if test="adminName != null">
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="workNum != null">
+        admin_work_num = #{workNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        admin_password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="wardCode != null">
+        admin_ward_code = #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="jobTitle != null">
+        admin_job_title = #{jobTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDesc != null">
+        admin_desc = #{adminDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        admin_phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        admin_id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        admin_sex = #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="birthday != null">
+        admin_birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="organAscri != null">
+        organ_attri = #{organAscri,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserState" parameterType="java.lang.Integer">
+    update leanin_admin_user
+    set admin_state = -1
+    where admin_id = #{adminId,jdbcType=BIGINT}
+  </update>
+</mapper>

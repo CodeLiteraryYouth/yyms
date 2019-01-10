@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.CallBackConfigMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.CallBackConfigVo">
+    <id column="config_num" jdbcType="VARCHAR" property="configNum" />
+    <result column="config_status" jdbcType="INTEGER" property="configStatus" />
+    <result column="config_type" jdbcType="INTEGER" property="configType" />
+    <result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
+    <result column="deal_with_name" jdbcType="VARCHAR" property="dealWithName" />
+    <result column="dela_with_phone" jdbcType="VARCHAR" property="delaWithPhone" />
+    <result column="config_creater" jdbcType="VARCHAR" property="configCreater" />
+    <result column="config_time" jdbcType="TIMESTAMP" property="configTime" />
+    <result column="config_state" jdbcType="INTEGER" property="configState" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    config_num, config_status, config_type, ward_code, deal_with_name, dela_with_phone, 
+    config_creater, config_time, config_state, area_code
+  </sql>
+  <select id="findConfigById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_call_back_config where config_state>=0
+    and config_num = #{configNum,jdbcType=VARCHAR}
+  </select>
+  <select id="findConfigList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from leanin_call_back_config where config_state>=0
+    <if test="callBackType !=null">
+    	and config_type=#{callBackType}
+    </if>
+  </select>
+  <update id="updateConfigStatus">
+    update leanin_call_back_config set config_state=#{status}
+    where config_num in (#{configNum,jdbcType=VARCHAR})
+  </update>
+  <insert id="addConfig" parameterType="com.leanin.domain.vo.CallBackConfigVo">
+    insert into leanin_call_back_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="configNum != null">
+        config_num,
+      </if>
+      <if test="configStatus != null">
+        config_status,
+      </if>
+      <if test="configType != null">
+        config_type,
+      </if>
+      <if test="wardCode != null">
+        ward_code,
+      </if>
+      <if test="dealWithName != null">
+        deal_with_name,
+      </if>
+      <if test="delaWithPhone != null">
+        dela_with_phone,
+      </if>
+      <if test="configCreater != null">
+        config_creater,
+      </if>
+      <if test="configTime != null">
+        config_time,
+      </if>
+      <if test="configState != null">
+        config_state,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="configNum != null">
+        #{configNum,jdbcType=VARCHAR},
+      </if>
+      <if test="configStatus != null">
+        #{configStatus,jdbcType=INTEGER},
+      </if>
+      <if test="configType != null">
+        #{configType,jdbcType=INTEGER},
+      </if>
+      <if test="wardCode != null">
+        #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWithName != null">
+        #{dealWithName,jdbcType=VARCHAR},
+      </if>
+      <if test="delaWithPhone != null">
+        #{delaWithPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="configCreater != null">
+        #{configCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="configTime != null">
+        #{configTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="configState != null">
+        #{configState,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateConfig" parameterType="com.leanin.domain.vo.CallBackConfigVo">
+    update leanin_call_back_config
+    <set>
+      <if test="configStatus != null">
+        config_status = #{configStatus,jdbcType=INTEGER},
+      </if>
+      <if test="configType != null">
+        config_type = #{configType,jdbcType=INTEGER},
+      </if>
+      <if test="wardCode != null">
+        ward_code = #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWithName != null">
+        deal_with_name = #{dealWithName,jdbcType=VARCHAR},
+      </if>
+      <if test="delaWithPhone != null">
+        dela_with_phone = #{delaWithPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="configCreater != null">
+        config_creater = #{configCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="configTime != null">
+        config_time = #{configTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="configState != null">
+        config_state = #{configState,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where config_num = #{configNum,jdbcType=VARCHAR}
+  </update>
+</mapper>

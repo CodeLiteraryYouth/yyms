@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.WardInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.WardInfoVo">
+    <id column="ward_id" jdbcType="BIGINT" property="wardId" />
+    <result column="ward_name" jdbcType="VARCHAR" property="wardName" />
+    <result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
+    <result column="pre_ward_name" jdbcType="VARCHAR" property="preWardName" />
+    <result column="pre_ward_code" jdbcType="VARCHAR" property="preWardCode" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="ward_phone" jdbcType="VARCHAR" property="wardPhone" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="ward_status" jdbcType="INTEGER" property="wardStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ward_id, ward_name, ward_code, pre_ward_name, pre_ward_code, pinyin_code, ward_phone, 
+    order_code, area_code, ward_status
+  </sql>
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_ward_info where ward_status>=0
+    and ward_id = #{wardId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from leanin_ward_info where ward_status>=0
+  	and ward_code=#{wardCode}
+  </select>
+  <select id="findWardList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from leanin_ward_info where ward_status>=0
+  	<if test="wardName != null">
+        and ward_name like CONCAT('%',#{wardName},'%') 
+    </if>
+  </select>
+  <update id="deleteById" parameterType="java.lang.Long">
+    update leanin_ward_info w set w.ward_status=#{status} 
+    where w.ward_id = #{wardId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertWardInfo" parameterType="com.leanin.domain.vo.WardInfoVo">
+    insert into leanin_ward_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wardId != null">
+        ward_id,
+      </if>
+      <if test="wardName != null">
+        ward_name,
+      </if>
+      <if test="wardCode != null">
+        ward_code,
+      </if>
+      <if test="preWardName != null">
+        pre_ward_name,
+      </if>
+      <if test="preWardCode != null">
+        pre_ward_code,
+      </if>
+      <if test="pinyinCode != null">
+        pinyin_code,
+      </if>
+      <if test="wardPhone != null">
+        ward_phone,
+      </if>
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="wardStatus != null">
+        ward_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wardId != null">
+        #{wardId,jdbcType=BIGINT},
+      </if>
+      <if test="wardName != null">
+        #{wardName,jdbcType=VARCHAR},
+      </if>
+      <if test="wardCode != null">
+        #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="preWardName != null">
+        #{preWardName,jdbcType=VARCHAR},
+      </if>
+      <if test="preWardCode != null">
+        #{preWardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinCode != null">
+        #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wardPhone != null">
+        #{wardPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wardStatus != null">
+        #{wardStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateWardInfo" parameterType="com.leanin.domain.vo.WardInfoVo">
+    update leanin_ward_info
+    <set>
+      <if test="wardName != null">
+        ward_name = #{wardName,jdbcType=VARCHAR},
+      </if>
+      <if test="wardCode != null">
+        ward_code = #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="preWardName != null">
+        pre_ward_name = #{preWardName,jdbcType=VARCHAR},
+      </if>
+      <if test="preWardCode != null">
+        pre_ward_code = #{preWardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinCode != null">
+        pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wardPhone != null">
+        ward_phone = #{wardPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wardStatus != null">
+        ward_status = #{wardStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ward_id = #{wardId,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

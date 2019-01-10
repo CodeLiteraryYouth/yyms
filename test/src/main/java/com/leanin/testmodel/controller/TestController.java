@@ -1,7 +1,7 @@
 package com.leanin.testmodel.controller;
 
 import com.leanin.api.test.TestApi;
-import com.leanin.domain.vo.DiseaseInfo;
+import com.leanin.domain.vo.DiseaseInfoVo;
 import com.leanin.testmodel.service.DiseaseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +30,7 @@ public class TestController implements TestApi {
 
     @Override
     @GetMapping("/findByDiseaseNum")
-    public DiseaseInfo findByDiseaseNum(String diseaseNum) {
+    public DiseaseInfoVo findByDiseaseNum(String diseaseNum) {
         return diseaseInfoService.findByDiseaseNum(diseaseNum);
     }
 

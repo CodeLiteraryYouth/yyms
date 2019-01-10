@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.PatientRelaMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PatientRelaVo">
+    <id column="patient_rela_id" jdbcType="BIGINT" property="patientRelaId" />
+    <result column="patient_rela_name" jdbcType="VARCHAR" property="patientRelaName" />
+    <result column="patient_rela" jdbcType="VARCHAR" property="patientRela" />
+    <result column="patient_rela_phone" jdbcType="VARCHAR" property="patientRelaPhone" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="patient_rela_state" jdbcType="INTEGER" property="patientRelaState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    patient_rela_id, patient_rela_name, patient_rela, patient_rela_phone, patient_id, 
+    patient_rela_state
+  </sql>
+  <select id="findRelaListByPatientId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from leanin_patient_rela where patient_rela_state>=0
+    and patient_id = #{patientId,jdbcType=VARCHAR}
+  </select>
+  <select id="findPatientRelaByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_patient_rela where patient_rela_state>=0
+    and patient_rela_name = #{patientRelaName,jdbcType=VARCHAR}
+  </select>
+  <update id="updateRelaState">
+    update leanin_patient_rela set patient_rela_state=#{status}
+    where patient_rela_id = #{patientRelaId,jdbcType=BIGINT}
+  </update>
+  <insert id="addPatientRela" parameterType="com.leanin.domain.vo.PatientRelaVo">
+    insert into leanin_patient_rela
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientRelaId != null">
+        patient_rela_id,
+      </if>
+      <if test="patientRelaName != null">
+        patient_rela_name,
+      </if>
+      <if test="patientRela != null">
+        patient_rela,
+      </if>
+      <if test="patientRelaPhone != null">
+        patient_rela_phone,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="patientRelaState != null">
+        patient_rela_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientRelaId != null">
+        #{patientRelaId,jdbcType=BIGINT},
+      </if>
+      <if test="patientRelaName != null">
+        #{patientRelaName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientRela != null">
+        #{patientRela,jdbcType=VARCHAR},
+      </if>
+      <if test="patientRelaPhone != null">
+        #{patientRelaPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientRelaState != null">
+        #{patientRelaState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

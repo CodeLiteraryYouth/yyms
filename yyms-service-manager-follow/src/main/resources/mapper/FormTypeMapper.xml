@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.FormTypeMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FormTypeVo">
+    <id column="form_type_id" jdbcType="BIGINT" property="formTypeId" />
+    <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName" />
+	<result column="form_type_info" jdbcType="INTEGER" property="formTypeInfo"/>
+	<result column="form_type_status" jdbcType="INTEGER" property="typeStatus"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    t.form_type_id, t.form_type_name,t.form_type_info,t.form_type_status
+  </sql>
+  <select id="findTypeList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from leanin_form_type t where t.form_type_status>=0
+  	and t.form_type_info=#{typeStatus,jdbcType=INTEGER}
+  </select>
+  <select id="findFormType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_form_type t where t.form_type_status>=0
+    and t.form_type_name = #{typeName,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="addFormType" parameterType="com.leanin.domain.vo.FormTypeVo">
+    insert into leanin_form_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="formTypeId != null">
+        form_type_id,
+      </if>
+      <if test="formTypeName != null">
+        form_type_name,
+      </if>
+      <if test="formTypeInfo != null">
+        form_type_info,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="typeStatus != null">
+        form_type_status
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="formTypeId != null">
+        #{formTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="formTypeName != null">
+        #{formTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="formTypeInfo != null">
+        #{formTypeInfo,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeStatus != null">
+        #{typeStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateFormType" parameterType="com.leanin.domain.vo.FormTypeVo">
+    update leanin_form_type
+    <set>
+      <if test="formTypeName != null">
+        form_type_name = #{formTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="formTypeInfo != null">
+        form_type_info = #{formTypeInfo,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where form_type_id = #{formTypeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateTypeStatus" parameterType="java.lang.Long">
+  	update leanin_form_type set form_type_status=-1
+  	where form_type_id = #{formTypeId,jdbcType=BIGINT}
+  </update>
+</mapper>

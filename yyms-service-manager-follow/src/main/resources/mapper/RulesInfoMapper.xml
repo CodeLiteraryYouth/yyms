@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.RulesInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.RulesInfoVo">
+    <id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId" />
+    <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName" />
+    <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName" />
+    <result column="rules_info_type" jdbcType="INTEGER" property="rulesInfoType" />
+    <result column="rules_creater" jdbcType="VARCHAR" property="rulesCreater" />
+    <result column="rules_creater_ward" jdbcType="VARCHAR" property="rulesCreaterWard" />
+    <result column="rules_create_time" jdbcType="TIMESTAMP" property="rulesCreateTime" />
+    <result column="rules_info_status" jdbcType="INTEGER" property="rulesInfoStatus" />
+    <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.RulesInfoVo">
+    <result column="rules_info_text" jdbcType="LONGVARCHAR" property="rulesInfoText" />
+  </resultMap>
+  <resultMap id="CommonResult" type="com.leanin.domain.dto.CommonRulesInfoDto">
+  	<id column="ward_id" jdbcType="BIGINT" property="wardId" />
+  	<result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
+  	<result column="ward_name" jdbcType="VARCHAR" property="wardName" />
+  	<collection property="rulesList" column="rules_creater_ward" ofType="com.leanin.domain.vo.RulesInfoVo">
+  		<id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId" />
+	    <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName" />
+	    <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName" />
+	    <result column="rules_info_type" jdbcType="INTEGER" property="rulesInfoType" />
+	    <result column="rules_creater" jdbcType="VARCHAR" property="rulesCreater" />
+	    <result column="rules_creater_ward" jdbcType="VARCHAR" property="rulesCreaterWard" />
+	    <result column="rules_create_time" jdbcType="TIMESTAMP" property="rulesCreateTime" />
+	    <result column="rules_info_status" jdbcType="INTEGER" property="rulesInfoStatus" />
+	    <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
+	    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+	    <result column="rules_info_text" jdbcType="LONGVARCHAR" property="rulesInfoText" />
+  	</collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    r.rules_info_id, r.rules_info_type_name, r.rules_info_name, r.rules_info_type, r.rules_creater, 
+    r.rules_creater_ward, r.rules_create_time, r.rules_info_status, r.follow_form_id, r.area_code
+  </sql>
+  <sql id="Blob_Column_List">
+    r.rules_info_text
+  </sql>
+  <sql id="Base_Ward_List">
+  	w.ward_id,w.ward_code,w.ward_name
+  </sql>
+  <select id="findCommonRules" resultMap="CommonResult">
+  	select
+  	<include refid="Base_Column_List" />
+  	,
+  	<include refid="Blob_Column_List" />
+  	,
+  	<include refid="Base_Ward_List" />
+  	from leanin_ward_info w,leanin_rules_info r
+  	where w.ward_code=r.rules_creater_ward and r.rules_info_status=1
+  	and r.rules_info_type=#{rulesType,jdbcType=INTEGER}
+  	<if test="rulesName !=null">
+  		and r.rules_info_name like CONCAT('%',#{rulesName},'%')
+  	</if>
+  </select>
+  <select id="findRulesList" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_rules_info r where r.rules_info_status>=0
+    and rules_info_type=#{type}
+    <if test="rulesName !=null">
+    	and r.rules_info_name like CONCAT('%',#{rulesName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="typeId !=null">
+    	and r.follow_form_id =#{typeId}
+    </if>
+  </select>
+  <select id="findRulesByWardCode" resultMap="ResultMapWithBLOBs">
+  	select
+  	<include refid="Base_Column_List" />
+  	,
+  	<include refid="Blob_Column_List" />
+  	from leanin_rules_info r
+  	where r.rules_info_status=1 and r.rules_creater_ward=#{wardCode}
+  	and r.rules_info_type=#{rulesType,jdbcType=INTEGER}
+  	<if test="rulesName !=null">
+  		and r.rules_info_name like CONCAT('%',#{rulesName},'%')
+  	</if>
+  </select>
+  <select id="findRulesById" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_rules_info r where r.rules_info_status>=0
+    and r.rules_info_id = #{rulesInfoId,jdbcType=BIGINT}
+  </select>
+  <select id="findRulesByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_rules_info r where r.rules_info_status>=0
+    and r.rules_info_name = #{rulesName,jdbcType=BIGINT}
+  </select>
+  <update id="updateRulesState">
+    update leanin_rules_info r set r.rules_info_status=#{status}
+    where r.rules_info_id = #{rulesInfoId,jdbcType=BIGINT}
+  </update>
+  <insert id="addRulesInfo" parameterType="com.leanin.domain.vo.RulesInfoVo">
+    insert into leanin_rules_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rulesInfoId != null">
+        rules_info_id,
+      </if>
+      <if test="rulesInfoTypeName != null">
+        rules_info_type_name,
+      </if>
+      <if test="rulesInfoName != null">
+        rules_info_name,
+      </if>
+      <if test="rulesInfoType != null">
+        rules_info_type,
+      </if>
+      <if test="rulesCreater != null">
+        rules_creater,
+      </if>
+      <if test="rulesCreaterWard != null">
+        rules_creater_ward,
+      </if>
+      <if test="rulesCreateTime != null">
+        rules_create_time,
+      </if>
+      <if test="rulesInfoStatus != null">
+        rules_info_status,
+      </if>
+      <if test="followFormId != null">
+        follow_form_id,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="rulesInfoText != null">
+        rules_info_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rulesInfoId != null">
+        #{rulesInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="rulesInfoTypeName != null">
+        #{rulesInfoTypeName,jdbcType=INTEGER},
+      </if>
+      <if test="rulesInfoName != null">
+        #{rulesInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesInfoType != null">
+        #{rulesInfoType,jdbcType=INTEGER},
+      </if>
+      <if test="rulesCreater != null">
+        #{rulesCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesCreaterWard != null">
+        #{rulesCreaterWard,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesCreateTime != null">
+        #{rulesCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rulesInfoStatus != null">
+        #{rulesInfoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="followFormId != null">
+        #{followFormId,jdbcType=BIGINT},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesInfoText != null">
+        #{rulesInfoText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateRulesInfo" parameterType="com.leanin.domain.vo.RulesInfoVo">
+    update leanin_rules_info
+    <set>
+      <if test="rulesInfoTypeName != null">
+        rules_info_type_name = #{rulesInfoTypeName,jdbcType=INTEGER},
+      </if>
+      <if test="rulesInfoName != null">
+        rules_info_name = #{rulesInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesInfoType != null">
+        rules_info_type = #{rulesInfoType,jdbcType=INTEGER},
+      </if>
+      <if test="rulesCreater != null">
+        rules_creater = #{rulesCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesCreaterWard != null">
+        rules_creater_ward = #{rulesCreaterWard,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesCreateTime != null">
+        rules_create_time = #{rulesCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rulesInfoStatus != null">
+        rules_info_status = #{rulesInfoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="followFormId != null">
+        follow_form_id = #{followFormId,jdbcType=BIGINT},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rulesInfoText != null">
+        rules_info_text = #{rulesInfoText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where rules_info_id = #{rulesInfoId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

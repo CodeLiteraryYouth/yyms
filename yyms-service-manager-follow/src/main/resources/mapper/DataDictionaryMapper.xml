@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.DataDictionaryMapper">
+	<resultMap id="BaseResultMap" type="com.leanin.domain.vo.DiseaseInfoVo">
+		<id column="disease_num" jdbcType="VARCHAR" property="diseaseNum" />
+		<result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    	<result column="disease_code" jdbcType="VARCHAR" property="diseaseCode" />
+	</resultMap>
+	<sql id="Base_Column_list">
+		d.disease_num,d.disease_name,d.disease_code
+	</sql>
+	
+	<select id="findDiseaseList" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_list"></include>
+		from leanin_disease_info d
+		<if test="diseaseName !=null">
+			where d.disease_name like CONCAT('%',#{diseaseName},'%')
+		</if>
+	</select>
+</mapper>
