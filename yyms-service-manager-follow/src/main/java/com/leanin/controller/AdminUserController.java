@@ -31,6 +31,7 @@ public class AdminUserController {
 	public DataOutResponse addAdminUser(@RequestBody AdminUserVo adminUser) {
 		log.info("要新增的管理员用户信息为:"+ JSON.toJSONString(adminUser));
 		return adminUserService.insertAdminUser(adminUser);
+
 	}
 	
 	@PostMapping("updateAdminUser")
