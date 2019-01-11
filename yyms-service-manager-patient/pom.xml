@@ -36,28 +36,20 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-        </dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.cloud</groupId>-->
-        <!--<artifactId>spring-cloud-starter-oauth2</artifactId>-->
-        <!--</dependency>-->
         <!--mysql数据库相关jar包-->
-        <!--<dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>-->
-        <!--<dependency>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.10</version>
-        </dependency>-->
-        <!--<dependency>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -72,25 +64,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <scope>4.0</scope>
-            <version>4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>6.2.0.jre8</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!--<dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>7.0.0.jre8</version>
-            <scope>test</scope>
-        </dependency>-->
 
 
 
@@ -99,10 +72,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -115,40 +85,9 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-        <!-- CXF webservice -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-            <version>3.1.11</version>
-        </dependency>
-        <!-- CXF webservice -->
-
-        <!--WebService jar包-->
-        <!--ws 服务开发-->
-        <!--<dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <version>3.0.1</version>
-        </dependency>-->
 
 
-        <!--webservice-->
-        <!-- http -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.4</version>
-        </dependency>
+
 
         <!--webservice cxf -->
         <dependency>

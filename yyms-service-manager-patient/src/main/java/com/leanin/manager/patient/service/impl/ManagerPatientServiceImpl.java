@@ -1,11 +1,13 @@
 package com.leanin.manager.patient.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.alibaba.fastjson.JSON;
+//import com.github.pagehelper.Page;
+//import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.manager.patient.dao.ManagerPatientMapper;
 import com.leanin.manager.patient.service.ManagerPatientService;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.client.utils.HttpClientUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,54 +19,52 @@ import java.util.Map;
 @Service
 public class ManagerPatientServiceImpl implements ManagerPatientService {
 
-    @Autowired
-    ManagerPatientMapper managerPatientMapper;
+
 
 
     @Override
     public DataOutResponse findListByParam(Map paramMap) {
-        //设置当前页  默认显示第一页
-        Integer currentPage = (Integer) paramMap.get("currentPage");
-        if (currentPage <= 0) {
-            currentPage = 1;
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        String jsonString = JSON.toJSONString(paramMap);
+        //获取webService返回结果
+        Map dataMap=null;
+        try {
+            Object[] objects = client.invoke("findListByParam", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //每页显示数据大小 默认每页显示10条数据
-        Integer pageSize = (Integer) paramMap.get("pageSize");
-        if (pageSize<=0){
-            pageSize=10;
-        }
-        //分页查询
-        PageHelper.startPage(currentPage,pageSize);
-        Page<Map> page = (Page<Map>) managerPatientMapper.findListByParam(paramMap);
-        long totalPage = page.getTotal();
-        List<Map> list = page.getResult();
-        Map data=new HashMap();
-        data.put("totalCount",totalPage);
-        data.put("list",list);
-
-
-
-        return ReturnFomart.retParam(200,data);
+//        PageHelper.startPage(currentPage,pageSize);
+//        Page<Map> page = (Page<Map>) managerPatientMapper.findListByParam(paramMap);
+//        long totalPage = page.getTotal();
+//        List<Map> list = page.getResult();
+//        Map data=new HashMap();
+//        data.put("totalCount",totalPage);
+//        data.put("list",list);
+        return ReturnFomart.retParam(200,dataMap);
     }
 
     @Override
     public DataOutResponse findOutHosPatientByParam(Map paramMap) {
-        //设置当前页  默认显示第一页
-        Integer currentPage = (Integer) paramMap.get("currentPage");
-        if (currentPage <= 0) {
-            currentPage = 1;
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        String jsonString = JSON.toJSONString(paramMap);
+        //获取webService返回结果
+        Map dataMap=null;
+        try {
+            Object[] objects = client.invoke("findOutHosPatientByParam", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //每页显示数据大小 默认每页显示10条数据
-        Integer pageSize = (Integer) paramMap.get("pageSize");
-        if (pageSize<=0){
-            pageSize=10;
-        }
-        PageHelper.startPage(currentPage,pageSize);
-        Page<Map> page= (Page<Map>) managerPatientMapper.findOutHosPatientByParam(paramMap);
-        Map data=new HashMap();
-        data.put("totalCount",page.getTotal());
-        data.put("list",page.getResult());
 
-        return ReturnFomart.retParam(200,data);
+        return ReturnFomart.retParam(200,dataMap);
     }
 }

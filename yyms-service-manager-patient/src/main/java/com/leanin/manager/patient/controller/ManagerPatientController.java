@@ -3,7 +3,6 @@ package com.leanin.manager.patient.controller;
 
 import com.leanin.api.patient.ManagerPatientApi;
 import com.leanin.domain.response.DataOutResponse;
-import com.leanin.domain.response.ReturnFomart;
 import com.leanin.manager.patient.service.ManagerPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
