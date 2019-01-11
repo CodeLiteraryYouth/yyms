@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -15,8 +19,11 @@ import java.io.Serializable;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "leanin_disease_info")
 public class DiseaseInfoVo implements Serializable{
 
+	@Id
 	private String diseaseNum;	//疾病单号
 	
 	private String diseaseName;	//疾病名称

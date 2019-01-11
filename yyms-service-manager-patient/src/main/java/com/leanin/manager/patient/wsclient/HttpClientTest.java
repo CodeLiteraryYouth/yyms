@@ -1,8 +1,8 @@
 package com.leanin.manager.patient.wsclient;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+//import org.apache.cxf.endpoint.Client;
+//import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -165,29 +165,31 @@ public class HttpClientTest {
 //        String body = sendGetData(url, "utf-8");
 //        System.out.println("响应结果：" + body);
 //    }
-    @Test
-    public void test1(){
-        // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
-        // 需要密码的情况需要加上用户名和密码
-        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
-        Map paramMap=new HashMap();
-        paramMap.put("currentPage",1);
-        paramMap.put("pageSize",10);
-        paramMap.put("inOut","1");
-        String string = JSON.toJSONString(paramMap);
-        try {
-            Object[] testWS = client.invoke("testWS", string);
-            Map map = JSON.parseObject(testWS[0].toString(), Map.class);
-            List<Map> list = (List<Map>) map.get("list");
-
-            int size = list.size();
-            System.out.println(size+"数据"+list);
-//            Object[] invoke = client.invoke("testString", "wbservicews");
-//            System.out.println(invoke[0].toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    public void test1(){
+//        // 创建动态客户端
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+//        // 需要密码的情况需要加上用户名和密码
+//        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+//        Map paramMap=new HashMap();
+//        paramMap.put("currentPage",1);
+//        paramMap.put("pageSize",20);
+//        paramMap.put("inOut","1");
+//        String string = JSON.toJSONString(paramMap);
+//        try {
+//            Object[] testWS = client.invoke("testWS", string);
+//            Map map = JSON.parseObject(testWS[0].toString(), Map.class);
+//            List<Map> list = (List<Map>) map.get("list");
+////            Map data = (Map) testWS[0];
+////            Integer totalCount = (Integer) data.get("totalCount");
+////            List<Map> list1 = (List<Map>) data.get("list");
+//            int size = list.size();
+//            System.out.println(size+"数据"+list);
+////            Object[] invoke = client.invoke("testString", "wbservicews");
+////            System.out.println(invoke[0].toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
