@@ -38,13 +38,6 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        PageHelper.startPage(currentPage,pageSize);
-//        Page<Map> page = (Page<Map>) managerPatientMapper.findListByParam(paramMap);
-//        long totalPage = page.getTotal();
-//        List<Map> list = page.getResult();
-//        Map data=new HashMap();
-//        data.put("totalCount",totalPage);
-//        data.put("list",list);
         return ReturnFomart.retParam(200,dataMap);
     }
 
