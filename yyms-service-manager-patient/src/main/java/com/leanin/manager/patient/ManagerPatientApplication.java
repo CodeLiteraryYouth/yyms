@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 @EntityScan("com.leanin.domain")
 @ComponentScan("com.leanin.api")//扫描api
 @ComponentScan("com.leanin.manager.patient")//扫描本包
-@ComponentScan("com.leanin")//扫描common包
 @ComponentScan("com.leanin.utils")//扫描工具类
 public class ManagerPatientApplication {
 

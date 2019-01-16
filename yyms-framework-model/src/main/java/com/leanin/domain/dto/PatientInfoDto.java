@@ -19,7 +19,7 @@ public class PatientInfoDto {
 
     private Integer patientInfoSex;		//性别（1：男 2：女）
 
-    private Date patientInfoBirthday;	//出生年月
+    private Integer patientAge;	//病人年龄
 
     private String patientInfoIdcard;	//身份证号
 

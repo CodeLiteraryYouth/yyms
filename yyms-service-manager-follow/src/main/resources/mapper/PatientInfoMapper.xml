@@ -27,6 +27,32 @@
     patient_info_job, patient_info_job_addre, patient_info_addre, hospital_area_code, 
     emer_cont_name, emer_cont_relation, emer_cont_phone, admin_creater,create_time
   </sql>
+  <select id="findPatientByParam" resultType="com.leanin.domain.dto.PatientInfoDto">
+    select
+    patient_info_id as patientInfoId, patient_info_name as patientInfoName, patient_info_sex as patientInfoSex,
+    TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE()) as patientAge, patient_info_idcard as patientInfoIdcard,
+    patient_info_phone as patientInfoPhone, patient_info_marr_status as patientInfoMarrStatus, patient_info_national as patientInfoNational,
+    patient_info_culture as patientInfoCulture,patient_info_job as patientInfoJob, patient_info_job_addre as patientInfoJobAddre,
+     patient_info_addre as patientInfoAddre, hospital_area_code as hospitalAreaCode,emer_cont_name as emerContName,
+     emer_cont_relation as emerContRelation, emer_cont_phone as emerContPhone, admin_creater as adminCreater,create_time as createTime
+    from leanin_patient_info where 1=1
+    <if test="sex !=null">
+      and patient_info_sex=#{sex,jdbcType=INTEGER}
+    </if>
+    <if test="startAge !=null">
+      <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())>=#{startAge,jdbcType=INTEGER}]]>
+    </if>
+    <if test="endAge !=null">
+      <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())<=#{endAge,jdbcType=INTEGER}]]>
+    </if>
+    <if test="isPhone ==1">
+      and patient_info_phone is not null
+    </if>
+    <if test="isPhone ==2">
+      and patient_info_phone is null
+    </if>
+    order by create_time desc
+  </select>
   <select id="findPatientInfoList" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select
   	<include refid="Base_Column_List" />

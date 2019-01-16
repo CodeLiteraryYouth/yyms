@@ -7,6 +7,8 @@ import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.feign.PlanFeign;
+import com.leanin.mapper.PatientInfoMapper;
 import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.service.PlanInfoService;
 import com.leanin.utils.CompareUtil;
@@ -23,6 +25,12 @@ public class PlanInfoServiceImpl implements PlanInfoService {
 
 	@Autowired
 	private PlanInfoMapper planInfoMapper;
+
+	@Autowired
+	private PlanFeign planFeign;
+
+	@Autowired
+	private PatientInfoMapper patientInfoMapper;
 	
 	
 	@Override
@@ -58,6 +66,10 @@ public class PlanInfoServiceImpl implements PlanInfoService {
 			return ReturnFomart.retParam(4000, planInfo);
 		}
 		planInfoMapper.addPlanInfo(record);
+		PlanInfoVo planResult=planInfoMapper.findPlanInfoByName(record.getPlanName());
+		if (planResult.getPatientInfoSource()==5) {
+
+		}
 		return ReturnFomart.retParam(200,record);
 	}
 
