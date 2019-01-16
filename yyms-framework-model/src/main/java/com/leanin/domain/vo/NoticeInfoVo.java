@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * 公告内容
+ * @author Administrator
+ */
 @Data
 @ToString
 @NoArgsConstructor
@@ -20,5 +24,7 @@ public class NoticeInfoVo {
     private String areaCode;	//院区编码
 
     private String noticeText;	//公告发布的内容
+
+    private  Integer status;    //0:启用 1：停用
 
 }

@@ -6,17 +6,28 @@
     <result column="notice_title" jdbcType="VARCHAR" property="noticeTitle" />
     <result column="ward_name" jdbcType="VARCHAR" property="wardName" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="notice_status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.NoticeInfoVo">
     <result column="notice_text" jdbcType="LONGVARCHAR" property="noticeText" />
   </resultMap>
   <sql id="Base_Column_List">
-    notice_id, notice_title, ward_name, area_code
+    notice_id, notice_title, ward_name, area_code, notice_status
   </sql>
   <sql id="Blob_Column_List">
     notice_text
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="findNoticeList" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_notice_info
+    <if test="noticeName != null">
+      where notice_title like CONCAT('%',#{noticeName},'%')
+    </if>
+  </select>
+  <select id="findNoticeById" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -24,17 +35,19 @@
     from leanin_notice_info
     where notice_id = #{noticeId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from leanin_notice_info
+  <select id="findNoticeByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_notice_info
+    where notice_title = #{noticeName,jdbcType=VARCHAR}
+  </select>
+  <update id="updateNoticeStatus">
+    update leanin_notice_info set notice_status=#{status}
     where notice_id = #{noticeId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.leanin.domain.vo.NoticeInfoVo">
-    insert into leanin_notice_info (notice_id, notice_title, ward_name, 
-      area_code, notice_text)
-    values (#{noticeId,jdbcType=BIGINT}, #{noticeTitle,jdbcType=VARCHAR}, #{wardName,jdbcType=VARCHAR}, 
-      #{areaCode,jdbcType=VARCHAR}, #{noticeText,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.leanin.domain.vo.NoticeInfoVo">
+  </update>
+  <insert id="addNoticeInfo" parameterType="com.leanin.domain.vo.NoticeInfoVo">
     insert into leanin_notice_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="noticeId != null">
@@ -51,6 +64,9 @@
       </if>
       <if test="noticeText != null">
         notice_text,
+      </if>
+      <if test="status != null">
+        notice_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -69,9 +85,12 @@
       <if test="noticeText != null">
         #{noticeText,jdbcType=LONGVARCHAR},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.NoticeInfoVo">
+  <update id="updateNoticeInfo" parameterType="com.leanin.domain.vo.NoticeInfoVo">
     update leanin_notice_info
     <set>
       <if test="noticeTitle != null">
@@ -87,21 +106,6 @@
         notice_text = #{noticeText,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where notice_id = #{noticeId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.leanin.domain.vo.NoticeInfoVo">
-    update leanin_notice_info
-    set notice_title = #{noticeTitle,jdbcType=VARCHAR},
-      ward_name = #{wardName,jdbcType=VARCHAR},
-      area_code = #{areaCode,jdbcType=VARCHAR},
-      notice_text = #{noticeText,jdbcType=LONGVARCHAR}
-    where notice_id = #{noticeId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.NoticeInfoVo">
-    update leanin_notice_info
-    set notice_title = #{noticeTitle,jdbcType=VARCHAR},
-      ward_name = #{wardName,jdbcType=VARCHAR},
-      area_code = #{areaCode,jdbcType=VARCHAR}
     where notice_id = #{noticeId,jdbcType=BIGINT}
   </update>
 </mapper>

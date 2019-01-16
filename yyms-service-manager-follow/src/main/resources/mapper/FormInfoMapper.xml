@@ -9,8 +9,8 @@
     <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
     <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
     <result column="form_name" jdbcType="VARCHAR" property="formName" />
-    <result column="form_title" jdbcType="VARCHAR" property="formTitle" />
-    <result column="form_bottom" jdbcType="VARCHAR" property="formBottom" />
+    <result column="form_title" jdbcType="LONGVARCHAR" property="formTitle" />
+    <result column="form_bottom" jdbcType="LONGVARCHAR" property="formBottom" />
     <result column="form_status" jdbcType="INTEGER" property="formStatus" />
     <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
     <result column="form_type" jdbcType="INTEGER" property="formType" />

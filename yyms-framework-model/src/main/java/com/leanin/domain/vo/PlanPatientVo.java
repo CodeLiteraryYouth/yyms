@@ -32,8 +32,6 @@ public class PlanPatientVo {
 
     private String patientPhone;	//病人手机号
 
-    private String patientWard;	//病人院区
-
     private Date patientDateTime;	//病人时间
 
     private String patientDoctor;	//诊治医生
@@ -45,5 +43,7 @@ public class PlanPatientVo {
     private Integer patientType;	//病人来源
 
     private String areaCode;	//院区编码
+
+    private Integer planPatsStatus; //-1:已移除 0：正在使用
   
 }
