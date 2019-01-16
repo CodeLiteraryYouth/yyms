@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.leanin.mapper")	//扫描mapper包
 @ComponentScan("com.leanin.utils")//扫描工具类
 @ComponentScan("com.leanin.api")//扫描api
+@ComponentScan("com.leanin")
 class FollowApplication {
 
 	public static void main(String[] args) {

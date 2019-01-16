@@ -199,9 +199,11 @@ public class HttpClientTest {
     public void test(){
         Map paramMap=new HashMap();
         paramMap.put("dept","儿科");
+        paramMap.put("currentPage",0);
+        paramMap.put("pageSize",1000);
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -214,6 +216,15 @@ public class HttpClientTest {
             e.printStackTrace();
         }
         List<InHosPatInfoAo> list = (List<InHosPatInfoAo>) dataMap.get("list");
+        /*while (list != null ){
+            try {
+
+                Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+                dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
         System.out.println(list.size());
     }
 }
