@@ -3,6 +3,9 @@ package com.leanin.manager.patient.wsclient;
 import com.alibaba.fastjson.JSON;
 //import org.apache.cxf.endpoint.Client;
 //import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+import com.leanin.domain.ao.InHosPatInfoAo;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -192,4 +195,25 @@ public class HttpClientTest {
 //            e.printStackTrace();
 //        }
 //    }
+    @Test
+    public void test(){
+        Map paramMap=new HashMap();
+        paramMap.put("dept","儿科");
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        String jsonString = JSON.toJSONString(paramMap);
+        //获取webService返回结果
+        Map dataMap=null;
+        try {
+            Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<InHosPatInfoAo> list = (List<InHosPatInfoAo>) dataMap.get("list");
+        System.out.println(list.size());
+    }
 }

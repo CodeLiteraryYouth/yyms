@@ -1,21 +1,21 @@
 package com.leanin.manager.patient;
 
 import com.alibaba.fastjson.JSON;
+import com.leanin.domain.ao.InHosPatInfoAo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.manager.patient.ManagerPatientApplication;
 import com.leanin.manager.patient.service.ManagerPatientService;
 //import org.apache.cxf.endpoint.Client;
 //import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -58,5 +58,27 @@ public class ServiceTest {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    @Test
+    public void test(){
+        Map paramMap=new HashMap();
+        paramMap.put("dept","儿科");
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        String jsonString = JSON.toJSONString(paramMap);
+        //获取webService返回结果
+        Map dataMap=null;
+        try {
+            Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<InHosPatInfoAo> list = (List<InHosPatInfoAo>) dataMap.get("list");
+        System.out.println(list.size());
     }
 }
