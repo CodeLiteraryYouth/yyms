@@ -3,12 +3,8 @@ package com.leanin.manager.patient;
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.ao.InHosPatInfoAo;
 import com.leanin.domain.response.DataOutResponse;
-import com.leanin.manager.patient.ManagerPatientApplication;
 import com.leanin.manager.patient.service.ManagerPatientService;
-//import org.apache.cxf.endpoint.Client;
-//import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import com.leanin.utils.CSMSUtils;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpResponse;
@@ -28,6 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
+//import org.apache.cxf.endpoint.Client;
+//import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -79,9 +78,9 @@ public class ServiceTest {
 
             currentPage++;
             Map paramMap = new HashMap();
-            paramMap.put("dept", "儿科");
+//            paramMap.put("dept", "儿科");
             paramMap.put("currentPage", currentPage);
-            paramMap.put("pageSize", 1000);
+            paramMap.put("pageSize", 100);
             // 创建动态客户端
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
             Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
@@ -91,13 +90,13 @@ public class ServiceTest {
             //获取webService返回结果
             Map dataMap = null;
             try {
-                Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+                Object[] objects = client.invoke("findOutHosPatInfoAoListByParam", jsonString);
                 dataMap = JSON.parseObject(objects[0].toString(), Map.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             List<InHosPatInfoAo> list = (List<InHosPatInfoAo>) dataMap.get("list");
-            System.out.println("当前页是第几页："+currentPage+" 当前页的数据条数为： "+list.size());
+            System.out.println("当前页是第几页："+currentPage+" 当前页的数据条数为： "+list.size()+"数据集合："+list);
             if (list.size()<=0){
                 break;
             }
