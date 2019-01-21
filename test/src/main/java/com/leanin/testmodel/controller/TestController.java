@@ -3,11 +3,10 @@ package com.leanin.testmodel.controller;
 import com.leanin.api.test.TestApi;
 import com.leanin.domain.vo.DiseaseInfoVo;
 import com.leanin.testmodel.service.DiseaseInfoService;
+import com.leanin.testmodel.task.MyScheduler;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")
@@ -15,6 +14,30 @@ public class TestController implements TestApi {
 
     @Autowired
     DiseaseInfoService diseaseInfoService;
+
+    @RequestMapping("/modify")
+    public @ResponseBody String modify() throws SchedulerException {
+        MyScheduler.modifyJob1("0/2 * * * * ?");
+        return "1";
+    }
+
+    @RequestMapping("/status")
+    public @ResponseBody
+    String status() throws SchedulerException {
+        return MyScheduler.getJob1Status();
+    }
+
+    @RequestMapping("/pause")
+    public @ResponseBody String pause() throws SchedulerException {
+        MyScheduler.pauseJob1();
+        return "1";
+    }
+
+    @RequestMapping("/resume")
+    public @ResponseBody String resume() throws SchedulerException {
+        MyScheduler.resumeJob1();
+        return "1";
+    }
 
     @Override
     @GetMapping("/test/{param1}/{param2}")

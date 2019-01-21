@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,4 +22,10 @@ public interface ManagerPatientApi {
 
     @ApiOperation("就诊患者查询接口")
     public DataOutResponse findOutHosPatientByParam(Map paramMap);
+
+    @ApiOperation("给随访提供接口，门诊病人信息")
+    public List<Map> findOutHosPatientByParamToSF(Map paramMap);
+
+    @ApiOperation("给随访提供接口，出住院病人信息")
+    public List<Map> findInHosPatientByParamToSF(Map paramMap);
 }

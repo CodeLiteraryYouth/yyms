@@ -1,8 +1,8 @@
 package com.leanin.manager.patient.service;
 
 import com.leanin.domain.response.DataOutResponse;
-import com.leanin.domain.response.ReturnFomart;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ManagerPatientService {
@@ -20,4 +20,11 @@ public interface ManagerPatientService {
      * @return
      */
     DataOutResponse findOutHosPatientByParam(Map paramMap);
+
+    //给随访提供接口，出住院病人信息
+    List<Map> findOutHosPatientByParamToSF(Map paramMap);
+
+
+    //给随访提供接口，门诊病人信息
+    List<Map> findInHosPatientByParamToSF(Map paramMap);
 }

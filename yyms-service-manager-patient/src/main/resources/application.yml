@@ -7,7 +7,7 @@ spring:
     druid:
       url: jdbc:mysql://127.0.0.1:3306/leanin_follow?characterEncoding=utf-8
       username: root
-      password: 123456
+      password: root
       driverClassName: com.mysql.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量

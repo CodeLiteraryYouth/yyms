@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 @RestController
 @RequestMapping("/managerPatient")
@@ -38,6 +39,18 @@ public class ManagerPatientController implements ManagerPatientApi {
     @PostMapping("/findOutHosPatientByParam")
     public DataOutResponse findOutHosPatientByParam(@RequestBody Map paramMap) {
         return managerPatientService.findOutHosPatientByParam(paramMap);
+    }
+    //给随访提供接口，出住院病人信息
+    @Override
+    @PostMapping("/findOutHosPatientByParamToSF")
+    public List<Map> findOutHosPatientByParamToSF(@RequestBody Map paramMap) {
+        return managerPatientService.findOutHosPatientByParamToSF(paramMap);
+    }
+    //给随访提供接口，门诊病人信息
+    @Override
+    @PostMapping("/findInHosPatientByParamToSF")
+    public List<Map> findInHosPatientByParamToSF(@RequestBody Map paramMap) {
+        return managerPatientService.findInHosPatientByParamToSF(paramMap);
     }
 
 

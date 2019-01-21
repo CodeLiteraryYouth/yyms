@@ -50,4 +50,12 @@ public interface PlanInfoMapper {
      */
     int updatePlanInfo(PlanInfoVo record);
 
+	/**
+	 * 根据导入数据状态查询
+	 * @param i
+	 * @return
+	 */
+	List<PlanInfoVo> findPlanListByImportData(@Param("importData") int i);
+
+	List<PlanInfoVo> findPlanInfoByStatusAndPlanCycle(Integer planStatus, Integer planCycle);
 }

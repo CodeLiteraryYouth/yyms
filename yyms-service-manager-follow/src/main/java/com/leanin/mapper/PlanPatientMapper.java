@@ -6,6 +6,7 @@ import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -20,12 +21,19 @@ public interface PlanPatientMapper {
     int updatePatientStatus(String patientPlanId,@Param("status") Integer status);
 
     /**
-     * 批量移入计划病人
+     * 移入计划病人
      * @param patientInfo
-     * @param planNum
      * @return
      */
-    int addPlanPatient(List<PatientInfoDto> patientInfo, String planNum);
+    int addPlanPatient(PlanPatientVo patientInfo);
+
+//    /**
+//     * 批量移入计划病人
+//     * @param patientInfo
+//     * @param planNum
+//     * @return
+//     */
+//    int addPlanPatientMap(List<Map> patientInfo, String planNum);
 
     /**
      * 查询单个病人信息

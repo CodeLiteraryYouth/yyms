@@ -40,7 +40,7 @@ public class PlanInfoVo {
 
     private String followFormNum;	//表单号
 
-    private String rulesInfoNum;	//规则号
+    private Long rulesInfoNum;	//规则号
 
     private Integer planSex;	//病人性别
     
@@ -61,5 +61,7 @@ public class PlanInfoVo {
     private String creater;	//创建人
     
     private Date createDate;	//创建时间
+
+    private Integer importData; //是否将病人数据导入到 数据库中 1 已导入 2未导入
 
 }

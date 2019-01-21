@@ -12,7 +12,8 @@ public class PlanInfoController {
 
 	@Autowired
 	private PlanInfoService planInfoService;
-	
+
+
 	
 	@GetMapping("findPlanList")
 	public DataOutResponse findPlanList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String planName, @RequestParam int planType) {

@@ -1,136 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.PlanPatientMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
-    <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId" />
-    <result column="plan_num" jdbcType="VARCHAR" property="planNum" />
-    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
-    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
-    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
-    <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone" />
-    <result column="patient_date_time" jdbcType="DATE" property="patientDateTime" />
-    <result column="patient_doctor" jdbcType="VARCHAR" property="patientDoctor" />
-    <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition" />
-    <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous" />
-    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="plan_pats_status" jdbcType="INTEGER" property="areaCode" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
+        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
+        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
+        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
+        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
+        <result column="patient_date_time" jdbcType="DATE" property="patientDateTime"/>
+        <result column="patient_doctor" jdbcType="VARCHAR" property="patientDoctor"/>
+        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
+        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
+        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="plan_pats_status" jdbcType="INTEGER" property="areaCode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id, patient_name, patient_sex,
     patient_age, patient_phone, patient_date_time, patient_doctor, patient_condition,
     patient_diagous, patient_type, area_code, plan_pats_status
   </sql>
-  <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from leanin_plan_patient where plan_pats_status>=0
-    and patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
-  </select>
-  <update id="updatePatientStatus">
+    <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient where plan_pats_status>=0
+        and patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+    </select>
+    <update id="updatePatientStatus">
     update leanin_plan_patient set plan_pats_status=#{status}
     where patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
   </update>
-  <insert id="addPlanPatient">
-    insert into leanin_plan_patient
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="planNum != null">
-        plan_num,
-      </if>
-      <if test="patientInfoId != null">
-        patient_id,
-      </if>
-      <if test="patientInfoName != null">
-        patient_name,
-      </if>
-      <if test="patientInfoSex != null">
-        patient_sex,
-      </if>
-      <if test="patientAge != null">
-        patient_age,
-      </if>
-      <if test="patientInfoPhone != null">
-        patient_phone,
-      </if>
-      <if test="patientDateTime != null">
-        patient_date_time,
-      </if>
-      <if test="patientDoctor != null">
-        patient_doctor,
-      </if>
-      <if test="patientCondition != null">
-        patient_condition,
-      </if>
-      <if test="patientDiagous != null">
-        patient_diagous,
-      </if>
-      <if test="patientType != null">
-        patient_type,
-      </if>
-      <if test="areaCode != null">
-        area_code,
-      </if>
-    </trim>
-    values
-    <foreach collection="list" item="item" index="index" separator=",">
-      (
-        #{planNum},
-        #{item.patientInfoId},
-        #{item.patientInfoName},
-        #{item.patientInfoSex},
-        #{item.patientAge},
-        #{item.patientInfoPhone},
-        #{item.createTime},
-      )
-    </foreach>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="patientPlanId != null">
-        #{patientPlanId,jdbcType=BIGINT},
-      </if>
-      <if test="planNum != null">
-        #{planNum,jdbcType=VARCHAR},
-      </if>
-      <if test="patientId != null">
-        #{patientId,jdbcType=BIGINT},
-      </if>
-      <if test="patientInhospitalno != null">
-        #{patientInhospitalno,jdbcType=VARCHAR},
-      </if>
-      <if test="patientName != null">
-        #{patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientSex != null">
-        #{patientSex,jdbcType=INTEGER},
-      </if>
-      <if test="patientAge != null">
-        #{patientAge,jdbcType=INTEGER},
-      </if>
-      <if test="patientPhone != null">
-        #{patientPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="patientWard != null">
-        #{patientWard,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDateTime != null">
-        #{patientDateTime,jdbcType=DATE},
-      </if>
-      <if test="patientDoctor != null">
-        #{patientDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="patientCondition != null">
-        #{patientCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDiagous != null">
-        #{patientDiagous,jdbcType=VARCHAR},
-      </if>
-      <if test="patientType != null">
-        #{patientType,jdbcType=INTEGER},
-      </if>
-      <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+
+    <insert id="addPlanPatient">
+        insert into leanin_plan_patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                plan_num,
+            </if>
+            <if test="patientId != null">
+                patient_id,
+            </if>
+            <if test="patientInHospitalNo != null">
+                patient_inHospitalNo,
+            </if>
+            <if test="patientName != null">
+                patient_name,
+            </if>
+            <if test="patientSex != null">
+                patient_sex,
+            </if>
+            <if test="patientAge != null">
+                patient_age,
+            </if>
+            <if test="patientPhone != null">
+                patient_phone,
+            </if>
+            <if test="patientWard !=null">
+                patient_ward
+            </if>
+            <if test="patientDateTime != null">
+                patient_date_time,
+            </if>
+            <if test="patientDoctor != null">
+                patient_doctor,
+            </if>
+            <if test="patientCondition != null">
+                patient_condition,
+            </if>
+            <if test="patientDiagous != null">
+                patient_diagous,
+            </if>
+            <if test="patientType != null">
+                patient_type,
+            </if>
+            <if test="areaCode != null">
+                area_code,
+            </if>
+            <if test="planPatsStatus !=null">
+                plan_pats_status,
+            </if>
+            <if test="rulesInfoId !=null">
+                rules_info_id,
+            </if>
+            <if test="nextDate !=null">
+                next_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                #{planNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientId != null">
+                #{patientId,jdbcType=BIGINT},
+            </if>
+            <if test="patientInHospitalNo != null">
+                #{patientInHospitalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="patientName != null">
+                #{patientName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientSex != null">
+                #{patientSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientAge != null">
+                #{patientAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientPhone != null">
+                #{patientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientWard != null">
+                #{patientWard,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDateTime != null">
+                #{patientDateTime,jdbcType=DATE},
+            </if>
+            <if test="patientDoctor != null">
+                #{patientDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="patientCondition != null">
+                #{patientCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDiagous != null">
+                #{patientDiagous,jdbcType=VARCHAR},
+            </if>
+            <if test="patientType != null">
+                #{patientType,jdbcType=INTEGER},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planPatsStatus !=null">
+                #{planPatsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="rulesInfoId !=null">
+                #{rulesInfoId,jdbcType=LONG},
+            </if>
+            <if test="nextDate !=null">
+                #{nextDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
 
 </mapper>
