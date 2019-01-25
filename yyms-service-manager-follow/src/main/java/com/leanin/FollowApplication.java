@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableHystrix
-@ComponentScan("com.leanin")
 @ComponentScan("com.leanin.domain")	//扫描model包
 @MapperScan("com.leanin.mapper")	//扫描mapper包
 @ComponentScan("com.leanin.utils")//扫描工具类

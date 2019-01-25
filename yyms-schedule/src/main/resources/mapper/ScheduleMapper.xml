@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.ScheduleMapper">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.ScheduleJobVo">
+        <id column="job_id" javaType="BIGINT" property="jobId"/>
+        <result column="job_name" javaType="VARCHAR" property="jobName" />
+        <result column="job_group" javaType="VARCHAR" property="jobGroup" />
+        <result column="job_status" javaType="INTEGER" property="jobStatus" />
+        <result column="audit_status" javaType="INTEGER" property="auditStatus" />
+        <result column="cron_expression" javaType="VARCHAR" property="cronExpression" />
+        <result column="quartz_class" javaType="VARCHAR" property="quartzClass" />
+        <result column="description" javaType="VARCHAR" property="description" />
+    </resultMap>
+    <sql id="Base_Cloum_List">
+        j.job_id,j.job_name,j.job_group,j.job_status,j.audit_status,j.cron_expression,j.quartz_class,j.description
+    </sql>
+    <select id="findLegalJobList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Cloum_List"/>
+        from leanin_schedule_job j where j.job_status=1 and j.audit_status=1
+    </select>
+    <select id="findDelJobList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Cloum_List"/>
+        from leanin_schedule_job j where j.job_status = 0
+    </select>
+    <select id="findScheduleList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Cloum_List"/>
+        from leanin_schedule_job j where 1=1
+        <if test="scheduleName != null">
+            and j.job_name like CONCAT('%',#{scheduleName},'%')
+        </if>
+        <if test="jobStatus !=null">
+            and j.job_group=#{jobStatus}
+        </if>
+    </select>
+    <insert id="addScheduleJob" parameterType="com.leanin.domain.vo.ScheduleJobVo">
+        insert into leanin_schedule_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jobName != null">
+                job_name,
+            </if>
+            <if test="jobGroup != null">
+                job_group,
+            </if>
+            <if test="jobStatus != null">
+                jobStatus,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+            <if test="cronExpression != null">
+                cron_expression,
+            </if>
+            <if test="quartzClass != null">
+                quartz_class,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jobName != null">
+                #{jobName},
+            </if>
+            <if test="jobGroup != null">
+                #{jobGroup},
+            </if>
+            <if test="jobStatus != null">
+                #{jobStatus},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus},
+            </if>
+            <if test="cronExpression != null">
+                #{cronExpression},
+            </if>
+            <if test="quartzClass != null">
+                #{quartzClass},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateScheduleJob" parameterType="com.leanin.domain.vo.ScheduleJobVo">
+        update leanin_schedule_job
+        <set>
+            <if test="jobName !=null">
+                job_name= #{jobName},
+            </if>
+            <if test="jobGroup != null">
+                job_group=#{jobGroup},
+            </if>
+            <if test="jobStatus != null">
+                job_status=#{jobStatus},
+            </if>
+            <if test="auditStatus != null">
+                audit_status=#{auditStatus},
+            </if>
+            <if test="cronExpression != null">
+                cron_expression=#{cronExpression},
+            </if>
+            <if test="quartzClass != null">
+                quartz_class=#{quartzClass},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+        </set>
+        where job_id=#{jobId}
+    </update>
+</mapper>
