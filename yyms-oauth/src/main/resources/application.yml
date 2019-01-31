@@ -25,7 +25,4 @@ server:
   port: 5000
   servlet:
     context-path: /auth
-security:
-  oauth2:
-    resource:
-      filter-order: 3
+
