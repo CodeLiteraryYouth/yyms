@@ -172,4 +172,76 @@ public class ServiceTest {
         CSMSUtils.sendMessage("随便发着玩的短信，不信你试试","18556531536,17858852678");
     }
 
+
+    @Test
+    public void testinfo(){
+        Map paramMap = new HashMap();
+        paramMap.put("inOut", 2);// 1在院  2出院
+        List<String> patsWardCode=new ArrayList<>();
+        patsWardCode.add("儿科(病区)");
+        patsWardCode.add("妇科(病区)");
+        paramMap.put("patsWardCode", patsWardCode);// 患者随访科室编码 可能是集合
+//        List<String> diseaseCode=new ArrayList<>();
+//        diseaseCode.add()
+//        paramMap.put("diseaseCode", diseaseCode);//疾病编码
+        paramMap.put("planSex", 2);//病人性别 1男 2女
+//        paramMap.put("beginDate",planResult.getPlanBeginTime());//开始区间
+        paramMap.put("endDate",new Date());//结束区间
+
+//        String planAgeInterval = planResult.getPlanAgeInterval();//年龄区间
+//        if (planAgeInterval != null) {//年龄区间
+//            String[] split = planAgeInterval.split(",");
+            paramMap.put("startAge", 0);
+            paramMap.put("endAge", 60);
+//        }
+        paramMap.put("planExisPhone",1);//有无联系方式 1有 2无
+
+
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        String jsonString = JSON.toJSONString(paramMap);
+        //获取webService返回结果
+        Map dataMap = null;
+        try {
+            Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Map> list = (List<Map>) dataMap.get("list");
+        System.out.println(list);
+    }
+
+    @Test
+    public void testFindById(){
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        //获取webService返回结果
+        List<Map> listMap=null;
+//        Map dataMap = new HashMap();
+        try {
+            Object[] objects = client.invoke("findInHosCordById", "61665");
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+//            int size = dataMap.size();
+//            dataMap.put("totalCount",size);
+//            dataMap.put("list",listMap);
+//            return listMap;
+            System.out.println("结果："+listMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+//            return null;
+        }
+    }
+
+    @Test
+    public void sms(){
+        CSMSUtils.sendMessage("测试短信","18556531536");
+    }
+
 }

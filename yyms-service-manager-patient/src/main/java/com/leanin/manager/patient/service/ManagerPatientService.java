@@ -22,9 +22,15 @@ public interface ManagerPatientService {
     DataOutResponse findOutHosPatientByParam(Map paramMap);
 
     //给随访提供接口，出住院病人信息
-    List<Map> findOutHosPatientByParamToSF(Map paramMap);
+    Map findOutHosPatientByParamToSF(Map paramMap);
 
 
     //给随访提供接口，门诊病人信息
-    List<Map> findInHosPatientByParamToSF(Map paramMap);
+    Map findInHosPatientByParamToSF(Map paramMap);
+
+    //给随访提供接口，根据病人id查询 出住院记录
+    List<Map> findInHosRecordById(String patientId);
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    List<Map> findOutHosRecordById(String patientId);
 }

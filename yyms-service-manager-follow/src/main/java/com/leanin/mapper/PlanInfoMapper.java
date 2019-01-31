@@ -3,6 +3,7 @@ package com.leanin.mapper;
 
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface PlanInfoMapper {
 	 * @param planNum
 	 * @return
 	 */
-    int updatePlanStatus(@Param("planNum") String planNum, int status);
+    int updatePlanStatus(@Param("planNum") String planNum,@Param("status") int status);
 
     /**
      * 添加计划信息
@@ -55,7 +56,20 @@ public interface PlanInfoMapper {
 	 * @param i
 	 * @return
 	 */
-	List<PlanInfoVo> findPlanListByImportData(@Param("importData") int i);
+	List<PlanInfoVo> findPlanListByImportData(@Param("importData") int importData);
 
-	List<PlanInfoVo> findPlanInfoByStatusAndPlanCycle(Integer planStatus, Integer planCycle);
+
+	/**
+	 * 根据计划名称查询 计划信息
+	 * @param planName
+	 * @return
+	 */
+    List<PlanInfoVo> findPlanInfoByPlanName(@Param("planName") String planName);
+
+
+
+
+
+
+
 }

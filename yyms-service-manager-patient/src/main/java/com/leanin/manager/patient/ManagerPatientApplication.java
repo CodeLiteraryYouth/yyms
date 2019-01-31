@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableFeignClients //开始feignClient
 @EnableDiscoveryClient //
+//@EnableHystrix//熔断器
 @EntityScan("com.leanin.domain")
 @ComponentScan("com.leanin.api")//扫描api
 @ComponentScan("com.leanin.manager.patient")//扫描本包

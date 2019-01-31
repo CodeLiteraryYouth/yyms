@@ -8,6 +8,7 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
 
     //给随访提供接口，出住院病人信息
     @Override
-    public List<Map> findOutHosPatientByParamToSF(Map paramMap) {
+    public Map findOutHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
@@ -71,10 +72,13 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
         //获取webService返回结果
-        List<Map> dataMap=null;
+        List<Map> listMap=null;
+        Map dataMap =new HashMap();
         try {
-            Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
-            dataMap = JSON.parseArray(objects[0].toString(), Map.class);
+            Object[] objects = client.invoke("findOutHosPatInfoAoListByParam", jsonString);
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+            dataMap.put("totalCount",listMap.size());
+            dataMap.put("list",listMap);
             return dataMap;
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +88,7 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
 
     //给随访提供接口，门诊病人信息
     @Override
-    public List<Map> findInHosPatientByParamToSF(Map paramMap) {
+    public Map findInHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
@@ -92,12 +96,65 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
         //获取webService返回结果
-        List<Map> dataMap=null;
+        List<Map> listMap=null;
+        Map dataMap = new HashMap();
         try {
-            Object[] objects = client.invoke("findOutHosPatInfoAoListByParam", jsonString);
-            dataMap = JSON.parseArray(objects[0].toString(), Map.class);
-//            List<Map> list = (List<Map>) dataMap.get("list");
+            Object[] objects = client.invoke("findInHosPatInfoAoListByParam", jsonString);
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+            int size = dataMap.size();
+            dataMap.put("totalCount",size);
+            dataMap.put("list",listMap);
             return dataMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //给随访提供接口，根据病人id查询 出住院记录
+    @Override
+    public List<Map> findInHosRecordById(String patientId) {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        //获取webService返回结果
+        List<Map> listMap=null;
+//        Map dataMap = new HashMap();
+        try {
+            Object[] objects = client.invoke("findInHosCordById", patientId);
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+//            int size = dataMap.size();
+//            dataMap.put("totalCount",size);
+//            dataMap.put("list",listMap);
+            System.out.println("呜呜呜呜呜呜呜呜无："+listMap);
+            return listMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    @Override
+    public List<Map> findOutHosRecordById(String patientId) {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://192.168.0.131:8082/soap/test?wsdl");
+        // 需要密码的情况需要加上用户名和密码
+        // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
+        //获取webService返回结果
+        List<Map> listMap=null;
+//        Map dataMap = new HashMap();
+        try {
+            Object[] objects = client.invoke("findOutHosCordById", patientId);
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+//            int size = dataMap.size();
+//            dataMap.put("totalCount",size);
+//            dataMap.put("list",listMap);
+            System.out.println("凄凄切切群群："+listMap);
+            return listMap;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

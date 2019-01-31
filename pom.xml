@@ -17,6 +17,7 @@
         <module>test</module>
         <module>yyms-service-manager-patient</module>
         <module>yyms-service-manager-follow</module>
+        <module>yyms-service-mq</module>
     </modules>
 
     <parent>

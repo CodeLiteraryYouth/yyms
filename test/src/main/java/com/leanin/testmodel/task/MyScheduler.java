@@ -14,6 +14,7 @@ public class MyScheduler {
     static Scheduler scheduler;
 
     public void scheduleJobs() throws SchedulerException {
+        //从工厂类中 获取Scheduler 对象
         scheduler = schedulerFactoryBean.getScheduler();
         startJob1(); // 每5秒钟执行一次
         startJob2(); // 每2秒钟执行一次

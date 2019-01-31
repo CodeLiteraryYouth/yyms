@@ -19,14 +19,14 @@ public class ResponseResult implements Response {
     boolean success = SUCCESS;
 
     //操作代码
-    int code = SUCCESS_CODE;
+    int status = SUCCESS_CODE;
 
     //提示信息
     String message;
 
     public ResponseResult(ResultCode resultCode){
         this.success = resultCode.success();
-        this.code = resultCode.code();
+        this.status = resultCode.status();
         this.message = resultCode.message();
     }
 

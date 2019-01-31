@@ -1,6 +1,5 @@
 package com.leanin.task;
 
-import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.RulesInfoMapper;
@@ -10,8 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
 @Slf4j
@@ -139,19 +136,19 @@ public class ManagerPatientTask {
     @Scheduled(cron = "0 0/6 * * * ?")//每六分钟执行一次
     @Transactional(rollbackFor = Exception.class)
     public void updateNextDate(){
-        Integer planStatus=0;//-1:已移除 0：正在使用
-        Integer planCycle=1; //0 不循环 1循环
-        //查询是否是循环发送规则的计划
-        List<PlanInfoVo> PlanInfoVoList=planInfoMapper.findPlanInfoByStatusAndPlanCycle(planStatus,planCycle);
-        for (PlanInfoVo planInfoVo : PlanInfoVoList) {
-            //查询计划相对应的规则
-
-            //根据计划查询需要循环发送的病人信息 发送状态是已发送 并且是循环发送
-
-            //修改病人信息的发送状态 和 发送时间
-
-
-        }
+//        Integer planStatus=0;//-1:已移除 0：正在使用
+////        Integer planCycle=1; //0 不循环 1循环
+////        //查询是否是循环发送规则的计划
+////        List<PlanInfoVo> PlanInfoVoList=planInfoMapper.findPlanInfoByStatusAndPlanCycle(planStatus,planCycle);
+////        for (PlanInfoVo planInfoVo : PlanInfoVoList) {
+////            //查询计划相对应的规则
+////
+////            //根据计划查询需要循环发送的病人信息 发送状态是已发送 并且是循环发送
+////
+////            //修改病人信息的发送状态 和 发送时间
+////
+////
+////        }
 
     }
 

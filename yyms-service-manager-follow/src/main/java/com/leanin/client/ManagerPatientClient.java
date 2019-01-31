@@ -1,21 +1,33 @@
 package com.leanin.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(value = "yyms-service-manager-patient")//制定远程调用的服务名
+@FeignClient(value = "yyms-service-manager-patient",fallback = FeignClientFallback.class)//制定远程调用的服务名
 public interface ManagerPatientClient {
 
 
     //给随访提供接口，出住院病人信息
-    @PostMapping("/findOutHosPatientByParamToSF")
-    public List<Map> findOutHosPatientByParamToSF(@RequestBody Map paramMap);
+    @PostMapping("/managerPatient/findOutHosPatientByParamToSF")
+    public Map findOutHosPatientByParamToSF(@RequestBody Map paramMap);
 
     //给随访提供接口，门诊病人信息
-    @PostMapping("/findInHosPatientByParamToSF")
-    public List<Map> findInHosPatientByParamToSF(@RequestBody Map paramMap);
+    @PostMapping("/managerPatient/findInHosPatientByParamToSF")
+    public Map findInHosPatientByParamToSF(@RequestBody Map paramMap);
+
+    //给随访提供接口，根据病人id查询 出住院记录
+    @GetMapping("/managerPatient/findInHosRecordById")
+    public List<Map> findInHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    @GetMapping("/managerPatient/findOutHosRecordById")
+    public List<Map> findOutHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
+
+
 }

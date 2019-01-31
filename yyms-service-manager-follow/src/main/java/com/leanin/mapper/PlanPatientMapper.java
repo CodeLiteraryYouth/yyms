@@ -1,12 +1,10 @@
 package com.leanin.mapper;
 
 
-import com.leanin.domain.dto.PatientInfoDto;
 import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Administrator
@@ -18,7 +16,7 @@ public interface PlanPatientMapper {
      * @param patientPlanId
      * @return
      */
-    int updatePatientStatus(String patientPlanId,@Param("status") Integer status);
+    int updatePatientStatus(@Param("patientPlanId") String patientPlanId,@Param("status") Integer status);
 
     /**
      * 移入计划病人
@@ -43,10 +41,43 @@ public interface PlanPatientMapper {
     PlanPatientVo findPlanPatientById(Long patientPlanId);
 
     /**
-     * 查询病人名单列表
-     * @param patientName
+     * 根据 计划id 和 状态 查询患者信息
+     * @param planNum
      * @param status
      * @return
      */
-    List<PlanPatientVo> findPlanPatientList(@Param("patientName") String patientName,@Param("status") Integer status);
+    List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum,@Param("status") Integer status,@Param("patientName")String patientName);
+
+    void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
+
+    /**
+     * 根据patientId查询 患者信息
+     * @param patientId
+     * @return
+     */
+    PlanPatientVo findPlanPatientByPatientId(@Param("patientId") Long patientId);
+
+    /*
+     * 待随访人数
+     */
+    Integer findUnfinishCount(@Param("planNum") String planNum);
+
+    /*
+     * 已完成随访人数
+     */
+    Integer findFinishCount(@Param("planNum") String planNum);
+
+    /*
+     * 过期随访人数
+     */
+    Integer findPastCount(@Param("planNum") String planNum);
+
+    /*
+     * 过期随访人数
+     */
+    Integer findDeadCount(@Param("planNum") String planNum);
+
+
+
+
 }
