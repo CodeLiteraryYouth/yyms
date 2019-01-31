@@ -1,8 +1,6 @@
-
 ##端口号
 server:
   port: 8088
-  
 ##数据源
 spring:
     #整合Redis 

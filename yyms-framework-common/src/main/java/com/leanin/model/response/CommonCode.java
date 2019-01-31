@@ -16,17 +16,19 @@ public enum CommonCode implements ResultCode{
     FAIL(false,400,"操作失败！"),
     UNAUTHENTICATED(false,1000,"此操作需要登陆系统！"),
     UNAUTHORISE(false,403,"权限不足，无权操作！"),
-    SERVER_ERROR(false,9999,"抱歉，系统繁忙，请稍后重试！");
+    SERVER_ERROR(false,9999,"抱歉，系统繁忙，请稍后重试！"),
+    FEIGN_ERROR(false,501,"服务器异常请联系管理员");
 //    private static ImmutableMap<Integer, CommonCode> codes ;
     //操作是否成功
     boolean success;
     //操作代码
-    int code;
+    int status;
     //提示信息
     String message;
-    private CommonCode(boolean success,int code, String message){
+
+    private CommonCode(boolean success,int status, String message){
         this.success = success;
-        this.code = code;
+        this.status = status;
         this.message = message;
     }
 
@@ -35,8 +37,8 @@ public enum CommonCode implements ResultCode{
         return success;
     }
     @Override
-    public int code() {
-        return code;
+    public int status() {
+        return status;
     }
 
     @Override

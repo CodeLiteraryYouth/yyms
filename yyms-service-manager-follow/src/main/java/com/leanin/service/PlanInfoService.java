@@ -3,6 +3,7 @@ package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.model.response.ResponseResult;
 
 public interface PlanInfoService {
 
@@ -24,7 +25,7 @@ public interface PlanInfoService {
      * @param record
      * @return
      */
-	DataOutResponse addPlanInfo(PlanInfoVo record);
+	ResponseResult addPlanInfo(PlanInfoVo record);
 
     /**
      * 查询单个计划信息
@@ -39,4 +40,13 @@ public interface PlanInfoService {
      * @return
      */
 	DataOutResponse updatePlanInfo(PlanInfoVo record);
+
+	/**
+	 * 根据计划名称查询计划
+	 * @param planName
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	DataOutResponse findPlanInfoByPlanName(String planName, Integer currentPage, Integer pageSize);
 }

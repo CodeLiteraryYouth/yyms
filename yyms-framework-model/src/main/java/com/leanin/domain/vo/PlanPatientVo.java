@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanPatientVo {
+public class PlanPatientVo implements Serializable {
 
     private Long patientPlanId;    //计划病人信息主键
 
@@ -24,7 +25,7 @@ public class PlanPatientVo {
 
     private Long patientId;    //病人唯一标识
 
-    private String patientInHospitalNo; //住院号
+    private Integer sendType; //发送状态
 
     private String patientName;    //病人姓名
 
@@ -36,9 +37,9 @@ public class PlanPatientVo {
 
     private String patientWard;  //出院科室
 
-    private Date patientDateTime;    //病人时间
+    private Integer followType;    //随访状态  1未完成  2 已完成
 
-    private String patientDoctor;    //诊治医生
+    private Integer patientStatus;    //患者状态  1 正在使用 2 已删除
 
     private String patientCondition;    //病人情况
 
@@ -53,5 +54,17 @@ public class PlanPatientVo {
     private Long rulesInfoId; //随访规则id
 
     private Date nextDate; //下次随访日期
+
+    private Integer patientSource;//患者来源 1,出院；2,门诊;3,在院
+
+//    private Integer unfinishCount;//待随访人数
+//
+//    private Integer finishCount;//已完成随访人数
+//
+//    private Integer pastCount;//过期随访人数
+//
+//    private Integer deadCount;//收案人数
+
+
 
 }

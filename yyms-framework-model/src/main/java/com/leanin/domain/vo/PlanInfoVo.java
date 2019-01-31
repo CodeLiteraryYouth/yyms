@@ -58,10 +58,11 @@ public class PlanInfoVo {
     
     private String diseaseCode;	//疾病编码
     
-    private String creater;	//创建人
+    private String planCreater;	//创建人
     
     private Date createDate;	//创建时间
 
     private Integer importData; //是否将病人数据导入到 数据库中 1 已导入 2未导入
+
 
 }

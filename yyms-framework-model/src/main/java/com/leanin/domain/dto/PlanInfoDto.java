@@ -65,4 +65,6 @@ public class PlanInfoDto {
 	    private String creater;	//创建人
 	    
 	    private Date createDate;	//创建时间
+
+		private Integer unFinishCount;  //待完成人数
 }

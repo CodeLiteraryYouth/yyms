@@ -24,8 +24,15 @@ public interface ManagerPatientApi {
     public DataOutResponse findOutHosPatientByParam(Map paramMap);
 
     @ApiOperation("给随访提供接口，门诊病人信息")
-    public List<Map> findOutHosPatientByParamToSF(Map paramMap);
+    public Map findOutHosPatientByParamToSF(Map paramMap);
 
     @ApiOperation("给随访提供接口，出住院病人信息")
-    public List<Map> findInHosPatientByParamToSF(Map paramMap);
+    public Map findInHosPatientByParamToSF(Map paramMap);
+
+    @ApiOperation("给随访提供接口，根据病人id查询 出住院记录")
+    public List<Map> findInHosRecordById(String patientId);
+
+    @ApiOperation("给随访提供接口，根据病人id查询 门诊记录")
+    public List<Map> findOutHosRecordById(String patientId);
+
 }

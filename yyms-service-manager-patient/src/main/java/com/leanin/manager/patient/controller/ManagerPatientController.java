@@ -5,10 +5,7 @@ import com.leanin.api.patient.ManagerPatientApi;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.manager.patient.service.ManagerPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -43,14 +40,27 @@ public class ManagerPatientController implements ManagerPatientApi {
     //给随访提供接口，出住院病人信息
     @Override
     @PostMapping("/findOutHosPatientByParamToSF")
-    public List<Map> findOutHosPatientByParamToSF(@RequestBody Map paramMap) {
+    public Map findOutHosPatientByParamToSF(@RequestBody Map paramMap) {
         return managerPatientService.findOutHosPatientByParamToSF(paramMap);
     }
     //给随访提供接口，门诊病人信息
     @Override
     @PostMapping("/findInHosPatientByParamToSF")
-    public List<Map> findInHosPatientByParamToSF(@RequestBody Map paramMap) {
+    public Map findInHosPatientByParamToSF(@RequestBody Map paramMap) {
         return managerPatientService.findInHosPatientByParamToSF(paramMap);
+    }
+    //给随访提供接口，根据病人id查询 出住院记录
+    @Override
+    @GetMapping("findInHosRecordById")
+    public List<Map> findInHosRecordById(@RequestParam(value = "patientId",required = true) String patientId) {
+        return managerPatientService.findInHosRecordById(patientId);
+    }
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    @Override
+    @GetMapping("findOutHosRecordById")
+    public List<Map> findOutHosRecordById(@RequestParam(value = "patientId",required = true) String patientId) {
+        return managerPatientService.findOutHosRecordById(patientId);
     }
 
 

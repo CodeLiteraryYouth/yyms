@@ -20,6 +20,7 @@
         <module>yyms-schedule</module>
         <module>yyms-oauth</module>
         <module>yyms-gateway</module>
+        <module>yyms-service-mq</module>
     </modules>
 
     <parent>
