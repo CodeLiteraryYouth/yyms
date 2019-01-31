@@ -31,10 +31,7 @@ public class ScheduleJobVo {
      * 任务状态 0禁用 1启用
      */
     private Integer jobStatus;
-    /**
-     * 审核状态 0 已创建 1 审核通过 2 审核驳回
-     */
-    private Integer auditStatus;
+
     /**
      * 任务运行时间表达式
      */

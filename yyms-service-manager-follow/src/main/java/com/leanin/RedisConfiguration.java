@@ -1,4 +1,4 @@
-package com.leanin.config;
+package com.leanin;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -27,6 +27,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 /** *
  Redis 配置类
+ * @author Administrator
  */
 @Configuration
 @EnableCaching
@@ -47,7 +48,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             sb.append(":");
             sb.append(method.getName());
             for (Object obj : params) {
-                sb.append(":" + String.valueOf(obj));
+                sb.append(":" + obj);
             }
             String rsToUse = String.valueOf(sb);
             lg.info("自动生成Redis Key -> [{}]", rsToUse);
@@ -117,8 +118,6 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     public class DataJedisProperties{
         @Value("${spring.redis.host}")
         private String host;
-        @Value("${spring.redis.password}")
-        private String password;
         @Value("${spring.redis.port}")
         private int port;
         @Value("${spring.redis.timeout}")
@@ -135,7 +134,6 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             factory.setHostName(host);
             factory.setPort(port);
             factory.setTimeout(timeout);
-            factory.setPassword(password);
             return factory;
         }
         @Bean
@@ -144,7 +142,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
             jedisPoolConfig.setMaxIdle(maxIdle);
             jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-            JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
+            JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
             return jedisPool;
         }
     }

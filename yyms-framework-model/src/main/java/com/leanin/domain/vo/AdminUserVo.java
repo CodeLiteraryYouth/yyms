@@ -41,6 +41,8 @@ public class AdminUserVo {
 	private String birthday;	//管理员出生日期
 	
 	private String organAscri;	//机构归属
+
+	private Integer adminState;	//用户状态(-1:已注销 0：正在使用)
 	
 	private String remark;	//备注
 }

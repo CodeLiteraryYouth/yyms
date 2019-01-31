@@ -1,4 +1,4 @@
-package com.leanin.config;
+package com.leanin;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;

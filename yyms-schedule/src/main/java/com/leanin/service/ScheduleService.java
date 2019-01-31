@@ -1,5 +1,6 @@
 package com.leanin.service;
 
+import com.leanin.domain.dto.ScheduleJobDto;
 import com.leanin.domain.vo.ScheduleJobVo;
 import java.util.List;
 
@@ -26,15 +27,15 @@ public interface ScheduleService {
     List<ScheduleJobVo> findScheduleList( String scheduleName,Integer jobStatus);
     /**
      * 添加定时任务
-     * @param scheduleJob
+     * @param scheduleJobDto
      * @return
      */
-    int addScheduleJob(ScheduleJobVo scheduleJob);
+    int addScheduleJob(ScheduleJobDto scheduleJobDto);
 
     /**
      * 修改定时任务
-     * @param scheduleJob
+     * @param scheduleJobDto
      * @return
      */
-    int updateScheduleJob(ScheduleJobVo scheduleJob);
+    int updateScheduleJob(ScheduleJobDto scheduleJobDto);
 }

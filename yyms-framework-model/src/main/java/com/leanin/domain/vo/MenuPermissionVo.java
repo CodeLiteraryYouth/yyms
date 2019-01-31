@@ -42,6 +42,4 @@ public class MenuPermissionVo {
 
     private String menuUrl;	//菜单路径
 
-    private String hospitalAreaCode;	//院区编码
-
 }

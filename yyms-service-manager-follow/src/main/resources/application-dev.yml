@@ -4,6 +4,8 @@ spring:
 ##端口号
 server:
  port: 8088
+ servlet:
+   context-path: /follow
 ---
 spring:
     profiles: dev
@@ -24,7 +26,7 @@ spring:
       druid:
         url: jdbc:mysql://localhost:3306/leanin_follow?characterEncoding=utf-8
         username: root
-        password: root
+        password: 123456
         driverClassName: com.mysql.jdbc.Driver
         initialSize: 5  #初始建立连接数量
         minIdle: 5  #最小连接数量
@@ -38,7 +40,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.131:50101/eureka/,http://192.168.0.131:50102/eureka/
+      defaultZone: http://192.168.0.103:50101/eureka/,http://192.168.0.103:50102/eureka/
     ###因为该应用为注册中心，不会注册自己
     register-with-eureka: true
     ###是否需要从eureka上获取注册信息
@@ -56,6 +58,14 @@ mybatis:
   type-aliases-package: com.leanin.domain  # 注意：对应实体类的路径
   configuration:                                    #打印sql到控制台
        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#安全配置
+security:
+  oauth2:
+    resource:
+      id: yyms-service-manager-follow
+      #指定用户信息地址
+      user-info-uri:http://192.168.0.173:8088/auth/user
+      prefer-token-info: false
 
 
 

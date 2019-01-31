@@ -2,22 +2,20 @@ package com.leanin.utils;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsResponse;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.dysmsapi.model.SendSmsRequest;
+import com.aliyuncs.dysmsapi.model.SendSmsResponse;
+
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+/**
+ * @author Administrator
+ */
 public class SMSUtils {
 
     private static Logger logger= LoggerFactory.getLogger(SMSUtils.class);

@@ -1,11 +1,13 @@
 package com.leanin.domain.dto;
 
+import com.leanin.domain.vo.MenuPermissionVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色信息
@@ -34,5 +36,6 @@ public class RoleInfoDto {
 
     private String hospitalAreaCode;	//院区编码
 
+    private List<MenuPermissionVo> menuList;    //角色对应的菜单列表
  
 }

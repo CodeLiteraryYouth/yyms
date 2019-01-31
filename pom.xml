@@ -18,6 +18,8 @@
         <module>yyms-service-manager-patient</module>
         <module>yyms-service-manager-follow</module>
         <module>yyms-schedule</module>
+        <module>yyms-oauth</module>
+        <module>yyms-gateway</module>
     </modules>
 
     <parent>

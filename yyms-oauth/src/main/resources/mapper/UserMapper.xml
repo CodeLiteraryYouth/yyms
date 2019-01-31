@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.dto.AdminUserDto">
+    <id column="admin_id" jdbcType="BIGINT" property="adminId" />
+    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="admin_work_num" jdbcType="VARCHAR" property="workNum" />
+    <result column="admin_password" jdbcType="VARCHAR" property="password" />
+    <result column="admin_ward_code" jdbcType="VARCHAR" property="wardCode" />
+    <result column="admin_job_title" jdbcType="VARCHAR" property="jobTitle" />
+    <result column="admin_desc" jdbcType="VARCHAR" property="adminDesc" />
+    <result column="admin_phone" jdbcType="VARCHAR" property="phone" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="admin_id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="admin_sex" jdbcType="INTEGER" property="sex" />
+    <result column="admin_birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="organ_attri" jdbcType="VARCHAR" property="organAscri" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <collection property="roleList" ofType="com.leanin.domain.dto.RoleInfoDto">
+      <id column="role_id" jdbcType="BIGINT" property="roleId" />
+      <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+      <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    u.admin_id, u.admin_name, u.admin_work_num, u.admin_password, u.admin_ward_code, u.admin_job_title,
+    u.admin_desc, u.admin_phone, u.area_code, u.admin_id_card,u.admin_sex,u.admin_birthday,u.organ_attri,
+    u.remark,r.role_id,r.role_name,r.role_desc
+  </sql>
+  <select id="findUserByUserCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from leanin_admin_user u
+  	left join leanin_user_role ur on u.admin_id=ur.user_id
+  	left join leanin_role r on ur.role_id=r.role_id
+  	where u.admin_state>=0
+  	<if test="userCode != null">
+        and u.admin_work_num = #{userCode}
+    </if>
+  </select>
+  <select id="findUserById" parameterType="java.lang.Lang" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from leanin_admin_user u
+    left join leanin_user_role ur on u.admin_id=ur.user_id
+    left join leanin_role r on ur.role_id=r.role_id
+    where u.admin_state>=0
+    <if test="userId != null">
+      and u.admin_id=#{userId}
+    </if>
+  </select>
+  <select id="findUserList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from leanin_admin_user u
+    left join leanin_user_role ur on u.admin_id=ur.user_id
+    left join leanin_role r on ur.role_id=r.role_id
+    where u.admin_state>=0
+    <if test="userId != null">
+      and u.admin_work_num like CONCAT('%'#{userCode},'%'}
+    </if>
+  </select>
+  <insert id="addUserInfo" parameterType="com.leanin.domain.vo.AdminUserVo">
+    insert into leanin_admin_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminName != null">
+        admin_name,
+      </if>
+      <if test="workNum != null">
+        admin_work_num,
+      </if>
+      <if test="password != null">
+        admin_password,
+      </if>
+      <if test="wardCode != null">
+        admin_ward_code,
+      </if>
+      <if test="jobTitle != null">
+        admin_job_title,
+      </if>
+      <if test="adminDesc != null">
+        admin_desc,
+      </if>
+      <if test="phone != null">
+        admin_phone,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="idCard != null">
+        admin_id_card,
+      </if>
+      <if test="sex != null">
+        admin_sex,
+      </if>
+      <if test="birthday != null">
+        admin_birthday,
+      </if>
+      <if test="organAscri != null">
+        organ_attri,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="adminState != null">
+        admin_state,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminName != null">
+        #{adminName},
+      </if>
+      <if test="workNum != null">
+        #{workNum},
+      </if>
+      <if test="password != null">
+        #{password},
+      </if>
+      <if test="wardCode != null">
+        #{wardCode},
+      </if>
+      <if test="jobTitle != null">
+        #{jobTitle},
+      </if>
+      <if test="adminDesc != null">
+        #{adminDesc},
+      </if>
+      <if test="phone != null">
+        #{phone},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode},
+      </if>
+      <if test="idCard != null">
+        #{idCard},
+      </if>
+      <if test="sex != null">
+        #{sex},
+      </if>
+      <if test="birthday != null">
+        #{birthday},
+      </if>
+      <if test="organAscri != null">
+        #{organAscri},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode},
+      </if>
+      <if test="adminState != null">
+        #{adminState},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addUserRole" >
+    insert into leanin_user_role(user_id,role_id) values (#{userId},#{roleId})
+  </insert>
+  <update id="updateUserInfo" parameterType="com.leanin.domain.vo.AdminUserVo">
+    update leanin_admin_user
+    <set>
+      <if test="adminName != null">
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="workNum != null">
+        admin_work_num = #{workNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        admin_password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="wardCode != null">
+        admin_ward_code = #{wardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="jobTitle != null">
+        admin_job_title = #{jobTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDesc != null">
+        admin_desc = #{adminDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        admin_phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        admin_id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        admin_sex = #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="birthday != null">
+        admin_birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="organAscri != null">
+        organ_attri = #{organAscri,jdbcType=VARCHAR},
+      </if>
+      <if test="adminState != null">
+        admin_state = #{adminState,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserRole" parameterType="java.lang.Long">
+    update leanin_user_role
+    set role_id = #{roleId}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -74,8 +74,7 @@ public class JsonUtil {
 	
 	/**
 	 * bean to json
-	 * 
-	 * @see file without date type
+	 *
 	 */
 	public static String beanToJson(Object obj, boolean serializeNullValue) {
 		

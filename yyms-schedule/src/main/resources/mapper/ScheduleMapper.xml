@@ -6,18 +6,17 @@
         <result column="job_name" javaType="VARCHAR" property="jobName" />
         <result column="job_group" javaType="VARCHAR" property="jobGroup" />
         <result column="job_status" javaType="INTEGER" property="jobStatus" />
-        <result column="audit_status" javaType="INTEGER" property="auditStatus" />
         <result column="cron_expression" javaType="VARCHAR" property="cronExpression" />
         <result column="quartz_class" javaType="VARCHAR" property="quartzClass" />
         <result column="description" javaType="VARCHAR" property="description" />
     </resultMap>
     <sql id="Base_Cloum_List">
-        j.job_id,j.job_name,j.job_group,j.job_status,j.audit_status,j.cron_expression,j.quartz_class,j.description
+        j.job_id,j.job_name,j.job_group,j.job_status,j.cron_expression,j.quartz_class,j.description
     </sql>
     <select id="findLegalJobList" resultMap="BaseResultMap">
         select
         <include refid="Base_Cloum_List"/>
-        from leanin_schedule_job j where j.job_status=1 and j.audit_status=1
+        from leanin_schedule_job j where j.job_status=1
     </select>
     <select id="findDelJobList" resultMap="BaseResultMap">
         select
@@ -47,9 +46,6 @@
             <if test="jobStatus != null">
                 jobStatus,
             </if>
-            <if test="auditStatus != null">
-                audit_status,
-            </if>
             <if test="cronExpression != null">
                 cron_expression,
             </if>
@@ -69,9 +65,6 @@
             </if>
             <if test="jobStatus != null">
                 #{jobStatus},
-            </if>
-            <if test="auditStatus != null">
-                #{auditStatus},
             </if>
             <if test="cronExpression != null">
                 #{cronExpression},
@@ -95,9 +88,6 @@
             </if>
             <if test="jobStatus != null">
                 job_status=#{jobStatus},
-            </if>
-            <if test="auditStatus != null">
-                audit_status=#{auditStatus},
             </if>
             <if test="cronExpression != null">
                 cron_expression=#{cronExpression},

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -23,7 +24,7 @@ import java.io.FileOutputStream;
 public class UploadController {
 
     @PostMapping(value = "uploadBlog")
-    public DataOutResponse uploadBlog(@RequestParam MultipartFile file) {
+    public DataOutResponse uploadBlog(@RequestParam MultipartFile file, HttpServletRequest request) {
         log.info("文件开始上传");
         String uploadUrl=null;
         try {
@@ -43,6 +44,6 @@ public class UploadController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return ReturnFomart.retParam(200, uploadUrl);
+        return ReturnFomart.retParam(200, request.getRemoteAddr()+request.getRequestURI()+uploadUrl);
     }
 }

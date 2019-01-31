@@ -1,8 +1,8 @@
 package com.leanin.controller;
 
+import com.leanin.domain.dto.ScheduleJobDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.ScheduleJobVo;
 import com.leanin.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +27,12 @@ public class ScheduleController {
     }
 
     @RequestMapping(value = "addSchedule")
-    public DataOutResponse addSchedule(@RequestBody ScheduleJobVo scheduleJobVo) {
-        return ReturnFomart.retParam(200,scheduleService.addScheduleJob(scheduleJobVo));
+    public DataOutResponse addSchedule(@RequestBody ScheduleJobDto scheduleJobDto) {
+        return ReturnFomart.retParam(200,scheduleService.addScheduleJob(scheduleJobDto));
     }
 
     @RequestMapping(value = "updateSchedule")
-    public DataOutResponse updateSchedule(@RequestBody ScheduleJobVo scheduleJobVo) {
-        return ReturnFomart.retParam(200,scheduleService.updateScheduleJob(scheduleJobVo));
+    public DataOutResponse updateSchedule(@RequestBody ScheduleJobDto scheduleJobDto) {
+        return ReturnFomart.retParam(200,scheduleService.updateScheduleJob(scheduleJobDto));
     }
 }

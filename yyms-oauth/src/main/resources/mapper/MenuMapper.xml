@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.MenuPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.dto.MenuPermissionDto">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+      <result column="menu_pid" jdbcType="BIGINT" property="menuPid" />
+      <result column="menu_remark" jdbcType="VARCHAR" property="menuRemark" />
+      <result column="menu_createtime" jdbcType="DATE" property="menuCreatetime" />
+      <result column="menu_isDelete" jdbcType="BIGINT" property="menuIsdelete" />
+      <result column="menu_state" jdbcType="BIGINT" property="menuState" />
+      <result column="menu_type" jdbcType="BIGINT" property="menuType" />
+      <result column="menu_identify" jdbcType="VARCHAR" property="menuIdentify" />
+      <result column="menu_sort" jdbcType="BIGINT" property="menuSort" />
+      <result column="menu_ico" jdbcType="VARCHAR" property="menuIco" />
+      <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+   </resultMap>
+   <resultMap id="BlobResultMap" type="com.leanin.domain.vo.MenuPermissionVo">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+      <result column="menu_pid" jdbcType="BIGINT" property="menuPid" />
+      <result column="menu_remark" jdbcType="VARCHAR" property="menuRemark" />
+      <result column="menu_createtime" jdbcType="DATE" property="menuCreatetime" />
+      <result column="menu_isDelete" jdbcType="BIGINT" property="menuIsdelete" />
+      <result column="menu_state" jdbcType="BIGINT" property="menuState" />
+      <result column="menu_type" jdbcType="BIGINT" property="menuType" />
+      <result column="menu_identify" jdbcType="VARCHAR" property="menuIdentify" />
+      <result column="menu_sort" jdbcType="BIGINT" property="menuSort" />
+      <result column="menu_ico" jdbcType="VARCHAR" property="menuIco" />
+      <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+   </resultMap>
+  <sql id="Base_Column_List">
+    m.id,m.menu_name, m.menu_pid, m.menu_remark, m.menu_createtime, m.menu_isDelete, m.menu_state,
+    m.menu_type, m.menu_identify, m.menu_sort, m.menu_ico, m.menu_url
+  </sql>
+  <select id="findMenuByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_menu_permissions m
+    inner join leanin_role_menu_permission rm on m.id=rm.menu_id
+    inner join leanin_user_role ur on rm.role_id=ur.role_id
+    inner join leanin_admin_user u on u.admin_id=ur.user_id
+    where m.menu_state>=0 and u.admin_work_num=#{userCode}
+  </select>
+  <select id="findMenuList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_menu_permissions m
+    where m.menu_state>=0
+    <if test="menuName != null">
+      and m.menu_name like CONCAT('%',#{menuName},'%')
+    </if>
+  </select>
+  <select id="findMenuByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_menu_permissions m
+    where m.menu_state>=0
+    <if test="menuName != null">
+      and m.menu_name = #{menuName}
+    </if>
+  </select>
+  <select id="findMenuByPid" parameterType="java.lang.Long" resultMap="BlobResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_menu_permissions m
+    where m.menu_state>=0
+    <if test="menuPid != null">
+      and m.menu_pid = #{menuPid}
+    </if>
+  </select>
+  <select id="findMenuById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_menu_permissions m
+    where m.menu_state>=0
+    <if test="menuId != null">
+      and m.id = #{menuId}
+    </if>
+  </select>
+  <insert id="addMenuInfo" parameterType="com.leanin.domain.vo.MenuPermissionVo">
+    insert into leanin_menu_permissions
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="menuPid != null">
+        menu_pid,
+      </if>
+      <if test="menuRemark != null">
+        menu_remark,
+      </if>
+      <if test="menuCreatetime != null">
+        menu_createtime,
+      </if>
+      <if test="menuIsdelete != null">
+        menu_isDelete,
+      </if>
+      <if test="menuState != null">
+        menu_state,
+      </if>
+      <if test="menuType != null">
+        menu_type,
+      </if>
+      <if test="menuIdentify != null">
+        menu_identify,
+      </if>
+      <if test="menuSort != null">
+        menu_sort,
+      </if>
+      <if test="menuIco != null">
+        menu_ico,
+      </if>
+      <if test="menuUrl != null">
+        menu_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPid != null">
+        #{menuPid,jdbcType=BIGINT},
+      </if>
+      <if test="menuRemark != null">
+        #{menuRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCreatetime != null">
+        #{menuCreatetime,jdbcType=DATE},
+      </if>
+      <if test="menuIsdelete != null">
+        #{menuIsdelete,jdbcType=BIGINT},
+      </if>
+      <if test="menuState != null">
+        #{menuState,jdbcType=BIGINT},
+      </if>
+      <if test="menuType != null">
+        #{menuType,jdbcType=BIGINT},
+      </if>
+      <if test="menuIdentify != null">
+        #{menuIdentify,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSort != null">
+        #{menuSort,jdbcType=BIGINT},
+      </if>
+      <if test="menuIco != null">
+        #{menuIco,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateMenuInfo" parameterType="com.leanin.domain.vo.MenuPermissionVo">
+    update leanin_menu_permissions
+    <set>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPid != null">
+        menu_pid = #{menuPid,jdbcType=BIGINT},
+      </if>
+      <if test="menuRemark != null">
+        menu_remark = #{menuRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCreatetime != null">
+        menu_createtime = #{menuCreatetime,jdbcType=DATE},
+      </if>
+      <if test="menuIsdelete != null">
+        menu_isDelete = #{menuIsdelete,jdbcType=BIGINT},
+      </if>
+      <if test="menuState != null">
+        menu_state = #{menuState,jdbcType=BIGINT},
+      </if>
+      <if test="menuType != null">
+        menu_type = #{menuType,jdbcType=BIGINT},
+      </if>
+      <if test="menuIdentify != null">
+        menu_identify = #{menuIdentify,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSort != null">
+        menu_sort = #{menuSort,jdbcType=BIGINT},
+      </if>
+      <if test="menuIco != null">
+        menu_ico = #{menuIco,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalAreaCode != null">
+        hospital_area_code = #{hospitalAreaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

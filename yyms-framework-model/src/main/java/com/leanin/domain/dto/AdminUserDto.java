@@ -1,9 +1,16 @@
 package com.leanin.domain.dto;
 
+import com.leanin.domain.vo.MenuPermissionVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 管理员用户操作类
@@ -14,7 +21,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminUserDto {
+public class AdminUserDto implements UserDetails {
 
 	private Long adminId;	//管理员ID
 	
@@ -43,4 +50,42 @@ public class AdminUserDto {
 	private String organAscri;	//机构归属
 	
 	private String remark;	//备注
+
+	private List<RoleInfoDto> roleList;	//该用户的角色信息
+
+	@Override
+	public Set<GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		for (RoleInfoDto role : this.roleList) {
+			for (MenuPermissionVo menu : role.getMenuList()) {
+				authorities.add(new SimpleGrantedAuthority(menu.getMenuName()));
+			}
+		}
+		return authorities;
+	}
+
+	@Override
+	public String getUsername() {
+		return workNum;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

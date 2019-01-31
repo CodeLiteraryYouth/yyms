@@ -30,7 +30,7 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan("com.leanin.feign")
 @ComponentScan("com.leanin.api")//扫描api
 @SpringBootApplication
-class FollowApplication {
+public class FollowApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FollowApplication.class, args);

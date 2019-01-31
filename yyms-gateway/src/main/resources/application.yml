@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: yyms-gateway
+server:
+  port: 8088
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.0.103:50101/eureka/,http://192.168.0.103:50102/eureka/
+
+zuul:
+  routes:
+    auth:
+      path: /auth/**
+      #敏感头信息
+      sensitiveHeaders: "*"
+      #重定向到的服务（根据服务id名称从注册中心获取服务地址）
+      serviceId:  yyms-oauth
+    follow:
+      path: /follow/**
+      sensitiveHeaders: "*"
+      serviceId: yyms-service-manager-follow
+    patient:
+      path: /patient/**
+      sensitiveHeaders: "*"
+      serviceId: yyms-service-manager-patient
+  add-proxy-headers: true
+
+security:
+  oauth2:
+    client:
+      #获取Token的地址
+      access-token-uri: http://localhost:${server.port}/auth/oauth/token
+      #获取权限的地址
+      user-authorization-uri: http://localhost:${server.port}/auth/oauth/authorize
+      client-id: webapp
+    resource:
+      #获取用户信息的地址
+      user-info-uri: http://localhost:${server.port}/auth/user/principal
+      prefer-token-info: false
+
+
+

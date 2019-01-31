@@ -1,5 +1,7 @@
 server:
   port: 9000
+  servlet:
+    context-path: /patient
 spring:
   application:
     name: yyms-service-manager-patient
@@ -27,3 +29,12 @@ eureka:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
     ip-address: 192.168.0.103
     instance-id: ${spring.application.name}:${server.port} #指定实例id
+
+#安全配置
+security:
+  oauth2:
+    resource:
+      id: yyms-service-manager-patient
+      #指定用户信息地址
+      user-info-uri: http://192.168.0.173:8088/auth/user
+      prefer-token-info: false
