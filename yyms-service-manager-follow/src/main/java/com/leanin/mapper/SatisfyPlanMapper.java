@@ -1,17 +1,51 @@
 package com.leanin.mapper;
 
+import java.util.List;
+
 import com.leanin.domain.vo.SatisfyPlanVo;
+import org.apache.ibatis.annotations.Param;
 
 public interface SatisfyPlanMapper {
-    int deleteByPrimaryKey(String planSatisfyNum);
 
-    int insert(SatisfyPlanVo record);
+	/**
+	 * 查询满意度计划列表
+	 * @param satisfyPlanName
+	 * @return
+	 */
+	List<SatisfyPlanVo> findSatisfyPlanList(@Param("satisfyPlanName") String satisfyPlanName);
+	/**
+	 * 更改满意度计划状态
+	 * @param planSatisfyNum
+	 * @param status
+	 * @return
+	 */
+    int updateSatisfyStatus(@Param("planSatisfyNum") String planSatisfyNum, @Param("status") int status);
+    
+    /**
+     * 增加满意度计划
+     * @param record
+     * @return
+     */
+    int addSatisfyPlan(SatisfyPlanVo record);
 
-    int insertSelective(SatisfyPlanVo record);
+    /**
+     * 根据ID查询满意度计划信息
+     * @param planSatisfyNum
+     * @return
+     */
+	SatisfyPlanVo findSatisfyPlanById(String planSatisfyNum);
+    
+    /**
+     * 根据名字查询满意度计划信息
+     * @param satisfyPlanName
+     * @return
+     */
+	SatisfyPlanVo findSatisfyPlanByName(@Param("satisfyPlanName") String satisfyPlanName);
 
-    SatisfyPlanVo selectByPrimaryKey(String planSatisfyNum);
-
-    int updateByPrimaryKeySelective(SatisfyPlanVo record);
-
-    int updateByPrimaryKey(SatisfyPlanVo record);
+    /**
+     * 修改满意度计划信息
+     * @param record
+     * @return
+     */
+    int updateSatisfyPlan(SatisfyPlanVo record);
 }

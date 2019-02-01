@@ -56,9 +56,4 @@ public class PlanInfoController {
 		return planInfoService.findPlanInfoByPlanName(planName,currentPage,pageSize);
 	}
 
-
-//	@GetMapping()
-//	public DataOutResponse find
-
-
 }
