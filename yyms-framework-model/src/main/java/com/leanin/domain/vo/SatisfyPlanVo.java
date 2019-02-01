@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SatisfyPlanVo {
+public class  SatisfyPlanVo {
 	
     private String planSatisfyNum;	//满意度计划编号
 
@@ -56,4 +56,5 @@ public class SatisfyPlanVo {
 
     private String areaCode;	//院区编码
 
+    private Integer planStatus; //计划状态(-1:已删除 0：正在使用 1：禁用)
 }

@@ -46,6 +46,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public int addScheduleJob(ScheduleJobDto scheduleJobDto) {
         log.info("存储的定时任务信息为:"+ JSON.toJSONString(scheduleJobDto));
+        //获取Cron表达式的信息为
         TaskCronDto taskCronDto= JsonUtil.json2Obj(scheduleJobDto.getCronDto(),TaskCronDto.class);
         //获取Cron表达式
         String cronExpression= CronUtil.createCronExpression(taskCronDto);
