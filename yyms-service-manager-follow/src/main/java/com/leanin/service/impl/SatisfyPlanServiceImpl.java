@@ -17,6 +17,9 @@ import com.leanin.mapper.SatisfyPlanMapper;
 import com.leanin.service.SatisfyPlanService;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author Administrator
+ */
 @Service
 @Slf4j
 public class SatisfyPlanServiceImpl implements SatisfyPlanService {

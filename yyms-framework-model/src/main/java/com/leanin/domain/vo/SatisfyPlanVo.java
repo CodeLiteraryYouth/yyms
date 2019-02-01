@@ -40,14 +40,6 @@ public class  SatisfyPlanVo {
 
     private String satisfyNum;	//满意度表单号
 
-    private Date satisfySendTime;	//发送时间
-
-    private Integer satisfyExpireDays;	//有效时间
-
-    private String satisfyExpireUnit;	//有效时间单位
-
-    private String msgId;	//短信单号
-
     private Integer patientSex;	//（1：男 2：女）
 
     private String patientAge;	//年龄
@@ -57,4 +49,12 @@ public class  SatisfyPlanVo {
     private String areaCode;	//院区编码
 
     private Integer planStatus; //计划状态(-1:已删除 0：正在使用 1：禁用)
+
+    private String rulesText;   //规则的JSON串内容
+
+    private String diseaseName; //疾病名称
+
+    private String creater; //计划创建者
+
+    private Date createDate;    //创建时间
 }
