@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.leanin.service.SatisfyPlanService;
 
+/**
+ *
+ * @author Administrator
+ */
 @RestController
 @RequestMapping("satisfyPlan")
 public class SatisfyPlanController {

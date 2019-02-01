@@ -113,6 +113,13 @@
         FROM leanin_plan_info
         WHERE plan_num LIKE #{planName} and plan_status != -1
     </select>
+    <!--根据计划类型查询计划信息-->
+    <select id="findPlanListByType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_info
+        WHERE plan_type = #{planType} and plan_status > -1
+    </select>
     <update id="updatePlanStatus">
     update leanin_plan_info set plan_status=#{status}
     where plan_num = #{planNum,jdbcType=VARCHAR}

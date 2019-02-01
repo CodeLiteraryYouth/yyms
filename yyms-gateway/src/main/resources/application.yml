@@ -2,12 +2,12 @@ spring:
   application:
     name: yyms-gateway
 server:
-  port: 8088
+  port: 9002
 
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.103:50101/eureka/,http://192.168.0.103:50102/eureka/
+      defaultZone: http://192.168.0.131:50101/eureka/,http://192.168.0.131:50102/eureka/
 
 zuul:
   routes:

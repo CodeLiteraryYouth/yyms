@@ -1,15 +1,15 @@
 server:
   port: 9000
-  servlet:
-    context-path: /patient
+#  servlet:
+#    context-path: /patient
 spring:
   application:
     name: yyms-service-manager-patient
   datasource:
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://192.168.0.103:3306/leanin_follow?characterEncoding=utf-8
       username: root
-      password: root
+      password: 123456
       driverClassName: com.mysql.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量
@@ -24,17 +24,16 @@ eureka:
     registerWithEureka: true #服务注册开关
     fetchRegistry: true #服务发现开关
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://192.168.0.103:50101/eureka/,http://192.168.0.103:50102/eureka/
+      defaultZone: http://192.168.0.131:50101/eureka/,http://192.168.0.131:50102/eureka/
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
-    ip-address: 192.168.0.103
+    ip-address: 192.168.0.131
     instance-id: ${spring.application.name}:${server.port} #指定实例id
-
 #安全配置
-security:
-  oauth2:
-    resource:
-      id: yyms-service-manager-patient
-      #指定用户信息地址
-      user-info-uri: http://192.168.0.173:8088/auth/user
-      prefer-token-info: false
+#security:
+#  oauth2:
+#    resource:
+#      id: yyms-service-manager-patient
+#      #指定用户信息地址
+#      user-info-uri: http://192.168.0.131:5000/auth/user
+#      prefer-token-info: false

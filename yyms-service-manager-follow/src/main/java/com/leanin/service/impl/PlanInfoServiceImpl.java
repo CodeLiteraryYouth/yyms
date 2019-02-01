@@ -398,4 +398,13 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         return ReturnFomart.retParam(200, dataMap);
     }
 
+    //根据计划类型 查询计划信息
+    @Override
+    public DataOutResponse findPlanListByType(Integer planType) {
+        List<PlanInfoVo> list =planInfoMapper.findPlanListByType(planType);
+        Map dataMap =new HashMap();
+        dataMap.put("list",list);
+        return ReturnFomart.retParam(200, dataMap);
+    }
+
 }
