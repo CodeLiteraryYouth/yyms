@@ -1,18 +1,57 @@
 package com.leanin.mapper;
 
 
+import java.util.List;
+
 import com.leanin.domain.vo.MessageTopicVo;
+import org.apache.ibatis.annotations.Param;
 
+/**
+ * 短信主题的Mapper
+ * @author Administrator
+ */
 public interface MessageTopicMapper {
-    int deleteByPrimaryKey(String msgTopicId);
 
-    int insert(MessageTopicVo record);
+    /**
+     * 查询短信主题列表
+     * @param msgTopicName
+     * @return
+     */
+    List<MessageTopicVo> findMsgTopicList(@Param("msgTopicName") String msgTopicName);
+    /**
+     * 修改短信主题状态
+     * @param msgTopicId
+     * @param status
+     * @return
+     */
+    int updateTopicStatus(@Param("msgTopicId") String msgTopicId,@Param("status") int status);
 
-    int insertSelective(MessageTopicVo record);
+    /**
+     * 增加短信主题信息
+     * @param record
+     * @return
+     */
+    int addMsgTopic(MessageTopicVo record);
 
-    MessageTopicVo selectByPrimaryKey(String msgTopicId);
+    /**
+     * 根据ID查询短信主题信息
+     * @param msgTopicId
+     * @return
+     */
+    MessageTopicVo findMsgTopicById(String msgTopicId);
 
-    int updateByPrimaryKeySelective(MessageTopicVo record);
+    /**
+     * 根据短信主题名查询短信主题信息
+     * @param msgTopicName
+     * @return
+     */
+    MessageTopicVo findMsgTopicByName(String msgTopicName);
 
-    int updateByPrimaryKey(MessageTopicVo record);
+    /**
+     * 修改短信主题内容
+     * @param record
+     * @return
+     */
+    int updateMsgTopic(MessageTopicVo record);
+
 }
