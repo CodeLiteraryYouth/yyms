@@ -49,4 +49,7 @@ public interface PlanInfoService {
 	 * @return
 	 */
 	DataOutResponse findPlanInfoByPlanName(String planName, Integer currentPage, Integer pageSize);
+
+	//根据计划类型  查询 计划信息
+    DataOutResponse findPlanListByType(Integer planType);
 }

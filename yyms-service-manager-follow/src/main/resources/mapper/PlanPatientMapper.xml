@@ -64,6 +64,7 @@
         from leanin_plan_patient
         where patient_status = 1
         and patient_id = #{patientPlanId,jdbcType=BIGINT}
+        limit 1
     </select>
     <!--根据计划id 和 状态 查询 患者信息-->
     <select id="findPlanPatientList" resultMap="BaseResultMap">

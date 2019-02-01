@@ -57,8 +57,14 @@ public class PlanInfoController {
 	}
 
 
-//	@GetMapping()
-//	public DataOutResponse find
+	/**
+	 * 根据计划类型 查询计划信息
+	 * @return
+	 */
+	@GetMapping("findPlanListByType")
+	public DataOutResponse findPlanListByType(@RequestParam Integer planType){
+		return planInfoService.findPlanListByType(planType);
+	}
 
 
 }

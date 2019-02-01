@@ -66,10 +66,6 @@ public interface PlanInfoMapper {
 	 */
     List<PlanInfoVo> findPlanInfoByPlanName(@Param("planName") String planName);
 
-
-
-
-
-
-
+	//根据计划类型查询计划信息
+    List<PlanInfoVo> findPlanListByType(@Param("planType") Integer planType);
 }

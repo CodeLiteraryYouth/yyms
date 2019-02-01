@@ -6,7 +6,6 @@ server:
   port: 8088
 ---
 spring:
-  profiles: dev
 #  redis: #整合Redis
 #    database: 0 #数据库索引
 #    host: 192.168.0.103
