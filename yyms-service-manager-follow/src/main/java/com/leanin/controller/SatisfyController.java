@@ -34,6 +34,7 @@ public class SatisfyController {
 	public DataOutResponse addSatisfyInfo(@RequestBody SatisfyInfoVo record) {
 		return satisfyService.addSatisfyInfo(record);
 	}
+
 	
 	@PostMapping("updateSatisfyInfo")
 	public DataOutResponse updateSatisfyInfo(@RequestBody SatisfyInfoVo record) {
