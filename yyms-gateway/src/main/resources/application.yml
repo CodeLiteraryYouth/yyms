@@ -7,7 +7,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.131:50101/eureka/,http://192.168.0.131:50102/eureka/
+      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
 
 zuul:
   routes:

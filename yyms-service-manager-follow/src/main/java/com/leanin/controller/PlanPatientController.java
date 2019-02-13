@@ -67,8 +67,8 @@ public class PlanPatientController {
      * @return
      */
     @GetMapping("findPlanPatientById")
-    public DataOutResponse findPlanPatientById(Long patientId){
-        return planPatientService.findPlanPatientById(patientId);
+    public DataOutResponse findPlanPatientById(Long patientId,Integer patientSource){
+        return planPatientService.findPlanPatientById(patientId,patientSource);
     }
 
 

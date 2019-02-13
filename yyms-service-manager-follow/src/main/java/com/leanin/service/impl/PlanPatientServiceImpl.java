@@ -7,14 +7,18 @@ import com.leanin.domain.plan.response.PlanResponseCode;
 import com.leanin.domain.planpatient.response.PlanPatCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.PatientInfoVo;
 import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.exception.ExceptionCast;
+import com.leanin.mapper.PatientInfoMapper;
 import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.RulesInfoMapper;
 import com.leanin.service.PlanPatientService;
+import com.netflix.discovery.converters.Auto;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -42,6 +46,9 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
     @Autowired
     ManagerPatientClient managerPatientClient;
+
+    @Autowired
+    PatientInfoMapper patientInfoMapper;
 
 
 
@@ -139,31 +146,50 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
     //根据patientId查询患者信息和病史
     @Override
-    public DataOutResponse findPlanPatientById(Long patientId) {
+    public DataOutResponse findPlanPatientById(Long patientId,Integer patientSource) {
         Map dataMap=new HashMap();
-        PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(patientId);
-        if (planPatient == null){
-            ExceptionCast.cast(PlanPatCode.INVALID_PARAM);
-        }
-        Integer patientSource = planPatient.getPatientSource();
+        //查询本地患者信息
+        PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
+
+//        PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(patientId);
+
+//        Integer patientSource = planPatient.getPatientSource();
+        Map patientMap=new HashMap();
+        Map paraMap=new HashMap();
+        paraMap.put("patientId",patientId.toString());
+        paraMap.put("inOut",patientSource);
         switch (patientSource){
-            case 1:{//出院
-                List<Map> inHosRecord = managerPatientClient.findInHosRecordById(patientId + "");
+            case 2:{//出院
+                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
+                    patientMap = managerPatientClient.findInHosPatientById(patientId + "");
+                }
+
+                List<Map> inHosRecord = managerPatientClient.findInHosRecordById(paraMap);
                 dataMap.put("record",inHosRecord);
             }break;
-            case 2:{//门诊
+            case 3:{//门诊
+                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
+                    patientMap = managerPatientClient.findOutHosPatientById(patientId + "");
+                }
                 List<Map> outHosRecord = managerPatientClient.findOutHosRecordById(patientId + "");
                 dataMap.put("record",outHosRecord);
             }break;
-            case 3:{//在院
-                List<Map> inHosRecord = managerPatientClient.findInHosRecordById(patientId + "");
+            case 1:{//在院
+                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
+                    patientMap = managerPatientClient.findInHosPatientById(patientId + "");
+                }
+                List<Map> inHosRecord = managerPatientClient.findInHosRecordById(paraMap);
                 dataMap.put("record",inHosRecord);
 
             }break;
         }
 
+        if(PatientInfoVo != null){
+            dataMap.put("patientInfo",PatientInfoVo);
+        }else{
+            dataMap.put("patientInfo",patientMap);
+        }
 
-        dataMap.put("patientInfo",planPatient);
         return ReturnFomart.retParam(200, dataMap);
     }
 

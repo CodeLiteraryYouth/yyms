@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PatientInfoVo;
+import com.leanin.exception.CustomException;
+import com.leanin.exception.ExceptionCast;
 import com.leanin.mapper.PatientInfoMapper;
+import com.leanin.model.response.CommonCode;
 import com.leanin.service.PatientInfoService;
 import com.leanin.utils.CompareUtil;
 import com.leanin.utils.JsonUtil;
@@ -51,7 +54,16 @@ public class PatientInfoServiceImpl implements PatientInfoService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updatePatientInfo(PatientInfoVo patientInfo) {
 		log.info("修改的病人信息为:"+ JSON.toJSONString(patientInfo));
-		patientInfoMapper.updatePatientInfo(patientInfo);
+		if(patientInfo.getPatientInfoId() == null || "".equals(patientInfo.getPatientInfoId())){
+			ExceptionCast.cast(CommonCode.INVALID_PARAM);
+		}
+		PatientInfoVo patientById = patientInfoMapper.findPatientById(patientInfo.getPatientInfoId(), null);
+		if(patientById == null){//判断本地数据库中是否有 患者信息 有则修改  无则添加
+			patientInfoMapper.addPatientInfo(patientInfo);
+		}else {
+			patientInfoMapper.updatePatientInfo(patientInfo);
+		}
+
 		return ReturnFomart.retParam(200, patientInfo);
 	}
 

@@ -25,7 +25,17 @@ public class FeignClientFallback implements ManagerPatientClient {
     }
 
     @Override
-    public List<Map> findInHosRecordById(String patientId) {
+    public Map findInHosPatientById(String patientId) {
+        return null;
+    }
+
+    @Override
+    public List<Map> findInHosRecordById(Map patientId) {
+        return null;
+    }
+
+    @Override
+    public Map findOutHosPatientById(String patientId) {
         return null;
     }
 

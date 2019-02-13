@@ -29,8 +29,12 @@ public interface ManagerPatientService {
     Map findInHosPatientByParamToSF(Map paramMap);
 
     //给随访提供接口，根据病人id查询 出住院记录
-    List<Map> findInHosRecordById(String patientId);
+    List<Map> findInHosRecordById(Map paraMap);
 
     //给随访提供接口，根据病人id查询 门诊记录
     List<Map> findOutHosRecordById(String patientId);
+
+    Map findInHosPatientById(String patientId);
+
+    Map findOutHosPatientById(String patientId);
 }

@@ -49,5 +49,5 @@ public interface PlanPatientService {
      * @param patientId
      * @return
      */
-    DataOutResponse findPlanPatientById(Long patientId);
+    DataOutResponse findPlanPatientById(Long patientId,Integer patientSource);
 }

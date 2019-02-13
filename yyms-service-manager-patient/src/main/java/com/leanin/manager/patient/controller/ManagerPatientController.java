@@ -49,11 +49,27 @@ public class ManagerPatientController implements ManagerPatientApi {
     public Map findInHosPatientByParamToSF(@RequestBody Map paramMap) {
         return managerPatientService.findInHosPatientByParamToSF(paramMap);
     }
+
     //给随访提供接口，根据病人id查询 出住院记录
     @Override
-    @GetMapping("findInHosRecordById")
-    public List<Map> findInHosRecordById(@RequestParam(value = "patientId",required = true) String patientId) {
-        return managerPatientService.findInHosRecordById(patientId);
+    @GetMapping("findInHosPatientById")
+    public Map findInHosPatientById(@RequestParam(value = "patientId",required = true)String patientId) {
+
+        return managerPatientService.findInHosPatientById(patientId);
+    }
+
+    //给随访提供接口，根据病人id查询 出住院记录
+    @Override
+    @PostMapping("findInHosRecordById")
+    public List<Map> findInHosRecordById(@RequestBody Map paraMap) {
+        return managerPatientService.findInHosRecordById(paraMap);
+    }
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    @Override
+    @GetMapping("findOutHosPatientById")
+    public Map findOutHosPatientById(@RequestParam(value = "patientId",required = true) String patientId) {
+        return managerPatientService.findOutHosPatientById(patientId);
     }
 
     //给随访提供接口，根据病人id查询 门诊记录

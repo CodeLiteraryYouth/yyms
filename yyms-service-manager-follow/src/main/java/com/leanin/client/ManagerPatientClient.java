@@ -21,13 +21,23 @@ public interface ManagerPatientClient {
     @PostMapping("/managerPatient/findInHosPatientByParamToSF")
     public Map findInHosPatientByParamToSF(@RequestBody Map paramMap);
 
+
     //给随访提供接口，根据病人id查询 出住院记录
-    @GetMapping("/managerPatient/findInHosRecordById")
-    public List<Map> findInHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
+    @GetMapping("/managerPatient/findInHosPatientById")
+    public Map findInHosPatientById(@RequestParam(value = "patientId",required = true)String patientId);
+
+    //给随访提供接口，根据病人id查询 出住院记录
+    @PostMapping("/managerPatient/findInHosRecordById")
+    public List<Map> findInHosRecordById(@RequestBody Map paraMap);
+
+    //给随访提供接口，根据病人id查询 门诊记录
+    @GetMapping("/managerPatient/findOutHosPatientById")
+    public Map findOutHosPatientById(@RequestParam(value = "patientId",required = true) String patientId);
 
     //给随访提供接口，根据病人id查询 门诊记录
     @GetMapping("/managerPatient/findOutHosRecordById")
     public List<Map> findOutHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
+
 
 
 }
