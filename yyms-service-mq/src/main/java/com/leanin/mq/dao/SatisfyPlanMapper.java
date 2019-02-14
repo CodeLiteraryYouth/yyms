@@ -1,10 +1,11 @@
-package com.leanin.mapper;
-
-import java.util.List;
+package com.leanin.mq.dao;
 
 import com.leanin.domain.vo.SatisfyPlanVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 @Mapper
 public interface SatisfyPlanMapper {
 

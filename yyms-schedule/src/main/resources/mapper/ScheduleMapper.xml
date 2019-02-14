@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.ScheduleMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.ScheduleJobVo">
-        <id column="job_id" javaType="BIGINT" property="jobId"/>
-        <result column="job_name" javaType="VARCHAR" property="jobName" />
-        <result column="job_group" javaType="VARCHAR" property="jobGroup" />
+        <id column="job_id" javaType="LONG" property="jobId"/>
+        <result column="job_name" javaType="STRING" property="jobName" />
+        <result column="job_group" javaType="STRING" property="jobGroup" />
         <result column="job_status" javaType="INTEGER" property="jobStatus" />
-        <result column="cron_expression" javaType="VARCHAR" property="cronExpression" />
-        <result column="quartz_class" javaType="VARCHAR" property="quartzClass" />
-        <result column="description" javaType="VARCHAR" property="description" />
+        <result column="cron_expression" javaType="STRING" property="cronExpression" />
+        <result column="quartz_class" javaType="STRING" property="quartzClass" />
+        <result column="description" javaType="STRING" property="description" />
     </resultMap>
     <sql id="Base_Cloum_List">
         j.job_id,j.job_name,j.job_group,j.job_status,j.cron_expression,j.quartz_class,j.description
@@ -44,7 +44,7 @@
                 job_group,
             </if>
             <if test="jobStatus != null">
-                jobStatus,
+                job_status,
             </if>
             <if test="cronExpression != null">
                 cron_expression,

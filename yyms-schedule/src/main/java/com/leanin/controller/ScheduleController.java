@@ -1,5 +1,6 @@
 package com.leanin.controller;
 
+import com.leanin.api.schedule.ScheduleApi;
 import com.leanin.domain.dto.ScheduleJobDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "schedule")
-public class ScheduleController {
+public class ScheduleController implements ScheduleApi{
 
     @Autowired
     private ScheduleService scheduleService;

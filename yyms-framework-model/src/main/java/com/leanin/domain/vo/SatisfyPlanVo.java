@@ -48,7 +48,7 @@ public class  SatisfyPlanVo {
 
     private String areaCode;	//院区编码
 
-    private Integer planStatus; //计划状态(-1:已删除 0：正在使用 1：禁用)
+    private Integer satisfyPlanStatus; //计划状态(-1:已删除 0：正在使用 1：禁用)
 
     private String rulesText;   //规则的JSON串内容
 
@@ -57,4 +57,6 @@ public class  SatisfyPlanVo {
     private String creater; //计划创建者
 
     private Date createDate;    //创建时间
+
+    private String satisfyPlanWard;  //计划科室
 }

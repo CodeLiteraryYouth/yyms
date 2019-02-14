@@ -48,4 +48,6 @@ public class SatisfyPatientVo {
 
     private String areaCode;	//院区编码
 
+    private String patientInHospitalNo; //住院号
+
 }
