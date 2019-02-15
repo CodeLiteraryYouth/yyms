@@ -57,14 +57,6 @@ public class PlanPatientVo implements Serializable {
 
     private Integer patientSource;//患者来源 1,出院；2,门诊;3,在院
 
-//    private Integer unfinishCount;//待随访人数
-//
-//    private Integer finishCount;//已完成随访人数
-//
-//    private Integer pastCount;//过期随访人数
-//
-//    private Integer deadCount;//收案人数
-
-
+    private String sendStatus;  //发送状态
 
 }
