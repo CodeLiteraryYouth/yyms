@@ -2,7 +2,6 @@ package com.leanin.mq.mq;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.vo.*;
-import com.leanin.exception.ExceptionCast;
 import com.leanin.mq.config.RabbitMQConfig;
 import com.leanin.mq.dao.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -38,6 +37,67 @@ public class PlanPatientMQ {
 
     @Autowired
     SatisfyPatientMapper satisfyPatientMapper;
+
+    //监听短信消息队列
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_SEND_NAME)
+    @Transactional(rollbackFor = Exception.class)
+    public void msgQueue(List<PlanPatientVo> planPatientList){
+        for (PlanPatientVo planPatientVo : planPatientList) {
+            Long rulesInfoId = planPatientVo.getRulesInfoId();
+            RulesInfoVo rules = rulesInfoMapper.findRulesById(rulesInfoId);
+            //获取规则
+            String rulesInfoText = rules.getRulesInfoText();
+            Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);//获取规则
+            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
+            String timeNumStr = (String) rulesMap.get("timeNum");
+            int timeNum = 0;
+            if (!"".equals(timeNumStr) && timeNumStr != null) {
+                timeNum = Integer.parseInt(timeNumStr);//
+            }
+
+            int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+//            int timeChoosed = (int) rulesMap.get("timeChoosed"); //1 6:00， 2 7:00 一次后推直到 16 21:00
+            String timeSelect = (String) rulesMap.get("timeSelect");
+            Date timePick = null;
+            Object timePick1 = rulesMap.get("timePick");
+            if (!"".equals(timePick1) && timePick1 != null) {
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    timePick = sf.parse((String) timePick1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            String weeks1 = (String) rulesMap.get("weeks");
+            int weeks = 0;
+            if (!"".equals(weeks1) && weeks1 != null) {
+                weeks = Integer.parseInt(weeks1);
+            }
+            String sendTimeDays1 = (String) rulesMap.get("sendTimeDays");
+            int sendTimeDays = 0;
+            if (!"".equals(sendTimeDays1) && sendTimeDays1 != null) {
+                sendTimeDays = Integer.parseInt(sendTimeDays1);
+            }
+            String sendTimeMonths1 = (String) rulesMap.get("sendTimeMonths");
+            int sendTimeMonths = 0;
+            if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
+                sendTimeMonths = Integer.parseInt(sendTimeMonths1);
+            }
+            if (rules.getRulesInfoTypeName() == 1){//如果是定期随访的话  修改 随访时间
+                Date nextDate = setNextDate(planPatientVo.getNextDate(),timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                //修改下次随访时间
+                planPatientVo.setNextDate(nextDate);
+            }
+            if(planPatientVo.getSendType() == 2){//如果发送成功
+                planPatientVo.setPlanPatsStatus(1);//修改成 待随访状态
+                planPatientVo.setSendType(1); // 重新设置成未发送状态
+            }
+            //修改计划患者
+
+
+
+        }
+    }
 
     //满意度监听队列
     @RabbitListener(queues = RabbitMQConfig.QUEUE_INSERT_SP)
@@ -186,7 +246,7 @@ public class PlanPatientMQ {
 
                 switch (rules.getRulesInfoTypeName()) {
                     case 1: {//1：定期随访
-                        nextDate = setNextDate(timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        nextDate = setNextDate(new Date(),timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                     }
                     break;
                     case 2: {//2：定时随访
@@ -264,9 +324,9 @@ public class PlanPatientMQ {
     }
 
     //定期随访
-    private Date setNextDate(String timeSelect, Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths) {
+    private Date setNextDate(Date nowDate,String timeSelect, Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths) {
         Calendar calendar = Calendar.getInstance();
-        Date nowDate = new Date();
+//        Date nowDate = new Date();
         calendar.setTime(nowDate);
         Date nextDate = null;
         switch (timeSelect) {

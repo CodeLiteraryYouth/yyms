@@ -93,7 +93,7 @@
     <select id="findUnfinishCount" resultType="java.lang.Integer">
         SELECT COUNT(patient_id)
         FROM  leanin_plan_patient
-        WHERE plan_num=#{planNum} AND plan_pats_status=1
+        WHERE plan_num=#{planNum} AND plan_pats_status = 1
     </select>
     <select id="findFinishCount" resultType="java.lang.Integer">
         SELECT COUNT(patient_id)
