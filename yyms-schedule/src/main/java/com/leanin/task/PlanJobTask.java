@@ -2,8 +2,8 @@ package com.leanin.task;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.dto.PlanInfoDto;
-import com.leanin.domain.dto.PlanPatientDto;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.feign.PlanPatientFeign;
 import com.leanin.mq.config.RabbitMQConfig;
 import com.leanin.utils.CSMSUtils;
@@ -42,9 +42,9 @@ public class PlanJobTask implements Job {
         for (PlanInfoDto planInfo:planList) {
             DataOutResponse planPatientJson=planPatientFeign.findPlanPatientList(planInfo.getPlanNum());
             //根据病人的编号查询计划病人信息
-            List<PlanPatientDto> planPatientList=JsonUtil.json2list(planPatientJson.getData().toString(),PlanPatientDto.class);
+            List<PlanPatientVo> planPatientList=JsonUtil.json2list(planPatientJson.getData().toString(),PlanPatientVo.class);
             log.info("该计划的病人列表信息为:"+JSON.toJSONString(planPatientList));
-            for(PlanPatientDto patientDto:planPatientList) {
+            for(PlanPatientVo patientDto:planPatientList) {
                 //如果当前时间大于病人随访时间，进行发送消息
                 if (System.currentTimeMillis() > patientDto.getNextDate().getTime()) {
                     switch (planInfo.getPlanSendType()) {
