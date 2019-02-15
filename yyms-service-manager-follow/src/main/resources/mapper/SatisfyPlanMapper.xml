@@ -23,27 +23,63 @@
     <result column="satisfy_rules_text" jdbcType="LONGVARCHAR" property="rulesText" />
     <result column="satisfy_disease_name" jdbcType="VARCHAR" property="diseaseName" />
     <result column="satisfy_plan_ward" jdbcType="VARCHAR" property="satisfyPlanWard" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="msg_type" jdbcType="BIGINT" property="msgType" />
   </resultMap>
+
+  <resultMap id="unfinishResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
+    <id column="plan_satisfy_num" jdbcType="VARCHAR" property="planSatisfyNum" />
+    <result column="plan_satisfy_name" jdbcType="VARCHAR" property="planSatisfyName" />
+    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
+    <result column="plan_satisfy_begin_date" jdbcType="DATE" property="planSatisfyBeginDate" />
+    <result column="plan_satisfy_end_date" jdbcType="DATE" property="planSatisfyEndDate" />
+    <result column="patient_ward" jdbcType="VARCHAR" property="patientWard" />
+    <result column="discover_person" jdbcType="VARCHAR" property="discoverPerson" />
+    <result column="discover_target" jdbcType="VARCHAR" property="discoverTarget" />
+    <result column="discover_type" jdbcType="INTEGER" property="discoverType" />
+    <result column="form_type_id" jdbcType="BIGINT" property="formTypeId" />
+    <result column="satisfy_num" jdbcType="VARCHAR" property="satisfyNum" />
+    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
+    <result column="patient_age" jdbcType="VARCHAR" property="patientAge" />
+    <result column="patient_phone" jdbcType="INTEGER" property="patientPhone" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="plan_creater" jdbcType="VARCHAR" property="creater" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="satisfy_plan_status" jdbcType="INTEGER" property="satisfyPlanStatus" />
+    <result column="satisfy_rules_text" jdbcType="LONGVARCHAR" property="rulesText" />
+    <result column="satisfy_disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    <result column="satisfy_plan_ward" jdbcType="VARCHAR" property="satisfyPlanWard" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="msg_type" jdbcType="BIGINT" property="msgType" />
+    <association property="unfinishCount" column="plan_satisfy_num"
+                 javaType="integer" select="com.leanin.mapper.SatisfyPatientMapper.findUnfinishCount">
+
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List">
     plan_satisfy_num, plan_satisfy_name, patient_type, plan_satisfy_begin_date, plan_satisfy_end_date, 
     patient_ward, discover_person, discover_target, discover_type, form_type_id, satisfy_num, 
     patient_sex, patient_age, patient_phone, area_code, plan_creater, create_date, satisfy_plan_status,
-    satisfy_rules_text, satisfy_disease_name,satisfy_plan_ward
+    satisfy_rules_text, satisfy_disease_name,satisfy_plan_ward,msg_id,msg_type
   </sql>
-  <select id="findSatisfyPlanList" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+  <select id="findSatisfyPlanList" parameterType="java.lang.String" resultMap="unfinishResultMap">
   	select 
     <include refid="Base_Column_List" />
-    from leanin_satisfy_plan where satisfy_plan_status>=0
+    from leanin_satisfy_plan where satisfy_plan_status >= 0
     <if test="satisfyPlanName !=null">
     	and plan_satisfy_name like CONCAT('%',#{satisfyPlanName},'%')
     </if>
   </select>
+
   <select id="findSatisfyPlanById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_satisfy_plan where satisfy_plan_status>=0
     and plan_satisfy_num = #{planSatisfyNum,jdbcType=VARCHAR}
   </select>
+
   <select id="findSatisfyPlanByName" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />
@@ -122,6 +158,12 @@
       <if test="satisfyPlanWard != null">
         satisfy_plan_ward,
       </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="msgType != null">
+        msg_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="planSatisfyNum != null">
@@ -187,6 +229,12 @@
       <if test="satisfyPlanWard != null">
         #{satisfyPlanWard,jdbcType=VARCHAR},
       </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null">
+        #{msgType,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
   <update id="updateSatisfyPlan" parameterType="com.leanin.domain.vo.SatisfyPlanVo">
@@ -242,6 +290,12 @@
       </if>
       <if test="satisfyPlanWard != null">
         satisfy_plan_ward=#{satisfyPlanWard,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        msg_id=#{msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null">
+        msg_type=#{msgType,jdbcType=BIGINT},
       </if>
     </set>
     where plan_satisfy_num = #{planSatisfyNum,jdbcType=VARCHAR}

@@ -72,14 +72,15 @@ public class PlanPatientMQ {
             satisfyPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
             satisfyPatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
             Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
-
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
             satisfyPatientVo.setPatientDiagous(satisfyPlan.getDiseaseName());//设置病人诊断  可能是集合
             satisfyPatientVo.setPatientType(satisfyPlan.getPatientType());//设置病人来源   可能是集合
 //                String areaCode = (String) map.get("areaCode");
 //                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
-            satisfyPatientVo.setPatientStatus(0);//0:待调查 1：异常 2：已完成调查
+            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
+            satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
+            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
 //            satisfyPatientVo.setAreaCode();//设置院区编码
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(lastDate);

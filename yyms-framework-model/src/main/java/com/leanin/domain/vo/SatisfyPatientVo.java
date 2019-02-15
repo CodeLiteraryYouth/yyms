@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SatisfyPatientVo {
+public class SatisfyPatientVo implements Serializable {
 	
     private Long patientSatisfyId;	//满意度主键
 
@@ -36,7 +37,7 @@ public class SatisfyPatientVo {
 
     private Date patientDateTime;	//病人时间
 
-    private String patientDoctor;	//诊断医生
+    private Integer finishType;	//完成状态
 
     private String patientCondition;	//病人情况
 
@@ -48,6 +49,6 @@ public class SatisfyPatientVo {
 
     private String areaCode;	//院区编码
 
-    private String patientInHospitalNo; //住院号
+    private Integer sendType; //发送状态；0 未发送 1已发送 2 发送失败
 
 }

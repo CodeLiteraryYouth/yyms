@@ -22,8 +22,10 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
         <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
-        <result column="plan_creater" jdbcType="VARCHAR" property="creater"/>
+        <result column="plan_creater" jdbcType="VARCHAR" property="planCreater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
+        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
     </resultMap>
     <resultMap id="BlobResultMap" type="com.leanin.domain.dto.PlanInfoDto">
         <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
@@ -45,6 +47,8 @@
         <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
         <result column="plan_creater" jdbcType="VARCHAR" property="creater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
+        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
         <association property="formType" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo">
             <id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
             <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>
@@ -68,13 +72,13 @@
     plan_num, plan_name, patient_info_source, plan_begin_time, plan_end_time, plan_ward_code, 
     plan_duty_per, plan_target, plan_send_type, form_type_id, follow_form_num, rules_info_num, 
     plan_sex, plan_age_interval, plan_exis_phone, plan_type, plan_status, area_code,disease_code,
-    pats_ward_code,plan_creater,create_date,import_data
+    pats_ward_code,plan_creater,create_date,import_data,msg_id,msg_type
   </sql>
     <sql id="Blob_Column_List">
   	p.plan_num, p.plan_name, p.patient_info_source, p.plan_begin_time, p.plan_end_time, p.plan_ward_code, 
     p.plan_duty_per, p.plan_target, p.plan_send_type, t.form_type_id,t.form_type_name, f.form_num,f.form_name, r.rules_info_id, 
     r.rules_info_type_name, r.rules_info_name,p.plan_sex, p.plan_age_interval, p.plan_exis_phone, p.plan_type, p.plan_status, p.area_code,p.disease_code,
-    p.pats_ward_code,p.plan_creater,p.create_date,p.import_data
+    p.pats_ward_code,p.plan_creater,p.create_date,p.import_data,msg_id,msg_type
   </sql>
     <select id="findPlanList" parameterType="java.lang.String" resultMap="BlobResultMap">
         select
@@ -196,6 +200,12 @@
             <if test="importData !=null">
                 import_data,
             </if>
+            <if test="msgId !=null">
+                msg_id,
+            </if>
+            <if test="msgType !=null">
+                msg_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -267,6 +277,12 @@
             <if test="importData !=null">
                 #{importData,jdbcType=INTEGER},
             </if>
+            <if test="msgId !=null">
+                #{msgId,jdbcType=VARCHAR},
+            </if>
+            <if test="msgType !=null">
+                #{msgType,jdbcType=BIGINT},
+            </if>
         </trim>
     </insert>
     <update id="updatePlanInfo" parameterType="com.leanin.domain.vo.PlanInfoVo">
@@ -328,6 +344,12 @@
             </if>
             <if test="patsWardCode !=null">
                 pats_ward_code = #{patsWardCode,jdbcType=VARCHAR}
+            </if>
+            <if test="msgId !=null">
+                msg_id = #{msgId,jdbcType=VARCHAR}
+            </if>
+            <if test="msgType !=null">
+                msg_type = #{msgType,jdbcType=BIGINT}
             </if>
         </set>
         where plan_num = #{planNum,jdbcType=VARCHAR}

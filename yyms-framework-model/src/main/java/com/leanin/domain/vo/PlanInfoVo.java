@@ -65,5 +65,8 @@ public class PlanInfoVo implements Serializable {
 
     private Integer importData; //是否将病人数据导入到 数据库中 1 已导入 2未导入
 
+    private String msgId;//短信id
+
+    private Long msgType;//短信类型
 
 }

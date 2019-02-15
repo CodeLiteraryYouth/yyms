@@ -63,8 +63,14 @@ public class PlanInfoDto {
 	    private String diseaseCode;	//疾病编码
 	    
 	    private String creater;	//创建人
+
+		private String msgId;//短信id
+
+		private Long msgType; //短信类型
 	    
 	    private Date createDate;	//创建时间
 
 		private Integer unFinishCount;  //待完成人数
+
+
 }

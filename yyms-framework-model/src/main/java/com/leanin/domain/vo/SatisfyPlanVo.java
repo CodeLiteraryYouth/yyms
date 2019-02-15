@@ -59,4 +59,10 @@ public class  SatisfyPlanVo {
     private Date createDate;    //创建时间
 
     private String satisfyPlanWard;  //计划科室
+
+    private Integer unfinishCount; // 未完成人数
+
+    private String msgId; //短信id
+
+    private Long msgType; //短信类型
 }
