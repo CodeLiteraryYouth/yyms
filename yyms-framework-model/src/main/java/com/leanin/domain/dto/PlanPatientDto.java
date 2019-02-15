@@ -47,5 +47,6 @@ public class PlanPatientDto {
     private Date nextDate; //下次随访日期
 
     private String areaCode;	//院区编码
-  
+
+    private String sendStatus;  //信息发送状态
 }

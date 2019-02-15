@@ -24,7 +24,7 @@ public interface PlanPatientFeign {
      * @param planNum
      * @return
      */
-    @GetMapping("/follow/planPatient/findPlanPatientList")
+    @GetMapping("/follow/planPatient/findPlanPatientListByPlanId")
     DataOutResponse findPlanPatientList(String planNum);
 
 

@@ -16,7 +16,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 /**
  * 定时发送消息
@@ -52,8 +52,10 @@ public class PlanJobTask implements Job {
                         case 1:
                             String msg = planInfo.getMsgInfo().getMsgText() + "表单的URL";
                             log.info("发送的短信内容为:" + msg);
-                            //将病人的手机号码以逗号隔开进行发送
-                            CSMSUtils.sendMessage(msg, planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(",")));
+                            //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
+                            Map map=CSMSUtils.sendMessage(msg,patientDto.getPatientPhone());
+                            //设置病人发送状态
+                            patientDto.setSendStatus(map.get("msg").toString());
                             break;
                         //微信公众号
                         case 2:

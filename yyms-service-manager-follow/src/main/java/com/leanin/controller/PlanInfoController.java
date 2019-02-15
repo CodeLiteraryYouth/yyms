@@ -18,7 +18,8 @@ public class PlanInfoController {
 
 	
 	@GetMapping("findPlanList")
-	public DataOutResponse findPlanList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String planName, @RequestParam int planType) {
+	public DataOutResponse findPlanList(@RequestParam(required=false) int page, @RequestParam(required=false) int pageSize,
+										@RequestParam(required=false) String planName, @RequestParam(required=false) int planType) {
 		return planInfoService.findPlanList(page, pageSize, planName,planType);
 	}
 	

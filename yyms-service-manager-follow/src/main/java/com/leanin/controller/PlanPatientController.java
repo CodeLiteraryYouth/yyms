@@ -26,7 +26,9 @@ public class PlanPatientController {
      * @return
      */
     @GetMapping("findPlanPatientListByPlanId")
-    public DataOutResponse findPlanPatientListByPlanId(@RequestParam String planNum, @RequestParam Integer planPatsStatus, @RequestParam Integer currentPage, @RequestParam Integer pageSize,@RequestParam String patientName){
+    public DataOutResponse findPlanPatientListByPlanId(@RequestParam(required=false) String planNum, @RequestParam(required=false) Integer planPatsStatus,
+                                                       @RequestParam(required=false) Integer currentPage, @RequestParam(required=false) Integer pageSize,
+                                                       @RequestParam(required=false) String patientName){
         return planPatientService.findPlanPatientListByPlanId(planNum,planPatsStatus,currentPage,pageSize,patientName);
     }
 

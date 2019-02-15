@@ -10,11 +10,12 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义短信工具类
@@ -28,7 +29,8 @@ public class CSMSUtils {
 
 
     //mobiles 多个手机号码用 ， 隔开
-    public static void sendMessage(String content,String mobiles){
+    public static Map sendMessage(String content,String mobiles){
+        Map map=null;
         try {
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
             formparams.add(new BasicNameValuePair("Account", "18556531536"));
@@ -36,14 +38,16 @@ public class CSMSUtils {
             formparams.add(new BasicNameValuePair("Content", content));
             formparams.add(new BasicNameValuePair("Mobile", mobiles));
             formparams.add(new BasicNameValuePair("SignId", "86057"));
-            Post(formparams);
+            map=Post(formparams);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return map;
     }
 
-    public static void Post(List<NameValuePair> formparams) throws Exception {
+    public static Map Post(List<NameValuePair> formparams) throws Exception {
+        Map<String,Object> map=new HashMap<>();
         CloseableHttpAsyncClient httpClient = HttpAsyncClients.createDefault();
 
         httpClient.start();
@@ -58,6 +62,7 @@ public class CSMSUtils {
             public void failed(Exception arg0) {
                 LOGGER.error("短信发送失败 ：{}",arg0.getMessage());
                 System.out.println("Exception: " + arg0.getMessage());
+                map.put("msg","false");
             }
 
             @Override
@@ -70,6 +75,7 @@ public class CSMSUtils {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(stram));
                     System.out.println(reader.readLine());
                     LOGGER.info("短信发送后返回的：{}",reader.readLine().toString());
+                    map.put("msg","true");
                 } catch (UnsupportedOperationException e) {
 
 //                    e.printStackTrace();
@@ -87,6 +93,7 @@ public class CSMSUtils {
 
             }
         }).get();
+        return map;
     }
 
 }
