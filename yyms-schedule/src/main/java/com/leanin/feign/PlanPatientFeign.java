@@ -13,10 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface PlanPatientFeign {
 
     /**
-     * 根据计划ID查询病人信息
-     * @param paramMap
+     * 查询计划列表信息
      * @return
      */
-    @GetMapping("/follow/planPatient/findPlanPatientListByPlanId")
-    DataOutResponse findPatientByPlanId(Map paramMap);
+    @GetMapping("/follow/plan/findPlanList")
+    DataOutResponse findPlanList();
+
+    /**
+     * 根据计划单号查询病人列表
+     * @param planNum
+     * @return
+     */
+    @GetMapping("/follow/planPatient/findPlanPatientList")
+    DataOutResponse findPlanPatientList(String planNum);
+
+
 }

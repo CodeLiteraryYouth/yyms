@@ -3,6 +3,7 @@ package com.leanin.domain.dto;
 
 import com.leanin.domain.vo.FormInfoVo;
 import com.leanin.domain.vo.FormTypeVo;
+import com.leanin.domain.vo.MsgInfoVo;
 import com.leanin.domain.vo.RulesInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +39,7 @@ public class PlanInfoDto {
 
 	    private String planTarget;	//计划目的
 
-	    private Integer planSendType;	//（1：APP/短信 2：APP 3：短信）
+	    private Integer planSendType;	//（1：短信 2：APP ）
 
 	    private FormTypeVo formType;	//表单分类ID
 
@@ -63,14 +64,10 @@ public class PlanInfoDto {
 	    private String diseaseCode;	//疾病编码
 	    
 	    private String creater;	//创建人
-
-		private String msgId;//短信id
-
-		private Long msgType; //短信类型
 	    
 	    private Date createDate;	//创建时间
 
 		private Integer unFinishCount;  //待完成人数
 
-
+		private MsgInfoVo msgInfo;//短信内容
 }

@@ -3,13 +3,16 @@ package com.leanin.domain.response;
 import java.util.HashMap;
 import java.util.Map;
 
-//格式化返回客户端数据格式（json）
+/**
+ * 格式化返回客户端数据格式（json）
+ * @author Administrator
+ */
 public class ReturnFomart {
 
 	private static Map<String,String> messageMap =new HashMap<>();
     //初始化状态码与文字说明
     static {
-        messageMap.put("0", "");
+        messageMap.put("0", "系统异常，请联系管理员");
 
         messageMap.put("200", "Success");
         messageMap.put("400", "Bad Request!");

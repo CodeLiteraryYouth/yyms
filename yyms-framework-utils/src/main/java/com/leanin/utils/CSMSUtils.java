@@ -54,11 +54,13 @@ public class CSMSUtils {
 
         httpClient.execute(requestPost, new FutureCallback<HttpResponse>() {
 
+            @Override
             public void failed(Exception arg0) {
                 LOGGER.error("短信发送失败 ：{}",arg0.getMessage());
                 System.out.println("Exception: " + arg0.getMessage());
             }
 
+            @Override
             public void completed(HttpResponse arg0) {
                 System.out.println("Response: " + arg0.getStatusLine());
                 LOGGER.info("短信发送状态：{}",arg0.getStatusLine());
@@ -79,6 +81,7 @@ public class CSMSUtils {
 
             }
 
+            @Override
             public void cancelled() {
                 // TODO Auto-generated method stub
 

@@ -44,6 +44,8 @@ public class PlanPatientDto {
 
     private Integer patientType;	//病人来源
 
+    private Date nextDate; //下次随访日期
+
     private String areaCode;	//院区编码
   
 }

@@ -1,7 +1,6 @@
 package com.leanin.feign;
-
 import com.leanin.domain.response.DataOutResponse;
-import org.hibernate.mapping.Map;
+import com.leanin.domain.response.ReturnFomart;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +11,14 @@ import org.springframework.stereotype.Component;
 public class PlanPatientFallback implements PlanPatientFeign {
 
     @Override
-    public DataOutResponse findPatientByPlanId(Map paramMap) {
-        return null;
+    public DataOutResponse findPlanList() {
+        return ReturnFomart.retParam(0,"");
     }
+
+    @Override
+    public DataOutResponse findPlanPatientList(String planNum) {
+        return ReturnFomart.retParam(0,planNum);
+    }
+
+
 }
