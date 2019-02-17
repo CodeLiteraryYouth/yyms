@@ -1,11 +1,12 @@
 package com.leanin.task;
 
 import com.alibaba.fastjson.JSON;
+import com.leanin.config.RabbitMQConfig;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.feign.PlanPatientFeign;
-import com.leanin.mq.config.RabbitMQConfig;
+//import com.leanin.mq.config.RabbitMQConfig;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class PlanJobTask implements Job {
                             String msg = planInfo.getMsgInfo().getMsgText() + "表单的URL";
                             log.info("发送的短信内容为:" + msg);
                             //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
-                            Map map=CSMSUtils.sendMessage(msg,patientDto.getPatientPhone());
+                            Map map=CSMSUtils.sendMessage(msg,"18556531536");//patientDto.getPatientPhone()
                             //设置病人发送状态
                             patientDto.setSendStatus(map.get("msg").toString());
                             break;

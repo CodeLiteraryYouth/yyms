@@ -16,7 +16,7 @@ public interface PlanPatientFeign {
      * 查询计划列表信息
      * @return
      */
-    @GetMapping("/follow/plan/findPlanList")
+    @GetMapping("/plan/findPlanList")///follow
     DataOutResponse findPlanList();
 
     /**
@@ -24,7 +24,7 @@ public interface PlanPatientFeign {
      * @param planNum
      * @return
      */
-    @GetMapping("/follow/planPatient/findPlanPatientListByPlanId")
+    @GetMapping("/planPatient/findPlanPatientListByPlanId")///follow
     DataOutResponse findPlanPatientList(String planNum);
 
 

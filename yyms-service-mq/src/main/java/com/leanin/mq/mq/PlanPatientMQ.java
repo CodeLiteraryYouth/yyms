@@ -42,10 +42,10 @@ public class PlanPatientMQ {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_SEND_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void msgQueue(List<PlanPatientVo> planPatientList){
-        for (PlanPatientVo planPatientVo : planPatientList) {
+        for (PlanPatientVo planPatientVo : planPatientList) {//修改随访状态
             Long rulesInfoId = planPatientVo.getRulesInfoId();
             RulesInfoVo rules = rulesInfoMapper.findRulesById(rulesInfoId);
-            //获取规则
+//            获取规则
             String rulesInfoText = rules.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);//获取规则
             String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
@@ -90,11 +90,12 @@ public class PlanPatientMQ {
             }
             if(planPatientVo.getSendType() == 2){//如果发送成功
                 planPatientVo.setPlanPatsStatus(1);//修改成 待随访状态
-                planPatientVo.setSendType(1); // 重新设置成未发送状态
+//                planPatientVo.setSendType(1); // 重新设置成未发送状态
             }
-            //修改计划患者
-
-
+            //修改计划患者随访状态
+            planPatientMapper.updatePlanPatient(planPatientVo);
+//            planPatientMapper.updateFollowType(planPatientVo.getPatientPlanId());
+//            planPatientMapper.updatePatientStatus(planPatientVo.getPatientPlanId(),1);
 
         }
     }

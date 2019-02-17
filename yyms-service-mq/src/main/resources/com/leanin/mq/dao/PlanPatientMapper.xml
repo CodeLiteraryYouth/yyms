@@ -46,6 +46,74 @@
     where patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
   </update>
 
+    <update id="updateFollowType">
+        update leanin_plan_patient
+        SET follow_type = 1
+        WHERE patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+    </update>
+
+    <!--修改计划患者-->
+    <update id="updatePlanPatient">
+        UPDATE leanin_plan_patient
+        <set>
+            <if test="planPatientVo.planNum != null">
+                plan_num = #{planPatientVo.planNum},
+            </if>
+            <if test="planPatientVo.patientId != null ">
+                patient_id = #{planPatientVo.patientId},
+            </if>
+            <if test="planPatientVo.sendType != null">
+                send_type = #{planPatientVo.sendType},
+            </if>
+            <if test="planPatientVo.patientName != null">
+                patient_name = #{planPatientVo.patientName},
+            </if>
+            <if test="planPatientVo.patientSex != null">
+                patient_sex = #{planPatientVo.patientSex},
+            </if>
+            <if test="planPatientVo.patientAge != null ">
+                patient_age = #{planPatientVo.patientAge},
+            </if>
+            <if test="planPatientVo.patientPhone != null ">
+                patient_phone = #{planPatientVo.patientPhone},
+            </if>
+            <if test="planPatientVo.patientWard != null ">
+                patient_ward = #{planPatientVo.patientWard},
+            </if>
+            <if test="planPatientVo.followType != null ">
+                follow_type = #{planPatientVo.followType},
+            </if>
+            <if test="planPatientVo.patientStatus != null">
+                patient_status = #{planPatientVo.patientStatus},
+            </if>
+            <if test="planPatientVo.patientCondition != null ">
+                patient_condition = #{planPatientVo.patientCondition},
+            </if>
+            <if test="planPatientVo.patientDiagous != null ">
+                patient_diagous = #{planPatientVo.patientDiagous},
+            </if>
+            <if test="planPatientVo.patientType != null ">
+                patient_type = #{planPatientVo.patientType},
+            </if>
+            <if test="planPatientVo.areaCode != null ">
+                area_code = #{planPatientVo.areaCode},
+            </if>
+            <if test="planPatientVo.planPatsStatus != null ">
+                plan_pats_status = #{planPatientVo.planPatsStatus},
+            </if>
+            <if test="planPatientVo.rulesInfoId != null">
+                rules_info_id = #{planPatientVo.rulesInfoId},
+            </if>
+            <if test="planPatientVo.nextDate != null">
+                next_date = #{planPatientVo.nextDate},
+            </if>
+            <if test="planPatientVo.patientSource != null">
+                patient_source = #{planPatientVo.patientSource}
+            </if>
+        </set>
+        where patient_plan_id = #{planPatientVo.patientPlanId}
+    </update>
+
     <insert id="addPlanPatient">
         insert into leanin_plan_patient
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -4,6 +4,7 @@ package com.leanin.mq.dao;
 import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.junit.runners.Parameterized;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface PlanPatientMapper {
      * @param patientPlanId
      * @return
      */
-    int updatePatientStatus(String patientPlanId, @Param("status") Integer status);
+    int updatePatientStatus(Long patientPlanId, @Param("status") Integer status);
 
     /**
      * 移入计划病人
@@ -49,4 +50,9 @@ public interface PlanPatientMapper {
      * @return
      */
     List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum, @Param("status") Integer status);
+
+    //修改随访状态
+    void updateFollowType(@Param("patientPlanId") Long patientPlanId);
+
+    void updatePlanPatient(@Param("planPatientVo") PlanPatientVo planPatientVo);
 }

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.leanin.domain")	//扫描model包
 @ComponentScan("com.leanin.api")	//扫描model包
+@ComponentScan("com.leanin")	//扫描model包
 @MapperScan("com.leanin.mapper")	//扫描mapper包
 public class ScheduleApplication {
     public static void main(String[] args) {

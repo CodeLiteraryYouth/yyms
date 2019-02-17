@@ -70,4 +70,8 @@ public class PlanInfoDto {
 		private Integer unFinishCount;  //待完成人数
 
 		private MsgInfoVo msgInfo;//短信内容
+
+		private String msgId;//短信id
+
+		private Long msgType;//短信类型
 }
