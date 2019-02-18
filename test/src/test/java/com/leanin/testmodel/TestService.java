@@ -108,6 +108,10 @@ public class TestService {
 
     @Test
     public void sms(){
-
+//        Long[] longs =new Long[5];
+//        longs[0]=9L;
+//        String string = JSON.toJSONString(longs);
+//        System.out.println(string);
+        System.out.println((1-2) > 0);
     }
 }

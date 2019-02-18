@@ -17,7 +17,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanPatientVo implements Serializable {
+public class PlanPatientRecordVo implements Serializable {
 
     private Long patientPlanId;    //计划病人信息主键
 

@@ -1,10 +1,13 @@
 package com.leanin.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MsgInfoVo;
 import com.leanin.service.MsgInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 短信中心的Controller
@@ -41,5 +44,12 @@ public class MsgInfoController {
 	@GetMapping("findMsgInfoById")
 	public DataOutResponse findMsgInfoById(@RequestParam String msgId) {
 		return msgInfoService.findMsgInfoById(msgId);
+	}
+
+	//手动发送短信
+	@GetMapping("sendMessage")
+	public DataOutResponse sendMessage(@RequestParam("patientPlanIds") String patientPlanIds){
+		List<Long> longs = JSON.parseArray(patientPlanIds, Long.class);
+		return msgInfoService.sendMessage(longs);
 	}
 }

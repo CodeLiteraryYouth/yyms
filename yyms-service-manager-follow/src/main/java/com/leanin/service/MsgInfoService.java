@@ -4,6 +4,8 @@ package com.leanin.service;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MsgInfoVo;
 
+import java.util.List;
+
 public interface MsgInfoService {
 
 	/**
@@ -40,4 +42,7 @@ public interface MsgInfoService {
      * @return
      */
 	DataOutResponse updateMsgInfo(MsgInfoVo record);
+
+	//手动发送短信
+    DataOutResponse sendMessage(List<Long> longs);
 }

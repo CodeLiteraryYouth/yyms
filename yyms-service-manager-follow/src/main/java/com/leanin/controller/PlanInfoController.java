@@ -22,6 +22,12 @@ public class PlanInfoController {
 										@RequestParam(required=false) String planName, @RequestParam(required=false) int planType) {
 		return planInfoService.findPlanList(page, pageSize, planName,planType);
 	}
+
+	//查询所有计划信息
+	@GetMapping("findAllPlan")
+	public DataOutResponse findAllPlan(){
+		return planInfoService.findAllPlan();
+	}
 	
 	@GetMapping("updatePlanStatus")
 	public DataOutResponse updatePlanStatus(@RequestParam String planNum, @RequestParam int status) {

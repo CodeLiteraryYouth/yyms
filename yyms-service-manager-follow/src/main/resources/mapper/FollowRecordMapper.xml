@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.FollowRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
+        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
+        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
+        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
+        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
+        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
+        <result column="follow_type" jdbcType="INTEGER" property="followType"/>
+        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
+        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
+        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
+        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="plan_pats_status" jdbcType="INTEGER" property="areaCode"/>
+        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
+        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
+        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
+        patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
+        patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source
+    </sql>
+
+    <insert id="addFollowRecord">
+        insert into leanin_follow_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                plan_num,
+            </if>
+            <if test="patientId != null">
+                patient_id,
+            </if>
+            <if test="sendType != null">
+                send_type,
+            </if>
+            <if test="patientName != null">
+                patient_name,
+            </if>
+            <if test="patientSex != null">
+                patient_sex,
+            </if>
+            <if test="patientAge != null">
+                patient_age,
+            </if>
+            <if test="patientPhone != null">
+                patient_phone,
+            </if>
+            <if test="patientWard !=null">
+                patient_ward,
+            </if>
+            <if test="followType != null">
+                follow_type,
+            </if>
+            <if test="patientStatus != null">
+                patient_status,
+            </if>
+            <if test="patientCondition != null">
+                patient_condition,
+            </if>
+            <if test="patientDiagous != null">
+                patient_diagous,
+            </if>
+            <if test="patientType != null">
+                patient_type,
+            </if>
+            <if test="areaCode != null">
+                area_code,
+            </if>
+            <if test="planPatsStatus !=null">
+                plan_pats_status,
+            </if>
+            <if test="rulesInfoId !=null">
+                rules_info_id,
+            </if>
+            <if test="nextDate !=null">
+                next_date,
+            </if>
+            <if test="patientSource !=null">
+                patient_source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                #{planNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientId != null">
+                #{patientId,jdbcType=BIGINT},
+            </if>
+            <if test="sendType != null">
+                #{sendType,jdbcType=INTEGER},
+            </if>
+            <if test="patientName != null">
+                #{patientName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientSex != null">
+                #{patientSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientAge != null">
+                #{patientAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientPhone != null">
+                #{patientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientWard != null">
+                #{patientWard,jdbcType=VARCHAR},
+            </if>
+            <if test="followType != null">
+                #{followType,jdbcType=INTEGER},
+            </if>
+            <if test="patientStatus != null">
+                #{patientStatus,jdbcType=INTEGER},
+            </if>
+            <if test="patientCondition != null">
+                #{patientCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDiagous != null">
+                #{patientDiagous,jdbcType=VARCHAR},
+            </if>
+            <if test="patientType != null">
+                #{patientType,jdbcType=INTEGER},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planPatsStatus !=null">
+                #{planPatsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="rulesInfoId !=null">
+                #{rulesInfoId,jdbcType=LONG},
+            </if>
+            <if test="nextDate !=null">
+                #{nextDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="patientSource !=null">
+                #{patientSource,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

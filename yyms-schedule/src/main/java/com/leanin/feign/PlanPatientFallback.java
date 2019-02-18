@@ -11,14 +11,12 @@ import org.springframework.stereotype.Component;
 public class PlanPatientFallback implements PlanPatientFeign {
 
     @Override
-    public DataOutResponse findPlanList() {
+    public DataOutResponse findAllPlan() {
         return ReturnFomart.retParam(0,"");
     }
 
     @Override
-    public DataOutResponse findPlanPatientList(String planNum) {
+    public DataOutResponse findListByPlanId(String planNum) {
         return ReturnFomart.retParam(0,planNum);
     }
-
-
 }

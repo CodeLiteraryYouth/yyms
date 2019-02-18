@@ -18,7 +18,7 @@ public class PlanPatientController {
     PlanPatientService planPatientService;
 
     /**
-     * 根据planId查询计划患者信息
+     * 根据planId查询计划患者信息  分页查询
      * @param planNum
      * @param planPatsStatus
      * @param currentPage
@@ -30,6 +30,12 @@ public class PlanPatientController {
                                                        @RequestParam(required=false) Integer currentPage, @RequestParam(required=false) Integer pageSize,
                                                        @RequestParam(required=false) String patientName){
         return planPatientService.findPlanPatientListByPlanId(planNum,planPatsStatus,currentPage,pageSize,patientName);
+    }
+
+    //根据planId查询计划患者信息  全部查询 供其他模块调用
+    @GetMapping("findListByPlanId")
+    public DataOutResponse findListByPlanId(@RequestParam(required=true) String planNum){
+        return planPatientService.findListByPlanId(planNum);
     }
 
     /**

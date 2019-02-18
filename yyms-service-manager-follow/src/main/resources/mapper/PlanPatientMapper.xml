@@ -22,35 +22,35 @@
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
     </resultMap>
     <!--<resultMap id="ListResultMap" type="com.leanin.domain.vo.PlanPatientVo">-->
-        <!--<id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>-->
-        <!--<result column="plan_num" jdbcType="VARCHAR" property="planNum"/>-->
-        <!--<result column="patient_id" jdbcType="BIGINT" property="patientId"/>-->
-        <!--<result column="send_type" jdbcType="INTEGER" property="sendType"></result>-->
-        <!--<result column="patient_name" jdbcType="VARCHAR" property="patientName"/>-->
-        <!--<result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>-->
-        <!--<result column="patient_age" jdbcType="INTEGER" property="patientAge"/>-->
-        <!--<result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>-->
-        <!--<result column="follow_type" jdbcType="INTEGER" property="followType"/>-->
-        <!--<result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>-->
-        <!--<result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>-->
-        <!--<result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>-->
-        <!--<result column="patient_type" jdbcType="INTEGER" property="patientType"/>-->
-        <!--<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>-->
-        <!--<result column="plan_pats_status" jdbcType="INTEGER" property="areaCode"/>-->
-        <!--<result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>-->
-        <!--<result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>-->
-        <!--&lt;!&ndash;待随访人数&ndash;&gt;-->
-        <!--<association property="unfinishCount" javaType="integer" column="plan_num"-->
-                     <!--select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount"></association>-->
-        <!--&lt;!&ndash;已完成随访人数&ndash;&gt;-->
-        <!--<association property="finishCount" javaType="integer" column="plan_num"-->
-                     <!--select="com.leanin.mapper.PlanPatientMapper.findFinishCount"></association>-->
-        <!--&lt;!&ndash;收案人数&ndash;&gt;-->
-        <!--<association property="deadCount" javaType="integer" column="plan_num"-->
-                     <!--select="com.leanin.mapper.PlanPatientMapper.findPastCount"></association>-->
-        <!--&lt;!&ndash;过期随访人数&ndash;&gt;-->
-        <!--<association property="pastCount" javaType="integer" column="plan_num"-->
-                     <!--select="com.leanin.mapper.PlanPatientMapper.findDeadCount"></association>-->
+    <!--<id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>-->
+    <!--<result column="plan_num" jdbcType="VARCHAR" property="planNum"/>-->
+    <!--<result column="patient_id" jdbcType="BIGINT" property="patientId"/>-->
+    <!--<result column="send_type" jdbcType="INTEGER" property="sendType"></result>-->
+    <!--<result column="patient_name" jdbcType="VARCHAR" property="patientName"/>-->
+    <!--<result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>-->
+    <!--<result column="patient_age" jdbcType="INTEGER" property="patientAge"/>-->
+    <!--<result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>-->
+    <!--<result column="follow_type" jdbcType="INTEGER" property="followType"/>-->
+    <!--<result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>-->
+    <!--<result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>-->
+    <!--<result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>-->
+    <!--<result column="patient_type" jdbcType="INTEGER" property="patientType"/>-->
+    <!--<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>-->
+    <!--<result column="plan_pats_status" jdbcType="INTEGER" property="areaCode"/>-->
+    <!--<result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>-->
+    <!--<result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>-->
+    <!--&lt;!&ndash;待随访人数&ndash;&gt;-->
+    <!--<association property="unfinishCount" javaType="integer" column="plan_num"-->
+    <!--select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount"></association>-->
+    <!--&lt;!&ndash;已完成随访人数&ndash;&gt;-->
+    <!--<association property="finishCount" javaType="integer" column="plan_num"-->
+    <!--select="com.leanin.mapper.PlanPatientMapper.findFinishCount"></association>-->
+    <!--&lt;!&ndash;收案人数&ndash;&gt;-->
+    <!--<association property="deadCount" javaType="integer" column="plan_num"-->
+    <!--select="com.leanin.mapper.PlanPatientMapper.findPastCount"></association>-->
+    <!--&lt;!&ndash;过期随访人数&ndash;&gt;-->
+    <!--<association property="pastCount" javaType="integer" column="plan_num"-->
+    <!--select="com.leanin.mapper.PlanPatientMapper.findDeadCount"></association>-->
     <!--</resultMap>-->
     <!--patient_date_time,-->
     <sql id="Base_Column_List">
@@ -63,7 +63,7 @@
         <include refid="Base_Column_List"/>
         from leanin_plan_patient
         where patient_status = 1
-        and patient_id = #{patientPlanId,jdbcType=BIGINT}
+        and patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
         limit 1
     </select>
     <!--根据计划id 和 状态 查询 患者信息-->
@@ -75,7 +75,7 @@
         <if test="planNum != null">
             and plan_num=#{planNum}
         </if>
-        <if test="status != 0">
+        <if test="status != null">
             and plan_pats_status=#{status}
         </if>
         <if test="patientName != null ">
@@ -119,6 +119,67 @@
     <update id="updatePatientStatusById">
         update leanin_plan_patient set patient_status=2
         where patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePlanPatient">
+        UPDATE leanin_plan_patient
+        <set>
+            <if test="planPatientVo.planNum != null">
+                plan_num = #{planPatientVo.planNum},
+            </if>
+            <if test="planPatientVo.patientId != null ">
+                patient_id = #{planPatientVo.patientId},
+            </if>
+            <if test="planPatientVo.sendType != null">
+                send_type = #{planPatientVo.sendType},
+            </if>
+            <if test="planPatientVo.patientName != null">
+                patient_name = #{planPatientVo.patientName},
+            </if>
+            <if test="planPatientVo.patientSex != null">
+                patient_sex = #{planPatientVo.patientSex},
+            </if>
+            <if test="planPatientVo.patientAge != null ">
+                patient_age = #{planPatientVo.patientAge},
+            </if>
+            <if test="planPatientVo.patientPhone != null ">
+                patient_phone = #{planPatientVo.patientPhone},
+            </if>
+            <if test="planPatientVo.patientWard != null ">
+                patient_ward = #{planPatientVo.patientWard},
+            </if>
+            <if test="planPatientVo.followType != null ">
+                follow_type = #{planPatientVo.followType},
+            </if>
+            <if test="planPatientVo.patientStatus != null">
+                patient_status = #{planPatientVo.patientStatus},
+            </if>
+            <if test="planPatientVo.patientCondition != null ">
+                patient_condition = #{planPatientVo.patientCondition},
+            </if>
+            <if test="planPatientVo.patientDiagous != null ">
+                patient_diagous = #{planPatientVo.patientDiagous},
+            </if>
+            <if test="planPatientVo.patientType != null ">
+                patient_type = #{planPatientVo.patientType},
+            </if>
+            <if test="planPatientVo.areaCode != null ">
+                area_code = #{planPatientVo.areaCode},
+            </if>
+            <if test="planPatientVo.planPatsStatus != null ">
+                plan_pats_status = #{planPatientVo.planPatsStatus},
+            </if>
+            <if test="planPatientVo.rulesInfoId != null">
+                rules_info_id = #{planPatientVo.rulesInfoId},
+            </if>
+            <if test="planPatientVo.nextDate != null">
+                next_date = #{planPatientVo.nextDate},
+            </if>
+            <if test="planPatientVo.patientSource != null">
+                patient_source = #{planPatientVo.patientSource}
+            </if>
+        </set>
+        where patient_plan_id = #{planPatientVo.patientPlanId}
     </update>
 
     <insert id="addPlanPatient">

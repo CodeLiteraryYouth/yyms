@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 自定义短信工具类
@@ -46,8 +47,9 @@ public class CSMSUtils {
         return map;
     }
 
-    public static Map Post(List<NameValuePair> formparams) throws Exception {
+    public static Map Post(List<NameValuePair> formparams) throws UnsupportedEncodingException {
         Map<String,Object> map=new HashMap<>();
+        map.put("msg", "true");
         CloseableHttpAsyncClient httpClient = HttpAsyncClients.createDefault();
 
         httpClient.start();
@@ -56,43 +58,47 @@ public class CSMSUtils {
 
         requestPost.setEntity(new UrlEncodedFormEntity(formparams, "utf-8"));
 
-        httpClient.execute(requestPost, new FutureCallback<HttpResponse>() {
+        try {
+            HttpResponse httpResponse = httpClient.execute(requestPost, new FutureCallback<HttpResponse>() {
 
-            @Override
-            public void failed(Exception arg0) {
-                LOGGER.error("短信发送失败 ：{}",arg0.getMessage());
-                System.out.println("Exception: " + arg0.getMessage());
-                map.put("msg","false");
-            }
+                @Override
+                public void failed(Exception arg0) {
+                    LOGGER.error("短信发送失败 ：{}", arg0.getMessage());
+                    System.out.println("Exception: " + arg0.getMessage());
 
-            @Override
-            public void completed(HttpResponse arg0) {
-                System.out.println("Response: " + arg0.getStatusLine());
-                LOGGER.info("短信发送状态：{}",arg0.getStatusLine());
-                try {
-
-                    InputStream stram = arg0.getEntity().getContent();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(stram));
-                    System.out.println(reader.readLine());
-                    LOGGER.info("短信发送后返回的：{}",reader.readLine().toString());
-                    map.put("msg","true");
-                } catch (UnsupportedOperationException e) {
-
-//                    e.printStackTrace();
-                } catch (IOException e) {
-
-//                    e.printStackTrace();
                 }
 
+                @Override
+                public void completed(HttpResponse arg0) {
+                    System.out.println("Response: " + arg0.getStatusLine());
+                    LOGGER.info("短信发送状态：{}", arg0.getStatusLine());
+                    try {
 
-            }
+                        InputStream stram = arg0.getEntity().getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(stram));
+                        System.out.println(reader.readLine());
+                        LOGGER.info("短信发送后返回的：{}", reader.readLine().toString());
 
-            @Override
-            public void cancelled() {
-                // TODO Auto-generated method stub
+                    } catch (UnsupportedOperationException e) {
 
-            }
-        }).get();
+    //                    e.printStackTrace();
+                    } catch (IOException e) {
+
+    //                    e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void cancelled() {
+                    // TODO Auto-generated method stub
+
+                }
+            }).get();
+        } catch (Exception e) {
+            map.put("msg", "false");
+        }
         return map;
     }
 

@@ -407,4 +407,11 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         return ReturnFomart.retParam(200, dataMap);
     }
 
+    //查询所有计划信息 给其他模块调用
+    @Override
+    public DataOutResponse findAllPlan() {
+        List<PlanInfoVo> planInfoVos=planInfoMapper.findAllPlan();
+        return null;
+    }
+
 }

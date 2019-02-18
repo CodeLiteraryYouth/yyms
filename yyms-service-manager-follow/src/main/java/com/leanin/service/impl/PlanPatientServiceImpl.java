@@ -86,7 +86,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 //        dataMap.put("deadCount", planPatientMapper.findDeadCount(planInfo.getPlanNum()));//收案人数
         dataMap.put("totalCount",page.getTotal());
         dataMap.put("list", page.getResult());//
-        System.out.println("查询的记录数："+page.getResult());
+//        System.out.println("查询的记录数："+page.getResult());
         return ReturnFomart.retParam(200, dataMap);
     }
 
@@ -191,6 +191,19 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         }
 
         return ReturnFomart.retParam(200, dataMap);
+    }
+
+    @Override
+    public DataOutResponse findListByPlanId(String planNum) {
+        //获取计划信息
+        PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);
+        log.info("计划信息为:" + planNum);
+        if (planInfo == null){//计划为空
+            ExceptionCast.cast(PlanResponseCode.Data_ERROR);
+        }
+
+        List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planNum, 0, null);
+        return ReturnFomart.retParam(200, planPatientList);
     }
 
 

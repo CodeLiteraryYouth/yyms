@@ -41,7 +41,8 @@ public class PlanPatientMQ {
     //监听短信消息队列
     @RabbitListener(queues = RabbitMQConfig.QUEUE_SEND_NAME)
     @Transactional(rollbackFor = Exception.class)
-    public void msgQueue(List<PlanPatientVo> planPatientList){
+    public void msgQueue(String planPatientListStr){
+        List<PlanPatientVo> planPatientList = JSON.parseArray(planPatientListStr, PlanPatientVo.class);
         for (PlanPatientVo planPatientVo : planPatientList) {//修改随访状态
             Long rulesInfoId = planPatientVo.getRulesInfoId();
             RulesInfoVo rules = rulesInfoMapper.findRulesById(rulesInfoId);

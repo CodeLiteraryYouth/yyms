@@ -4,6 +4,7 @@ import com.leanin.domain.response.DataOutResponse;
 import org.hibernate.mapping.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Feign调用客户端
@@ -16,16 +17,16 @@ public interface PlanPatientFeign {
      * 查询计划列表信息
      * @return
      */
-    @GetMapping("/plan/findPlanList")///follow
-    DataOutResponse findPlanList();
+    @GetMapping("/plan/findAllPlan")///follow
+    public DataOutResponse findAllPlan();
 
     /**
      * 根据计划单号查询病人列表
      * @param planNum
      * @return
      */
-    @GetMapping("/planPatient/findPlanPatientListByPlanId")///follow
-    DataOutResponse findPlanPatientList(String planNum);
+    @GetMapping("/planPatient/findListByPlanId")///follow
+    public DataOutResponse findListByPlanId(@RequestParam(required=true) String planNum);
 
 
 }

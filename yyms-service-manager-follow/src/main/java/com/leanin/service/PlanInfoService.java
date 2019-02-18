@@ -52,4 +52,7 @@ public interface PlanInfoService {
 
 	//根据计划类型  查询 计划信息
     DataOutResponse findPlanListByType(Integer planType);
+
+    //查询所有计划信息
+    DataOutResponse findAllPlan();
 }
