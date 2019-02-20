@@ -5,6 +5,7 @@ import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.PlanInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

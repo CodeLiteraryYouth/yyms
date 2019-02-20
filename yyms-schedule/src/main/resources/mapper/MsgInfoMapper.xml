@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.MsgInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MsgInfoVo">
+    <id column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
+    <result column="msg_name" jdbcType="VARCHAR" property="msgName" />
+    <result column="msg_creater" jdbcType="VARCHAR" property="msgCreater" />
+    <result column="msg_create_time" jdbcType="TIMESTAMP" property="msgCreateTime" />
+    <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
+    <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
+    <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.MsgInfoVo">
+    <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    msg_id, follow_form_id, msg_name, msg_creater, msg_create_time, msg_create_ward, 
+    msg_status, area_coe
+  </sql>
+  <sql id="Blob_Column_List">
+    msg_text
+  </sql>
+  <select id="findMsgListByTypeId" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_msg_info where msg_status>=0
+    <if test="typeId != null">
+     	and follow_form_id=#{typeId}
+    </if>
+    <if test="msgName != null">
+        and msg_name like CONCAT('%',#{msgName},'%')
+    </if>
+    order by msg_create_time DESC
+  </select>
+  <select id="findMsgInfoById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_msg_info where msg_status>=0
+    and msg_id = #{msgId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findMsgInfoByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_msg_info where msg_status>=0
+    and msg_name = #{msgName,jdbcType=VARCHAR}
+  </select>
+  <update id="updateMsgStatus">
+    update leanin_msg_info set msg_status=#{status}
+    where msg_id=#{msgId,jdbcType=VARCHAR}
+  </update>
+  <insert id="addMsgInfo" parameterType="com.leanin.domain.vo.MsgInfoVo">
+    insert into leanin_msg_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="followFormId != null">
+        follow_form_id,
+      </if>
+      <if test="msgName != null">
+        msg_name,
+      </if>
+      <if test="msgCreater != null">
+        msg_creater,
+      </if>
+      <if test="msgCreateTime != null">
+        msg_create_time,
+      </if>
+      <if test="msgCreateWard != null">
+        msg_create_ward,
+      </if>
+      <if test="msgStatus != null">
+        msg_status,
+      </if>
+      <if test="areaCoe != null">
+        area_coe,
+      </if>
+      <if test="msgText != null">
+        msg_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="msgId != null">
+        #{msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="followFormId != null">
+        #{followFormId,jdbcType=BIGINT},
+      </if>
+      <if test="msgName != null">
+        #{msgName,jdbcType=VARCHAR},
+      </if>
+      <if test="msgCreater != null">
+        #{msgCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="msgCreateTime != null">
+        #{msgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgCreateWard != null">
+        #{msgCreateWard,jdbcType=VARCHAR},
+      </if>
+      <if test="msgStatus != null">
+        #{msgStatus,jdbcType=INTEGER},
+      </if>
+      <if test="areaCoe != null">
+        #{areaCoe,jdbcType=VARCHAR},
+      </if>
+      <if test="msgText != null">
+        #{msgText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateMsgInfo" parameterType="com.leanin.domain.vo.MsgInfoVo">
+    update leanin_msg_info
+    <set>
+      <if test="followFormId != null">
+        follow_form_id = #{followFormId,jdbcType=BIGINT},
+      </if>
+      <if test="msgName != null">
+        msg_name = #{msgName,jdbcType=VARCHAR},
+      </if>
+      <if test="msgCreater != null">
+        msg_creater = #{msgCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="msgCreateTime != null">
+        msg_create_time = #{msgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgCreateWard != null">
+        msg_create_ward = #{msgCreateWard,jdbcType=VARCHAR},
+      </if>
+      <if test="msgStatus != null">
+        msg_status = #{msgStatus,jdbcType=INTEGER},
+      </if>
+      <if test="areaCoe != null">
+        area_coe = #{areaCoe,jdbcType=VARCHAR},
+      </if>
+      <if test="msgText != null">
+        msg_text = #{msgText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where msg_id = #{msgId,jdbcType=VARCHAR}
+  </update>
+</mapper>

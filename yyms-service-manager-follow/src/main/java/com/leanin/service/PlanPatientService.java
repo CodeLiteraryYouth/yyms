@@ -25,7 +25,7 @@ public interface PlanPatientService {
      * @param patientPlanIds
      * @return
      */
-    DataOutResponse delPatientList(List<Long> patientPlanIds);
+    DataOutResponse delPatientList(List<Long> patientPlanIds,Integer planPatsStatus);
 
     /**
      * 导入患者信息

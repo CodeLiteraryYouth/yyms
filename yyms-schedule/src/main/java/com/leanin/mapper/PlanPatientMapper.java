@@ -2,13 +2,16 @@ package com.leanin.mapper;
 
 
 import com.leanin.domain.vo.PlanPatientVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * @author Administrator
  */
+@Mapper
 public interface PlanPatientMapper {
 
     /**

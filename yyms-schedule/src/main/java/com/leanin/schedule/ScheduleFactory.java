@@ -17,6 +17,7 @@ import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Configuration
-@EnableScheduling
+//@EnableScheduling
 @Component
 public class ScheduleFactory {
 
@@ -39,13 +40,19 @@ public class ScheduleFactory {
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
 
-    public SchedulerFactoryBean getSchedulerFactoryBean() {
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         return schedulerFactoryBean;
     }
 
-    public void setSchedulerFactoryBean(SchedulerFactoryBean schedulerFactoryBean) {
-        this.schedulerFactoryBean = schedulerFactoryBean;
-    }
+//    public SchedulerFactoryBean getSchedulerFactoryBean() {
+//        return schedulerFactoryBean;
+//    }
+//
+//    public void setSchedulerFactoryBean(SchedulerFactoryBean schedulerFactoryBean) {
+//        this.schedulerFactoryBean = schedulerFactoryBean;
+//    }
 
     @Autowired
     private ScheduleService scheduleService;
@@ -60,9 +67,9 @@ public class ScheduleFactory {
 
     /**
      * 每隔5s查库，并根据查询结果决定是否重新设置定时任务
-     * @throws Exception
+     * @throws Exception  360000
      */
-    @Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 50000)
     public void scheduleUpdateCronTrigger() throws Exception {
 
         try {

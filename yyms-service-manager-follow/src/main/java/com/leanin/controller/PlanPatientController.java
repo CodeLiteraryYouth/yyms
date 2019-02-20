@@ -44,14 +44,14 @@ public class PlanPatientController {
      * @return
      */
     @GetMapping("delPatientList")
-    public DataOutResponse delPatientList(@RequestParam String patientPlanIds){
+    public DataOutResponse delPatientList(@RequestParam String patientPlanIds,Integer planPatsStatus){
         List<Long> longs1 = JSON.parseArray(patientPlanIds, Long.class);
 //        JSON.parseArray(patientPlanIds, Long[].class);
 //        System.out.println(longs1);
 //        Long[] longs = JSON.parseObject(patientPlanIds, Long[].class);
 //        List<Long> longs = JSON.parseArray(patientPlanIds, Long.class);
 //        Long[] longs=new Long[5];
-        return planPatientService.delPatientList(longs1);
+        return planPatientService.delPatientList(longs1,planPatsStatus);
     }
 
     @PostMapping("addPatientList")

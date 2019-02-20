@@ -2,6 +2,8 @@ package com.leanin.testmodel;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.testmodel.config.RabbitMQConfig;
+import com.leanin.testmodel.service.impl.DiseaseInfoServiceImpl;
+import com.netflix.discovery.converters.Auto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -25,6 +27,9 @@ public class TestService {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    DiseaseInfoServiceImpl diseaseInfoService;
 
     @Test
     public void test(){
@@ -112,6 +117,16 @@ public class TestService {
 //        longs[0]=9L;
 //        String string = JSON.toJSONString(longs);
 //        System.out.println(string);
-        System.out.println((1-2) > 0);
+//        System.out.println((1-2) > 0);
+        try {
+            Class<?> diseaseInfoServiceImpl = Class.forName("com.leanin.testmodel.service.impl.DiseaseInfoServiceImpl");
+            System.out.println(DiseaseInfoServiceImpl.class == diseaseInfoServiceImpl);
+            System.out.println(diseaseInfoServiceImpl);
+            System.out.println(diseaseInfoService.getClass());
+            System.out.println(DiseaseInfoServiceImpl.class);
+            System.out.println(diseaseInfoServiceImpl==diseaseInfoService.getClass());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

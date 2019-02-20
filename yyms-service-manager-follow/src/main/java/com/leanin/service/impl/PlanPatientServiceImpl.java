@@ -9,12 +9,10 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PatientInfoVo;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.domain.vo.PlanPatientRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.exception.ExceptionCast;
-import com.leanin.mapper.PatientInfoMapper;
-import com.leanin.mapper.PlanInfoMapper;
-import com.leanin.mapper.PlanPatientMapper;
-import com.leanin.mapper.RulesInfoMapper;
+import com.leanin.mapper.*;
 import com.leanin.service.PlanPatientService;
 import com.netflix.discovery.converters.Auto;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +48,9 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     @Autowired
     PatientInfoMapper patientInfoMapper;
 
+    @Autowired
+    FollowRecordMapper followRecordMapper;
+
 
 
     @Override
@@ -70,24 +71,32 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if ("null".equals(patientName)){
             patientName=null;
         }
+        HashMap dataMap = new HashMap();
 
         PageHelper.startPage(currentPage, pageSize);
-        Page<PlanPatientVo> page = (Page<PlanPatientVo>) planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
+        if (planPatsStatus < 2){
+            Page<PlanPatientVo> page = (Page<PlanPatientVo>) planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
+            dataMap.put("totalCount",page.getTotal());
+            dataMap.put("list", page.getResult());//
+        }else{
+            Page<PlanPatientRecordVo> page= (Page<PlanPatientRecordVo>) followRecordMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
+            dataMap.put("totalCount",page.getTotal());
+            dataMap.put("list", page.getResult());//
+        }
+        return ReturnFomart.retParam(200, dataMap);
 
-        //封装参数
-        /*unfinishCount;//待随访人数
-        finishCount;//已完成随访人数
-        pastCount;//过期随访人数
-        deadCount;//收案人数*/
-        HashMap dataMap = new HashMap();
+//        //封装参数
+//        /*unfinishCount;//待随访人数
+//        finishCount;//已完成随访人数
+//        pastCount;//过期随访人数
+//        deadCount;//收案人数*/
 //        dataMap.put("unfinishCount", planPatientMapper.findUnfinishCount(planInfo.getPlanNum()));//待随访人数
 //        dataMap.put("finishCount", planPatientMapper.findFinishCount(planInfo.getPlanNum()));//已完成随访人数
 //        dataMap.put("pastCount", planPatientMapper.findPastCount(planInfo.getPlanNum()));//过期随访人数
 //        dataMap.put("deadCount", planPatientMapper.findDeadCount(planInfo.getPlanNum()));//收案人数
-        dataMap.put("totalCount",page.getTotal());
-        dataMap.put("list", page.getResult());//
+
 //        System.out.println("查询的记录数："+page.getResult());
-        return ReturnFomart.retParam(200, dataMap);
+
     }
 
     /**
@@ -96,13 +105,20 @@ public class PlanPatientServiceImpl implements PlanPatientService {
      * @return
      */
     @Override
-    public DataOutResponse delPatientList(List<Long> patientPlanIds) {
+    public DataOutResponse delPatientList(List<Long> patientPlanIds,Integer planPatsStatus) {
         if (patientPlanIds == null || patientPlanIds.size() <=0 ){
             return ReturnFomart.retParam(96, "请选择患者信息再进行删除");
         }
         for (Long patientPlanId : patientPlanIds) {
-            planPatientMapper.updatePatientStatusById(patientPlanId);
+            if (planPatsStatus != null && planPatsStatus < 2){
+                planPatientMapper.updatePatientStatusById(patientPlanId);
+            }else{
+                followRecordMapper.updatePatientStatusById(patientPlanId);
+            }
+
         }
+
+
 
         return ReturnFomart.retParam(200, "删除成功");
     }

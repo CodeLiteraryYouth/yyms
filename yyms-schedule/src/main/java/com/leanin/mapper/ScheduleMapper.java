@@ -1,7 +1,9 @@
 package com.leanin.mapper;
 
 import com.leanin.domain.vo.ScheduleJobVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -9,6 +11,7 @@ import java.util.List;
  * 定时任务调度Mapper
  * @author Administrator
  */
+@Mapper
 public interface ScheduleMapper {
 
     /**

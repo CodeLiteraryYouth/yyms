@@ -2,6 +2,7 @@ package com.leanin.task;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.dto.PlanInfoDto;
+import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.domain.vo.RulesInfoVo;
 import com.leanin.mapper.FollowRecordMapper;
@@ -47,11 +48,6 @@ public class UpdateNextTask implements Job {
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
             int validDays = Integer.parseInt((String) rulesMap.get("validDays"));
-//            String timeNumStr = (String) rulesMap.get("timeNum");
-//            int timeNum = 0;
-//            if (!"".equals(timeNumStr) && timeNumStr != null) {
-//                timeNum = Integer.parseInt(timeNumStr);//
-//            }
 
             int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
             String timeSelect = (String) rulesMap.get("timeSelect");
@@ -71,6 +67,9 @@ public class UpdateNextTask implements Job {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null, null);
+            if (planPatientList.size() == 0){
+                continue;
+            }
             //判断是否完成随访或者已经过期
             for (PlanPatientVo planPatientVo : planPatientList) {
                 Date nextDate = planPatientVo.getNextDate();//随访时间
@@ -102,8 +101,6 @@ public class UpdateNextTask implements Job {
                         break;
                 }
             }
-
-//            }
         }
 
     }
@@ -111,7 +108,7 @@ public class UpdateNextTask implements Job {
     private boolean updateRecord(Integer status,PlanPatientVo planPatientVo,RulesInfoVo rulesInfo,String timeSelect,
                                  Integer timeChoosed,Integer weeks,Integer sendTimeDays,Integer sendTimeMonths){
         //填写失访记录
-        planPatientVo.setPlanPatsStatus(status); //失访
+        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 失访
         followRecordMapper.addFollowRecord(planPatientVo);
         if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
             //计算下次随访时间

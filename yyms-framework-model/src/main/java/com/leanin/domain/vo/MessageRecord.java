@@ -1,0 +1,24 @@
+package com.leanin.domain.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.Date;
+
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class MessageRecord {
+
+    private Long msgSendId;         //主键
+    private String msgSendName;     //发送人
+    private String msgSendWard;     //发送科室
+    private Date msgSendDate;       //发送时间
+    private String msgTitle;        //短信主题
+    private String msgText;         //短信内容
+    private Integer msgSendStatus;  //发送状态
+
+}

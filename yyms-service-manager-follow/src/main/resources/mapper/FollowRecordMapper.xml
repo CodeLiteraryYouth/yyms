@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.FollowRecordMapper">
 
-    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientRecordVo">
         <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
         <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
         <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
         <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
@@ -144,5 +144,27 @@
             </if>
         </trim>
     </insert>
+
+    <select id="findPlanPatientList" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM leanin_follow_record
+        WHERE patient_status = 1
+        <if test="planNum != null ">
+            and plan_num = #{planNum}
+        </if>
+        <if test="planPatsStatus != null ">
+            and plan_pats_status = #{planPatsStatus}
+        </if>
+        <if test="patientName != null ">
+            and patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+    </select>
+
+    <update id="updatePatientStatusById">
+        UPDATE leanin_follow_record
+        SET patient_status = 2
+        WHERE patient_plan_id = #{patientPlanId}
+    </update>
 
 </mapper>

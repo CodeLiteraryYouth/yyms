@@ -61,14 +61,15 @@
             <id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"/>
             <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName"/>
             <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName"/>
+            <result column="rules_info_text" jdbcType="VARCHAR" property="rulesInfoText"/>
         </association>
         <association property="msgInfo" column="msg_id" javaType="com.leanin.domain.vo.MsgInfoVo"
                      select="com.leanin.mapper.MsgInfoMapper.findMsgInfoById">
         </association>
         <!--待完成人数-->
-        <association property="unFinishCount" column="plan_num" javaType="integer"
+        <!--<association property="unFinishCount" column="plan_num" javaType="integer"
                      select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount">
-        </association>
+        </association>-->
     </resultMap>
     <sql id="Base_Column_List">
     plan_num, plan_name, patient_info_source, plan_begin_time, plan_end_time, plan_ward_code, 
@@ -79,10 +80,10 @@
     <sql id="Blob_Column_List">
   	p.plan_num, p.plan_name, p.patient_info_source, p.plan_begin_time, p.plan_end_time, p.plan_ward_code, 
     p.plan_duty_per, p.plan_target, p.plan_send_type, t.form_type_id,t.form_type_name, f.form_num,f.form_name, r.rules_info_id, 
-    r.rules_info_type_name, r.rules_info_name,p.plan_sex, p.plan_age_interval, p.plan_exis_phone, p.plan_type, p.plan_status, p.area_code,p.disease_code,
+    r.rules_info_type_name, r.rules_info_name,r.rules_info_text,p.plan_sex, p.plan_age_interval, p.plan_exis_phone, p.plan_type, p.plan_status, p.area_code,p.disease_code,
     p.pats_ward_code,p.plan_creater,p.create_date,p.import_data,msg_id,msg_type
   </sql>
-    <select id="findPlanList" parameterType="java.lang.String" resultMap="BlobResultMap">
+    <select id="findPlanList" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Blob_Column_List"/>
         from leanin_plan_info p
