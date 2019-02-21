@@ -95,13 +95,16 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 	@Transactional(rollbackFor = Exception.class)
 	public DataOutResponse sendMessage(List<Long> longs,Integer type) {
 		switch (type){
-			case 1://随访 宣教
+			case 1://随访
 				followPlan(longs);
 				break;
-			case 2://满意度
+			case 2://宣教
+				followPlan(longs);
+				break;
+			case 3:// 满意度
 				styPlan(longs);
 				break;
-			case 3:// 短信主题
+			case 4://短信主题
 				msgPlan(longs);
 				break;
 		}
@@ -126,7 +129,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			planPatientMapper.updatePlanPatient(planPatient);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
-					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType()));
+					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId()));
 		}
 	}
 
@@ -144,7 +147,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
-					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3));
+					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId()));
 		}
 	}
 
@@ -163,7 +166,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
-					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4));
+					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId()));
 		}
 	}
 

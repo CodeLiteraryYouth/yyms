@@ -22,5 +22,6 @@ public class MessageRecord {
     private Integer msgSendStatus;  //发送状态
     private String msgThem;         //短信主题
     private Integer planType;       //计划类型
+    private Long patientId;         //患者唯一标记
 
 }

@@ -9,10 +9,11 @@
         <result column="msg_send_num" jdbcType="VARCHAR" property="msgSendNum" />
         <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
         <result column="msg_send_status" jdbcType="INTEGER" property="msgSendStatus" />
+        <result column="patient_id" jdbcType="BIGINT" property="patientId" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status
+        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status,patient_id
     </sql>
 
     <insert id="addMsgRecord">
@@ -42,6 +43,9 @@
             <if test="messageRecord.planType != null">
                 plan_type,
             </if>
+            <if test="messageRecord.patientId != null">
+                patient_id,
+            </if>
         </trim>
         <trim prefix=" value(" suffix=" )" suffixOverrides=",">
             <if test="messageRecord.msgSendName != null">
@@ -67,6 +71,9 @@
             </if>
             <if test="messageRecord.planType != null">
                 #{messageRecord.planType},
+            </if>
+            <if test="messageRecord.patientId != null">
+                #{messageRecord.patientId},
             </if>
         </trim>
     </insert>
