@@ -10,7 +10,8 @@ public enum  PlanPatCode implements ResultCode {
     UNAUTHENTICATED(false,1000,"此操作需要登陆系统！"),
     UNAUTHORISE(false,403,"权限不足，无权操作！"),
     Data_ERROR(false,502,"ji！"),
-    FEIGN_ERROR(false,501,"服务器异常请联系管理员");
+    FEIGN_ERROR(false,501,"服务器异常请联系管理员"),
+    DATA_ERROR(false,503,"数据已存在，无需重复添加");
     //    private static ImmutableMap<Integer, CommonCode> codes ;
     //操作是否成功
     boolean success;

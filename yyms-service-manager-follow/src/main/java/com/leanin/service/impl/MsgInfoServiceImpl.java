@@ -5,12 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.MsgInfoVo;
-import com.leanin.domain.vo.PlanInfoVo;
-import com.leanin.domain.vo.PlanPatientVo;
-import com.leanin.mapper.MsgInfoMapper;
-import com.leanin.mapper.PlanInfoMapper;
-import com.leanin.mapper.PlanPatientMapper;
+import com.leanin.domain.vo.*;
+import com.leanin.mapper.*;
 import com.leanin.service.MsgInfoService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
@@ -19,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +24,28 @@ import java.util.Map;
 public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Autowired
-	private MsgInfoMapper msgInfoMapper;
+	MsgInfoMapper msgInfoMapper;
+
+	@Autowired
+	MsgRecordMapper msgRecordMapper;
 
 	@Autowired
 	PlanPatientMapper planPatientMapper;
 
 	@Autowired
 	PlanInfoMapper planInfoMapper;
+
+	@Autowired
+	SatisfyPlanMapper satisfyPlanMapper;
+
+	@Autowired
+	SatisfyPatientMapper satisfyPatientMapper;
+
+	@Autowired
+	MessageTopicMapper messageTopicMapper;
+
+	@Autowired
+	MessagePatientMapper messagePatientMapper;
 
 	@Override
 	public DataOutResponse findMsgListByTypeId(Integer page, Integer pageSize, Long typeId, String msgName) {
@@ -81,7 +93,23 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataOutResponse sendMessage(List<Long> longs) {
+	public DataOutResponse sendMessage(List<Long> longs,Integer type) {
+		switch (type){
+			case 1://随访 宣教
+				followPlan(longs);
+				break;
+			case 2://满意度
+				styPlan(longs);
+				break;
+			case 3:// 短信主题
+				msgPlan(longs);
+				break;
+		}
+
+		return ReturnFomart.retParam(200, "发送成功");
+	}
+
+	private void  followPlan(List<Long> longs){
 		for (Long aLong : longs) {
 			PlanPatientVo planPatient =planPatientMapper.findPlanPatientById(aLong);
 			PlanInfoVo planInfoVo = planInfoMapper.findPlanInfoById(planPatient.getPlanNum());
@@ -97,8 +125,46 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setSendType(3); //发送失败
 			}
 			planPatientMapper.updatePlanPatient(planPatient);
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
+					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType()));
 		}
-		return ReturnFomart.retParam(200, "发送成功");
+	}
+
+	private void styPlan(List<Long> longs){
+		for (Long aLong : longs) {
+			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
+			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
+			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
+			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText(), satisfyPatientVo.getPatientPhone());
+			String msgStatus = (String) map.get("msg");
+			if (msgStatus.equals("true")){
+				satisfyPatientVo.setSendType(2); //发送成功
+			}else {
+				satisfyPatientVo.setSendType(3); //发送失败
+			}
+			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
+					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3));
+		}
+	}
+
+	private void msgPlan(List<Long> longs){
+		for (Long aLong : longs) {
+			MessagePatientVo messagePatientVo=messagePatientMapper.findById(aLong);
+			MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(messagePatientVo.getMsgTopicId());
+			String content =msgTopic.getMsgTopicHead()+msgTopic.getMsgContent();
+			Map map = CSMSUtils.sendMessage(content,
+					messagePatientVo.getPatientPhone());
+			String msgStatus = (String) map.get("msg");
+			if (msgStatus.equals("true")){
+				messagePatientVo.setSendType(2);//发送成功
+			}else{
+				messagePatientVo.setSendType(3);//发送失败
+			}
+			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
+					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4));
+		}
 	}
 
 }

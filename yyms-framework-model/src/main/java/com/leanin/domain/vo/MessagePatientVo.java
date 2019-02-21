@@ -18,7 +18,7 @@ public class MessagePatientVo {
 	
     private Long patientMsgId;	//病人信息主键
 
-    private String Id;	//短信主题单号
+    private String msgTopicId;	//短信主题单号
 
     private Long patientId;	//病人唯一标识
 
@@ -35,5 +35,7 @@ public class MessagePatientVo {
     private Integer patientType;	//病人来源
 
     private String areaCode;	//院区编码
+
+    private Integer sendType;  //发送状态
 
 }

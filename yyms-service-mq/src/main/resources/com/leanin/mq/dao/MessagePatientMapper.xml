@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leanin.mapper.MessagePatientMapper">
+<mapper namespace="com.leanin.mq.dao.MessagePatientMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessagePatientVo">
     <id column="patient_msg_id" jdbcType="BIGINT" property="patientMsgId" />
     <result column="msg_topic_id" jdbcType="VARCHAR" property="msgTopicId" />
@@ -23,27 +23,6 @@
     <include refid="Base_Column_List" />
     from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
-  </select>
-
-  <select id="findById" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM leanin_msg_patient
-    WHERE patient_msg_id =#{patientMsgId}
-  </select>
-
-  <!--条件查询-->
-  <select id="findList" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM leanin_msg_patient
-    WHERE 1 = 1
-    <if test="patientName != null ">
-      and patient_name LIKE CONCAT('%',#{patientName},'%')
-    </if>
-    <if test="sendType != null ">
-      and send_type = #{sendType}
-    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_msg_patient

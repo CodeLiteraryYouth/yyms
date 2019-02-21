@@ -1,12 +1,12 @@
-package com.leanin.mapper;
+package com.leanin.mq.dao;
 
 
 import com.leanin.domain.vo.MessagePatientVo;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
+@Mapper
 public interface MessagePatientMapper {
+
     int deleteByPrimaryKey(Long patientMsgId);
 
     int insert(MessagePatientVo record);
@@ -18,8 +18,4 @@ public interface MessagePatientMapper {
     int updateByPrimaryKeySelective(MessagePatientVo record);
 
     int updateByPrimaryKey(MessagePatientVo record);
-
-    List<MessagePatientVo> findList(@Param("patientName") String patientName,@Param("sendType") Integer sendType);
-
-    MessagePatientVo findById(@Param("patientMsgId") Long patientMsgId);
 }

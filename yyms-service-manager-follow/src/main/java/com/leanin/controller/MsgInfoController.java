@@ -48,8 +48,8 @@ public class MsgInfoController {
 
 	//手动发送短信
 	@GetMapping("sendMessage")
-	public DataOutResponse sendMessage(@RequestParam("patientPlanIds") String patientPlanIds){
+	public DataOutResponse sendMessage(@RequestParam("patientPlanIds") String patientPlanIds,@RequestParam("plantype") Integer type){
 		List<Long> longs = JSON.parseArray(patientPlanIds, Long.class);
-		return msgInfoService.sendMessage(longs);
+		return msgInfoService.sendMessage(longs,type);
 	}
 }

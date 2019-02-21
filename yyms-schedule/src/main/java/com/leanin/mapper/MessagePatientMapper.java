@@ -19,7 +19,5 @@ public interface MessagePatientMapper {
 
     int updateByPrimaryKey(MessagePatientVo record);
 
-    List<MessagePatientVo> findList(@Param("patientName") String patientName,@Param("sendType") Integer sendType);
-
-    MessagePatientVo findById(@Param("patientMsgId") Long patientMsgId);
+    List<MessagePatientVo> findList(@Param("patientName") String patientName, @Param("sendType") Integer sendType);
 }

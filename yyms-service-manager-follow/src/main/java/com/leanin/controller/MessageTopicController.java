@@ -24,10 +24,10 @@ public class MessageTopicController {
 		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName);
 	}
 	
-	@GetMapping("udpateTopicStatus")
-	public DataOutResponse udpateTopicStatus(@RequestParam String msgTopicId,@RequestParam int status) {
-		return messageTopicService.updateTopicStatus(msgTopicId, status);
-	}
+//	@GetMapping("udpateTopicStatus")
+//	public DataOutResponse udpateTopicStatus(@RequestParam String msgTopicId,@RequestParam int status) {
+//		return messageTopicService.updateTopicStatus(msgTopicId, status);
+//	}
 	
 	@PostMapping("addMsgTopic")
 	public DataOutResponse addMsgTopic(@RequestBody MessageTopicVo messageTopic) {

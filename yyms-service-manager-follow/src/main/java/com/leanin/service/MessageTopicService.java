@@ -17,7 +17,7 @@ public interface MessageTopicService {
 	 * @param status
 	 * @return
 	 */
-	DataOutResponse updateTopicStatus(String msgTopicId, int status);
+//	DataOutResponse updateTopicStatus(String msgTopicId, int status);
 
     /**
      * 增加短信主题信息

@@ -24,14 +24,6 @@
     from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </select>
-
-  <select id="findById" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM leanin_msg_patient
-    WHERE patient_msg_id =#{patientMsgId}
-  </select>
-
   <!--条件查询-->
   <select id="findList" resultMap="BaseResultMap">
     SELECT

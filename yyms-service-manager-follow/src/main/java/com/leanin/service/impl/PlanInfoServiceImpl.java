@@ -159,23 +159,6 @@ public class PlanInfoServiceImpl implements PlanInfoService {
 //                int i = 0;
 //                Map paramMap = new HashMap();
                 Map datamap = null;
-//                paramMap.put("pageSize", 100);//每页展示数据
-//                paramMap.put("patsWardCode", patsWardCodeList);//随访科室编码
-//                paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
-//                paramMap.put("planSex", planResult.getPlanSex());//病人性别 1男 2女
-//                paramMap.put("beginDate",planResult.getPlanBeginTime());//开始区间
-//                paramMap.put("endDate",planResult.getPlanEndTime());//结束区间
-//
-//                String planAgeInterval = planResult.getPlanAgeInterval();
-//                if (planAgeInterval != null) {//年龄区间
-//                    String[] split = planAgeInterval.split(",");
-//                    paramMap.put("startAge", split[0]);
-//                    paramMap.put("endAge", split[1]);
-//                }
-//                paramMap.put("planExisPhone", planResult.getPlanExisPhone());//有无联系方式 1有 2无
-//                while (true) {
-//                    i++;
-//                    paramMap.put("currentPage", i);
                 datamap = managerPatientClient.findOutHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");

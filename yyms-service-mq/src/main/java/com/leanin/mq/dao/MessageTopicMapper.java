@@ -1,11 +1,11 @@
-package com.leanin.mapper;
+package com.leanin.mq.dao;
 
-
-import java.util.List;
 
 import com.leanin.domain.vo.MessageTopicVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 短信主题的Mapper

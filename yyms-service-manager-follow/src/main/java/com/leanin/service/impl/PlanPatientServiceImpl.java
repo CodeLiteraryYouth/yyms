@@ -74,7 +74,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         HashMap dataMap = new HashMap();
 
         PageHelper.startPage(currentPage, pageSize);
-        if (planPatsStatus < 2){
+        if (planPatsStatus == null || planPatsStatus == -1 || planPatsStatus ==0 || planPatsStatus == 1){
             Page<PlanPatientVo> page = (Page<PlanPatientVo>) planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
             dataMap.put("totalCount",page.getTotal());
             dataMap.put("list", page.getResult());//

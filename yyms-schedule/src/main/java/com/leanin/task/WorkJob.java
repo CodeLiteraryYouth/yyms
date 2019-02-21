@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
@@ -39,9 +38,47 @@ public class WorkJob {
     @Autowired
     SatisfyPatientMapper satisfyPatientMapper;
 
+    @Autowired
+    MsgRecordMapper msgRecordMapper;
+
+    @Autowired
+    MessageTopicMapper messageTopicMapper;
+
+    @Autowired
+    MessagePatientMapper messagePatientMapper;
+
+
+    //短信主题发送短信
+    @Scheduled(cron = "0 0/3 * * * ? ")
+    @Transactional(rollbackFor = Exception.class)
+    public void messagePlan(){
+        List<MessageTopicVo> messageTopicVos = messageTopicMapper.findMsgTopicList(null);
+        for (MessageTopicVo messageTopicVo : messageTopicVos) {
+            List<MessagePatientVo> messagePatientVos = messagePatientMapper.findList(null, 1);
+            if (messagePatientVos.size() == 0){
+                continue;
+            }
+            for (MessagePatientVo messagePatientVo : messagePatientVos) {
+                String content=messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
+                Map map = CSMSUtils.sendMessage(content,
+                        messagePatientVo.getPatientPhone());
+                String msgStatus = (String) map.get("msg");
+                if (msgStatus.equals("true")){
+                    messagePatientVo.setSendType(2);//发送成功
+                }else{
+                    messagePatientVo.setSendType(3);//发送失败
+                }
+                messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
+                msgRecordMapper.addMsgRecord(new MessageRecord(null,messageTopicVo.getMsgTopicCreater(),messageTopicVo.getMsgTopicCreaterWard(),
+                        new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),messageTopicVo.getMsgTopicTitle(),4));
+            }
+
+        }
+    }
+
     //随访 满意度 发送短信
-//    @Scheduled(cron = "0 0/2 * * * ? ")
-//    @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Transactional(rollbackFor = Exception.class)
     public void followPlan() {
         log.info("开始推送消息");
         //查询计划列表信息
@@ -93,6 +130,8 @@ public class WorkJob {
         } else {
             patientDto.setSendType(3); //发送失败
         }
+        msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfo.getPlanDutyPer(),planInfo.getPlanWardCode(),new Date(),
+                patientDto.getPatientPhone(),msg,patientDto.getSendType(),null,planInfo.getPlanType()));
         planPatientMapper.updatePlanPatient(patientDto);
     }
 
@@ -115,20 +154,20 @@ public class WorkJob {
             //判断患者信息是否处于 未发送的状态
             switch (planVo.getDiscoverType()){
                 case 1 : //短信或者app
-                    sendMsg(list,msgInfo.getMsgText(),rangeDays);
+                    sendMsg(planVo,list,msgInfo.getMsgText(),rangeDays);
                     break;
                 case 2 : //app
                     break;
                 case 3 : //短信
                     //执行相关发送操作
-                    sendMsg(list,msgInfo.getMsgText(),rangeDays);
+                    sendMsg(planVo,list,msgInfo.getMsgText(),rangeDays);
                     break;
             }
         }
     }
 
     //发送短信操作  修改数据状态
-    private void sendMsg(List<SatisfyPatientVo> list,String msgText,Integer rangeDays){
+    private void sendMsg(SatisfyPlanVo satisfyPlanVo,List<SatisfyPatientVo> list,String msgText,Integer rangeDays){
         //判断是否过期
         for (SatisfyPatientVo satisfyPatientVo : list) {
             int days = (int) ((System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime()) / (1000*3600 * 24));
@@ -144,6 +183,8 @@ public class WorkJob {
                         }else{
                             satisfyPatientVo.setSendType(3); //发送失败
                         }
+                        msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlanVo.getDiscoverPerson(),satisfyPlanVo.getSatisfyPlanWard(),new Date(),
+                                satisfyPatientVo.getPatientPhone(),msgText,satisfyPatientVo.getSendType(),null,3));
                     }
                 }
                 satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
@@ -151,8 +192,8 @@ public class WorkJob {
         }
     }
 
-//    @Scheduled(cron = "0 0/2 * * * ? ")
-//    @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Transactional(rollbackFor = Exception.class)
     public void updateNextTime() {
         log.info("更新下次随访时间");
         List<PlanInfoDto> planInfoDtos = planInfoMapper.findAllPlan();

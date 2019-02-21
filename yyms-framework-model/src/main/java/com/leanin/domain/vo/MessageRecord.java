@@ -17,8 +17,10 @@ public class MessageRecord {
     private String msgSendName;     //发送人
     private String msgSendWard;     //发送科室
     private Date msgSendDate;       //发送时间
-    private String msgTitle;        //短信主题
+    private String msgSendNum;      //被发送人手机号
     private String msgText;         //短信内容
     private Integer msgSendStatus;  //发送状态
+    private String msgThem;         //短信主题
+    private Integer planType;       //计划类型
 
 }

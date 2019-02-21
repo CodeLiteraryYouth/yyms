@@ -38,67 +38,49 @@ public class PlanPatientMQ {
     @Autowired
     SatisfyPatientMapper satisfyPatientMapper;
 
-    //监听短信消息队列
+    @Autowired
+    MessageTopicMapper messageTopicMapper;
+
+    @Autowired
+    MessagePatientMapper messagePatientMapper;
+
+
+    //监听短信主题消息队列
     @RabbitListener(queues = RabbitMQConfig.QUEUE_SEND_NAME)
     @Transactional(rollbackFor = Exception.class)
-    public void msgQueue(String planPatientListStr){
-        List<PlanPatientVo> planPatientList = JSON.parseArray(planPatientListStr, PlanPatientVo.class);
-        for (PlanPatientVo planPatientVo : planPatientList) {//修改随访状态
-            Long rulesInfoId = planPatientVo.getRulesInfoId();
-            RulesInfoVo rules = rulesInfoMapper.findRulesById(rulesInfoId);
-//            获取规则
-            String rulesInfoText = rules.getRulesInfoText();
-            Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);//获取规则
-            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            String timeNumStr = (String) rulesMap.get("timeNum");
-            int timeNum = 0;
-            if (!"".equals(timeNumStr) && timeNumStr != null) {
-                timeNum = Integer.parseInt(timeNumStr);//
-            }
-
-            int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
-//            int timeChoosed = (int) rulesMap.get("timeChoosed"); //1 6:00， 2 7:00 一次后推直到 16 21:00
-            String timeSelect = (String) rulesMap.get("timeSelect");
-            Date timePick = null;
-            Object timePick1 = rulesMap.get("timePick");
-            if (!"".equals(timePick1) && timePick1 != null) {
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    timePick = sf.parse((String) timePick1);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            String weeks1 = (String) rulesMap.get("weeks");
-            int weeks = 0;
-            if (!"".equals(weeks1) && weeks1 != null) {
-                weeks = Integer.parseInt(weeks1);
-            }
-            String sendTimeDays1 = (String) rulesMap.get("sendTimeDays");
-            int sendTimeDays = 0;
-            if (!"".equals(sendTimeDays1) && sendTimeDays1 != null) {
-                sendTimeDays = Integer.parseInt(sendTimeDays1);
-            }
-            String sendTimeMonths1 = (String) rulesMap.get("sendTimeMonths");
-            int sendTimeMonths = 0;
-            if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
-                sendTimeMonths = Integer.parseInt(sendTimeMonths1);
-            }
-            if (rules.getRulesInfoTypeName() == 1){//如果是定期随访的话  修改 随访时间
-                Date nextDate = setNextDate(planPatientVo.getNextDate(),timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
-                //修改下次随访时间
-                planPatientVo.setNextDate(nextDate);
-            }
-            if(planPatientVo.getSendType() == 2){//如果发送成功
-                planPatientVo.setPlanPatsStatus(1);//修改成 待随访状态
-//                planPatientVo.setSendType(1); // 重新设置成未发送状态
-            }
-            //修改计划患者随访状态
-            planPatientMapper.updatePlanPatient(planPatientVo);
-//            planPatientMapper.updateFollowType(planPatientVo.getPatientPlanId());
-//            planPatientMapper.updatePatientStatus(planPatientVo.getPatientPlanId(),1);
-
+    public void msgQueue(String msgTopicId){
+        MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(msgTopicId);
+        List<Map> list = (List<Map>) redisTemplate.boundHashOps("msgPlan").get(msgTopic.getMsgTopicId());
+        MessagePatientVo messagePatientVo =new MessagePatientVo();
+        for (Map map : list) {
+            messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());//设置短信主题计划id
+            Long patientId = Long.parseLong(map.get("patientId").toString());
+            messagePatientVo.setPatientId(patientId);//患者id
+            String patientName = (String) map.get("patientName");
+            messagePatientVo.setPatientName(patientName);//患者姓名
+            Integer patientSex = (Integer) map.get("patientSex");
+            messagePatientVo.setPatientSex(patientSex);//设置病人性别
+            Integer patientAge = (Integer) map.get("patientAge");
+            messagePatientVo.setPatientAge(patientAge);//设置病人年龄
+            String patientPhone = (String) map.get("patientPhone");
+            messagePatientVo.setPatientPhone(patientPhone);//设置病人手机号码
+//            satisfyPatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
+//            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
+//                String patientCondition = (String) map.get("patientCondition");
+//                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
+//            satisfyPatientVo.setPatientDiagous(satisfyPlan.getDiseaseName());//设置病人诊断  可能是集合
+            messagePatientVo.setPatientType(msgTopic.getPatientType());//设置病人来源   可能是集合
+//                String areaCode = (String) map.get("areaCode");
+//                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
+//            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
+            messagePatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
+//            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
+//            messagePatientVo.setPatientIdCard();//身份证号
+//            messagePatientVo.setAreaCode();//设置院区编码
+            messagePatientMapper.insertSelective(messagePatientVo);
         }
+        Long delete = redisTemplate.boundHashOps("msgPlan").delete(msgTopic.getMsgTopicId());
+
     }
 
     //满意度监听队列

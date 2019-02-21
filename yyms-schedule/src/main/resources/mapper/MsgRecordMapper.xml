@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.MsgRecordMapper">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessageRecord">
+        <id column="msg_send_id" jdbcType="BIGINT" property="msgSendId" />
+        <result column="msg_send_name" jdbcType="VARCHAR" property="msgSendName" />
+        <result column="msg_send_ward" jdbcType="VARCHAR" property="msgSendWard" />
+        <result column="msg_send_date" jdbcType="TIMESTAMP" property="msgSendDate" />
+        <result column="msg_send_num" jdbcType="VARCHAR" property="msgSendNum" />
+        <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
+        <result column="msg_send_status" jdbcType="INTEGER" property="msgSendStatus" />
+        <result column="msg_them" jdbcType="VARCHAR" property="msgThem" />
+        <result column="plan_type" jdbcType="INTEGER" property="planType" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,
+        msg_text,msg_send_status,msg_them,plan_type
+    </sql>
+
+    <insert id="addMsgRecord">
+        INSERT INTO leanin_msg_send_record
+        <trim prefix=" ( " suffix=" ) " suffixOverrides=",">
+            <if test="messageRecord.msgSendName != null">
+                msg_send_name,
+            </if>
+            <if test="messageRecord.msgSendWard != null ">
+                msg_send_ward,
+            </if>
+            <if test="messageRecord.msgSendDate != null">
+                msg_send_date,
+            </if>
+            <if test="messageRecord.msgSendNum != null">
+                msg_send_num,
+            </if>
+            <if test="messageRecord.msgText != null">
+                msg_text,
+            </if>
+            <if test="messageRecord.msgSendStatus != null">
+                msg_send_status,
+            </if>
+            <if test="messageRecord.msgThem != null">
+                msg_them,
+            </if>
+            <if test="messageRecord.planType != null">
+                plan_type,
+            </if>
+        </trim>
+        <trim prefix=" value(" suffix=" )" suffixOverrides=",">
+            <if test="messageRecord.msgSendName != null">
+                #{messageRecord.msgSendName},
+            </if>
+            <if test="messageRecord.msgSendWard != null ">
+                #{messageRecord.msgSendWard},
+            </if>
+            <if test="messageRecord.msgSendDate != null">
+                #{messageRecord.msgSendDate},
+            </if>
+            <if test="messageRecord.msgSendNum != null">
+                #{messageRecord.msgSendNum},
+            </if>
+            <if test="messageRecord.msgText != null">
+                #{messageRecord.msgText},
+            </if>
+            <if test="messageRecord.msgSendStatus != null">
+                #{messageRecord.msgSendStatus},
+            </if>
+            <if test="messageRecord.msgThem != null">
+                #{messageRecord.msgThem},
+            </if>
+            <if test="messageRecord.planType != null">
+                #{messageRecord.planType},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>
