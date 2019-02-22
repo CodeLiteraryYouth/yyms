@@ -16,9 +16,10 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EntityScan("com.leanin.domain")    //扫描实体类的包
-@MapperScan("com.leanin.mapper")	//扫描mapper包
+@MapperScan("com.leanin.oauth.mapper")	//扫描mapper包
 @ComponentScan("com.leanin.utils") //扫描工具类
 @ComponentScan("com.leanin.api") //扫描工具类
+@ComponentScan("com.leanin.oauth") //
 public class OauthApplication {
     public static void main(String[] args) {
         SpringApplication.run(OauthApplication.class, args);

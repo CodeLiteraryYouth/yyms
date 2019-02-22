@@ -1,35 +1,22 @@
 package com.leanin.task;
 
 import com.alibaba.fastjson.JSON;
-import com.leanin.config.RabbitMQConfig;
+import com.leanin.oauth.config.RabbitMQConfig;
 import com.leanin.domain.dto.PlanInfoDto;
-import com.leanin.domain.response.DataOutResponse;
-import com.leanin.domain.vo.MsgInfoVo;
-import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.PlanPatientVo;
-import com.leanin.feign.PlanPatientFeign;
 //import com.leanin.mq.config.RabbitMQConfig;
 import com.leanin.mapper.MsgInfoMapper;
 import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.utils.CSMSUtils;
-import com.leanin.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import javax.naming.Name;
 import java.util.List;
 import java.util.Map;
 

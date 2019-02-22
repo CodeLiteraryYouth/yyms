@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.leanin.domain.vo.ScheduleJobVo;
-import com.leanin.service.ScheduleService;
+import com.leanin.oauth.service.ScheduleService;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;

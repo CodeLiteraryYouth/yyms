@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.oauth.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.dto.RoleInfoDto">
+    <id column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+    <result column="role_create_time" jdbcType="TIMESTAMP" property="roleCreateTime" />
+    <result column="role_creater" jdbcType="VARCHAR" property="roleCreater" />
+    <result column="role_status" jdbcType="INTEGER" property="roleStatus" />
+    <result column="role_remark" jdbcType="VARCHAR" property="roleRemark" />
+    <result column="hospital_area_code" jdbcType="VARCHAR" property="hospitalAreaCode" />
+    <collection property="menuList" column="role_id" ofType="com.leanin.domain.vo.MenuPermissionVo"
+                select="com.leanin.mapper.MenuMapper.findListByRoleId">
+        <!--<id column="id" jdbcType="BIGINT" property="id" />
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+        <result column="menu_pid" jdbcType="BIGINT" property="menuPid" />
+        <result column="menu_remark" jdbcType="VARCHAR" property="menuRemark" />
+        <result column="menu_createtime" jdbcType="DATE" property="menuCreatetime" />
+        <result column="menu_isDelete" jdbcType="BIGINT" property="menuIsdelete" />
+        <result column="menu_state" jdbcType="BIGINT" property="menuState" />
+        <result column="menu_type" jdbcType="BIGINT" property="menuType" />
+        <result column="menu_identify" jdbcType="VARCHAR" property="menuIdentify" />
+        <result column="menu_sort" jdbcType="BIGINT" property="menuSort" />
+        <result column="menu_ico" jdbcType="VARCHAR" property="menuIco" />
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />-->
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    role_id, role_name, role_desc, role_create_time, role_creater,
+    role_status, role_remark,hospital_area_code
+  </sql>
+  <!--<sql id="Base_Column_List">
+    r.role_id, r.role_name, r.role_desc, r.role_create_time, r.role_creater, r.role_status, r.role_remark,
+    r.hospital_area_code,m.id,m.menu_name,m.menu_pid,m.menu_remark,m.menu_createtime,m.menu_isDelete,m.menu_state,
+    m.menu_type,m.menu_identify,m.menu_sort,m.menu_ico,m.menu_url
+  </sql>-->
+  <select id="findRoleList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leanin_role r
+    where r.role_status>=0
+    <if test="roleId != null">
+      and r.role_name like CONCAT('%',#{roleName},'%')
+    </if>
+  </select>
+  <select id="findRoleByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_role r
+    left join leanin_role_menu_permission rm on r.role_id=rm.role_id
+    left join leanin_menu_permissions m on rm.menu_id=m.id
+    where r.role_status>=0 and  r.role_name=#{roleName}
+  </select>
+  <select id="findRoleById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_role r
+    left join leanin_role_menu_permission rm on r.role_id=rm.role_id
+    left join leanin_menu_permissions m on rm.menu_id=m.id
+    where r.role_status>=0 and  r.role_id=#{roleId}
+  </select>
+
+  <!--根据用户id查询 角色信息-->
+  <select id="findRoleListByUserId" resultType="com.leanin.domain.dto.RoleInfoDto">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM leanin_role
+    WHERE role_id IN (
+      SELECT r.role_id
+      FROM leanin_user_role r
+      WHERE r.user_id = #{userId}
+    )
+  </select>
+
+  <insert id="addRoleInfo" parameterType="com.leanin.domain.vo.RoleInfoVo">
+    insert into leanin_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleDesc != null">
+        role_desc,
+      </if>
+      <if test="roleCreateTime != null">
+        role_create_time,
+      </if>
+      <if test="roleCreater != null">
+        role_creater,
+      </if>
+      <if test="roleStatus != null">
+        role_status,
+      </if>
+      <if test="roleRemark != null">
+        role_remark,
+      </if>
+      <if test="hospitalAreaCode != null">
+        hospital_area_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCreateTime != null">
+        #{roleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleCreater != null">
+        #{roleCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="roleStatus != null">
+        #{roleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="roleRemark != null">
+        #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalAreaCode != null">
+        #{hospitalAreaCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addRoleMenu" >
+    insert into leanin_role_menu_permission(role_id,menu_id) values(#{roleId},#{menuId})
+  </insert>
+  <update id="updateRoleInfo" parameterType="com.leanin.domain.vo.RoleInfoVo">
+    update leanin_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCreateTime != null">
+        role_create_time = #{roleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleCreater != null">
+        role_creater = #{roleCreater,jdbcType=VARCHAR},
+      </if>
+      <if test="roleStatus != null">
+        role_status = #{roleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="roleRemark != null">
+        role_remark = #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalAreaCode != null">
+        hospital_area_code = #{hospitalAreaCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateRoleMenu">
+     update leanin_role_menu_permission
+     set menu_id=#{menuId}
+     where role_id=#{roleId}
+  </update>
+</mapper>

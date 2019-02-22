@@ -23,7 +23,7 @@ public class WebLogAspect {
 
 	private static final Logger logger= LoggerFactory.getLogger(WebLogAspect.class);
 	
-	@Pointcut("execution(public * com.leanin.controller.*.*(..))")
+	@Pointcut("execution(public * com.leanin.oauth.controller.*.*(..))")
 	public void webLog() {		
 	}
 	
