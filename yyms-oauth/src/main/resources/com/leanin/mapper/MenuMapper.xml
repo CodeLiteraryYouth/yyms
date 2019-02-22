@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leanin.mapper.MenuPermissionMapper">
+<mapper namespace="com.leanin.mapper.MenuMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.dto.MenuPermissionDto">
       <id column="id" jdbcType="BIGINT" property="id" />
       <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
       <result column="menu_pid" jdbcType="BIGINT" property="menuPid" />
       <result column="menu_remark" jdbcType="VARCHAR" property="menuRemark" />
-      <result column="menu_createtime" jdbcType="DATE" property="menuCreatetime" />
-      <result column="menu_isDelete" jdbcType="BIGINT" property="menuIsdelete" />
+      <result column="menu_createtime" jdbcType="DATE" property="menuCreateTime" />
+      <result column="menu_isDelete" jdbcType="BIGINT" property="isDlete" />
       <result column="menu_state" jdbcType="BIGINT" property="menuState" />
       <result column="menu_type" jdbcType="BIGINT" property="menuType" />
       <result column="menu_identify" jdbcType="VARCHAR" property="menuIdentify" />

@@ -25,7 +25,7 @@
   <sql id="Base_Column_List">
     u.admin_id, u.admin_name, u.admin_work_num, u.admin_password, u.admin_ward_code, u.admin_job_title,
     u.admin_desc, u.admin_phone, u.area_code, u.admin_id_card,u.admin_sex,u.admin_birthday,u.organ_attri,
-    u.remark,r.role_id,r.role_name,r.role_desc
+    u.remark,u.admin_state,r.role_id,r.role_name,r.role_desc
   </sql>
   <select id="findUserByUserCode" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select 
@@ -38,7 +38,7 @@
         and u.admin_work_num = #{userCode}
     </if>
   </select>
-  <select id="findUserById" parameterType="java.lang.Lang" resultMap="BaseResultMap">
+  <select id="findUserById" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"></include>
     from leanin_admin_user u

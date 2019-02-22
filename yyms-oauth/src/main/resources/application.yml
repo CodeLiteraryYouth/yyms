@@ -1,19 +1,19 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.103:50101/eureka/,http://192.168.0.103:50102/eureka/
+      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
 spring:
   application:
     name: yyms-oauth
   profiles:
-      active: ${SPRING_PROFILES_ACTIVE:dev}
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
-       username: root
-       password: 123456
-       driver-class-name: com.mysql.jdbc.Driver
-       url: jdbc:mysql://localhost:3306/leanin_follow
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.102:3306/leanin_follow
   redis:
-    host: 192.168.0.137
+    host: 192.168.0.102
     port: 6379
     jedis:
       pool:
@@ -23,6 +23,6 @@ spring:
         max-wait: -1ms
 server:
   port: 5000
-  servlet:
-    context-path: /auth
+#  servlet:
+#    context-path: /auth
 

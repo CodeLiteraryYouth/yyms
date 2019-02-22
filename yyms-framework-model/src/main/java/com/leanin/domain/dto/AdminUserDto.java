@@ -21,7 +21,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminUserDto implements UserDetails {
+public class AdminUserDto /*implements UserDetails*/ {
 
 	private Long adminId;	//管理员ID
 	
@@ -53,7 +53,9 @@ public class AdminUserDto implements UserDetails {
 
 	private List<RoleInfoDto> roleList;	//该用户的角色信息
 
-	@Override
+
+
+	/*@Override
 	public Set<GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		for (RoleInfoDto role : this.roleList) {
@@ -87,5 +89,5 @@ public class AdminUserDto implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
+	}*/
 }

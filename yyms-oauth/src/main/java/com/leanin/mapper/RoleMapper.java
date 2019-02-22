@@ -3,12 +3,14 @@ package com.leanin.mapper;
 import com.leanin.domain.dto.RoleInfoDto;
 import com.leanin.domain.vo.RoleInfoVo;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author Administrator
  */
+@Mapper
 public interface RoleMapper {
 
     /**

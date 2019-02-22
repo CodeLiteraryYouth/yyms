@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
  * 用户Service
  * @author Administrator
  */
-@Service
-public class AdminUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserMapper userMapper;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AdminUserDto user = userMapper.findUserByUserCode(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return user;
-    }
+//@Service
+public class AdminUserDetailsService /*implements UserDetailsService*/ {
+//    @Autowired
+//    private UserMapper userMapper;
+//
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        AdminUserDto user = userMapper.findUserByUserCode(username);
+//        if (user == null) {
+//            throw new UsernameNotFoundException(username);
+//        }
+//        return user;
+//    }
 }

@@ -3,6 +3,7 @@ package com.leanin.mapper;
 import com.leanin.domain.dto.MenuPermissionDto;
 import com.leanin.domain.vo.MenuPermissionVo;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 菜单Mapper
  * @author Administrator
  */
+@Mapper
 public interface MenuMapper {
 
     /**
