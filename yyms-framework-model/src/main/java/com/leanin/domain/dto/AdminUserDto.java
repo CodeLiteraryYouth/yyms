@@ -53,6 +53,8 @@ public class AdminUserDto /*implements UserDetails*/ {
 
 	private List<RoleInfoDto> roleList;	//该用户的角色信息
 
+	private List<MenuPermissionVo> menuPermissionVoList; //权限集合
+
 
 
 	/*@Override

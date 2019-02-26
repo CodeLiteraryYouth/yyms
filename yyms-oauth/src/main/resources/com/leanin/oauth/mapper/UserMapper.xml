@@ -17,7 +17,7 @@
     <result column="organ_attri" jdbcType="VARCHAR" property="organAscri" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <collection property="roleList" column="admin_id" ofType="com.leanin.domain.dto.RoleInfoDto"
-                select="com.leanin.mapper.RoleMapper.findRoleListByUserId">
+                select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
       <!--<id column="role_id" jdbcType="BIGINT" property="roleId" />
       <result column="role_name" jdbcType="VARCHAR" property="roleName" />
       <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />-->
@@ -50,16 +50,16 @@
       and admin_id=#{userId}
     </if>
   </select>
-  <select id="findUserList" resultMap="BaseResultMap">
+  <select id="findUserList" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List"></include>
     from leanin_admin_user
     where admin_state =0
-    <if test="adminName != null">
-      and admin_name like CONCAT('%'#{adminName},'%'}
+    <if test="arg0 != null">
+      and admin_name like CONCAT('%'#{arg0},'%'}
     </if>
-    <if test="adminWorkNum != null">
-      and admin_work_num =#{adminWorkNum}
+    <if test="arg1 != null">
+      and admin_work_num =#{arg1}
     </if>
   </select>
   <insert id="addUserInfo" parameterType="com.leanin.domain.vo.AdminUserVo">

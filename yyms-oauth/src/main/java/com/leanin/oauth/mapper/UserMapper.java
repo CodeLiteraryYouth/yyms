@@ -32,7 +32,7 @@ public interface UserMapper {
      * @param
      * @return
      */
-    List<AdminUserDto> findUserList(@Param("adminName") String adminName, @Param("adminWorkNum") String adminWorkNum);
+    List<AdminUserDto> findUserList( String adminName,  String adminWorkNum);
 
     /**
      * 添加用户信息

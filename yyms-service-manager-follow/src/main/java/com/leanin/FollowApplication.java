@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients //开始feignClient
 @EnableDiscoveryClient
 @EnableEurekaClient
-//@EnableHystrixDashboard
 @EnableHystrix
 @ComponentScan("com.leanin.domain")	//扫描model包
 @MapperScan("com.leanin.mapper")	//扫描mapper包

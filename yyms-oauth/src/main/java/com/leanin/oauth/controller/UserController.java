@@ -25,6 +25,7 @@ public class UserController {
     @GetMapping("findUserList")
     public DataOutResponse findUserList(@RequestParam int page,@RequestParam int pageSize,
                                         @RequestParam(required = false) String adminName,@RequestParam(required = false) String adminWorkNum) {
+        System.out.println(adminName);
         return userService.findUserList(page,pageSize,adminName,adminWorkNum);
     }
 

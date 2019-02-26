@@ -1,7 +1,7 @@
 package com.leanin.task;
 
 import com.alibaba.fastjson.JSON;
-import com.leanin.oauth.config.RabbitMQConfig;
+import com.leanin.config.RabbitMQConfig;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.PlanPatientVo;
 //import com.leanin.mq.config.RabbitMQConfig;
