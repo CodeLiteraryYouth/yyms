@@ -1,219 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.oauth.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.dto.AdminUserDto">
-    <id column="admin_id" jdbcType="BIGINT" property="adminId" />
-    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
-    <result column="admin_work_num" jdbcType="VARCHAR" property="workNum" />
-    <result column="admin_password" jdbcType="VARCHAR" property="password" />
-    <result column="admin_ward_code" jdbcType="VARCHAR" property="wardCode" />
-    <result column="admin_job_title" jdbcType="VARCHAR" property="jobTitle" />
-    <result column="admin_desc" jdbcType="VARCHAR" property="adminDesc" />
-    <result column="admin_phone" jdbcType="VARCHAR" property="phone" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="admin_id_card" jdbcType="VARCHAR" property="idCard" />
-    <result column="admin_sex" jdbcType="INTEGER" property="sex" />
-    <result column="admin_birthday" jdbcType="VARCHAR" property="birthday" />
-    <result column="organ_attri" jdbcType="VARCHAR" property="organAscri" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <collection property="roleList" column="admin_id" ofType="com.leanin.domain.dto.RoleInfoDto"
-                select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
-      <!--<id column="role_id" jdbcType="BIGINT" property="roleId" />
-      <result column="role_name" jdbcType="VARCHAR" property="roleName" />
-      <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />-->
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List">
-    admin_id,admin_name,admin_work_num,admin_password,admin_ward_code,admin_job_title,admin_desc,
-    admin_phone,area_code,admin_id_card,admin_sex,admin_birthday,organ_attri,remark
-  </sql>
-  <!--<sql id="Blob_Column_List">
-    u.admin_id, u.admin_name, u.admin_work_num, u.admin_password, u.admin_ward_code, u.admin_job_title,
-    u.admin_desc, u.admin_phone, u.area_code, u.admin_id_card,u.admin_sex,u.admin_birthday,u.organ_attri,
-    u.remark,u.admin_state,r.role_id,r.role_name,r.role_desc
-  </sql>-->
-  <select id="findUserByUserCode" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select 
-  	<include refid="Base_Column_List"></include>
-  	from leanin_admin_user
-  	where u.admin_state = 0
-  	<if test="userCode != null">
-        and u.admin_work_num = #{userCode}
-    </if>
-  </select>
-  <select id="findUserById" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"></include>
-    from leanin_admin_user
-    where admin_state =0
-    <if test="userId != null">
-      and admin_id=#{userId}
-    </if>
-  </select>
-  <select id="findUserList" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    <include refid="Base_Column_List"></include>
-    from leanin_admin_user
-    where admin_state =0
-    <if test="arg0 != null">
-      and admin_name like CONCAT('%'#{arg0},'%'}
-    </if>
-    <if test="arg1 != null">
-      and admin_work_num =#{arg1}
-    </if>
-  </select>
-  <insert id="addUserInfo" parameterType="com.leanin.domain.vo.AdminUserVo">
-    insert into leanin_admin_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="adminName != null">
-        admin_name,
-      </if>
-      <if test="workNum != null">
-        admin_work_num,
-      </if>
-      <if test="password != null">
-        admin_password,
-      </if>
-      <if test="wardCode != null">
-        admin_ward_code,
-      </if>
-      <if test="jobTitle != null">
-        admin_job_title,
-      </if>
-      <if test="adminDesc != null">
-        admin_desc,
-      </if>
-      <if test="phone != null">
-        admin_phone,
-      </if>
-      <if test="areaCode != null">
-        area_code,
-      </if>
-      <if test="idCard != null">
-        admin_id_card,
-      </if>
-      <if test="sex != null">
-        admin_sex,
-      </if>
-      <if test="birthday != null">
-        admin_birthday,
-      </if>
-      <if test="organAscri != null">
-        organ_attri,
-      </if>
-      <if test="areaCode != null">
-        area_code,
-      </if>
-      <if test="adminState != null">
-        admin_state,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="adminName != null">
-        #{adminName},
-      </if>
-      <if test="workNum != null">
-        #{workNum},
-      </if>
-      <if test="password != null">
-        #{password},
-      </if>
-      <if test="wardCode != null">
-        #{wardCode},
-      </if>
-      <if test="jobTitle != null">
-        #{jobTitle},
-      </if>
-      <if test="adminDesc != null">
-        #{adminDesc},
-      </if>
-      <if test="phone != null">
-        #{phone},
-      </if>
-      <if test="areaCode != null">
-        #{areaCode},
-      </if>
-      <if test="idCard != null">
-        #{idCard},
-      </if>
-      <if test="sex != null">
-        #{sex},
-      </if>
-      <if test="birthday != null">
-        #{birthday},
-      </if>
-      <if test="organAscri != null">
-        #{organAscri},
-      </if>
-      <if test="areaCode != null">
-        #{areaCode},
-      </if>
-      <if test="adminState != null">
-        #{adminState},
-      </if>
-      <if test="remark != null">
-        #{remark},
-      </if>
-    </trim>
-  </insert>
-  <insert id="addUserRole" >
-    insert into leanin_user_role(user_id,role_id) values (#{userId},#{roleId})
-  </insert>
-  <update id="updateUserInfo" parameterType="com.leanin.domain.vo.AdminUserVo">
-    update leanin_admin_user
-    <set>
-      <if test="adminName != null">
-        admin_name = #{adminName,jdbcType=VARCHAR},
-      </if>
-      <if test="workNum != null">
-        admin_work_num = #{workNum,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        admin_password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="wardCode != null">
-        admin_ward_code = #{wardCode,jdbcType=VARCHAR},
-      </if>
-      <if test="jobTitle != null">
-        admin_job_title = #{jobTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="adminDesc != null">
-        admin_desc = #{adminDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        admin_phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
-      </if>
-      <if test="idCard != null">
-        admin_id_card = #{idCard,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        admin_sex = #{sex,jdbcType=BIGINT},
-      </if>
-      <if test="birthday != null">
-        admin_birthday = #{birthday,jdbcType=VARCHAR},
-      </if>
-      <if test="organAscri != null">
-        organ_attri = #{organAscri,jdbcType=VARCHAR},
-      </if>
-      <if test="adminState != null">
-        admin_state = #{adminState,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where admin_id = #{adminId,jdbcType=BIGINT}
-  </update>
 
-  <update id="updateUserRole" >
-    update leanin_user_role
-    set role_id = #{roleId}
-    where user_id = #{userId,jdbcType=BIGINT}
-  </update>
+    <!--关联查询   关联角色 和 权限-->
+    <resultMap id="DTO_Result_Map" type="com.leanin.domain.dto.AdminUserDto">
+        <id property="adminId" column="admin_id"></id>
+        <result property="adminName" column="admin_name"></result>
+        <result property="workNum" column="admin_work_num"></result>
+        <result property="password" column="admin_password"></result>
+        <result property="wardCode" column="admin_ward_code"></result>
+        <result property="jobTitle" column="admin_job_title"></result>
+        <result property="adminDesc" column="admin_desc"></result>
+        <result property="phone" column="admin_phone"></result>
+        <result property="areaCode" column="area_code"></result>
+        <result property="idCard" column="admin_id_card"></result>
+        <result property="sex" column="admin_sex"></result>
+        <result property="birthday" column="admin_birthday"></result>
+        <result property="organAscri" column="organ_attri"></result>
+        <result property="remark" column="remark"></result>
+        <result property="state" column="admin_state"></result>
+        <collection property="roleList" column="admin_id" ofType="com.leanin.domain.vo.RoleInfoVo"
+                    select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
+        </collection>
+        <collection property="menuPermissionVoList" column="admin_id" ofType="com.leanin.domain.vo.MenuPermissionVo"
+                    select="com.leanin.oauth.mapper.MenuMapper.findMenuListByUserId">
+        </collection>
+    </resultMap>
+    <resultMap id="VO_Result_Map" type="com.leanin.domain.vo.AdminUserVo">
+        <id property="adminId" column="admin_id"></id>
+        <result property="adminName" column="admin_name"></result>
+        <result property="workNum" column="admin_work_num"></result>
+        <result property="password" column="admin_password"></result>
+        <result property="wardCode" column="admin_ward_code"></result>
+        <result property="jobTitle" column="admin_job_title"></result>
+        <result property="adminDesc" column="admin_desc"></result>
+        <result property="phone" column="admin_phone"></result>
+        <result property="areaCode" column="area_code"></result>
+        <result property="idCard" column="admin_id_card"></result>
+        <result property="sex" column="admin_sex"></result>
+        <result property="birthday" column="admin_birthday"></result>
+        <result property="organAscri" column="organ_attri"></result>
+        <result property="remark" column="remark"></result>
+        <result property="adminState" column="admin_state"></result>
+    </resultMap>
+    <sql id="Base_Sql">
+        admin_id,admin_name,admin_work_num,admin_password,admin_ward_code,
+        admin_job_title,admin_desc,admin_phone,area_code,admin_id_card,
+        admin_sex,admin_birthday,organ_attri,remark,admin_state
+    </sql>
+    <!--添加用户-->
+    <insert id="addUser">
+        INSERT INTO leanin_admin_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adminUserVo.adminName != null">
+                admin_name,
+            </if>
+            <if test="adminUserVo.workNum != null">
+                admin_work_num,
+            </if>
+            <if test="adminUserVo.password != null">
+                admin_password,
+            </if>
+            <if test="adminUserVo.wardCode != null">
+                admin_ward_code,
+            </if>
+            <if test="adminUserVo.jobTitle != null">
+                admin_job_title,
+            </if>
+            <if test="adminUserVo.adminDesc != null">
+                admin_desc,
+            </if>
+            <if test="adminUserVo.phone != null">
+                admin_phone,
+            </if>
+            <if test="adminUserVo.areaCode != null">
+                area_code,
+            </if>
+            <if test="adminUserVo.idCard != null">
+                admin_id_card,
+            </if>
+            <if test="adminUserVo.sex != null">
+                admin_sex,
+            </if>
+            <if test="adminUserVo.birthday != null">
+                admin_birthday,
+            </if>
+            <if test="adminUserVo.organAscri != null">
+                organ_attri,
+            </if>
+            <if test="adminUserVo.remark != null">
+                remark,
+            </if>
+            <if test="adminUserVo.state != null">
+                admin_state,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="adminUserVo.adminName != null">
+                #{adminUserVo.adminName},
+            </if>
+            <if test="adminUserVo.workNum != null">
+                #{adminUserVo.workNum},
+            </if>
+            <if test="adminUserVo.password != null">
+                #{adminUserVo.password},
+            </if>
+            <if test="adminUserVo.wardCode != null">
+                #{adminUserVo.wardCode},
+            </if>
+            <if test="adminUserVo.jobTitle != null">
+                #{adminUserVo.jobTitle},
+            </if>
+            <if test="adminUserVo.adminDesc != null">
+                #{adminUserVo.adminDesc},
+            </if>
+            <if test="adminUserVo.phone != null">
+                #{adminUserVo.phone},
+            </if>
+            <if test="adminUserVo.areaCode != null">
+                #{adminUserVo.areaCode},
+            </if>
+            <if test="adminUserVo.idCard != null">
+                #{adminUserVo.idCard},
+            </if>
+            <if test="adminUserVo.sex != null">
+                #{adminUserVo.sex},
+            </if>
+            <if test="adminUserVo.birthday != null">
+                #{adminUserVo.birthday},
+            </if>
+            <if test="adminUserVo.organAscri != null">
+                #{adminUserVo.organAscri},
+            </if>
+            <if test="adminUserVo.remark != null">
+                #{adminUserVo.remark},
+            </if>
+            <if test="adminUserVo.state != null">
+                #{adminUserVo.state},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUser">
+        UPDATE leanin_admin_user
+        <set>
+            <if test="adminUserVo.adminName != null">
+                admin_name = #{adminUserVo.adminName},
+            </if>
+            <if test="adminUserVo.workNum != null">
+                admin_work_num = #{adminUserVo.workNum},
+            </if>
+            <if test="adminUserVo.password != null">
+                admin_password = #{adminUserVo.password},
+            </if>
+            <if test="adminUserVo.wardCode != null">
+                admin_ward_code = #{adminUserVo.wardCode},
+            </if>
+            <if test="adminUserVo.jobTitle != null">
+                admin_job_title = #{adminUserVo.jobTitle},
+            </if>
+            <if test="adminUserVo.adminDesc != null">
+                admin_desc = #{adminUserVo.adminDesc},
+            </if>
+            <if test="adminUserVo.phone != null">
+                admin_phone = #{adminUserVo.phone},
+            </if>
+            <if test="adminUserVo.areaCode != null">
+                area_code = #{adminUserVo.areaCode},
+            </if>
+            <if test="adminUserVo.idCard != null">
+                admin_id_card = #{adminUserVo.idCard},
+            </if>
+            <if test="adminUserVo.sex != null">
+                admin_sex = #{adminUserVo.sex},
+            </if>
+            <if test="adminUserVo.birthday != null">
+                admin_birthday = #{adminUserVo.birthday},
+            </if>
+            <if test="adminUserVo.organAscri != null">
+                organ_attri = #{adminUserVo.organAscri},
+            </if>
+            <if test="adminUserVo.remark != null">
+                remark = #{adminUserVo.remark},
+            </if>
+            <if test="adminUserVo.adminState != null">
+                admin_state = #{adminUserVo.adminState},
+            </if>
+        </set>
+        WHERE admin_id = #{adminUserVo.adminId}
+    </update>
+
+    <select id="findUserByWorkNum" resultMap="DTO_Result_Map">
+        SELECT
+        <include refid="Base_Sql"/>
+        FROM leanin_admin_user
+        WHERE admin_work_num =#{workNum} and admin_state = 1
+    </select>
+    <select id="findUserId" resultMap="VO_Result_Map">
+        SELECT
+        <include refid="Base_Sql"/>
+        FROM leanin_admin_user
+        WHERE admin_id = #{adminUserId}
+    </select>
 </mapper>

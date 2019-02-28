@@ -3,6 +3,7 @@ package com.leanin.testmodel;
 import com.alibaba.fastjson.JSON;
 import com.leanin.testmodel.config.RabbitMQConfig;
 import com.leanin.testmodel.service.impl.DiseaseInfoServiceImpl;
+import com.leanin.utils.CSMSUtils;
 import com.netflix.discovery.converters.Auto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,5 +129,11 @@ public class TestService {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void send(){
+        Map map = CSMSUtils.sendMessage("健哥<a href=\"www.baidu.com\">点击点餐</a>", "18556531536");
+
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.oauth.mapper.UserRoleMapper">
+
+    <resultMap id="Base_Result_Map" type="com.leanin.domain.vo.UserRoleVo">
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="roleId" column="role_id"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="creator" column="creator"></result>
+    </resultMap>
+
+    <sql id="Base_Sql">
+        id,user_id,role_id,create_time,creator
+    </sql>
+
+    <insert id="addUserRole">
+        INSERT INTO leanin_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userRoleVo.userId  != null">
+                user_id,
+            </if>
+            <if test="userRoleVo.roleId  != null">
+                role_id,
+            </if>
+            <if test="userRoleVo.createTime  != null">
+                create_time,
+            </if>
+            <if test="userRoleVo.creator  != null">
+                creator,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userRoleVo.userId  != null">
+                #{userRoleVo.userId},
+            </if>
+            <if test="userRoleVo.roleId  != null">
+                #{userRoleVo.roleId},
+            </if>
+            <if test="userRoleVo.createTime  != null">
+                #{userRoleVo.createTime},
+            </if>
+            <if test="userRoleVo.creator  != null">
+                #{userRoleVo.creator},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findByUidAndRid" resultMap="Base_Result_Map">
+        SELECT
+        <include refid="Base_Sql"/>
+        FROM leanin_user_role
+        WHERE user_id =#{adminId} and role_id = #{roleId} limit 1
+    </select>
+
+</mapper>

@@ -51,6 +51,8 @@ public class AdminUserDto /*implements UserDetails*/ {
 	
 	private String remark;	//备注
 
+	private Integer state;	//-1：注销 0：未注销
+
 	private List<RoleInfoDto> roleList;	//该用户的角色信息
 
 	private List<MenuPermissionVo> menuPermissionVoList; //权限集合

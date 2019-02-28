@@ -1,46 +1,42 @@
 package com.leanin.oauth.controller;
 
-import com.leanin.domain.dto.AddUserDto;
+import com.leanin.api.auth.UserControllerApi;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.AdminUserVo;
 import com.leanin.oauth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.security.Principal;
 
-/**
- * @author Administrator
- */
 @RestController
-@RequestMapping(value="/user")
-public class UserController {
+@RequestMapping("/user")
+public class UserController implements UserControllerApi{
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
-    @GetMapping("findUserById")
-    public DataOutResponse findUserById(@RequestParam Long userId) {
-        return userService.findUserById(userId);
+    @Override
+    @PostMapping("/addUser")
+    public DataOutResponse addUser(@RequestBody AdminUserVo adminUserVo) {
+        return userService.addUser(adminUserVo);
     }
 
-    @GetMapping("findUserList")
-    public DataOutResponse findUserList(@RequestParam int page,@RequestParam int pageSize,
-                                        @RequestParam(required = false) String adminName,@RequestParam(required = false) String adminWorkNum) {
-        System.out.println(adminName);
-        return userService.findUserList(page,pageSize,adminName,adminWorkNum);
+    @Override
+    public DataOutResponse delUser(Long adminUserId) {
+        return userService.delUser(adminUserId);
     }
 
-    @PostMapping("addUserInfo")
-    public DataOutResponse addUserInfo(@RequestBody AddUserDto userDto) {
-        return userService.addUserInfo(userDto);
+    @Override
+    public DataOutResponse updateUser(AdminUserVo adminUserVo) {
+        return userService.updateUser(adminUserVo);
     }
 
-    @PostMapping("updateUserInfo")
-    public DataOutResponse updateUserInfo(@RequestBody AddUserDto userDto) {
-        return userService.updateUserInfo(userDto);
+    @Override
+    public DataOutResponse findUserById(Long adminId) {
+        return userService.findUserById(adminId);
     }
 
-    @RequestMapping("principal")
-    public Principal user(Principal user) {
-        return user;
+    @Override
+    public DataOutResponse findUserPage(int currentPage, int pageSize, String NameOrNum) {
+        return userService.findUserPage(currentPage,pageSize,NameOrNum);
     }
 }

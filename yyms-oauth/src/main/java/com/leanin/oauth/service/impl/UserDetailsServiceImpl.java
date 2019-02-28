@@ -3,6 +3,8 @@ package com.leanin.oauth.service.impl;
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.vo.MenuPermissionVo;
 import com.leanin.domain.vo.UserJwt;
+import com.leanin.oauth.mapper.MenuMapper;
+import com.leanin.oauth.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     ClientDetailsService clientDetailsService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    MenuMapper menuMapper;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //取出身份，如果身份为空说明没有认证
@@ -43,24 +52,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
-        //远程调用用户中心根据账号查询用户信息
-//        XcUserExt userext = userClient.getUserext(username);
         //根据数据库查询用户信息
-        AdminUserDto adminUserDto = new AdminUserDto();
+        AdminUserDto adminUserDto = userMapper.findUserByWorkNum(username);
         if (adminUserDto == null) {
             //返回空给spring security表示用户不存在
             return null;
         }
-//        XcUserExt userext = new XcUserExt();
-        adminUserDto.setWorkNum("leanin");
-        adminUserDto.setPassword(new BCryptPasswordEncoder().encode("123"));
-        adminUserDto.setMenuPermissionVoList(new ArrayList<MenuPermissionVo>());//权限暂时用静态的
+//        adminUserDto.setWorkNum("leanin");
+//        adminUserDto.setPassword(new BCryptPasswordEncoder().encode("123"));
+
+        //根据用户id 获取用户权限
+        List<MenuPermissionVo> menuPermissionDtos = menuMapper.findMenuListByUserId(adminUserDto.getAdminId());
+        adminUserDto.setMenuPermissionVoList(menuPermissionDtos);//权限暂时用静态的
 
         //取出正确密码（hash值）
-//        String password = userext.getPassword();
         String password = adminUserDto.getPassword();
-        //这里暂时使用静态密码
-//       String password ="123";
         //用户权限，这里暂时使用静态数据，最终会从数据库读取
         //从数据库获取权限
 //        List<XcMenu> permissions = userext.getPermissions();
@@ -69,19 +75,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             permissions = new ArrayList<>();
         }
         List<String> user_permission = new ArrayList<>();
-//        permissions.forEach(item -> user_permission.add(item.getMenuIdentify()));
+        permissions.forEach(item -> user_permission.add(item.getMenuIdentify()));/*item.getMenuIdentify()*/
         //使用静态的权限表示用户所拥有的权限
-        user_permission.add("course_get_baseinfo");//查询课程信息
-        user_permission.add("course_pic_list");//图片查询
+//        user_permission.add("course_get_baseinfo");//查询课程信息
+//        user_permission.add("course_pic_list");//图片查询
         String user_permission_string = StringUtils.join(user_permission.toArray(), ",");
         UserJwt userDetails = new UserJwt(username,
                 password,
                 AuthorityUtils.commaSeparatedStringToAuthorityList(user_permission_string));
         userDetails.setId(adminUserDto.getAdminId());
-//        userDetails.setUtype(userext.getUtype());//用户类型
-//        userDetails.setCompanyId(userext.getCompanyId());//所属企业
         userDetails.setName(adminUserDto.getAdminName());//用户名称
-//        userDetails.setUserpic(userext.getUserpic());//用户头像
        /* UserDetails userDetails = new org.springframework.security.core.userdetails.User(username,
                 password,
                 AuthorityUtils.commaSeparatedStringToAuthorityList(""));*/

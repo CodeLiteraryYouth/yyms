@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * 管理员用户操作类
  * @author Administrator
@@ -45,4 +47,6 @@ public class AdminUserVo {
 	private Integer adminState;	//用户状态(-1:已注销 0：正在使用)
 	
 	private String remark;	//备注
+
+	private List<Long> roleIds; 	//角色id集合
 }

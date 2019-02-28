@@ -13,10 +13,7 @@ import com.leanin.utils.CookieUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -42,7 +39,7 @@ public class AuthController implements AuthControllerApi {
 
     @Override
     @PostMapping("/userlogin")
-    public DataOutResponse login(LoginRequestVo loginRequest) {
+    public DataOutResponse login(@RequestBody LoginRequestVo loginRequest) {
         if(loginRequest == null || StringUtils.isEmpty(loginRequest.getUsername())){
             ExceptionCast.cast(AuthCode.AUTH_USERNAME_NONE);
         }

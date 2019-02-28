@@ -2,65 +2,18 @@ package com.leanin.oauth.mapper;
 
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.vo.AdminUserVo;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
-/**
- * 用户mapper
- * @author Administrator
- */
 @Mapper
 public interface UserMapper {
 
-    /**
-     * 根据用户工号查询用户信息
-     * @param userCode
-     * @return
-     */
-    AdminUserDto findUserByUserCode(@Param("userCode") String userCode);
-    /**
-     * 根绝UserId查询用户信息
-     * @param userId
-     * @return
-     */
-    AdminUserDto findUserById(@Param("userId") Long userId);
+    AdminUserDto findUserByWorkNum(@Param("workNum") String workNum);
 
-    /**
-     * 根据用户工号查询用户列表
-     * @param
-     * @return
-     */
-    List<AdminUserDto> findUserList( String adminName,  String adminWorkNum);
 
-    /**
-     * 添加用户信息
-     * @param user
-     * @return
-     */
-    int addUserInfo(AdminUserVo user);
+    void addUser(@Param("adminUserVo") AdminUserVo adminUserVo);
 
-    /**
-     * 增加用户角色中间表信息
-     * @param userId
-     * @param roleId
-     * @return
-     */
-    int addUserRole(Long userId, Long roleId);
+    AdminUserVo findUserId(@Param("adminUserId") Long adminUserId);
 
-    /**
-     * 修改用户信息
-     * @param user
-     * @return
-     */
-    int updateUserInfo(AdminUserVo user);
-
-    /**
-     * 修改用户角色信息
-     * @param userId
-     * @param roleId
-     * @return
-     */
-    int updateUserRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
+    void updateUser(@Param("adminUserVo") AdminUserVo adminUserVo);
 }

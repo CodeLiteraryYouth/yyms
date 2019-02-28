@@ -1,41 +1,17 @@
 package com.leanin.oauth.service;
 
-
-import com.leanin.domain.dto.AddUserDto;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.AdminUserVo;
 
-/**
- * 用户的Service
- */
 public interface UserService {
 
-    /**
-     * 根绝UserId查询用户信息
-     * @param userId
-     * @return
-     */
-    DataOutResponse findUserById(Long userId);
+    DataOutResponse addUser(AdminUserVo adminUserVo);
 
-    /**
-     * 根据用户工号查询用户列表
-     * @param
-     * @return
-     */
-    DataOutResponse findUserList(int page,int pageSize,String adminName,String adminWorkNum);
+    DataOutResponse delUser(Long adminUserId);
 
-    /**
-     * 添加用户信息
-     * @param user
-     * @return
-     */
-    DataOutResponse addUserInfo(AddUserDto user);
+    DataOutResponse updateUser(AdminUserVo adminUserVo);
 
+    DataOutResponse findUserById(Long adminId);
 
-    /**
-     * 修改用户信息
-     * @param user
-     * @return
-     */
-    DataOutResponse updateUserInfo(AddUserDto user);
-
+    DataOutResponse findUserPage(int currentPage, int pageSize, String nameOrNum);
 }

@@ -28,7 +28,7 @@ public class MenuPermissionVo {
 
     private Date menuCreatetime;	//菜单创建时间
 
-    private Long menuIsdelete;	//是否删除
+    private Long menuIsDelete;	//是否删除
 
     private Long menuState;	//是否注销
 
