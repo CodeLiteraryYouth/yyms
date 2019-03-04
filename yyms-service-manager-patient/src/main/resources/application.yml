@@ -7,7 +7,7 @@ spring:
     name: yyms-service-manager-patient
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.102:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver
@@ -27,7 +27,7 @@ eureka:
       defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
-    ip-address: 192.168.0.102
+    ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port} #指定实例id
 #安全配置
 #security:

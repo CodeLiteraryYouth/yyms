@@ -30,7 +30,7 @@ public class  SatisfyPlanVo {
 
     private String patientWard;	//院区编码
 
-    private String discoverPerson;	//调查人员
+    private Long discoverPerson;	//调查人员
 
     private String discoverTarget;	//调查目的
 
@@ -54,7 +54,7 @@ public class  SatisfyPlanVo {
 
     private String diseaseName; //疾病名称
 
-    private String creater; //计划创建者
+    private Long creater; //计划创建者
 
     private Date createDate;    //创建时间
 

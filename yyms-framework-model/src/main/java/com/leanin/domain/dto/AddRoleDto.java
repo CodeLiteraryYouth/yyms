@@ -25,7 +25,7 @@ public class AddRoleDto {
 
     private Date roleCreateTime;	//角色创建时间
 
-    private String roleCreater;	//角色创建者
+    private Long roleCreater;	//角色创建者
 
     private Integer roleStatus;	//角色状态（-1：已注销 0：未注销）
 

@@ -35,7 +35,7 @@ public class PlanInfoDto {
 
 	    private String planWardCode;	//随访科室编码
 
-	    private String planDutyPer;	//计划责任人
+	    private Long planDutyPer;	//计划责任人
 
 	    private String planTarget;	//计划目的
 
@@ -63,7 +63,7 @@ public class PlanInfoDto {
 	    
 	    private String diseaseCode;	//疾病编码
 	    
-	    private String creater;	//创建人
+	    private Long creater;	//创建人
 	    
 	    private Date createDate;	//创建时间
 

@@ -24,7 +24,7 @@ public class FocusPatientVo {
 
     private Integer patientSex;		//病人性别
 
-    private String patientBirthday;		//病人性别
+    private String patientBirthday;		//病人生日
 
     private String patientPhone;	//病人手机号
 
@@ -33,5 +33,9 @@ public class FocusPatientVo {
     private Integer focusStatus;	//病人状态（（-1：标记死亡 0：取消关注 1：已关注））
 
     private Integer patientSource;	//病人来源
+
+    private Long userId;            //关注患者的用户
+
+
 
 }

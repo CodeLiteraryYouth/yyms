@@ -30,7 +30,7 @@ public class SatisfyPlanDto {
 
     private String patientWard;	//院区编码
 
-    private String discoverPerson;	//调查人员
+    private Long discoverPerson;	//调查人员
 
     private String discoverTarget;	//调查目的
 

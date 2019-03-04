@@ -13,5 +13,5 @@ public interface UserService {
 
     DataOutResponse findUserById(Long adminId);
 
-    DataOutResponse findUserPage(int currentPage, int pageSize, String nameOrNum);
+    DataOutResponse findUserPage(int currentPage, int pageSize, String userName,String workNum);
 }

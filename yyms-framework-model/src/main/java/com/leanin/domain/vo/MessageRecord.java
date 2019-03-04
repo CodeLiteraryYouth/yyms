@@ -14,7 +14,7 @@ import java.util.Date;
 public class MessageRecord {
 
     private Long msgSendId;         //主键
-    private String msgSendName;     //发送人
+    private Long msgSendName;     //发送人
     private String msgSendWard;     //发送科室
     private Date msgSendDate;       //发送时间
     private String msgSendNum;      //被发送人手机号

@@ -28,17 +28,17 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 	private StringRedisTemplate redisTemplate;
 	
 	@Override
-	public DataOutResponse findPatientList(String patientName) {
+	public DataOutResponse findPatientList(String patientName,Long userId) {
 		log.info("查询的病人姓名为:"+patientName);
-		String patientJson=redisTemplate.opsForValue().get("patient_"+patientName);
+//		String patientJson=redisTemplate.opsForValue().get("patient_"+patientName);
 		List<FocusPatientVo> patientList=null;
-		if(StringUtils.isEmpty(patientJson)) {
+//		if(StringUtils.isEmpty(patientJson)) {
 			patientList=focusPatientMapper.findPatientList(patientName);
 			log.info("查询的关注病人列表信息为:"+ JSON.toJSONString(patientList));
-			redisTemplate.opsForValue().set("patient_"+patientName, JSON.toJSONString(patientList));
-		} else {
-			patientList= JsonUtil.json2list(patientJson, FocusPatientVo.class);
-		}
+//			redisTemplate.opsForValue().set("patient_"+patientName, JSON.toJSONString(patientList));
+//		} else {
+//			patientList= JsonUtil.json2list(patientJson, FocusPatientVo.class);
+//		}
 		return ReturnFomart.retParam(200, patientList);
 	}
 
@@ -63,7 +63,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 	}
 
 	@Override
-	public DataOutResponse selectFocusPatientById(String patientId) {
+	public DataOutResponse selectFocusPatientById(String patientId,Long userId) {
 		String patientJson=redisTemplate.opsForValue().get("patient_"+patientId);
 		FocusPatientVo patient=null;
 		if(StringUtils.isEmpty(patientJson)) {

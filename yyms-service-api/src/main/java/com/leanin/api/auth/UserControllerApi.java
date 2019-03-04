@@ -23,5 +23,5 @@ public interface UserControllerApi {
     public DataOutResponse findUserById(Long adminId);
 
     @ApiOperation("添加用户")
-    public DataOutResponse findUserPage(int currentPage,int pageSize,String NameOrNum);
+    public DataOutResponse findUserPage(int currentPage,int pageSize,String userName,String workNum);
 }

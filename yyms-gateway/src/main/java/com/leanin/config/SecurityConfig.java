@@ -11,14 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * 网关安全配置类
  * @author Administrator
  */
-@Configuration
-@EnableWebSecurity
-@Order(SecurityProperties.BASIC_AUTH_ORDER - 3)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//@Configuration
+//@EnableWebSecurity
+//@Order(SecurityProperties.BASIC_AUTH_ORDER - 3)
+public class SecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable();
+//    }
 }
 

@@ -298,4 +298,36 @@
         </trim>
     </insert>
 
+    <select id="findPatsByParam" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_patient
+        WHERE patient_status = 1
+        AND plan_num IN (
+            SELECT pi.plan_num
+            FROM leanin_plan_info pi
+            WHERE pi.plan_status >= 0
+            AND pi.plan_creater = #{myFollowReq.userId}
+            <if test="myFollowReq.plan_num != null">
+                AND pi.plan_num = #{myFollowReq.plan_num}
+            </if>
+            <if test="myFollowReq.planType != null">
+                AND pi.plan_type = #{myFollowReq.planType}
+            </if>
+        )
+        <if test="myFollowReq.startDate != null">
+            AND next_date &gt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.endDate != null ">
+            AND next_date &lt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.folStatus != null">
+            AND plan_pats_status =#{myFollowReq.folStatus}
+        </if>
+        <if test="myFollowReq.patName != null">
+            AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
+        </if>
+
+    </select>
+
 </mapper>

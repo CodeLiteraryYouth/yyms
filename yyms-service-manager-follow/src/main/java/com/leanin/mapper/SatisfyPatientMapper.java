@@ -1,6 +1,7 @@
 package com.leanin.mapper;
 
 
+import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.SatisfyPatientVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface SatisfyPatientMapper {
+
     int deleteByPrimaryKey(Long patientSatisfyId);
 
     int insert(SatisfyPatientVo record);
@@ -29,4 +31,6 @@ public interface SatisfyPatientMapper {
     void updatePatientStatus(@Param("patientSatisfyId") Long patientSatisfyId);
 
     Integer findUnfinishCount(@Param("satisfyPlanNum") String satisfyPlanNum);
+
+    List<SatisfyPatientVo> findPatsByParam(@Param("myFollowReq") MyFollowReq myFollowReq);
 }

@@ -11,7 +11,7 @@ public interface FocusPatientService {
 	 * @param patientName
 	 * @return
 	 */
-	DataOutResponse findPatientList(String patientName);
+	DataOutResponse findPatientList(String patientName,Long userId);
 	
 	/**
 	 * 修改病人的状态信息
@@ -33,5 +33,5 @@ public interface FocusPatientService {
      * @param patientId
      * @return
      */
-	DataOutResponse selectFocusPatientById(String patientId);
+	DataOutResponse selectFocusPatientById(String patientId,Long userId);
 }

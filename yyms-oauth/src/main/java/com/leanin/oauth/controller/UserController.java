@@ -21,22 +21,26 @@ public class UserController implements UserControllerApi{
     }
 
     @Override
-    public DataOutResponse delUser(Long adminUserId) {
+    @GetMapping("/delUser")
+    public DataOutResponse delUser(@RequestParam Long adminUserId) {
         return userService.delUser(adminUserId);
     }
 
     @Override
-    public DataOutResponse updateUser(AdminUserVo adminUserVo) {
+    @PutMapping("/updateUser")
+    public DataOutResponse updateUser(@RequestBody AdminUserVo adminUserVo) {
         return userService.updateUser(adminUserVo);
     }
 
     @Override
-    public DataOutResponse findUserById(Long adminId) {
+    @GetMapping("/findUserById")
+    public DataOutResponse findUserById(@RequestParam Long adminId) {
         return userService.findUserById(adminId);
     }
 
     @Override
-    public DataOutResponse findUserPage(int currentPage, int pageSize, String NameOrNum) {
-        return userService.findUserPage(currentPage,pageSize,NameOrNum);
+    @GetMapping("/findUserPage")
+    public DataOutResponse findUserPage(@RequestParam int currentPage,@RequestParam int pageSize, String userName,String workNum) {
+        return userService.findUserPage(currentPage,pageSize,userName,workNum);
     }
 }

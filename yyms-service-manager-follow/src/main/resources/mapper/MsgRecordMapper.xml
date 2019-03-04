@@ -3,7 +3,7 @@
 <mapper namespace="com.leanin.mapper.MsgRecordMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessageRecord">
         <id column="msg_send_id" jdbcType="BIGINT" property="msgSendId" />
-        <result column="msg_send_name" jdbcType="VARCHAR" property="msgSendName" />
+        <result column="msg_send_name" jdbcType="BIGINT" property="msgSendName" />
         <result column="msg_send_ward" jdbcType="VARCHAR" property="msgSendWard" />
         <result column="msg_send_date" jdbcType="TIMESTAMP" property="msgSendDate" />
         <result column="msg_send_num" jdbcType="VARCHAR" property="msgSendNum" />

@@ -11,10 +11,11 @@
     <result column="patient_id_card" jdbcType="VARCHAR" property="patientIdCard" />
     <result column="focus_status" jdbcType="INTEGER" property="focusStatus" />
     <result column="patient_source" jdbcType="INTEGER" property="patientSource" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
     focus_id, patient_id, patient_name, patient_sex, patient_birthday, patient_phone, 
-    patient_id_card, focus_status, patient_source
+    patient_id_card, focus_status, patient_source,user_id
   </sql>
   <select id="findPatientList" parameterType="java.lang.String" resultMap="BaseResultMap">
   	 select 

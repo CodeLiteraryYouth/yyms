@@ -1,6 +1,7 @@
 package com.leanin.mapper;
 
 
+import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -80,4 +81,5 @@ public interface PlanPatientMapper {
     void updatePlanPatient(@Param("planPatientVo") PlanPatientVo planPatientVo);
 
 
+    List<PlanPatientVo> findPatsByParam(@Param("myFollowReq") MyFollowReq myFollowReq);
 }

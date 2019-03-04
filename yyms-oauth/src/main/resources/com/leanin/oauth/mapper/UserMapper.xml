@@ -202,4 +202,17 @@
         FROM leanin_admin_user
         WHERE admin_id = #{adminUserId}
     </select>
+
+    <select id="findUserPage" resultMap="VO_Result_Map">
+        SELECT
+        <include refid="Base_Sql"/>
+        FROM leanin_admin_user
+        WHERE admin_state = 1
+        <if test="userName != null">
+            AND admin_name LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="workNum != null">
+            AND admin_work_num LIKE CONCAT('%',#{workNum},'%')
+        </if>
+    </select>
 </mapper>

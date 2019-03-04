@@ -1,44 +1,45 @@
+server:
+  port: 50201
+  servlet:
+    context-path: /api
 spring:
   application:
     name: yyms-gateway
-server:
-  port: 9002
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000 #连接超时 毫秒
+    jedis:
+      pool:
+        maxActive: 3
+        maxIdle: 3
+        minIdle: 1
+        maxWait: -1 #连接池最大等行时间 -1没有限制
 zuul:
   routes:
-    auth:
-      path: /auth/**
-      #敏感头信息
-      sensitiveHeaders: "*"
-      #重定向到的服务（根据服务id名称从注册中心获取服务地址）
-      serviceId:  yyms-oauth
-    follow:
+    yyms-service-manager-follow:
       path: /follow/**
-      sensitiveHeaders: "*"
       serviceId: yyms-service-manager-follow
-    patient:
-      path: /patient/**
-      sensitiveHeaders: "*"
+      strip-prefix: false
+      sensitiveHeaders:
+    yyms-service-manager-patient:
+      path: /managerPatient/**
       serviceId: yyms-service-manager-patient
-  add-proxy-headers: true
-
-security:
-  oauth2:
-    client:
-      #获取Token的地址
-      access-token-uri: http://localhost:${server.port}/auth/oauth/token
-      #获取权限的地址
-      user-authorization-uri: http://localhost:${server.port}/auth/oauth/authorize
-      client-id: webapp
-    resource:
-      #获取用户信息的地址
-      user-info-uri: http://localhost:${server.port}/auth/user/principal
-      prefer-token-info: false
-
-
-
+      strip-prefix: false
+      sensitiveHeaders:
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
+  instance:
+    prefer-ip-address:  true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+ribbon:
+  MaxAutoRetries: 2
+  MaxAutoRetriesNextServer: 3
+  OkToRetryOnAllOperations: false
+  ConnectTimeout: 60000
+  ReadTimeout: 60000

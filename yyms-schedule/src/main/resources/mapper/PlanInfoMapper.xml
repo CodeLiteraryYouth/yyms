@@ -8,7 +8,7 @@
         <result column="plan_begin_time" jdbcType="DATE" property="planBeginTime"/>
         <result column="plan_end_time" jdbcType="DATE" property="planEndTime"/>
         <result column="plan_ward_code" jdbcType="VARCHAR" property="planWardCode"/>
-        <result column="plan_duty_per" jdbcType="VARCHAR" property="planDutyPer"/>
+        <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
         <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
         <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
         <result column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
@@ -22,7 +22,7 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
         <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
-        <result column="plan_creater" jdbcType="VARCHAR" property="planCreater"/>
+        <result column="plan_creater" jdbcType="BIGINT" property="planCreater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
@@ -34,7 +34,7 @@
         <result column="plan_begin_time" jdbcType="DATE" property="planBeginTime"/>
         <result column="plan_end_time" jdbcType="DATE" property="planEndTime"/>
         <result column="plan_ward_code" jdbcType="VARCHAR" property="planWardCode"/>
-        <result column="plan_duty_per" jdbcType="VARCHAR" property="planDutyPer"/>
+        <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
         <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
         <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
         <result column="plan_sex" jdbcType="INTEGER" property="planSex"/>
@@ -45,7 +45,7 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
         <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
-        <result column="plan_creater" jdbcType="VARCHAR" property="creater"/>
+        <result column="plan_creater" jdbcType="BIGINT" property="creater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
@@ -239,7 +239,7 @@
                 #{planWardCode,jdbcType=VARCHAR},
             </if>
             <if test="planDutyPer != null">
-                #{planDutyPer,jdbcType=VARCHAR},
+                #{planDutyPer,jdbcType=BIGINT},
             </if>
             <if test="planTarget != null">
                 #{planTarget,jdbcType=VARCHAR},
@@ -281,7 +281,7 @@
                 #{patsWardCode,jdbcType=VARCHAR},
             </if>
             <if test="planCreater !=null">
-                #{planCreater,jdbcType=VARCHAR},
+                #{planCreater,jdbcType=BIGINT},
             </if>
             <if test="createDate !=null">
                 #{createDate,jdbcType=TIMESTAMP},
@@ -316,7 +316,7 @@
                 plan_ward_code = #{planWardCode,jdbcType=VARCHAR},
             </if>
             <if test="planDutyPer != null">
-                plan_duty_per = #{planDutyPer,jdbcType=VARCHAR},
+                plan_duty_per = #{planDutyPer,jdbcType=BIGINT},
             </if>
             <if test="planTarget != null">
                 plan_target = #{planTarget,jdbcType=VARCHAR},

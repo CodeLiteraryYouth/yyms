@@ -39,7 +39,7 @@ public class AuthController implements AuthControllerApi {
 
     @Override
     @PostMapping("/userlogin")
-    public DataOutResponse login(@RequestBody LoginRequestVo loginRequest) {
+    public DataOutResponse login(LoginRequestVo loginRequest) {
         if(loginRequest == null || StringUtils.isEmpty(loginRequest.getUsername())){
             ExceptionCast.cast(AuthCode.AUTH_USERNAME_NONE);
         }
@@ -106,7 +106,7 @@ public class AuthController implements AuthControllerApi {
 
         //拿身份令牌从redis中查询jwt令牌
         AuthToken userToken = authService.getUserToken(uid);
-        if(userToken!=null){
+        if(userToken != null){
             //将jwt令牌返回给用户
             String jwt_token = userToken.getJwt_token();
 //            return new JwtResult(CommonCode.SUCCESS,jwt_token);

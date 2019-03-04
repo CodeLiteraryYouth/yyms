@@ -32,7 +32,7 @@ public class MessageTopicVo {
 
     private Date msgSendDate;          //发送时间
 
-    private String msgTopicCreater;	//短信主题创建人
+    private Long msgTopicCreater;	//短信主题创建人
 
     private String msgTopicCreaterWard;  //短信主题创建人所属科室
 

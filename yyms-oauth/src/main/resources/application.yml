@@ -6,7 +6,7 @@ spring:
   application:
     name: yyms-oauth
   redis:
-    host: 192.168.0.102
+    host: 39.108.217.158
     port: 6379
     jedis:
       pool:
@@ -16,7 +16,7 @@ spring:
         max-wait: -1ms
   datasource: #数据源
     druid:
-      url: jdbc:mysql://192.168.0.102:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver
@@ -32,7 +32,7 @@ auth:
   tokenValiditySeconds: 1200  #token存储到redis的过期时间
   clientId: LeaninWebApp
   clientSecret: LeaninWebApp
-  cookieDomain: http://192.168.0.102:8088/plan/findAllPlan #网址域名
+  cookieDomain: localhost # http://192.168.0.102:8088/plan/findAllPlan #网址域名
   cookieMaxAge: -1
 encrypt:
   key-store:
@@ -48,7 +48,7 @@ eureka:
       defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
-    ip-address: 192.168.0.102
+    ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port} #指定实例id
 ribbon:
   MaxAutoRetries: 2 #最大重试次数，当Eureka中可以找到服务，但是服务连不上时将会重试，如果eureka中找不到服务则直接走断路器

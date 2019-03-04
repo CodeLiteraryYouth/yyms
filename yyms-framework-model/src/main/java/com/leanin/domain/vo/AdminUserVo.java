@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,9 +39,9 @@ public class AdminUserVo {
 	
 	private String idCard;	//身份证号
 	
-	private Integer sex;	//性别
+	private Integer sex;	//性别  1男 2女
 	
-	private String birthday;	//管理员出生日期
+	private Date birthday;	//管理员出生日期
 	
 	private String organAscri;	//机构归属
 

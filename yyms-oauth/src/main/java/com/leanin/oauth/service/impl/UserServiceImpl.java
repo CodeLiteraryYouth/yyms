@@ -1,5 +1,7 @@
 package com.leanin.oauth.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.plan.response.AuthCode;
 import com.leanin.domain.response.DataOutResponse;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -99,11 +103,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DataOutResponse findUserById(Long adminId) {
-        return null;
+        AdminUserVo adminUserVo = userMapper.findUserId(adminId);
+        return ReturnFomart.retParam(200, adminUserVo);
     }
 
     @Override
-    public DataOutResponse findUserPage(int currentPage, int pageSize, String nameOrNum) {
-        return null;
+    public DataOutResponse findUserPage(int currentPage, int pageSize, String userName,String workNum) {
+        if (currentPage < 1){
+            currentPage = 1;
+        }
+        if (pageSize < 1){
+            pageSize = 10;
+        }
+        PageHelper.startPage(currentPage,pageSize);
+        Page<AdminUserVo> page = (Page<AdminUserVo>) userMapper.findUserPage(userName,workNum);
+
+        Map dataMap =new HashMap();
+        dataMap.put("totalCount",page.getTotal());
+        dataMap.put("list",page.getResult());
+        return ReturnFomart.retParam(200, dataMap);
     }
 }

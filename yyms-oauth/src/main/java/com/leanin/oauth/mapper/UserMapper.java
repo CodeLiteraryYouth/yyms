@@ -5,6 +5,8 @@ import com.leanin.domain.vo.AdminUserVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -16,4 +18,6 @@ public interface UserMapper {
     AdminUserVo findUserId(@Param("adminUserId") Long adminUserId);
 
     void updateUser(@Param("adminUserVo") AdminUserVo adminUserVo);
+
+    List<AdminUserVo> findUserPage(@Param("userName") String userName,@Param("workNum") String workNum);
 }

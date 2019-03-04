@@ -31,7 +31,7 @@ public class PlanInfoVo implements Serializable {
 
     private String planWardCode;	//随访科室编码
 
-    private String planDutyPer;	//计划责任人
+    private Long planDutyPer;	//计划责任人
 
     private String planTarget;	//计划目的
 
@@ -59,7 +59,7 @@ public class PlanInfoVo implements Serializable {
     
     private String diseaseCode;	//疾病编码
     
-    private String planCreater;	//创建人
+    private Long planCreater;	//创建人
     
     private Date createDate;	//创建时间
 

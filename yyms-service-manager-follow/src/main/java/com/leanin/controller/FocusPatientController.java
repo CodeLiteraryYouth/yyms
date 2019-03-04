@@ -20,8 +20,8 @@ public class FocusPatientController {
 	private FocusPatientService focusPatientService;
 	
 	@GetMapping("findPatientList")
-	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName) {
-		return focusPatientService.findPatientList(patientName);
+	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,@RequestParam Long userId) {
+		return focusPatientService.findPatientList(patientName,userId);
 	}
 	
 	@PostMapping("addFocusPatient")
@@ -35,7 +35,7 @@ public class FocusPatientController {
 	}
 	
 	@GetMapping("selectFocusPatientById")
-	public DataOutResponse selectFocusPatientById(@RequestParam String patientId) {
-		return focusPatientService.selectFocusPatientById(patientId);
+	public DataOutResponse selectFocusPatientById(@RequestParam String patientId,@RequestParam Long userId) {
+		return focusPatientService.selectFocusPatientById(patientId,userId);
 	}
 }

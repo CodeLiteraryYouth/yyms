@@ -263,4 +263,32 @@
       SET patient_status = 1
       WHERE patient_satisfy_id = #{patientSatisfyId}
     </update>
+
+
+    <select id="findPatsByParam" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_satisfy_patient
+        WHERE patient_status = 1
+        AND satisfy_plan_num IN (
+          SELECT sp.plan_satisfy_num
+          FROM leanin_satisfy_plan sp
+          WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
+          <if test="myFollowReq.planId != null">
+              AND sp.plan_satisfy_num = #{myFollowReq.planId}
+          </if>
+        )
+        <if test="myFollowReq.startDate != null">
+            AND patient_date_time &gt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.endDate != null ">
+            AND patient_date_time &lt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.folStatus">
+            AND finish_type = #{myFollowReq.folStatus}
+        </if>
+        <if test="myFollowReq.patName">
+            AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
+        </if>
+    </select>
 </mapper>

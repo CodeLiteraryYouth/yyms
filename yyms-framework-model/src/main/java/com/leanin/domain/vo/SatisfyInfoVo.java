@@ -28,7 +28,7 @@ public class SatisfyInfoVo {
 
     private String areaCode;	//院区编码
 
-    private String creater;	//表单创建者
+    private Long creater;	//表单创建者
 
     private String satisfyText;	//表单正文
 
