@@ -49,5 +49,9 @@ public class AdminUserVo {
 	
 	private String remark;	//备注
 
+	private String hospitalName;	//医院名称
+
+	private Integer userType;		//用户类型
+
 	private List<Long> roleIds; 	//角色id集合
 }

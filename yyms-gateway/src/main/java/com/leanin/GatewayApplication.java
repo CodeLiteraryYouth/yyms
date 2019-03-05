@@ -12,10 +12,10 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  * @author Administrator
  */
 //@EnableZuulProxy
-////@EnableDiscoveryClient
-////@EnableEurekaClient
-////@SpringBootApplication
-////@EnableOAuth2Sso
+//@EnableDiscoveryClient
+//@EnableEurekaClient
+//@SpringBootApplication
+//@EnableOAuth2Sso
 @SpringBootApplication
 @EnableZuulProxy//此工程是一个zuul网关
 public class GatewayApplication {

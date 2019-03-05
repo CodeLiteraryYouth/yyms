@@ -14,7 +14,7 @@ import java.io.Serializable;
 @ToString
 public class LoginRequestVo implements Serializable {
 
-    String username;
-    String password;
+    String username;        //工号
+    String password;        //密码
 
 }

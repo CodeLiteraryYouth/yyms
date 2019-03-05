@@ -32,7 +32,7 @@ auth:
   tokenValiditySeconds: 1200  #token存储到redis的过期时间
   clientId: LeaninWebApp
   clientSecret: LeaninWebApp
-  cookieDomain: localhost # http://192.168.0.102:8088/plan/findAllPlan #网址域名
+  cookieDomain: localhist # http://192.168.0.102:8088/plan/findAllPlan #网址域名
   cookieMaxAge: -1
 encrypt:
   key-store:

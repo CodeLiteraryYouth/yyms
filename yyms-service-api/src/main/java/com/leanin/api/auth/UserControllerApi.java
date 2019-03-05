@@ -13,8 +13,8 @@ public interface UserControllerApi {
     @ApiOperation("添加用户")
     public DataOutResponse addUser(AdminUserVo adminUserVo);
 
-    @ApiOperation("删除用户")
-    public DataOutResponse delUser(Long adminUserId);
+    @ApiOperation("修改用户状态")
+    public DataOutResponse uptUserStatus(Long adminUserId,Integer status);
 
     @ApiOperation("修改用户")
     public DataOutResponse updateUser(AdminUserVo adminUserVo);

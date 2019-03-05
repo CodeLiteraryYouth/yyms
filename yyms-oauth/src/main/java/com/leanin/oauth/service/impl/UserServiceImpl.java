@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
             for (Long roleId : roleIds) {
                 UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(userByWorkNum.getAdminId(), roleId);
                 if (userRoleVo == null) {
+                    userRoleVo =new UserRoleVo();
                     userRoleVo.setId(null);
                     userRoleVo.setUserId(userByWorkNum.getAdminId());
                     userRoleVo.setRoleId(roleId);
@@ -64,20 +65,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public DataOutResponse delUser(Long adminUserId) {
+    public DataOutResponse uptUserStatus(Long adminUserId,Integer status) {
         AdminUserVo adminUserVo=userMapper.findUserId(adminUserId);
         if (adminUserVo == null){
             return ReturnFomart.retParam(400, "用户不存在");
         }
-        adminUserVo.setAdminState(2);
+        adminUserVo.setAdminState(status);
         userMapper.updateUser(adminUserVo);
-        return ReturnFomart.retParam(400, "删除成功");
+        return ReturnFomart.retParam(200, "修改成功");
     }
 
     @Override
     @Transactional
     public DataOutResponse updateUser(AdminUserVo adminUserVo) {
-        AdminUserDto user = userMapper.findUserByWorkNum(adminUserVo.getWorkNum());
+        AdminUserVo user = userMapper.findUserId(adminUserVo.getAdminId());
         if (user == null) {
             return ReturnFomart.retParam(300, "用户不存在");
         }
@@ -86,6 +87,7 @@ public class UserServiceImpl implements UserService {
             for (Long roleId : roleIds) {
                 UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(adminUserVo.getAdminId(), roleId);
                 if (userRoleVo == null) {
+                    userRoleVo =new UserRoleVo();
                     userRoleVo.setId(null);
                     userRoleVo.setUserId(adminUserVo.getAdminId());
                     userRoleVo.setRoleId(roleId);
@@ -93,7 +95,8 @@ public class UserServiceImpl implements UserService {
                     userRoleVo.setCreator(null);
                     userRoleMapper.addUserRole(userRoleVo);
                 }else {
-                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
+
+//                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
                 }
             }
         }

@@ -7,7 +7,7 @@ public interface UserService {
 
     DataOutResponse addUser(AdminUserVo adminUserVo);
 
-    DataOutResponse delUser(Long adminUserId);
+    DataOutResponse uptUserStatus(Long adminUserId,Integer status);
 
     DataOutResponse updateUser(AdminUserVo adminUserVo);
 

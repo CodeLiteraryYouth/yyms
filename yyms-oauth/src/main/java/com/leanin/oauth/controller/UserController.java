@@ -21,9 +21,9 @@ public class UserController implements UserControllerApi{
     }
 
     @Override
-    @GetMapping("/delUser")
-    public DataOutResponse delUser(@RequestParam Long adminUserId) {
-        return userService.delUser(adminUserId);
+    @GetMapping("/uptUserStatus")
+    public DataOutResponse uptUserStatus(@RequestParam Long adminUserId,@RequestParam Integer status) {
+        return userService.uptUserStatus(adminUserId,status);
     }
 
     @Override

@@ -20,12 +20,17 @@ zuul:
     yyms-service-manager-follow:
       path: /follow/**
       serviceId: yyms-service-manager-follow
-      strip-prefix: false
+      strip-prefix: true
       sensitiveHeaders:
     yyms-service-manager-patient:
-      path: /managerPatient/**
+      path: /manager/**
       serviceId: yyms-service-manager-patient
-      strip-prefix: false
+      strip-prefix: true
+      sensitiveHeaders:
+    yyms-oauth:
+      path: /auth/**
+      serviceId: yyms-oauth
+      strip-prefix: true
       sensitiveHeaders:
 eureka:
   client:

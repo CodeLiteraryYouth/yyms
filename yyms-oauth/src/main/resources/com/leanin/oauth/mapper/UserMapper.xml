@@ -19,6 +19,8 @@
         <result property="organAscri" column="organ_attri"></result>
         <result property="remark" column="remark"></result>
         <result property="state" column="admin_state"></result>
+        <result property="hospitalName" column="hospital_name"></result>
+        <result property="userType" column="user_type"></result>
         <collection property="roleList" column="admin_id" ofType="com.leanin.domain.vo.RoleInfoVo"
                     select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
         </collection>
@@ -42,11 +44,13 @@
         <result property="organAscri" column="organ_attri"></result>
         <result property="remark" column="remark"></result>
         <result property="adminState" column="admin_state"></result>
+        <result property="hospitalName" column="hospital_name"></result>
+        <result property="userType" column="user_type"></result>
     </resultMap>
     <sql id="Base_Sql">
         admin_id,admin_name,admin_work_num,admin_password,admin_ward_code,
         admin_job_title,admin_desc,admin_phone,area_code,admin_id_card,
-        admin_sex,admin_birthday,organ_attri,remark,admin_state
+        admin_sex,admin_birthday,organ_attri,remark,admin_state,hospital_name,user_type
     </sql>
     <!--添加用户-->
     <insert id="addUser">
@@ -91,8 +95,14 @@
             <if test="adminUserVo.remark != null">
                 remark,
             </if>
-            <if test="adminUserVo.state != null">
+            <if test="adminUserVo.adminState != null">
                 admin_state,
+            </if>
+            <if test="adminUserVo.hospitalName != null">
+                hospital_name,
+            </if>
+            <if test="adminUserVo.userType != null">
+                user_type,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -135,8 +145,14 @@
             <if test="adminUserVo.remark != null">
                 #{adminUserVo.remark},
             </if>
-            <if test="adminUserVo.state != null">
-                #{adminUserVo.state},
+            <if test="adminUserVo.adminState != null">
+                #{adminUserVo.adminState},
+            </if>
+            <if test="adminUserVo.hospitalName != null">
+                #{adminUserVo.hospitalName},
+            </if>
+            <if test="adminUserVo.userType != null">
+                #{adminUserVo.userType},
             </if>
         </trim>
     </insert>
@@ -149,9 +165,6 @@
             </if>
             <if test="adminUserVo.workNum != null">
                 admin_work_num = #{adminUserVo.workNum},
-            </if>
-            <if test="adminUserVo.password != null">
-                admin_password = #{adminUserVo.password},
             </if>
             <if test="adminUserVo.wardCode != null">
                 admin_ward_code = #{adminUserVo.wardCode},
@@ -186,6 +199,12 @@
             <if test="adminUserVo.adminState != null">
                 admin_state = #{adminUserVo.adminState},
             </if>
+            <if test="adminUserVo.hospitalName != null">
+                hospital_name = #{adminUserVo.hospitalName},
+            </if>
+            <if test="adminUserVo.hospitalName != null">
+                user_type = #{adminUserVo.userType},
+            </if>
         </set>
         WHERE admin_id = #{adminUserVo.adminId}
     </update>
@@ -200,14 +219,14 @@
         SELECT
         <include refid="Base_Sql"/>
         FROM leanin_admin_user
-        WHERE admin_id = #{adminUserId}
+        WHERE admin_id = #{adminUserId} and admin_state != 2
     </select>
 
-    <select id="findUserPage" resultMap="VO_Result_Map">
+    <select id="findUserPage" resultMap="DTO_Result_Map">
         SELECT
         <include refid="Base_Sql"/>
         FROM leanin_admin_user
-        WHERE admin_state = 1
+        WHERE admin_state != 2
         <if test="userName != null">
             AND admin_name LIKE CONCAT('%',#{userName},'%')
         </if>

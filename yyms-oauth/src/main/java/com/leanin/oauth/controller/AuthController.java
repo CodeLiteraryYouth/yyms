@@ -39,7 +39,7 @@ public class AuthController implements AuthControllerApi {
 
     @Override
     @PostMapping("/userlogin")
-    public DataOutResponse login(LoginRequestVo loginRequest) {
+    public DataOutResponse login(@RequestBody LoginRequestVo loginRequest) {
         if(loginRequest == null || StringUtils.isEmpty(loginRequest.getUsername())){
             ExceptionCast.cast(AuthCode.AUTH_USERNAME_NONE);
         }
