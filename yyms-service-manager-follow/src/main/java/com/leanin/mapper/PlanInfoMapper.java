@@ -4,10 +4,12 @@ package com.leanin.mapper;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.PlanPatientVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface PlanInfoMapper {
 	
 	/**
@@ -70,6 +72,8 @@ public interface PlanInfoMapper {
     List<PlanInfoVo> findPlanListByType(@Param("planType") Integer planType);
 
     //查询所有计划信息
-    List<PlanInfoVo> findAllPlan();
+    List<PlanInfoVo> findAllPlan(@Param("planType") Integer planType,@Param("userId") Long userId);
+
+    String findPlanNameById(@Param("planNum") String planNum);
 
 }

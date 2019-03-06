@@ -49,4 +49,6 @@ public interface SatisfyPlanMapper {
      * @return
      */
     int updateSatisfyPlan(SatisfyPlanVo record);
+
+    String findPNById(@Param("planNum") String planNum);
 }

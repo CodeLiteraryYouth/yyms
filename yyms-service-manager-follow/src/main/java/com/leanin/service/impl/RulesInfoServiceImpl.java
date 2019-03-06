@@ -46,9 +46,12 @@ public class RulesInfoServiceImpl implements RulesInfoService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updateRulesState(Long rulesInfoId, Integer status) {
 		log.info("修改状态的ID为:"+rulesInfoId+"修改的状态为:"+status);
-		rulesInfoMapper.updateRulesState(rulesInfoId, status);
 		RulesInfoVo rules=rulesInfoMapper.findRulesById(rulesInfoId);
-		return ReturnFomart.retParam(200, rules);
+		if (rules == null){
+			return ReturnFomart.retParam(300, "用户不存在");
+		}
+		rulesInfoMapper.updateRulesState(rulesInfoId, status);
+		return ReturnFomart.retParam(200, "修改成功");
 	}
 
 	@Override

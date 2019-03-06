@@ -1,5 +1,6 @@
 package com.leanin.client;
 
+import com.leanin.domain.response.DataOutResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -41,6 +42,11 @@ public class FeignClientFallback implements ManagerPatientClient {
 
     @Override
     public List<Map> findOutHosRecordById(String patientId) {
+        return null;
+    }
+
+    @Override
+    public String findUserName(Long adminId) {
         return null;
     }
 }

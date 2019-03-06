@@ -20,4 +20,9 @@ public interface UserMapper {
     void updateUser(@Param("adminUserVo") AdminUserVo adminUserVo);
 
     List<AdminUserVo> findUserPage(@Param("userName") String userName,@Param("workNum") String workNum);
+
+    String findUserName(@Param("adminId") Long adminId);
+
+    List<AdminUserVo> findAllUser();
+
 }

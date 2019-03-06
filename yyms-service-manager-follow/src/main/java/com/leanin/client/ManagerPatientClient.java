@@ -1,5 +1,6 @@
 package com.leanin.client;
 
+import com.leanin.domain.response.DataOutResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,5 +40,7 @@ public interface ManagerPatientClient {
     public List<Map> findOutHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
 
 
+    @GetMapping("/user/findUserName")
+    public String findUserName(@RequestParam Long adminId);
 
 }

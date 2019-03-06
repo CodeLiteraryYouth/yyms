@@ -20,6 +20,10 @@
         <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
         <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <association property="planName" column="plan_num" javaType="string"
+                     select="com.leanin.mapper.PlanInfoMapper.findPlanNameById">
+
+        </association>
     </resultMap>
     <!--<resultMap id="ListResultMap" type="com.leanin.domain.vo.PlanPatientVo">-->
     <!--<id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>-->
@@ -41,16 +45,16 @@
     <!--<result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>-->
     <!--&lt;!&ndash;待随访人数&ndash;&gt;-->
     <!--<association property="unfinishCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount"></association>-->
+    <!--select="PlanPatientMapper.findUnfinishCount"></association>-->
     <!--&lt;!&ndash;已完成随访人数&ndash;&gt;-->
     <!--<association property="finishCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findFinishCount"></association>-->
+    <!--select="PlanPatientMapper.findFinishCount"></association>-->
     <!--&lt;!&ndash;收案人数&ndash;&gt;-->
     <!--<association property="deadCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findPastCount"></association>-->
+    <!--select="PlanPatientMapper.findPastCount"></association>-->
     <!--&lt;!&ndash;过期随访人数&ndash;&gt;-->
     <!--<association property="pastCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findDeadCount"></association>-->
+    <!--select="PlanPatientMapper.findDeadCount"></association>-->
     <!--</resultMap>-->
     <!--patient_date_time,-->
     <sql id="Base_Column_List">
@@ -307,12 +311,15 @@
             SELECT pi.plan_num
             FROM leanin_plan_info pi
             WHERE pi.plan_status >= 0
-            AND pi.plan_creater = #{myFollowReq.userId}
-            <if test="myFollowReq.plan_num != null">
-                AND pi.plan_num = #{myFollowReq.plan_num}
+            AND pi.plan_type = #{myFollowReq.planType}
+            <if test="myFollowReq.planId != null">
+                AND pi.plan_num = #{myFollowReq.planId}
             </if>
-            <if test="myFollowReq.planType != null">
-                AND pi.plan_type = #{myFollowReq.planType}
+            <if test="myFollowReq.planType == 1">
+                AND pi.plan_duty_per = #{myFollowReq.userId}
+            </if>
+            <if test="myFollowReq.planType == 2">
+                AND pi.plan_creater = #{myFollowReq.userId}
             </if>
         )
         <if test="myFollowReq.startDate != null">
@@ -327,7 +334,6 @@
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
-
     </select>
 
 </mapper>

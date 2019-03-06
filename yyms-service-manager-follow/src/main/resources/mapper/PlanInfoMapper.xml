@@ -26,6 +26,12 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
+        <association property="planDutyPerName" column="plan_duty_per" javaType="string"
+                     select="com.leanin.mapper.UserMapper.findUserName">
+        </association>
+        <association property="createrName" column="plan_creater" javaType="string"
+                     select="com.leanin.mapper.UserMapper.findUserName">
+        </association>
     </resultMap>
     <resultMap id="BlobResultMap" type="com.leanin.domain.dto.PlanInfoDto">
         <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
@@ -68,6 +74,12 @@
         <!--待完成人数-->
         <association property="unFinishCount" column="plan_num" javaType="integer"
                      select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount">
+        </association>
+        <association property="planDutyPerName" column="plan_duty_per" javaType="string"
+                     select="com.leanin.mapper.UserMapper.findUserName">
+        </association>
+        <association property="createrName" column="plan_creater" javaType="string"
+                     select="com.leanin.mapper.UserMapper.findUserName">
         </association>
     </resultMap>
     <sql id="Base_Column_List">
@@ -126,14 +138,13 @@
         FROM leanin_plan_info
         WHERE plan_type = #{planType} and plan_status > -1
     </select>
+
     <select id="findAllPlan" resultMap="BlobResultMap">
-        select
-        <include refid="Blob_Column_List"/>
-        from leanin_plan_info p
-        left join leanin_form_type t on t.form_type_id=p.form_type_id
-        left join leanin_form_info f on p.follow_form_num=f.form_num
-        left join leanin_rules_info r on p.rules_info_num=r.rules_info_id
-        where p.plan_status >= 0
+        select plan_num, plan_name
+        from leanin_plan_info
+        where plan_status = 0
+        and plan_type = #{planType}
+        and plan_duty_per =#{userId}
     </select>
     <update id="updatePlanStatus">
     update leanin_plan_info set plan_status=#{status}
@@ -365,4 +376,10 @@
         </set>
         where plan_num = #{planNum,jdbcType=VARCHAR}
     </update>
+
+    <select id="findPlanNameById" resultType="string">
+        select plan_name
+        from leanin_plan_info
+        where plan_num = #{planNum}
+    </select>
 </mapper>

@@ -33,6 +33,8 @@ public class PlanInfoVo implements Serializable {
 
     private Long planDutyPer;	//计划责任人
 
+    private String planDutyPerName; //计划责任人名称
+
     private String planTarget;	//计划目的
 
     private Integer planSendType;	//（1：APP/短信 2：APP 3：短信）
@@ -60,6 +62,8 @@ public class PlanInfoVo implements Serializable {
     private String diseaseCode;	//疾病编码
     
     private Long planCreater;	//创建人
+
+    private String createrName; //创建人名称
     
     private Date createDate;	//创建时间
 

@@ -32,6 +32,8 @@ public class  SatisfyPlanVo {
 
     private Long discoverPerson;	//调查人员
 
+    private String discoverPersonName;  //调查人员名称
+
     private String discoverTarget;	//调查目的
 
     private Integer discoverType;	//（1：APP/短信 2：APP 3：短信）
@@ -55,6 +57,8 @@ public class  SatisfyPlanVo {
     private String diseaseName; //疾病名称
 
     private Long creater; //计划创建者
+
+    private String createrName;//创建成者名称
 
     private Date createDate;    //创建时间
 

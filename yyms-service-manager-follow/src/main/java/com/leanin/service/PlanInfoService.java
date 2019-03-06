@@ -54,5 +54,5 @@ public interface PlanInfoService {
     DataOutResponse findPlanListByType(Integer planType);
 
     //查询所有计划信息
-    DataOutResponse findAllPlan();
+    DataOutResponse findAllPlan(Integer planType,Long userId);
 }

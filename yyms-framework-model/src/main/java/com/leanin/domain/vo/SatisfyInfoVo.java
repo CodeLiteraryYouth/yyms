@@ -30,6 +30,8 @@ public class SatisfyInfoVo {
 
     private Long creater;	//表单创建者
 
+    private String createrName; //创建者名称
+
     private String satisfyText;	//表单正文
 
 }

@@ -8,7 +8,7 @@
     <result column="plan_satisfy_begin_date" jdbcType="DATE" property="planSatisfyBeginDate" />
     <result column="plan_satisfy_end_date" jdbcType="DATE" property="planSatisfyEndDate" />
     <result column="patient_ward" jdbcType="VARCHAR" property="patientWard" />
-    <result column="discover_person" jdbcType="VARCHAR" property="discoverPerson" />
+    <result column="discover_person"  property="discoverPerson" />
     <result column="discover_target" jdbcType="VARCHAR" property="discoverTarget" />
     <result column="discover_type" jdbcType="INTEGER" property="discoverType" />
     <result column="form_type_id" jdbcType="BIGINT" property="formTypeId" />
@@ -17,7 +17,7 @@
     <result column="patient_age" jdbcType="VARCHAR" property="patientAge" />
     <result column="patient_phone" jdbcType="INTEGER" property="patientPhone" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="plan_creater" jdbcType="VARCHAR" property="creater" />
+    <result column="plan_creater" property="creater" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="satisfy_plan_status" jdbcType="INTEGER" property="satisfyPlanStatus" />
     <result column="satisfy_rules_text" jdbcType="LONGVARCHAR" property="rulesText" />
@@ -25,6 +25,13 @@
     <result column="satisfy_plan_ward" jdbcType="VARCHAR" property="satisfyPlanWard" />
     <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
+    <association property="createrName" column="plan_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+
+    </association>
+    <association property="discoverPersonName" column="discover_person" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
   </resultMap>
 
   <resultMap id="unfinishResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
@@ -53,6 +60,14 @@
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
     <association property="unfinishCount" column="plan_satisfy_num"
                  javaType="integer" select="com.leanin.mapper.SatisfyPatientMapper.findUnfinishCount">
+
+    </association>
+    <association property="createrName" column="plan_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+
+    </association>
+    <association property="discoverPersonName" column="discover_person" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
 
     </association>
   </resultMap>
@@ -87,7 +102,13 @@
     and plan_satisfy_name = #{satisfyPlanName,jdbcType=VARCHAR}
   </select>
 
-  <update id="updateSatisfyStatus">
+    <select id="findPNById" resultType="java.lang.String">
+      select plan_satisfy_name
+      from leanin_satisfy_plan
+      where plan_satisfy_num = #{planNum}
+    </select>
+
+    <update id="updateSatisfyStatus">
     update leanin_satisfy_plan set satisfy_plan_status=#{status}
     where plan_satisfy_num = #{planSatisfyNum,jdbcType=VARCHAR}
   </update>
@@ -185,7 +206,7 @@
         #{patientWard,jdbcType=VARCHAR},
       </if>
       <if test="discoverPerson != null">
-        #{discoverPerson,jdbcType=VARCHAR},
+        #{discoverPerson},
       </if>
       <if test="discoverTarget != null">
         #{discoverTarget,jdbcType=VARCHAR},
@@ -212,7 +233,7 @@
         #{areaCode,jdbcType=VARCHAR},
       </if>
       <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
+        #{creater},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -256,7 +277,7 @@
         patient_ward = #{patientWard,jdbcType=VARCHAR},
       </if>
       <if test="discoverPerson != null">
-        discover_person = #{discoverPerson,jdbcType=VARCHAR},
+        discover_person = #{discoverPerson},
       </if>
       <if test="discoverTarget != null">
         discover_target = #{discoverTarget,jdbcType=VARCHAR},

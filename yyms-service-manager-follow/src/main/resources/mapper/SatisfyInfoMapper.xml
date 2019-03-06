@@ -8,7 +8,11 @@
     <result column="satisfy_status" jdbcType="INTEGER" property="satisfyStatus" />
     <result column="satisfy_type_id" jdbcType="BIGINT" property="satisfyTypeId" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="creater" jdbcType="BIGINT" property="creater" />
+    <association property="createrName" column="creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+
+    </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.SatisfyInfoVo">
     <result column="satisfy_text" jdbcType="LONGVARCHAR" property="satisfyText" />
@@ -95,7 +99,7 @@
         #{areaCode,jdbcType=VARCHAR},
       </if>
       <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
+        #{creater},
       </if>
       <if test="satisfyText != null">
         #{satisfyText,jdbcType=LONGVARCHAR},
@@ -118,7 +122,7 @@
         area_code = #{areaCode,jdbcType=VARCHAR},
       </if>
       <if test="creater != null">
-        creater = #{creater,jdbcType=VARCHAR},
+        creater = #{creater},
       </if>
       <if test="satisfyText != null">
         satisfy_text = #{satisfyText,jdbcType=LONGVARCHAR},

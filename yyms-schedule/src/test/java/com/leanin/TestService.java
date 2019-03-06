@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.*;
 import com.leanin.mapper.*;
+import com.leanin.schdule.mapper.*;
 import com.leanin.utils.CSMSUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

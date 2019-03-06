@@ -24,7 +24,9 @@ public class MsgInfoVo {
 
     private String msgName;	//提醒语名称
 
-    private String msgCreater;	//提醒语创建者
+    private Long msgCreater;	//提醒语创建者
+
+    private String createrName; //创建者名称
 
     private Date msgCreateTime;	//创建时间
 

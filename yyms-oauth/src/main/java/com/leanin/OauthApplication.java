@@ -29,8 +29,9 @@ public class OauthApplication {
     }
 
 
+
+//    @LoadBalanced//开始客户端负载均衡
     @Bean
-    @LoadBalanced//开始客户端负载均衡
     public RestTemplate restTemplate(){
         return new RestTemplate(new OkHttp3ClientHttpRequestFactory());
     }

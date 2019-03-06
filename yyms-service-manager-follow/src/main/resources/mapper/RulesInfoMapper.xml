@@ -6,12 +6,16 @@
     <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName" />
     <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName" />
     <result column="rules_info_type" jdbcType="INTEGER" property="rulesInfoType" />
-    <result column="rules_creater" jdbcType="VARCHAR" property="rulesCreater" />
+    <result column="rules_creater" jdbcType="BIGINT" property="rulesCreater" />
     <result column="rules_creater_ward" jdbcType="VARCHAR" property="rulesCreaterWard" />
     <result column="rules_create_time" jdbcType="TIMESTAMP" property="rulesCreateTime" />
     <result column="rules_info_status" jdbcType="INTEGER" property="rulesInfoStatus" />
     <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+  <association property="createrName" column="rules_creater" javaType="string"
+               select="com.leanin.mapper.UserMapper.findUserName">
+
+  </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.RulesInfoVo">
     <result column="rules_info_text" jdbcType="LONGVARCHAR" property="rulesInfoText" />
@@ -155,7 +159,7 @@
         #{rulesInfoType,jdbcType=INTEGER},
       </if>
       <if test="rulesCreater != null">
-        #{rulesCreater,jdbcType=VARCHAR},
+        #{rulesCreater},
       </if>
       <if test="rulesCreaterWard != null">
         #{rulesCreaterWard,jdbcType=VARCHAR},
@@ -190,7 +194,7 @@
         rules_info_type = #{rulesInfoType,jdbcType=INTEGER},
       </if>
       <if test="rulesCreater != null">
-        rules_creater = #{rulesCreater,jdbcType=VARCHAR},
+        rules_creater = #{rulesCreater},
       </if>
       <if test="rulesCreaterWard != null">
         rules_creater_ward = #{rulesCreaterWard,jdbcType=VARCHAR},

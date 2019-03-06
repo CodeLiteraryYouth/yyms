@@ -5,6 +5,7 @@ import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.model.response.ResponseResult;
 import com.leanin.service.PlanInfoService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class PlanInfoController {
 
 	//查询所有计划信息
 	@GetMapping("findAllPlan")
-	public DataOutResponse findAllPlan(){
-		return planInfoService.findAllPlan();
+	public DataOutResponse findAllPlan(@RequestParam Integer planType,@RequestParam Long userId){
+		return planInfoService.findAllPlan(planType,userId);
 	}
 	
 	@GetMapping("updatePlanStatus")

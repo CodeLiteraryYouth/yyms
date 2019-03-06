@@ -9,7 +9,7 @@
     <result column="msg_topic_head" jdbcType="VARCHAR" property="msgTopicHead" />
     <result column="msg_content" jdbcType="LONGVARCHAR" property="msgContent" />
     <result column="msg_send_date" jdbcType="TIMESTAMP" property="msgSendDate" />
-    <result column="msg_topic_creater" jdbcType="VARCHAR" property="msgTopicCreater" />
+    <result column="msg_topic_creater"  property="msgTopicCreater" />
     <result column="msg_topic_creater_ward" jdbcType="VARCHAR" property="msgTopicCreaterWard" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
   </resultMap>
@@ -101,7 +101,7 @@
         #{msgSendDate,jdbcType=TIMESTAMP},
       </if>
       <if test="msgTopicCreater != null">
-        #{msgTopicCreater,jdbcType=VARCHAR},
+        #{msgTopicCreater},
       </if>
       <if test="msgTopicCreaterWard != null">
         #{msgTopicCreaterWard,jdbcType=VARCHAR},

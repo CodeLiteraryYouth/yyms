@@ -6,6 +6,8 @@ import com.leanin.domain.vo.AdminUserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
+
 
 @Api(value = "用户信息",description = "用户信息接口")
 public interface UserControllerApi {
@@ -24,4 +26,11 @@ public interface UserControllerApi {
 
     @ApiOperation("添加用户")
     public DataOutResponse findUserPage(int currentPage,int pageSize,String userName,String workNum);
+
+    @ApiOperation("查询所有用户")
+    public DataOutResponse findAllUser();
+
+
+    @ApiOperation("查询用户名称")
+    public String findUserName(Long adminId);
 }

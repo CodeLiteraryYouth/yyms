@@ -8,7 +8,7 @@
     <result column="plan_satisfy_begin_date" jdbcType="DATE" property="planSatisfyBeginDate" />
     <result column="plan_satisfy_end_date" jdbcType="DATE" property="planSatisfyEndDate" />
     <result column="patient_ward" jdbcType="VARCHAR" property="patientWard" />
-    <result column="discover_person" jdbcType="VARCHAR" property="discoverPerson" />
+    <result column="discover_person" property="discoverPerson" />
     <result column="discover_target" jdbcType="VARCHAR" property="discoverTarget" />
     <result column="discover_type" jdbcType="INTEGER" property="discoverType" />
     <result column="form_type_id" jdbcType="BIGINT" property="formTypeId" />
@@ -17,7 +17,7 @@
     <result column="patient_age" jdbcType="VARCHAR" property="patientAge" />
     <result column="patient_phone" jdbcType="INTEGER" property="patientPhone" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="plan_creater" jdbcType="VARCHAR" property="creater" />
+    <result column="plan_creater" property="creater" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="satisfy_plan_status" jdbcType="INTEGER" property="satisfyPlanStatus" />
     <result column="satisfy_rules_text" jdbcType="LONGVARCHAR" property="rulesText" />
@@ -143,7 +143,7 @@
         #{patientWard,jdbcType=VARCHAR},
       </if>
       <if test="discoverPerson != null">
-        #{discoverPerson,jdbcType=VARCHAR},
+        #{discoverPerson},
       </if>
       <if test="discoverTarget != null">
         #{discoverTarget,jdbcType=VARCHAR},
@@ -170,7 +170,7 @@
         #{areaCode,jdbcType=VARCHAR},
       </if>
       <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
+        #{creater},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -208,7 +208,7 @@
         patient_ward = #{patientWard,jdbcType=VARCHAR},
       </if>
       <if test="discoverPerson != null">
-        discover_person = #{discoverPerson,jdbcType=VARCHAR},
+        discover_person = #{discoverPerson},
       </if>
       <if test="discoverTarget != null">
         discover_target = #{discoverTarget,jdbcType=VARCHAR},

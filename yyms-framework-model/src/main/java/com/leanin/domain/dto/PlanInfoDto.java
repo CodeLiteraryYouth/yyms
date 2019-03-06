@@ -37,6 +37,8 @@ public class PlanInfoDto {
 
 	    private Long planDutyPer;	//计划责任人
 
+	    private String planDutyPerName;	//计划责任人
+
 	    private String planTarget;	//计划目的
 
 	    private Integer planSendType;	//（1：短信 2：APP ）
@@ -64,7 +66,9 @@ public class PlanInfoDto {
 	    private String diseaseCode;	//疾病编码
 	    
 	    private Long creater;	//创建人
-	    
+
+	    private String createrName;	//创建人
+
 	    private Date createDate;	//创建时间
 
 		private Integer unFinishCount;  //待完成人数

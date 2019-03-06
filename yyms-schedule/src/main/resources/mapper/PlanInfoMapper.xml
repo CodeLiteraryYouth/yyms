@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leanin.mapper.PlanInfoMapper">
+<mapper namespace="com.leanin.schdule.mapper.PlanInfoMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanInfoVo">
         <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
         <result column="plan_name" jdbcType="VARCHAR" property="planName"/>
@@ -64,11 +64,11 @@
             <result column="rules_info_text" jdbcType="VARCHAR" property="rulesInfoText"/>
         </association>
         <association property="msgInfo" column="msg_id" javaType="com.leanin.domain.vo.MsgInfoVo"
-                     select="com.leanin.mapper.MsgInfoMapper.findMsgInfoById">
+                     select="com.leanin.schdule.mapper.MsgInfoMapper.findMsgInfoById">
         </association>
         <!--待完成人数-->
         <!--<association property="unFinishCount" column="plan_num" javaType="integer"
-                     select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount">
+                     select="PlanPatientMapper.findUnfinishCount">
         </association>-->
     </resultMap>
     <sql id="Base_Column_List">

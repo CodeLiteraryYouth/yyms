@@ -20,7 +20,9 @@ public class FormInfoVo {
 	
     private String formNum;		//表单号
 
-    private String formCreater;		//表单创建人
+    private Integer formCreater;		//表单创建人
+
+    private String createrName;     //创建人名称
 
     private Date formCreateTime;	//表单创建时间
 

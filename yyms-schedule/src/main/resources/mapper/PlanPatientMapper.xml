@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leanin.mapper.PlanPatientMapper">
+<mapper namespace="com.leanin.schdule.mapper.PlanPatientMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
         <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
         <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
@@ -41,16 +41,16 @@
     <!--<result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>-->
     <!--&lt;!&ndash;待随访人数&ndash;&gt;-->
     <!--<association property="unfinishCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findUnfinishCount"></association>-->
+    <!--select="PlanPatientMapper.findUnfinishCount"></association>-->
     <!--&lt;!&ndash;已完成随访人数&ndash;&gt;-->
     <!--<association property="finishCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findFinishCount"></association>-->
+    <!--select="PlanPatientMapper.findFinishCount"></association>-->
     <!--&lt;!&ndash;收案人数&ndash;&gt;-->
     <!--<association property="deadCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findPastCount"></association>-->
+    <!--select="PlanPatientMapper.findPastCount"></association>-->
     <!--&lt;!&ndash;过期随访人数&ndash;&gt;-->
     <!--<association property="pastCount" javaType="integer" column="plan_num"-->
-    <!--select="com.leanin.mapper.PlanPatientMapper.findDeadCount"></association>-->
+    <!--select="PlanPatientMapper.findDeadCount"></association>-->
     <!--</resultMap>-->
     <!--patient_date_time,-->
     <sql id="Base_Column_List">

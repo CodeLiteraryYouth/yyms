@@ -3,7 +3,7 @@
 <mapper namespace="com.leanin.mapper.FormInfoMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FormInfoVo">
     <id column="form_num" jdbcType="VARCHAR" property="formNum" />
-    <result column="form_creater" jdbcType="VARCHAR" property="formCreater" />
+    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
     <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
     <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
     <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
@@ -15,6 +15,10 @@
     <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
     <result column="form_type" jdbcType="INTEGER" property="formType" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <association property="createrName" column="form_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+
+    </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.FormInfoVo">
     <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
@@ -26,7 +30,7 @@
   	<result column="ward_name" jdbcType="VARCHAR" property="wardName" />
   	<collection property="formList" column="ward_code" ofType="com.leanin.domain.vo.FormInfoVo">
   		<id column="form_num" jdbcType="VARCHAR" property="formNum" />
-	    <result column="form_creater" jdbcType="VARCHAR" property="formCreater" />
+	    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
 	    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
 	    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
 	    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
@@ -168,7 +172,7 @@
         #{formNum,jdbcType=VARCHAR},
       </if>
       <if test="formCreater != null">
-        #{formCreater,jdbcType=VARCHAR},
+        #{formCreater,jdbcType=BIGINT},
       </if>
       <if test="formCreateTime != null">
         #{formCreateTime,jdbcType=TIMESTAMP},
@@ -212,7 +216,7 @@
     update leanin_form_info
     <set>
       <if test="formCreater != null">
-        form_creater = #{formCreater,jdbcType=VARCHAR},
+        form_creater = #{formCreater,jdbcType=BIGINT},
       </if>
       <if test="formCreateTime != null">
         form_create_time = #{formCreateTime,jdbcType=TIMESTAMP},

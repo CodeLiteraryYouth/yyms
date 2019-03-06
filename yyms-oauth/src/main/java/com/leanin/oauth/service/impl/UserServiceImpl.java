@@ -126,4 +126,14 @@ public class UserServiceImpl implements UserService {
         dataMap.put("list",page.getResult());
         return ReturnFomart.retParam(200, dataMap);
     }
+
+    @Override
+    public String findUserName(Long adminId) {
+        return userMapper.findUserName(adminId);
+    }
+
+    @Override
+    public DataOutResponse findAllUser() {
+        return ReturnFomart.retParam(200,userMapper.findAllUser()) ;
+    }
 }

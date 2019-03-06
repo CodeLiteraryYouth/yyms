@@ -18,6 +18,9 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
+        <association property="planName" column="satisfy_plan_num" javaType="string"
+                     select="">
+        </association>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,

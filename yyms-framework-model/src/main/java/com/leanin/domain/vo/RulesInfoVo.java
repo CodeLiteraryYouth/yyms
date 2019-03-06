@@ -26,7 +26,10 @@ public class RulesInfoVo {
 
     private Integer rulesInfoType;	//（1：随访规则 2：宣教规则）
 
-    private String rulesCreater;	//规则创建者
+    private Long rulesCreater;	//规则创建者
+
+    private String createrName;  //创建人名称
+
 
     private String rulesCreaterWard;	//规则创建者科室
 

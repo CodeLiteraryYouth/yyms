@@ -5,11 +5,14 @@
     <id column="msg_id" jdbcType="VARCHAR" property="msgId" />
     <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
     <result column="msg_name" jdbcType="VARCHAR" property="msgName" />
-    <result column="msg_creater" jdbcType="VARCHAR" property="msgCreater" />
+    <result column="msg_creater" property="msgCreater" />
     <result column="msg_create_time" jdbcType="TIMESTAMP" property="msgCreateTime" />
     <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
     <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
     <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+    <association property="createrName" column="msg_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.MsgInfoVo">
     <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
@@ -98,7 +101,7 @@
         #{msgName,jdbcType=VARCHAR},
       </if>
       <if test="msgCreater != null">
-        #{msgCreater,jdbcType=VARCHAR},
+        #{msgCreater},
       </if>
       <if test="msgCreateTime != null">
         #{msgCreateTime,jdbcType=TIMESTAMP},
@@ -127,7 +130,7 @@
         msg_name = #{msgName,jdbcType=VARCHAR},
       </if>
       <if test="msgCreater != null">
-        msg_creater = #{msgCreater,jdbcType=VARCHAR},
+        msg_creater = #{msgCreater},
       </if>
       <if test="msgCreateTime != null">
         msg_create_time = #{msgCreateTime,jdbcType=TIMESTAMP},
