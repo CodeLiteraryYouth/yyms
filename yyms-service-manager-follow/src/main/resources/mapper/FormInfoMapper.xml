@@ -75,7 +75,7 @@
     ,
     <include refid="Blob_Column_List" />
     from leanin_form_info
-    where form_status=1 and form_type=#{formType} and creater_ward=#{wardCode}
+    where form_status =1 and form_type=#{formType} and creater_ward=#{wardCode}
     <if test="formName !=null">
     	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
     </if>

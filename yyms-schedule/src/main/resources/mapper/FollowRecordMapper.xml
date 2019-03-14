@@ -21,6 +21,7 @@
         <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
         <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <result column="handle_sugges"  property="handleSugges"></result>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -86,6 +87,9 @@
             <if test="patientSource !=null">
                 patient_source,
             </if>
+            <if test="handleSugges !=null">
+                handle_sugges,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -141,6 +145,9 @@
             </if>
             <if test="patientSource !=null">
                 #{patientSource,jdbcType=INTEGER},
+            </if>
+            <if test="handleSugges !=null">
+                #{handleSugges},
             </if>
         </trim>
     </insert>

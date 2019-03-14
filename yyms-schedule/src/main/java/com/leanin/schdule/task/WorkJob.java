@@ -3,23 +3,28 @@ package com.leanin.schdule.task;
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.*;
-import com.leanin.mapper.*;
 import com.leanin.schdule.mapper.*;
 import com.leanin.utils.CSMSUtils;
+import com.leanin.utils.HttpClient;
+import com.leanin.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
 public class WorkJob {
+
+    @Value("wx.appId")
+    private String appId;
+
+    @Value("wx.appSecret")
+    private String appSecret;
 
     @Autowired
     PlanInfoMapper planInfoMapper;
@@ -47,8 +52,7 @@ public class WorkJob {
 
     @Autowired
     MessagePatientMapper messagePatientMapper;
-
-
+    //13817165550
     //短信主题发送短信
     @Scheduled(cron = "0 0/3 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
@@ -61,8 +65,8 @@ public class WorkJob {
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
                 String content=messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
-                Map map = CSMSUtils.sendMessage(content,
-                        messagePatientVo.getPatientPhone());
+                Map map = CSMSUtils.sendMessage(content,"13817165550"
+                        /*messagePatientVo.getPatientPhone()*/);
                 String msgStatus = (String) map.get("msg");
                 if (msgStatus.equals("true")){
                     messagePatientVo.setSendType(2);//发送成功
@@ -97,14 +101,15 @@ public class WorkJob {
                 if (System.currentTimeMillis() > patientDto.getNextDate().getTime()
                         && patientDto.getSendType() == 1 && patientDto.getPlanPatsStatus() == 0) {
                     switch (planInfo.getPlanSendType()) {
-                        //短信
+                        //短信和公众号
                         case 1:
                             sendMessage(planInfo, patientDto);
                             break;
                         //微信公众号
                         case 2:
+
                             break;
-                        case 3:
+                        case 3://短信
                             sendMessage(planInfo, patientDto);
                             break;
                     }
@@ -118,7 +123,7 @@ public class WorkJob {
         String msg = planInfo.getMsgInfo().getMsgText() + "表单的URL";
         log.info("发送的短信内容为:" + msg);
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
-        Map map = CSMSUtils.sendMessage(msg, "15378763022");//patientDto.getPatientPhone()
+        Map map = CSMSUtils.sendMessage(msg, "13817165550");//patientDto.getPatientPhone()
         //设置病人发送状态
         String msgStatus = (String) map.get("msg");
         if (msgStatus.equals("true")) {
@@ -177,7 +182,7 @@ public class WorkJob {
                     satisfyPatientVo.setFinishType(3);//已过期
                 }else{
                     if (satisfyPatientVo.getSendType() == 1){//未发送
-                        Map map = CSMSUtils.sendMessage(msgText, "15378763022"); //satisfyPatientVo.getPatientPhone()
+                        Map map = CSMSUtils.sendMessage(msgText, "13817165550"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
                         if (msgStatus.equals("true")){
                             satisfyPatientVo.setSendType(2); //已发送短信
@@ -236,24 +241,34 @@ public class WorkJob {
                         break;
                     case 0: //未发送表单或者短信前的状态
                         //判断是否过期
-                        if (days > validDays) {//失访
+                        if (days > validDays) {//过期
                             updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
                         break;
                     case 1: //1：待随访
                         //判断是否过期
-                        if (days > validDays) {//失访
+                        if (days > validDays) {//过期
                             updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
                         break;
                     case 2: //已完成随访
                         //判断是否过期
-                        updateRecord(2, planPatientVo, rulesInfo, timeSelect,
-                                timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        if (days > validDays){
+                            updateRecord(2, planPatientVo, rulesInfo, timeSelect,
+                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        }
                         break;
                     case 3: //已过期随访
+                            updateRecord(3, planPatientVo, rulesInfo, timeSelect,
+                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        break;
+                    case 4:
+                        if (days > validDays){
+                            updateRecord(4, planPatientVo, rulesInfo, timeSelect,
+                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        }
                         break;
                 }
             }
@@ -275,6 +290,7 @@ public class WorkJob {
             planPatientVo.setSendType(1); //未发送
             planPatientVo.setPlanPatsStatus(0); //未发送状态
             planPatientVo.setFollowType(1);
+            planPatientVo.setHandleSugges("");
             planPatientMapper.updatePlanPatient(planPatientVo);
         }
         return true;
@@ -338,6 +354,70 @@ public class WorkJob {
             break;
         }
         return nextDate;
+    }
+
+
+    public String getAccessToken(){
+        Map<String,String> param=new HashMap<>();
+        String token_url="https://api.weixin.qq.com/cgi-bin/token?" +
+                "grant_type=client_credential&" +
+                "appid=" +appId+
+                "&secret="+appSecret;
+        //2.使用httpclient 发送请求
+        String access_token = null;
+        try {
+            HttpClient httpClient =new HttpClient(token_url);
+            httpClient.setHttps(true);//设置https 访问协议
+            httpClient.get();//设置https 请求方式
+
+            //3.接受返回来的数据
+            String content = httpClient.getContent();//获取返回参数
+            Map map = JSON.parseObject(content, Map.class);
+            access_token = (String) map.get("access_token");
+        } catch (Exception e) {
+            log.info("获取access_token异常");
+        }
+        return access_token;
+//        body
+        //发送链接
+
+//        String sendMsgUrl="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
+//        String templeteId="WVatT8Lq64rB81gEYnnfNw_ulCAgJkri5iyi_FPVRrc";
+//        String openId = "o0XfE5Mbr0YAyMlvyjxeapM6IvvY";
+//        param.put("touser",openId);//openid
+//        param.put("template_id",templeteId);
+    }
+
+    public void sendWxMsg(){
+        String accessToken = getAccessToken();
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
+        Map data = new HashMap();
+        data.put("touser","openid");
+        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
+        data.put("url","www.baidu.com");
+        Map user =new HashMap();
+        Map first = new HashMap();
+        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
+        user.put("first",first);
+        Map keyword1 = new HashMap();
+        keyword1.put("value","9527");
+        user.put("keyword1",keyword1);
+        Map keyword2 = new HashMap();
+        keyword2.put("value","2019-3-14");
+        user.put("keyword2",keyword2);
+        Map keyword3 = new HashMap();
+        keyword3.put("value","建德人民医院");
+        user.put("keyword3",keyword3);
+        Map remark = new HashMap();
+        remark.put("value","点击“详情”进行出院随访填写");
+        user.put("remark",remark);
+        data.put("data",user);
+        String dataStr = JSON.toJSONString(data);
+        String result = HttpClientUtil.doPostCarryJson(url, dataStr);
+
+        Map map = JSON.parseObject(result, Map.class);
+
+
     }
 
 }

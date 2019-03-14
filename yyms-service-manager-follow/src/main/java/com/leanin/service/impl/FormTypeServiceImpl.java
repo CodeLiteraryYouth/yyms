@@ -32,11 +32,11 @@ public class FormTypeServiceImpl implements FormTypeService {
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse addFormType(FormTypeVo record) {
-		log.info("增加的表单类型数据为:"+ JSON.toJSONString(record));
-		FormTypeVo formType=formTypeMapper.findFormType(record.getFormTypeName());
-		if(CompareUtil.isNotEmpty(formType)) {
-			return ReturnFomart.retParam(4000, formType);
-		}
+//		log.info("增加的表单类型数据为:"+ JSON.toJSONString(record));
+//		FormTypeVo formType=formTypeMapper.findFormType(record.getFormTypeName());
+//		if(CompareUtil.isNotEmpty(formType)) {
+//			return ReturnFomart.retParam(4000, formType);
+//		}
 		formTypeMapper.addFormType(record);
 		return ReturnFomart.retParam(200,record);
 	}

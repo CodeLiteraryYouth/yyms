@@ -18,14 +18,39 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
-        <association property="planName" column="satisfy_plan_num" javaType="string"
-                     select="">
+        <result column="id_card"  property="idCard"/>
+        <result column="inhos_no"  property="inhosNo"/>
+        <result column="open_id"  property="openId"/>
+        <association property="satisfyPlanVo" column="satisfy_plan_num" javaType="com.leanin.domain.vo.SatisfyPlanVo"
+                     select="com.leanin.mapper.SatisfyPlanMapper.findSatisfyPlanById">
         </association>
+    </resultMap>
+    <resultMap id="BASE_MAP" type="com.leanin.domain.vo.SatisfyPatientVo">
+        <id column="patient_satisfy_id" jdbcType="BIGINT" property="patientSatisfyId"/>
+        <result column="satisfy_plan_num" jdbcType="VARCHAR" property="satisfyPlanNum"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
+        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
+        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
+        <result column="patient_ward" jdbcType="VARCHAR" property="patientWard"/>
+        <result column="patient_date_time" jdbcType="TIMESTAMP" property="patientDateTime"/>
+        <result column="finish_type" jdbcType="INTEGER" property="finishType"/>
+        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
+        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
+        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
+        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
+        <result column="id_card"  property="idCard"/>
+        <result column="inhos_no"  property="inhosNo"/>
+        <result column="open_id"  property="openId"/>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
     patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
-    patient_condition, patient_diagous, patient_type, patient_status, area_code
+    patient_condition, patient_diagous, patient_type, patient_status,
+    area_code,id_card,inhos_no,open_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -138,6 +163,12 @@
             <if test="areaCode != null">
                 area_code,
             </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="inhosNo != null">
+                inhos_no,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -188,6 +219,12 @@
             <if test="areaCode != null">
                 #{areaCode,jdbcType=VARCHAR},
             </if>
+            <if test="idCard != null">
+                id_card = #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                inhos_no = #{inhosNo},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
@@ -237,6 +274,15 @@
             </if>
             <if test="areaCode != null">
                 area_code = #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                inhos_no = #{inhosNo},
+            </if>
+            <if test="openId != null">
+                open_id = #{openId},
             </if>
         </set>
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
@@ -293,5 +339,15 @@
         <if test="myFollowReq.patName">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
+    </select>
+
+    <select id="bindPatient" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_satisfy_patient
+        where patient_status = 0
+        and id_card =#{idCard}
+        and patient_phone = #{phoneNum}
+        and patient_name = #{patientName}
     </select>
 </mapper>

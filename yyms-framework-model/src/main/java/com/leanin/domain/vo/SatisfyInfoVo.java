@@ -34,4 +34,7 @@ public class SatisfyInfoVo {
 
     private String satisfyText;	//表单正文
 
+    private String satisfyTitle;//表单头
+    private String satisfyBottom;//表单尾
+
 }

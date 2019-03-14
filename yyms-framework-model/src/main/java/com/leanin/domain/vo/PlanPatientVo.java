@@ -23,7 +23,7 @@ public class PlanPatientVo implements Serializable {
 
     private String planNum;    //计划单号
 
-    private String planName;    //计划名称
+    private PlanInfoVo planInfoVo;    //计划
 
     private Long patientId;    //病人唯一标识
 
@@ -39,7 +39,7 @@ public class PlanPatientVo implements Serializable {
 
     private String patientWard;  //出院科室
 
-    private Integer followType;    //随访状态  1未完成  2 已完成
+    private Integer followType;    //随访状态  1未完成  2 已完成 3 随访异常
 
     private Integer patientStatus;    //患者状态  1 正在使用 2 已删除
 
@@ -58,6 +58,12 @@ public class PlanPatientVo implements Serializable {
     private Date nextDate; //下次随访日期
 
     private Integer patientSource;//患者来源 1,出院；2,门诊;3,在院
+
+    private String handleSugges;//处理意见
+
+    private String idCard;      //身份证号
+    private String inhosNo;     //住院号
+    private String opendId;     //openid
 
 //    private String sendStatus;  //发送状态
 

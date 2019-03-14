@@ -38,4 +38,10 @@ public class MessagePatientVo {
 
     private Integer sendType;  //发送状态
 
+    private String idCard;      //身份证号
+
+    private String inhosNo;     //住院号
+
+    private String openId;      //openid
+
 }

@@ -1,10 +1,9 @@
-spring:
-  application:
-    name: yyms-schedule
 ##端口号
 server:
   port: 8089
 spring:
+  application:
+    name: yyms-schedule
   datasource: #数据源
     druid:
       url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
@@ -23,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.102:50101/eureka/ #,http://192.168.0.102:50102/eureka/
+      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/
     ###因为该应用为注册中心，不会注册自己
     register-with-eureka:  true
     ###是否需要从eureka上获取注册信息
@@ -41,3 +40,6 @@ mybatis:
   type-aliases-package: com.leanin.domain  # 注意：对应实体类的路径
   configuration:                                    #打印sql到控制台
        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+wx:
+  appId:  wx1f020aa42d92b635
+  appSecret: 21be49689399a4e8eb437c371f42fbab

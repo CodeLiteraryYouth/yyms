@@ -1,6 +1,7 @@
 package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.FormRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
 
 import java.util.Date;
@@ -49,8 +50,11 @@ public interface PlanPatientService {
      * @param patientId
      * @return
      */
-    DataOutResponse findPlanPatientById(Long patientId,Integer patientSource);
+    DataOutResponse findPlanPatientById(Long patientId,Integer patientSource,String planNum,Integer planType);
 
     //根据计划id 查询全部患者信息
     DataOutResponse findListByPlanId(String planNum);
+
+    //修改随访状态
+    DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges, FormRecordVo formRecordVo);
 }

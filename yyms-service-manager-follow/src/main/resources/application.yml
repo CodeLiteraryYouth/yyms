@@ -1,23 +1,13 @@
 spring:
   application:
     name: yyms-service-manager-follow
+#  servlet:
+#    context-path: /follow
 ##端口号
 server:
   port: 8088
 ---
 spring:
-#  redis: #整合Redis
-#    database: 0 #数据库索引
-#    host: 192.168.0.103
-#    port: 6379
-#    password: 123456
-#    timeout: 10000 #连接超时时间
-#    jedis:
-#      pool:
-#        max-active: 8 #最大连接数
-#        max-wait: -1 #最大阻塞等待时间(负数表示没限制)
-#        max-idle: 8 #最大空闲
-#        min-idle: 0 #最小空闲
   redis:
     host: 39.108.217.158
     port: 6379
@@ -52,12 +42,16 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
+      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/
     ###因为该应用为注册中心，不会注册自己
     register-with-eureka: true
     ###是否需要从eureka上获取注册信息
     fetch-registry: true
     registry-fetch-interval-seconds: 30
+  instance:
+    prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port} #指定实例id
 ribbon:
   MaxAutoRetries: 2 #最大重试次数，当Eureka中可以找到服务，但是服务连不上时将会重试，如果eureka中找不到服务则直接走断路器
   MaxAutoRetriesNextServer: 3 #切换实例的重试次数
@@ -84,3 +78,6 @@ mybatis:
   type-aliases-package: com.leanin.domain  # 注意：对应实体类的路径
   configuration:                                    #打印sql到控制台
        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+wx:
+  appId:  wx1f020aa42d92b635
+  appSecret: 21be49689399a4e8eb437c371f42fbab

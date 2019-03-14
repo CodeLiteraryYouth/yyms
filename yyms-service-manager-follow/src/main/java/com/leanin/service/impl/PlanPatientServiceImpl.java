@@ -7,10 +7,7 @@ import com.leanin.domain.plan.response.PlanResponseCode;
 import com.leanin.domain.planpatient.response.PlanPatCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.PatientInfoVo;
-import com.leanin.domain.vo.PlanInfoVo;
-import com.leanin.domain.vo.PlanPatientRecordVo;
-import com.leanin.domain.vo.PlanPatientVo;
+import com.leanin.domain.vo.*;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.mapper.*;
 import com.leanin.service.PlanPatientService;
@@ -50,6 +47,12 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
     @Autowired
     FollowRecordMapper followRecordMapper;
+
+    @Autowired
+    FormRecordMapper formRecordMapper;
+
+    @Autowired
+    SatisfyPlanMapper satisfyPlanMapper;
 
 
 
@@ -162,7 +165,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
     //根据patientId查询患者信息和病史
     @Override
-    public DataOutResponse findPlanPatientById(Long patientId,Integer patientSource) {
+    public DataOutResponse findPlanPatientById(Long patientId,Integer patientSource,String planNum,Integer planType) {
         Map dataMap=new HashMap();
         //查询本地患者信息
         PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
@@ -179,7 +182,6 @@ public class PlanPatientServiceImpl implements PlanPatientService {
                 if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
                     patientMap = managerPatientClient.findInHosPatientById(patientId + "");
                 }
-
                 List<Map> inHosRecord = managerPatientClient.findInHosRecordById(paraMap);
                 dataMap.put("record",inHosRecord);
             }break;
@@ -205,7 +207,22 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         }else{
             dataMap.put("patientInfo",patientMap);
         }
-
+        if (planNum != null || !"".equals(planNum)){
+            switch (planType){
+                case 1://随访和宣教
+                {
+                    PlanInfoVo planInfoVo = planInfoMapper.findPlanInfoById(planNum);
+                    dataMap.put("planInfo",planInfoVo);
+                }
+                break;
+                case 2://满意度
+                    SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planNum);
+                    dataMap.put("planInfo",satisfyPlan);
+                    break;
+                default:
+                    break;
+            }
+        }
         return ReturnFomart.retParam(200, dataMap);
     }
 
@@ -220,6 +237,24 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
         List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planNum, 0, null);
         return ReturnFomart.retParam(200, planPatientList);
+    }
+
+    @Override
+    public DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges,FormRecordVo formRecordVo) {
+        PlanPatientVo patient = planPatientMapper.findPlanPatientById(patientPlanId);
+        formRecordMapper.addFormRecord(formRecordVo);
+        if (patient == null){
+            return ReturnFomart.retParam(200, "信息不存在");
+        }
+        if (followType != null){
+            patient.setFollowType(followType);
+            patient.setPlanPatsStatus(followType);
+        }
+        if (handleSugges != null){
+            patient.setHandleSugges(handleSugges);
+        }
+        planPatientMapper.updatePlanPatient(patient);
+        return ReturnFomart.retParam(200, "保存成功");
     }
 
 

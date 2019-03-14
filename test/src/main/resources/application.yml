@@ -4,7 +4,7 @@ spring:
   application:
     name: test
   redis:
-    host: 127.0.0.1
+    host: 39.108.217.158
     port: 6379
     timeout: 5000 #连接超时 毫秒
     jedis:
@@ -14,14 +14,14 @@ spring:
         minIdle: 1
         maxWait: -1 #连接池最大等行时间 -1没有限制
   rabbitmq:
-    host: 192.168.0.102
+    host: 39.108.217.158
     port: 5672
     username: guest
     password: guest
     virtual-host: /
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.102:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver
@@ -38,7 +38,7 @@ eureka:
     registerWithEureka: true #服务注册开关
     fetchRegistry: true #服务发现开关
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
+      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
     ip-address: 127.0.0.1

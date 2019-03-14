@@ -23,7 +23,7 @@ public class SatisfyPatientVo implements Serializable {
 
     private String satisfyPlanNum;	//满意度号
 
-    private String planName;        // 计划名称
+    private SatisfyPlanVo satisfyPlanVo;        // 计划名称
 
     private Long patientId;	//病人唯一标识
 
@@ -52,5 +52,11 @@ public class SatisfyPatientVo implements Serializable {
     private String areaCode;	//院区编码
 
     private Integer sendType; //发送状态；0 未发送 1已发送 2 发送失败
+
+    private String idCard;  //身份证号
+
+    private String inhosNo; //住院号
+
+    private String openId;  //openid
 
 }

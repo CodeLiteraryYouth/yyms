@@ -2,6 +2,7 @@ package com.leanin.mapper;
 
 
 import com.leanin.domain.request.MyFollowReq;
+import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.domain.vo.SatisfyPatientVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,6 @@ public interface SatisfyPatientMapper {
     Integer findUnfinishCount(@Param("satisfyPlanNum") String satisfyPlanNum);
 
     List<SatisfyPatientVo> findPatsByParam(@Param("myFollowReq") MyFollowReq myFollowReq);
+
+    List<SatisfyPatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
 }

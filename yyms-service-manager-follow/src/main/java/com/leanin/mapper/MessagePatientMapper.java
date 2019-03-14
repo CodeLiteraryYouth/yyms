@@ -22,4 +22,6 @@ public interface MessagePatientMapper {
     List<MessagePatientVo> findList(@Param("patientName") String patientName,@Param("sendType") Integer sendType);
 
     MessagePatientVo findById(@Param("patientMsgId") Long patientMsgId);
+
+    List<MessagePatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
 }

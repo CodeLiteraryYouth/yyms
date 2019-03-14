@@ -1,7 +1,7 @@
 server:
   port: 9000
 #  servlet:
-#    context-path: /patient
+#    context-path: /manager
 spring:
   application:
     name: yyms-service-manager-patient
@@ -24,7 +24,7 @@ eureka:
     registerWithEureka: true #服务注册开关
     fetchRegistry: true #服务发现开关
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://192.168.0.102:50101/eureka/,http://192.168.0.102:50102/eureka/
+      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
     ip-address: 127.0.0.1

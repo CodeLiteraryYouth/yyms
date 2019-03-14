@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * 表单类型
  * @author Administrator
@@ -14,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormTypeVo {
+public class FormTypeVo implements Serializable {
 	
     private Long formTypeId;	//类型主键
 

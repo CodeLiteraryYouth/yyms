@@ -2,6 +2,7 @@ package com.leanin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.FormRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.service.PlanPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,13 @@ public class PlanPatientController {
      * @return
      */
     @GetMapping("findPlanPatientById")
-    public DataOutResponse findPlanPatientById(Long patientId,Integer patientSource){
-        return planPatientService.findPlanPatientById(patientId,patientSource);
+    public DataOutResponse findPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource,String planNum,Integer planType){
+        return planPatientService.findPlanPatientById(patientId,patientSource,planNum,planType);
+    }
+
+    @PostMapping("updatePatById")
+    public DataOutResponse updatePlanPatient(@RequestParam Long patientPlanId, Integer followType, String handleSugges,@RequestBody FormRecordVo formRecordVo){
+        return planPatientService.updatePlanPatient(patientPlanId,followType,handleSugges,formRecordVo);
     }
 
 

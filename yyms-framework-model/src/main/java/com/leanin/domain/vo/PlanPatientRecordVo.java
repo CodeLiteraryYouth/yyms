@@ -57,6 +57,8 @@ public class PlanPatientRecordVo implements Serializable {
 
     private Integer patientSource;//患者来源 1,出院；2,门诊;3,在院
 
+    private String handleSugges;
+
 //    private String sendStatus;  //发送状态
 
 }

@@ -9,6 +9,8 @@
     <result column="satisfy_type_id" jdbcType="BIGINT" property="satisfyTypeId" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <result column="creater" jdbcType="BIGINT" property="creater" />
+    <result column="satisfy_title"  property="satisfyTitle" />
+    <result column="satisfy_bottom" property="satisfyBottom" />
     <association property="createrName" column="creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
 
@@ -22,7 +24,7 @@
     creater
   </sql>
   <sql id="Blob_Column_List">
-    satisfy_text
+    satisfy_text,satisfy_title,satisfy_bottom
   </sql>
   <select id="findSatisfyList" resultMap="ResultMapWithBLOBs">
   	select
@@ -81,6 +83,12 @@
       <if test="satisfyText != null">
         satisfy_text,
       </if>
+      <if test="satisfyTitle != null">
+        satisfy_title,
+      </if>
+      <if test="satisfyBottom != null">
+        satisfy_bottom,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="satisfyNum != null">
@@ -104,6 +112,12 @@
       <if test="satisfyText != null">
         #{satisfyText,jdbcType=LONGVARCHAR},
       </if>
+      <if test="satisfyTitle != null">
+        #{satisfyTitle},
+      </if>
+      <if test="satisfyBottom != null">
+        #{satisfyBottom},
+      </if>
     </trim>
   </insert>
   <update id="updateSatisfyInfo" parameterType="com.leanin.domain.vo.SatisfyInfoVo">
@@ -126,6 +140,12 @@
       </if>
       <if test="satisfyText != null">
         satisfy_text = #{satisfyText,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="satisfyTitle != null">
+        satisfy_title = #{satisfyTitle},
+      </if>
+      <if test="satisfyBottom != null">
+        satisfy_bottom = #{satisfyBottom},
       </if>
     </set>
     where satisfy_num = #{satisfyNum,jdbcType=VARCHAR}

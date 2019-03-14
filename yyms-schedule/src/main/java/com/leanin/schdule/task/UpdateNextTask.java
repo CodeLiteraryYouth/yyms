@@ -76,7 +76,7 @@ public class UpdateNextTask implements Job {
                         break;
                     case 0: //未发送表单或者短信前的状态
                         //判断是否过期
-                        if (days > validDays) {//失访
+                        if (days > validDays) {//已过期
                             updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                         timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
@@ -84,17 +84,27 @@ public class UpdateNextTask implements Job {
                         break;
                     case 1: //1：待随访
                         //判断是否过期
-                        if (days > validDays) {//失访
+                        if (days > validDays) {//已过期
                             updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
                         break;
                     case 2: //已完成随访
                         //判断是否过期
+                        if (days > validDays) {//已过期
                             updateRecord(2, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        }
                         break;
                     case 3: //已过期随访
+                        updateRecord(3, planPatientVo, rulesInfo, timeSelect,
+                                timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        break;
+                    case 4: //随访异常
+                        if (days > validDays) {//已过期
+                            updateRecord(4, planPatientVo, rulesInfo, timeSelect,
+                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        }
                         break;
                 }
             }
@@ -105,7 +115,7 @@ public class UpdateNextTask implements Job {
     private boolean updateRecord(Integer status,PlanPatientVo planPatientVo,RulesInfoVo rulesInfo,String timeSelect,
                                  Integer timeChoosed,Integer weeks,Integer sendTimeDays,Integer sendTimeMonths){
         //填写失访记录
-        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 失访
+        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 已过期  4 随访异常
         followRecordMapper.addFollowRecord(planPatientVo);
         if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
             //计算下次随访时间
@@ -113,8 +123,9 @@ public class UpdateNextTask implements Job {
             //复位
             planPatientVo.setNextDate(date); //设置下次随访时间
             planPatientVo.setSendType(1); //未发送
-            planPatientVo.setPlanPatsStatus(0); //未发送状态
+            planPatientVo.setPlanPatsStatus(0);
             planPatientVo.setFollowType(1);
+            planPatientVo.setHandleSugges("");
             planPatientMapper.updatePlanPatient(planPatientVo);
         }
         return true;
