@@ -38,4 +38,6 @@ public interface SatisfyService {
      * @return
      */
 	DataOutResponse updateSatisfyInfo(SatisfyInfoVo record);
+
+	DataOutResponse findStyInfoByOpenId(String openId, Integer finishType);
 }

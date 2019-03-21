@@ -22,7 +22,14 @@
     from leanin_form_type t where t.form_type_status>=0
     and t.form_type_name = #{typeName,jdbcType=VARCHAR}
   </select>
-  
+
+  <select id="findByFId" resultType="com.leanin.domain.vo.FormTypeVo">
+    select
+    <include refid="Base_Column_List"/>
+    from leanin_form_type t where t.form_type_status>=0
+    and t.form_type_id =#{formTypeId}
+  </select>
+
   <insert id="addFormType" parameterType="com.leanin.domain.vo.FormTypeVo">
     insert into leanin_form_type
     <trim prefix="(" suffix=")" suffixOverrides=",">

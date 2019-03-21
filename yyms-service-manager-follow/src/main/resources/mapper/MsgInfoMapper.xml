@@ -14,7 +14,17 @@
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.MsgInfoVo">
+  <resultMap id="BaseResultMap1" type="com.leanin.domain.vo.MsgInfoVo">
+    <id column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
+    <result column="msg_name" jdbcType="VARCHAR" property="msgName" />
+    <result column="msg_creater" property="msgCreater" />
+    <result column="msg_create_time" jdbcType="TIMESTAMP" property="msgCreateTime" />
+    <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
+    <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
+    <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+  </resultMap>
+  <resultMap extends="BaseResultMap1" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.MsgInfoVo">
     <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
   </resultMap>
   <sql id="Base_Column_List">

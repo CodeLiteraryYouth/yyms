@@ -4,9 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MsgInfoVo;
 import com.leanin.service.MsgInfoService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value="msg")
-public class MsgInfoController {
+public class MsgInfoController extends BaseController {
 
 	@Autowired
 	private MsgInfoService msgInfoService;
@@ -33,6 +37,10 @@ public class MsgInfoController {
 	
 	@PostMapping("addMsgInfo")
 	public DataOutResponse addMsgInfo(@RequestBody MsgInfoVo msgInfo) {
+		LyOauth2Util.UserJwt user = getUser(request);
+		msgInfo.setMsgCreater(user.getId());
+		msgInfo.setMsgCreateWard(user.getWardCode());
+		msgInfo.setMsgCreateTime(new Date());
 		return msgInfoService.addMsgInfo(msgInfo);
 	}
 	
@@ -51,5 +59,11 @@ public class MsgInfoController {
 	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type){
 		List<Long> longs = JSON.parseArray(ids, Long.class);
 		return msgInfoService.sendMessage(longs,type);
+	}
+
+	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+		LyOauth2Util lyOauth2Util = new LyOauth2Util();
+		LyOauth2Util.UserJwt userJwt = lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+		return userJwt;
 	}
 }

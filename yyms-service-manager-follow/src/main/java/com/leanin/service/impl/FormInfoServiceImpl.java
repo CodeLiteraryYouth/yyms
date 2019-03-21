@@ -6,7 +6,9 @@ import com.github.pagehelper.PageInfo;
 import com.leanin.domain.dto.CommonFormInfoDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.FormInfoExt;
 import com.leanin.domain.vo.FormInfoVo;
+import com.leanin.mapper.FollowRecordMapper;
 import com.leanin.mapper.FormInfoMapper;
 import com.leanin.service.FormInfoService;
 import com.leanin.utils.CompareUtil;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +26,7 @@ public class FormInfoServiceImpl implements FormInfoService {
 
 	@Autowired
 	private FormInfoMapper formInfoMapper;
+
 	
 	@Override
 	public DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType) {
@@ -61,6 +65,9 @@ public class FormInfoServiceImpl implements FormInfoService {
 	public DataOutResponse findFormInfoById(String formNum) {
 		FormInfoVo formInfo=formInfoMapper.findFormInfoById(formNum);
 		log.info("表单的信息为:"+ JSON.toJSONString(formInfo));
+		if (formInfo == null){
+			return ReturnFomart.retParam(200, "数据不存在");
+		}
 		return ReturnFomart.retParam(200, formInfo);
 	}
 
@@ -71,6 +78,20 @@ public class FormInfoServiceImpl implements FormInfoService {
 		//修改表单数据
 		formInfoMapper.updateFormInfo(record);
 		return ReturnFomart.retParam(200, record);
+	}
+
+	@Override
+	public DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType) {
+		if (openid == null){
+			return ReturnFomart.retParam(300,"请登录后在进行查询");
+		}
+		List<FormInfoExt> list = formInfoMapper.findFormListByOpenid(openid,followStatus,planType);
+		if (followStatus != 1){//未完成
+			List<FormInfoExt> formInfoExts =formInfoMapper.findFormListByOpenidExt(openid,followStatus,planType);
+			list.addAll(formInfoExts);
+		}
+
+		return ReturnFomart.retParam(200, list);
 	}
 
 	@Override

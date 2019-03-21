@@ -4,11 +4,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.SatisfyInfoVo;
 import com.leanin.domain.vo.SatisfyPatientVo;
+import com.leanin.domain.vo.StyInfoRecordVo;
 import com.leanin.mapper.SatisfyPatientMapper;
+import com.leanin.mapper.StyInfoRecordMapper;
 import com.leanin.service.SatisfyPatientService;
+import com.leanin.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +25,9 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
 
     @Autowired
     SatisfyPatientMapper satisfyPatientMapper;
+
+    @Autowired
+    StyInfoRecordMapper styInfoRecordMapper;
 
     //条件查询满意度计划的 患者信息
     @Override
@@ -68,5 +76,29 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
             satisfyPatientMapper.updatePatientStatus(aLong);
         }
         return ReturnFomart.retParam(200,"删除成功！");
+    }
+
+    @Override
+    @Transactional
+    public DataOutResponse updateByPid( Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo) {
+        SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.findByStyPatId(patientSatisfyId);
+        if (satisfyPatientVo == null){
+            return ReturnFomart.retParam(300,"信息不存在");
+        }
+        String uuid = UUIDUtils.getUUID();
+        styInfoRecordVo.setSatisfyId(uuid);
+        styInfoRecordVo.setOpenId(satisfyPatientVo.getOpenId());
+        styInfoRecordVo.setCreateTime(new Date());
+        styInfoRecordVo.setIdCard(satisfyPatientVo.getIdCard());
+        styInfoRecordVo.setInhosNo(satisfyPatientVo.getInhosNo());
+        styInfoRecordMapper.addRecord(styInfoRecordVo);
+        if (finishType != null){
+            satisfyPatientVo.setFinishType(finishType);
+        }
+        if (suggess != null){
+            satisfyPatientVo.setSuggess(suggess);
+        }
+        satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+        return ReturnFomart.retParam(200,"操作成功");
     }
 }

@@ -84,4 +84,5 @@ public interface PlanPatientMapper {
     List<PlanPatientVo> findPatsByParam(@Param("myFollowReq") MyFollowReq myFollowReq);
 
     List<PlanPatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
+
 }

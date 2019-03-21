@@ -1,6 +1,7 @@
 package com.leanin.mapper;
 
 import com.leanin.domain.dto.CommonFormInfoDto;
+import com.leanin.domain.vo.FormInfoExt;
 import com.leanin.domain.vo.FormInfoVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -73,4 +74,9 @@ public interface FormInfoMapper {
      */
     int updateFormInfo(FormInfoVo record);
 
+
+
+	List<FormInfoExt> findFormListByOpenid(@Param("openid") String openid, @Param("followStatus") Integer followStatus, @Param("planType") Integer planType);
+
+	List<FormInfoExt> findFormListByOpenidExt(@Param("openid")String openid,@Param("followStatus") Integer followStatus,@Param("planType") Integer planType);
 }

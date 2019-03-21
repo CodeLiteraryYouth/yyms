@@ -40,4 +40,6 @@ public interface FormTypeMapper {
      */
     int updateFormType(FormTypeVo record);
 
+    FormTypeVo findByFId(@Param("formTypeId") Long formTypeId);
+
 }

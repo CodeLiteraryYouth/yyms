@@ -43,6 +43,30 @@
         <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
         <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
         <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
+        <result column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
+        <result column="follow_form_num" jdbcType="VARCHAR" property="followFormNum"/>
+        <result column="rules_info_num" jdbcType="VARCHAR" property="rulesInfoNum"/>
+        <result column="plan_sex" jdbcType="INTEGER" property="planSex"/>
+        <result column="plan_age_interval" jdbcType="VARCHAR" property="planAgeInterval"/>
+        <result column="plan_exis_phone" jdbcType="INTEGER" property="planExisPhone"/>
+        <result column="plan_type" jdbcType="INTEGER" property="planType"/>
+        <result column="plan_status" jdbcType="INTEGER" property="planStatus"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
+        <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
+        <result column="plan_creater" jdbcType="BIGINT" property="planCreater"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
+        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
+        <!--<id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="plan_name" jdbcType="VARCHAR" property="planName"/>
+        <result column="patient_info_source" jdbcType="INTEGER" property="patientInfoSource"/>
+        <result column="plan_begin_time" jdbcType="DATE" property="planBeginTime"/>
+        <result column="plan_end_time" jdbcType="DATE" property="planEndTime"/>
+        <result column="plan_ward_code" jdbcType="VARCHAR" property="planWardCode"/>
+        <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
+        <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
+        <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
         <result column="plan_sex" jdbcType="INTEGER" property="planSex"/>
         <result column="plan_age_interval" jdbcType="VARCHAR" property="planAgeInterval"/>
         <result column="plan_exis_phone" jdbcType="INTEGER" property="planExisPhone"/>
@@ -54,19 +78,22 @@
         <result column="plan_creater" jdbcType="BIGINT" property="creater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
-        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
-        <association property="formType" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo">
-            <id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
-            <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>
+        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>-->
+        <association property="formInfo" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo"
+                        select="com.leanin.mapper.FormTypeMapper.findByFId">
+            <!--<id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
+            <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>-->
         </association>
-        <association property="formInfo" column="follow_form_num" javaType="com.leanin.domain.vo.FormInfoVo">
-            <id column="form_num" jdbcType="VARCHAR" property="formNum"/>
-            <result column="form_name" jdbcType="VARCHAR" property="formName"/>
+        <association property="formInfo" column="follow_form_num" javaType="com.leanin.domain.vo.FormInfoVo"
+                        select="com.leanin.mapper.FormInfoMapper.findFormInfoById">
+            <!--<id column="form_num" jdbcType="VARCHAR" property="formNum"/>
+            <result column="form_name" jdbcType="VARCHAR" property="formName"/>-->
         </association>
-        <association property="rulesInfo" column="rules_info_num" javaType="com.leanin.domain.vo.RulesInfoVo">
-            <id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"/>
+        <association property="rulesInfo" column="rules_info_num" javaType="com.leanin.domain.vo.RulesInfoVo"
+                        select="com.leanin.mapper.RulesInfoMapper.findRulesById">
+            <!--<id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"/>
             <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName"/>
-            <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName"/>
+            <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName"/>-->
         </association>
         <association property="msgInfo" column="msg_id" javaType="com.leanin.domain.vo.MsgInfoVo"
                      select="com.leanin.mapper.MsgInfoMapper.findMsgInfoById">
@@ -88,23 +115,26 @@
     plan_sex, plan_age_interval, plan_exis_phone, plan_type, plan_status, area_code,disease_code,
     pats_ward_code,plan_creater,create_date,import_data,msg_id,msg_type
   </sql>
-    <sql id="Blob_Column_List">
+    <!--<sql id="Blob_Column_List">
   	p.plan_num, p.plan_name, p.patient_info_source, p.plan_begin_time, p.plan_end_time, p.plan_ward_code, 
     p.plan_duty_per, p.plan_target, p.plan_send_type, t.form_type_id,t.form_type_name, f.form_num,f.form_name, r.rules_info_id, 
     r.rules_info_type_name, r.rules_info_name,p.plan_sex, p.plan_age_interval, p.plan_exis_phone, p.plan_type, p.plan_status, p.area_code,p.disease_code,
     p.pats_ward_code,p.plan_creater,p.create_date,p.import_data,msg_id,msg_type
-  </sql>
-    <select id="findPlanList" parameterType="java.lang.String" resultMap="BlobResultMap">
-        select
-        <include refid="Blob_Column_List"/>
-        from leanin_plan_info p
+  </sql>-->
+    <!--
+    from leanin_plan_info p
         left join leanin_form_type t on t.form_type_id=p.form_type_id
         left join leanin_form_info f on p.follow_form_num=f.form_num
         left join leanin_rules_info r on p.rules_info_num=r.rules_info_id
-        where p.plan_status>=0
-        and p.plan_type=#{planType}
+    -->
+    <select id="findPlanList"  resultMap="BlobResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_info
+        where plan_status >=0
+        and plan_type=#{planType}
         <if test="planName != null">
-            and p.plan_name like CONCAT('%',#{planName},'%')
+            and plan_name like CONCAT('%',#{planName},'%')
         </if>
     </select>
     <select id="findPlanInfoById" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -146,6 +176,7 @@
         and plan_type = #{planType}
         and plan_duty_per =#{userId}
     </select>
+
     <update id="updatePlanStatus">
     update leanin_plan_info set plan_status=#{status}
     where plan_num = #{planNum,jdbcType=VARCHAR}

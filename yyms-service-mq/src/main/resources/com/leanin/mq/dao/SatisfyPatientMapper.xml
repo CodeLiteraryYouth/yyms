@@ -18,11 +18,12 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
+        <result column="form_id" property="formId"/>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
     patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
-    patient_condition, patient_diagous, patient_type, patient_status, area_code
+    patient_condition, patient_diagous, patient_type, patient_status, area_code,form_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -31,7 +32,7 @@
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
     </select>
 
-    <select id="findList" resultMap="BaseResultMap">
+    <!--<select id="findList" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
@@ -54,7 +55,7 @@
         <if test="endDate != null ">
             AND patient_date_time &lt; #{endDate}
         </if>
-    </select>
+    </select>-->
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_satisfy_patient
@@ -125,6 +126,9 @@
             <if test="areaCode != null">
                 area_code,
             </if>
+            <if test="formId != null">
+                form_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -174,6 +178,9 @@
             </if>
             <if test="areaCode != null">
                 #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="formId != null">
+                #{formId},
             </if>
         </trim>
     </insert>
@@ -228,23 +235,4 @@
         </set>
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
-    update leanin_satisfy_patient
-    set satisfy_plan_num = #{satisfyPlanNum,jdbcType=VARCHAR},
-      patient_id = #{patientId,jdbcType=BIGINT},
-      send_type = #{sendType,jdbcType=INTEGER},
-      patient_name = #{patientName,jdbcType=VARCHAR},
-      patient_sex = #{patientSex,jdbcType=INTEGER},
-      patient_age = #{patientAge,jdbcType=INTEGER},
-      patient_phone = #{patientPhone,jdbcType=VARCHAR},
-      patient_ward = #{patientWard,jdbcType=VARCHAR},
-      patient_date_time = #{patientDateTime,jdbcType=TIMESTAMP},
-      finish_type = #{finishType,jdbcType=INTEGER},
-      patient_condition = #{patientCondition,jdbcType=VARCHAR},
-      patient_diagous = #{patientDiagous,jdbcType=VARCHAR},
-      patient_type = #{patientType,jdbcType=INTEGER},
-      patient_status = #{patientStatus,jdbcType=INTEGER},
-      area_code = #{areaCode,jdbcType=VARCHAR}
-    where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
-  </update>
 </mapper>

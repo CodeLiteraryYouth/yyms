@@ -39,4 +39,7 @@ public interface SatisfyPlanService {
      * @return
      */
 	DataOutResponse updateSatisfyPlan(SatisfyPlanVo record);
+
+    DataOutResponse findAll(Long userId);
+
 }

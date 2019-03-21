@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SatisfyPatientMapper {
+
     int deleteByPrimaryKey(Long patientSatisfyId);
 
     int insert(SatisfyPatientVo record);
@@ -16,5 +17,4 @@ public interface SatisfyPatientMapper {
 
     int updateByPrimaryKeySelective(SatisfyPatientVo record);
 
-    int updateByPrimaryKey(SatisfyPatientVo record);
 }

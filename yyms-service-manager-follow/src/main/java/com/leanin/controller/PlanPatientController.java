@@ -5,15 +5,18 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.FormRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.service.PlanPatientService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("planPatient")
-public class PlanPatientController {
+public class PlanPatientController extends BaseController {
 
     @Autowired
     PlanPatientService planPatientService;
@@ -57,6 +60,7 @@ public class PlanPatientController {
 
     @PostMapping("addPatientList")
     public DataOutResponse addPatientList(@RequestBody List<PlanPatientVo> PlanPatients){
+
         return planPatientService.addPatientList(PlanPatients);
     }
 
@@ -86,6 +90,9 @@ public class PlanPatientController {
     }
 
 
-
-
+    private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+        LyOauth2Util lyOauth2Util = new LyOauth2Util();
+        LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+        return userJwt;
+    }
 }

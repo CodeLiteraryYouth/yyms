@@ -24,7 +24,7 @@ import java.io.FileOutputStream;
 public class UploadController {
 
     @PostMapping(value = "uploadBlog")
-    public DataOutResponse uploadBlog(@RequestParam MultipartFile file, HttpServletRequest request) {
+    public DataOutResponse uploadBlog(/*@RequestParam*/ MultipartFile file, HttpServletRequest request) {
         log.info("文件开始上传");
         String uploadUrl=null;
         try {

@@ -20,12 +20,13 @@
         <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
         <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <result column="form_id" property="formId"></result>
     </resultMap>
     <!--patient_date_time,-->
     <sql id="Base_Column_List">
-    patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
-    patient_age, patient_phone,patient_ward,follow_type , patient_status, patient_condition,
-    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source
+    patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,patient_age,
+    patient_phone,patient_ward,follow_type , patient_status, patient_condition,patient_diagous,
+     patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,form_id
   </sql>
     <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -171,6 +172,9 @@
             <if test="patientSource !=null">
                 patient_source,
             </if>
+            <if test="formId !=null">
+                form_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -226,6 +230,9 @@
             </if>
             <if test="patientSource !=null">
                 #{patientSource,jdbcType=INTEGER},
+            </if>
+            <if test="formId !=null">
+                #{formId},
             </if>
         </trim>
     </insert>

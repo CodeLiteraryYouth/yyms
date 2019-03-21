@@ -17,9 +17,28 @@
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <association property="createrName" column="form_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
-
     </association>
   </resultMap>
+
+  <resultMap id="BaseResultMap1" type="com.leanin.domain.vo.FormInfoExt">
+    <id column="form_num" jdbcType="VARCHAR" property="formNum" />
+    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
+    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
+    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
+    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
+    <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
+    <result column="form_name" jdbcType="VARCHAR" property="formName" />
+    <result column="form_title" jdbcType="LONGVARCHAR" property="formTitle" />
+    <result column="form_bottom" jdbcType="LONGVARCHAR" property="formBottom" />
+    <result column="form_status" jdbcType="INTEGER" property="formStatus" />
+    <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
+    <result column="form_type" jdbcType="INTEGER" property="formType" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+    <result column="patient_plan_id"  property="planPatientId" />
+  </resultMap>
+
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.FormInfoVo">
     <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
   </resultMap>
@@ -52,6 +71,11 @@
   </sql>
   <sql id="Blob_Column_List">
     form_text
+  </sql>
+  <sql id="ext">
+    lfi.form_num, lfi.form_creater, lfi.form_create_time, lfi.form_form_id, lfi.form_function, lfi.form_refer,
+    lfi.form_name, lfi.form_title, lfi.form_bottom, lfi.form_status, lfi.creater_ward, lfi.form_type, lfi.area_code,
+    lfi.form_text,lpp.patient_plan_id
   </sql>
   <sql id="Common_list">
   	w.ward_id,w.ward_code,w.ward_name,f.form_num, f.form_creater, f.form_create_time, f.form_form_id,
@@ -117,6 +141,36 @@
     from leanin_form_info where form_status>=0 
     and form_name = #{formName,jdbcType=VARCHAR}
   </select>
+
+  <select id="findFormListByOpenid" resultMap="BaseResultMap1">
+    select
+    <include refid="ext"/>
+    from leanin_form_info lfi, leanin_plan_patient lpp ,leanin_plan_info lpi
+    where lfi.form_status >=0
+    and lpp.patient_status = 1
+    and lpi.plan_status = 0
+    and lfi.form_num = lpp.form_id
+    and lpp.plan_num = lpi.plan_num
+    and lpi.plan_type =#{planType}
+    and lpp.opend_id =#{openid}
+    and lpp.plan_pats_status = #{followStatus}
+  </select>
+
+  <select id="findFormListByOpenidExt" resultMap="BaseResultMap1">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info lfi, leanin_follow_record lfr,leanin_plan_info lpi
+    where lfi.form_status >=0
+    and lpi.plan_status = 0
+    and lfi.form_num = lfr.form_id
+    and lfr.plan_num = lpi.plan_num
+    and lpi.plan_type =#{planType}
+    and lfr.opend_id =#{openid}
+    and lfr.plan_pats_status = #{followStatus}
+  </select>
+
   <update id="updateFormStatus">
     update leanin_form_info set form_status=#{formStatus,jdbcType=INTEGER}
     where form_num = #{formNum,jdbcType=VARCHAR}

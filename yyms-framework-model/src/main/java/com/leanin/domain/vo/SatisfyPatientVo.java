@@ -53,10 +53,14 @@ public class SatisfyPatientVo implements Serializable {
 
     private Integer sendType; //发送状态；0 未发送 1已发送 2 发送失败
 
+    private String suggess; //处理意见
+
     private String idCard;  //身份证号
 
     private String inhosNo; //住院号
 
     private String openId;  //openid
+
+    private String formId;  //满意度表单id
 
 }

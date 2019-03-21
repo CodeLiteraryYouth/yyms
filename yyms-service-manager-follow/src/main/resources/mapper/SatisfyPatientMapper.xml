@@ -18,9 +18,11 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
-        <result column="id_card"  property="idCard"/>
-        <result column="inhos_no"  property="inhosNo"/>
-        <result column="open_id"  property="openId"/>
+        <result column="suggess" property="suggess"/>
+        <result column="id_card" property="idCard"/>
+        <result column="inhos_no" property="inhosNo"/>
+        <result column="open_id" property="openId"/>
+        <result column="form_id" property="formId"/>
         <association property="satisfyPlanVo" column="satisfy_plan_num" javaType="com.leanin.domain.vo.SatisfyPlanVo"
                      select="com.leanin.mapper.SatisfyPlanMapper.findSatisfyPlanById">
         </association>
@@ -42,15 +44,17 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
-        <result column="id_card"  property="idCard"/>
-        <result column="inhos_no"  property="inhosNo"/>
-        <result column="open_id"  property="openId"/>
+        <result column="suggess" property="suggess"/>
+        <result column="id_card" property="idCard"/>
+        <result column="inhos_no" property="inhosNo"/>
+        <result column="open_id" property="openId"/>
+        <result column="form_id" property="formId"/>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
     patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
     patient_condition, patient_diagous, patient_type, patient_status,
-    area_code,id_card,inhos_no,open_id
+    area_code,id_card,inhos_no,open_id,suggess,form_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -258,7 +262,7 @@
                 patient_date_time = #{patientDateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="finishType != null">
-                finish_type = #{patientDoctor,jdbcType=INTEGER},
+                finish_type = #{finishType,jdbcType=INTEGER},
             </if>
             <if test="patientCondition != null">
                 patient_condition = #{patientCondition,jdbcType=VARCHAR},
@@ -274,6 +278,9 @@
             </if>
             <if test="areaCode != null">
                 area_code = #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="suggess != null">
+                suggess = #{suggess},
             </if>
             <if test="idCard != null">
                 id_card = #{idCard},
@@ -318,14 +325,14 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
-        WHERE patient_status = 1
+        WHERE patient_status = 0
         AND satisfy_plan_num IN (
-          SELECT sp.plan_satisfy_num
-          FROM leanin_satisfy_plan sp
-          WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
-          <if test="myFollowReq.planId != null">
-              AND sp.plan_satisfy_num = #{myFollowReq.planId}
-          </if>
+        SELECT sp.plan_satisfy_num
+        FROM leanin_satisfy_plan sp
+        WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
+        <if test="myFollowReq.planId != null">
+            AND sp.plan_satisfy_num = #{myFollowReq.planId}
+        </if>
         )
         <if test="myFollowReq.startDate != null">
             AND patient_date_time &gt;= #{myFollowReq.startDate}
@@ -333,10 +340,10 @@
         <if test="myFollowReq.endDate != null ">
             AND patient_date_time &lt;= #{myFollowReq.startDate}
         </if>
-        <if test="myFollowReq.folStatus">
+        <if test="myFollowReq.folStatus != null">
             AND finish_type = #{myFollowReq.folStatus}
         </if>
-        <if test="myFollowReq.patName">
+        <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
     </select>
@@ -349,5 +356,12 @@
         and id_card =#{idCard}
         and patient_phone = #{phoneNum}
         and patient_name = #{patientName}
+    </select>
+
+    <select id="findByStyPatId" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_satisfy_patient
+        where patient_satisfy_id = #{patientSatisfyId}
     </select>
 </mapper>

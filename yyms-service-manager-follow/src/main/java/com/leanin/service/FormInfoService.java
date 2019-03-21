@@ -66,4 +66,6 @@ public interface FormInfoService {
      * @return
      */
 	DataOutResponse updateFormInfo(FormInfoVo record);
+
+	DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType);
 }

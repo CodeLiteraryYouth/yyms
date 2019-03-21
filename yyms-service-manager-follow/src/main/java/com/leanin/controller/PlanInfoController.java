@@ -5,13 +5,18 @@ import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.model.response.ResponseResult;
 import com.leanin.service.PlanInfoService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
 @RestController
 @RequestMapping(value="plan")
-public class PlanInfoController {
+public class PlanInfoController extends BaseController {
 
 	@Autowired
 	private PlanInfoService planInfoService;
@@ -20,14 +25,15 @@ public class PlanInfoController {
 	
 	@GetMapping("findPlanList")
 	public DataOutResponse findPlanList(@RequestParam(required=false) int page, @RequestParam(required=false) int pageSize,
-										@RequestParam(required=false) String planName, @RequestParam(required=false) int planType) {
+										@RequestParam(required=false) String planName, @RequestParam(required=true) int planType) {
 		return planInfoService.findPlanList(page, pageSize, planName,planType);
 	}
 
 	//查询所有计划信息
 	@GetMapping("findAllPlan")
 	public DataOutResponse findAllPlan(@RequestParam Integer planType,@RequestParam Long userId){
-		return planInfoService.findAllPlan(planType,userId);
+		LyOauth2Util.UserJwt user = getUser(request);
+		return planInfoService.findAllPlan(planType,user.getId());
 	}
 	
 	@GetMapping("updatePlanStatus")
@@ -37,6 +43,12 @@ public class PlanInfoController {
 	
 	@PostMapping("addPlanInfo")
 	public ResponseResult addPlanInfo(@RequestBody PlanInfoVo planInfo) {
+		LyOauth2Util.UserJwt user = getUser(request);
+		planInfo.setCreateDate(new Date());
+		planInfo.setPlanCreater(user.getId());
+		if (planInfo.getPlanType() == 2){//宣教计划负责人为自己
+			planInfo.setPlanDutyPer(user.getId());
+		}
 		return planInfoService.addPlanInfo(planInfo);
 	}
 
@@ -72,6 +84,12 @@ public class PlanInfoController {
 	@GetMapping("findPlanListByType")
 	public DataOutResponse findPlanListByType(@RequestParam Integer planType){
 		return planInfoService.findPlanListByType(planType);
+	}
+
+	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+		LyOauth2Util lyOauth2Util = new LyOauth2Util();
+		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+		return userJwt;
 	}
 
 

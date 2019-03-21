@@ -1,5 +1,6 @@
 package com.leanin.mapper;
 
+import com.leanin.domain.vo.SatisfyInfoExt;
 import com.leanin.domain.vo.SatisfyInfoVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,7 @@ public interface SatisfyInfoMapper {
      */
     int updateSatisfyInfo(SatisfyInfoVo record);
 
+	List<SatisfyInfoExt> findStyInfoByOpenId(@Param("openId") String openId,@Param("finishType") Integer finishType);
+
+	List<SatisfyInfoExt> findStyInfoByOpenIdExt(@Param("openId")String openId,@Param("finishType") Integer finishType);
 }

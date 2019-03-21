@@ -6,9 +6,9 @@ spring:
   application:
     name: yyms-gateway
 #  redis:
-#    host: 127.0.0.1
+#    host: 39.108.217.158
 #    port: 6379
-#    timeout: 5000 #连接超时 毫秒
+#    timeout: 60000 #连接超时 毫秒
 #    jedis:
 #      pool:
 #        maxActive: 3
@@ -37,10 +37,12 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/
+      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+#      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/  #浪潮
   instance:
     prefer-ip-address:  true
-    ip-address: 127.0.0.1
+#    ip-address: 192.168.0.122
+#    ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port}
 ribbon:
   MaxAutoRetries: 2

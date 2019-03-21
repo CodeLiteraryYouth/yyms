@@ -134,6 +134,7 @@ public class PlanPatientMQ {
             calendar.set(Calendar.SECOND, 0);
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
+            satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
             satisfyPatientMapper.insertSelective(satisfyPatientVo);
         }
         Long delete = redisTemplate.boundHashOps("satisfyPlan").delete(planSatisfyNum);
@@ -216,7 +217,7 @@ public class PlanPatientMQ {
 //                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
                 planPatientVo.setPlanPatsStatus(0);//-1:收案 0：全部 1：待随访 2：已完成；3:已过期
                 planPatientVo.setPatientSource(planInfo.getPatientInfoSource());//设置患者来源
-//                planPatientVo.setRulesInfoId(rules.getRulesInfoId());//设置随访规则id
+                planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
 
 //                if(rules.getRulesInfoType() ==1){
 //
@@ -241,7 +242,11 @@ public class PlanPatientMQ {
                         nextDate = setNextDate(lastDate, tiemFont, timeNum, timeChoosed);
                     }
                     break;
-                    case 4: {//4：闭环宣教
+                    default:{
+                        nextDate = setNextDate(lastDate, tiemFont, timeNum, timeChoosed);
+                    }
+                    break;
+                    /*case 4: {//4：闭环宣教
 
                     }
                     break;
@@ -260,7 +265,7 @@ public class PlanPatientMQ {
                     case 8: {//8：普通提醒
 
                     }
-                    break;
+                    break;*/
                 }
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
 

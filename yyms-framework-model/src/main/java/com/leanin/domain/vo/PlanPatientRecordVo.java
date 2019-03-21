@@ -59,6 +59,15 @@ public class PlanPatientRecordVo implements Serializable {
 
     private String handleSugges;
 
+    private String openid;
+
+    private String idCard;
+
+    private String inhosNo;
+
+    private String formId;
+
+
 //    private String sendStatus;  //发送状态
 
 }

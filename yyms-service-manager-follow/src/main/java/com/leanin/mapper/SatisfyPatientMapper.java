@@ -21,6 +21,8 @@ public interface SatisfyPatientMapper {
 
     SatisfyPatientVo selectByPrimaryKey(Long patientSatisfyId);
 
+    SatisfyPatientVo findByStyPatId(@Param("patientSatisfyId") Long patientSatisfyId);
+
     int updateByPrimaryKeySelective(SatisfyPatientVo record);
 
     int updateByPrimaryKey(SatisfyPatientVo record);

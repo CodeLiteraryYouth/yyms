@@ -22,12 +22,17 @@
         <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
         <result column="handle_sugges"  property="handleSugges"></result>
+        <result column="open_id"  property="openid"></result>
+        <result column="id_card"  property="idCard"></result>
+        <result column="inhos_no"  property="inhosNo"></result>
+        <result column="form_id"  property="formId"></result>
     </resultMap>
 
     <sql id="Base_Column_List">
-        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
-        patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
-        patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source
+        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,patient_age,
+        patient_phone,patient_ward,follow_type, patient_status, patient_condition,patient_diagous,
+        patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,handle_sugges,
+        open_id,id_card,inhos_no,form_id
     </sql>
 
     <insert id="addFollowRecord">
@@ -90,6 +95,18 @@
             <if test="handleSugges !=null">
                 handle_sugges,
             </if>
+            <if test="opendId !=null">
+                open_id,
+            </if>
+            <if test="idCard !=null">
+                id_card,
+            </if>
+            <if test="inhosNo !=null">
+                inhos_no,
+            </if>
+            <if test="formId !=null">
+                form_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -148,6 +165,18 @@
             </if>
             <if test="handleSugges !=null">
                 #{handleSugges},
+            </if>
+            <if test="openId !=null">
+                #{openId},
+            </if>
+            <if test="idCard !=null">
+                #{idCard},
+            </if>
+            <if test="inhosNo !=null">
+                #{inhosNo},
+            </if>
+            <if test="formId !=null">
+                #{formId},
             </if>
         </trim>
     </insert>

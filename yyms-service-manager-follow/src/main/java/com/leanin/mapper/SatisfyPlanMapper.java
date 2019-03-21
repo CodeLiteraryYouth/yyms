@@ -51,4 +51,6 @@ public interface SatisfyPlanMapper {
     int updateSatisfyPlan(SatisfyPlanVo record);
 
     String findPNById(@Param("planNum") String planNum);
+
+    List<SatisfyPlanVo> findAll(@Param("userId") Long userId);
 }

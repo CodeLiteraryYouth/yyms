@@ -81,7 +81,7 @@ public class WorkJob {
         }
     }
 
-    //随访 满意度 发送短信
+    //随访 宣教 发送短信
     @Scheduled(cron = "0 0/2 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void followPlan() {
@@ -142,7 +142,7 @@ public class WorkJob {
     }
 
     //满意度计划
-    @Scheduled(cron = "0 0/2 * * * ? ")//
+    @Scheduled(cron = "0 0/5 * * * ? ")//
     @Transactional(rollbackFor = Exception.class)
     public void styPlan(){
         //查询所有计划信息
@@ -157,12 +157,13 @@ public class WorkJob {
             }
             Map ruleMap = JSON.parseObject(planVo.getRulesText(), Map.class);
             int rangeDays = Integer.parseInt((String) ruleMap.get("rangeDays"));
+
             //判断患者信息是否处于 未发送的状态
             switch (planVo.getDiscoverType()){
-                case 1 : //短信或者app
+                case 1 : //短信或者公众号
                     sendMsg(planVo,list,msgInfo.getMsgText(),rangeDays);
                     break;
-                case 2 : //app
+                case 2 : //公众号
                     break;
                 case 3 : //短信
                     //执行相关发送操作
@@ -198,7 +199,7 @@ public class WorkJob {
         }
     }
 
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0/5 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void updateNextTime() {
         log.info("更新下次随访时间");
@@ -264,7 +265,7 @@ public class WorkJob {
                             updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         break;
-                    case 4:
+                    case 4: //随访异常
                         if (days > validDays){
                             updateRecord(4, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
@@ -280,7 +281,7 @@ public class WorkJob {
     private boolean updateRecord(Integer status, PlanPatientVo planPatientVo, RulesInfoVo rulesInfo, String timeSelect,
                                  Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths) {
         //填写失访记录
-        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 失访
+        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 失访 4 随访异常
         followRecordMapper.addFollowRecord(planPatientVo);
         if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
             //计算下次随访时间
@@ -289,7 +290,7 @@ public class WorkJob {
             planPatientVo.setNextDate(date); //设置下次随访时间
             planPatientVo.setSendType(1); //未发送
             planPatientVo.setPlanPatsStatus(0); //未发送状态
-            planPatientVo.setFollowType(1);
+//            planPatientVo.setFollowType(1);
             planPatientVo.setHandleSugges("");
             planPatientMapper.updatePlanPatient(planPatientVo);
         }

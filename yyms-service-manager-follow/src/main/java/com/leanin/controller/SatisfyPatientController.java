@@ -2,13 +2,15 @@ package com.leanin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.SatisfyInfoVo;
+import com.leanin.domain.vo.StyInfoRecordVo;
 import com.leanin.service.SatisfyPatientService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/satisfyPatient")
-public class SatisfyPatientController {
+public class SatisfyPatientController extends BaseController {
 
     @Autowired
     SatisfyPatientService satisfyPatientService;
@@ -47,6 +49,21 @@ public class SatisfyPatientController {
         return satisfyPatientService.findList(currentPage,pageSize,satisfyPlanNum,sendType,patientWard,patientName,startDate,endDate,finishType);
     }
 
+    /**
+     * 修改满意度状态
+     * @param patientSatisfyId
+     * @param finishType
+     * @param
+     * @return
+     */
+    @PostMapping("/updateByPid")
+    public DataOutResponse updateByPid(@RequestParam Long patientSatisfyId, @RequestParam Integer finishType,
+                                       @RequestParam String suggess,@RequestBody StyInfoRecordVo styInfoRecordVo){
+        LyOauth2Util.UserJwt user = getUser(request);
+        styInfoRecordVo.setOperatingId(user.getId());
+        return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo);
+    }
+
     @GetMapping("/delPatientList")
     public DataOutResponse delPatientList(@RequestParam String patientSatisfyId){
         List<Long> longs1 = JSON.parseArray(patientSatisfyId, Long.class);
@@ -56,6 +73,12 @@ public class SatisfyPatientController {
 //        List<Long> longs = JSON.parseArray(patientPlanIds, Long.class);
 //        Long[] longs=new Long[5];
         return satisfyPatientService.delPatientList(longs1);
+    }
+
+    private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+        LyOauth2Util lyOauth2Util = new LyOauth2Util();
+        LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+        return userJwt;
     }
 
 }

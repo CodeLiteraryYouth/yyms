@@ -77,15 +77,15 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         HashMap dataMap = new HashMap();
 
         PageHelper.startPage(currentPage, pageSize);
-        if (planPatsStatus == null || planPatsStatus == -1 || planPatsStatus ==0 || planPatsStatus == 1){
+//        if (planPatsStatus == null || planPatsStatus == -1 || planPatsStatus ==0 || planPatsStatus == 1){
             Page<PlanPatientVo> page = (Page<PlanPatientVo>) planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
             dataMap.put("totalCount",page.getTotal());
             dataMap.put("list", page.getResult());//
-        }else{
-            Page<PlanPatientRecordVo> page= (Page<PlanPatientRecordVo>) followRecordMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
-            dataMap.put("totalCount",page.getTotal());
-            dataMap.put("list", page.getResult());//
-        }
+//        }else{
+//            Page<PlanPatientRecordVo> page= (Page<PlanPatientRecordVo>) followRecordMapper.findPlanPatientList(planInfo.getPlanNum(), planPatsStatus, patientName);
+//            dataMap.put("totalCount",page.getTotal());
+//            dataMap.put("list", page.getResult());//
+//        }
         return ReturnFomart.retParam(200, dataMap);
 
 //        //封装参数
@@ -207,7 +207,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         }else{
             dataMap.put("patientInfo",patientMap);
         }
-        if (planNum != null || !"".equals(planNum)){
+        if (planNum != null && !"".equals(planNum)){
             switch (planType){
                 case 1://随访和宣教
                 {
@@ -242,10 +242,10 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     @Override
     public DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges,FormRecordVo formRecordVo) {
         PlanPatientVo patient = planPatientMapper.findPlanPatientById(patientPlanId);
-        formRecordMapper.addFormRecord(formRecordVo);
         if (patient == null){
-            return ReturnFomart.retParam(200, "信息不存在");
+            return ReturnFomart.retParam(300, "信息不存在");
         }
+        formRecordMapper.addFormRecord(formRecordVo);
         if (followType != null){
             patient.setFollowType(followType);
             patient.setPlanPatsStatus(followType);
@@ -256,6 +256,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         planPatientMapper.updatePlanPatient(patient);
         return ReturnFomart.retParam(200, "保存成功");
     }
+
 
 
 }

@@ -24,6 +24,7 @@
         <result column="id_card" property="idCard"></result>
         <result column="inhos_no" property="inhosNo"></result>
         <result column="opend_id" property="opendId"></result>
+        <result column="form_id" property="formId"></result>
         <association property="planInfoVo" column="plan_num" javaType="com.leanin.domain.vo.PlanInfoVo"
                      select="com.leanin.mapper.PlanInfoMapper.findPlanInfoById">
         </association>
@@ -51,12 +52,13 @@
         <result column="id_card" property="idCard"></result>
         <result column="inhos_no" property="inhosNo"></result>
         <result column="opend_id" property="opendId"></result>
+        <result column="form_id" property="formId"></result>
     </resultMap>
     <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
     patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
     patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,
-    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id
+    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id
   </sql>
     <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -364,5 +366,6 @@
         and patient_phone = #{phoneNum}
         and id_card = #{idCard}
     </select>
+
 
 </mapper>

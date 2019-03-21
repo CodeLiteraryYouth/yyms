@@ -3,12 +3,17 @@ package com.leanin.controller;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.RulesInfoVo;
 import com.leanin.service.RulesInfoService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
 @RestController
 @RequestMapping("rules")
-public class RulesInfoController {
+public class RulesInfoController extends BaseController {
 
 	@Autowired
 	private RulesInfoService rulesInfoService;
@@ -37,6 +42,9 @@ public class RulesInfoController {
 	
 	@PostMapping("addRulesInfo")
 	public DataOutResponse addRulesInfo(@RequestBody RulesInfoVo record) {
+		LyOauth2Util.UserJwt user = getUser(request);
+		record.setRulesCreater(user.getId());
+		record.setRulesCreateTime(new Date());
 		return rulesInfoService.addRulesInfo(record);
 	}
 	
@@ -48,5 +56,11 @@ public class RulesInfoController {
 	@GetMapping("findRulesById")
 	public DataOutResponse findRulesById(@RequestParam Long rulesInfoId) {
 		return rulesInfoService.findRulesById(rulesInfoId);
+	}
+
+	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+		LyOauth2Util lyOauth2Util = new LyOauth2Util();
+		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+		return userJwt;
 	}
 }

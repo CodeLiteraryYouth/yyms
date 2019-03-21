@@ -65,6 +65,8 @@ public class PlanPatientVo implements Serializable {
     private String inhosNo;     //住院号
     private String opendId;     //openid
 
+    private String formId;      //表单id
+
 //    private String sendStatus;  //发送状态
 
 }

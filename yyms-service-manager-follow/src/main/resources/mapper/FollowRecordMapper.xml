@@ -6,7 +6,7 @@
         <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
         <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
         <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
         <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
@@ -21,15 +21,21 @@
         <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
         <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
         <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <result column="handle_sugges"  property="handleSugges"></result>
+        <result column="open_id"  property="openid"></result>
+        <result column="id_card"  property="idCard"></result>
+        <result column="inhos_no"  property="inhosNo"></result>
+        <result column="form_id"  property="formId"></result>
     </resultMap>
 
     <sql id="Base_Column_List">
-        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
-        patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
-        patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source
+        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,patient_age,
+        patient_phone,patient_ward,follow_type, patient_status, patient_condition,patient_diagous,
+        patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,handle_sugges,
+        open_id,id_card,inhos_no,form_id
     </sql>
 
-    <insert id="addFollowRecord">
+    <!--<insert id="addFollowRecord">
         insert into leanin_follow_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -143,7 +149,7 @@
                 #{patientSource,jdbcType=INTEGER},
             </if>
         </trim>
-    </insert>
+    </insert>-->
 
     <select id="findPlanPatientList" resultMap="BaseResultMap">
         SELECT

@@ -45,14 +45,14 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
         <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
-        <result column="plan_creater" jdbcType="BIGINT" property="creater"/>
+        <result column="plan_creater" jdbcType="BIGINT" property="planCreater"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
-        <association property="formType" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo">
+        <!--<association property="formTypeId" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo">
             <id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
             <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>
-        </association>
+        </association>-->
         <association property="formInfo" column="follow_form_num" javaType="com.leanin.domain.vo.FormInfoVo">
             <id column="form_num" jdbcType="VARCHAR" property="formNum"/>
             <result column="form_name" jdbcType="VARCHAR" property="formName"/>

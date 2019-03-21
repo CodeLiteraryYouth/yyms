@@ -58,10 +58,13 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updateSatisfyStatus(String planSatisfyNum, int status) {
         log.info("满意度表单号为:" + planSatisfyNum + "-" + "状态为:" + status);
-        satisfyPlanMapper.updateSatisfyStatus(planSatisfyNum, status);
         SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planSatisfyNum);
+        if(satisfyPlan ==null){
+            return ReturnFomart.retParam(300, "计划不存在");
+        }
+        satisfyPlanMapper.updateSatisfyStatus(planSatisfyNum, status);
         log.info("修改满意度计划的信息为:" + JSON.toJSONString(satisfyPlan));
-        return ReturnFomart.retParam(200, satisfyPlan);
+        return ReturnFomart.retParam(200, "操作成功");
     }
 
     @Override
@@ -222,6 +225,15 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
         }
         satisfyPlanMapper.updateSatisfyPlan(record);
         return ReturnFomart.retParam(200, record);
+    }
+
+    @Override
+    public DataOutResponse findAll(Long userId) {
+        if (userId == null){
+            return ReturnFomart.retParam(300,"请登录后再使用");
+        }
+//        satisfyPlanMapper.findAll(userId);
+        return ReturnFomart.retParam(200, satisfyPlanMapper.findAll(userId));
     }
 
 }

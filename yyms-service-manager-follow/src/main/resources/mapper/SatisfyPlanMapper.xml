@@ -27,7 +27,6 @@
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
     <association property="createrName" column="plan_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
-
     </association>
     <association property="discoverPersonName" column="discover_person" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
@@ -50,7 +49,7 @@
     <result column="patient_age" jdbcType="VARCHAR" property="patientAge" />
     <result column="patient_phone" jdbcType="INTEGER" property="patientPhone" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="plan_creater" jdbcType="VARCHAR" property="creater" />
+    <result column="plan_creater" property="creater" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="satisfy_plan_status" jdbcType="INTEGER" property="satisfyPlanStatus" />
     <result column="satisfy_rules_text" jdbcType="LONGVARCHAR" property="rulesText" />
@@ -106,6 +105,14 @@
       select plan_satisfy_name
       from leanin_satisfy_plan
       where plan_satisfy_num = #{planNum}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from leanin_satisfy_plan
+      where satisfy_plan_status>=0
+      and discover_person = #{userId}
     </select>
 
     <update id="updateSatisfyStatus">

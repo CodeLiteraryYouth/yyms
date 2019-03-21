@@ -88,7 +88,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         log.info("增加的计划信息为:" + JSON.toJSONString(record));
         record.setImportData(2);//默认设置未导入数据库
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoByName(record.getPlanName());
-        if (CompareUtil.isNotEmpty(planInfo)) {
+        if (planInfo != null) {
             //如果已经存在该名称,不允许重复添加
             ExceptionCast.cast(PlanResponseCode.INVALID_PARAM);
 //            return ReturnFomart.retParam(4000, planInfo);

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.SatisfyInfoExt;
 import com.leanin.domain.vo.SatisfyInfoVo;
 import com.leanin.mapper.SatisfyInfoMapper;
 import com.leanin.service.SatisfyService;
@@ -56,6 +57,9 @@ public class StaisfyServiceImpl implements SatisfyService {
 	@Override
 	public DataOutResponse findSatisfyById(String satisfyNum) {
 		SatisfyInfoVo satisfyInfo=satisfyInfoMapper.findSatisfyById(satisfyNum);
+		if (satisfyInfo == null){
+			return ReturnFomart.retParam(201, "数据为空");
+		}
 		log.info("满意度题型为:"+ JSON.toJSONString(satisfyInfo));
 		return ReturnFomart.retParam(200, satisfyInfo);
 	}
@@ -71,6 +75,16 @@ public class StaisfyServiceImpl implements SatisfyService {
 		}
 		satisfyInfoMapper.updateSatisfyInfo(record);
 		return ReturnFomart.retParam(200, record);
+	}
+
+	@Override
+	public DataOutResponse findStyInfoByOpenId(String openId, Integer finishType) {
+		List<SatisfyInfoExt> list = satisfyInfoMapper.findStyInfoByOpenId(openId,finishType);
+		if ( finishType != 1){
+			List<SatisfyInfoExt> satisfyInfoExts =satisfyInfoMapper.findStyInfoByOpenIdExt(openId,finishType);
+			list.addAll(satisfyInfoExts);
+		}
+		return ReturnFomart.retParam(200, list);
 	}
 
 }
