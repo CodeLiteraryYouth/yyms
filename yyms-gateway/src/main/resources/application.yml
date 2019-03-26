@@ -50,3 +50,5 @@ ribbon:
   OkToRetryOnAllOperations: false
   ConnectTimeout: 60000
   ReadTimeout: 60000
+  eureka:
+    enabled: true

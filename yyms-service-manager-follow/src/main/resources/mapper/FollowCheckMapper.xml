@@ -2,27 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.FollowCheckMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FollowCheckVo">
-    <id column="check_num" jdbcType="VARCHAR" property="checkNum" />
-    <result column="check_name" jdbcType="VARCHAR" property="checkName" />
-    <result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
-    <result column="check_person" jdbcType="VARCHAR" property="checkPerson" />
-    <result column="check_patient_type" jdbcType="INTEGER" property="checkPatientType" />
-    <result column="check_patient_ward" jdbcType="VARCHAR" property="checkPatientWard" />
-    <result column="follow_begin_date" jdbcType="DATE" property="followBeginDate" />
-    <result column="follow_end_date" jdbcType="DATE" property="followEndDate" />
-    <result column="check_ratio" jdbcType="VARCHAR" property="checkRatio" />
-    <result column="plan_num" jdbcType="VARCHAR" property="planNum" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
-    <result column="check_craeter" jdbcType="VARCHAR" property="creater" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <id column="check_num"  property="checkNum" />
+    <result column="check_name"  property="checkName" />
+    <result column="ward_code"  property="wardCode" />
+    <result column="check_person"  property="checkPerson" />
+    <result column="check_patient_type"  property="checkPatientType" />
+    <result column="check_patient_ward"  property="checkPatientWard" />
+    <result column="follow_begin_date"  property="followBeginDate" />
+    <result column="follow_end_date"  property="followEndDate" />
+    <result column="check_ratio"  property="checkRatio" />
+    <result column="plan_id"  property="planNum" />
+    <result column="area_code"  property="areaCode" />
+    <result column="check_status"  property="checkStatus" />
+    <result column="check_craeter"  property="creater" />
+    <result column="create_date" property="createDate" />
   </resultMap>
+
+  <resultMap extends="BaseResultMap" id="unfinishResultMap" type="com.leanin.domain.vo.FollowCheckVo" >
+    <association property="unfinishCount" column="check_num" javaType="int"
+                 select="com.leanin.mapper.CheckPatientMapper.findUnfinishCount"></association>
+  </resultMap>
+
   <sql id="Base_Column_List">
-    check_num, check_name, ward_code, check_person, check_patient_type, check_patient_ward, 
-    follow_begin_date, follow_end_date, check_ratio, plan_num, area_code, check_status, check_craeter,
+    check_num, check_name, ward_code, check_person, check_patient_type, check_patient_ward,
+    follow_begin_date, follow_end_date, check_ratio, plan_id, area_code, check_status, check_craeter,
     create_date
   </sql>
-  <select id="findCheckList" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+  <select id="findCheckList" resultMap="unfinishResultMap">
   	select
   	<include refid="Base_Column_List" />
   	from leanin_follow_check where check_status>=0
@@ -30,6 +37,8 @@
   		and check_name like CONCAT('%',#{checkName},'%')
   	</if>
   </select>
+
+
   <select id="findCheckById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -77,7 +86,7 @@
         check_ratio,
       </if>
       <if test="planNum != null">
-        plan_num,
+        plan_id,
       </if>
       <if test="areaCode != null">
         area_code,
@@ -94,46 +103,46 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="checkNum != null">
-        #{checkNum,jdbcType=VARCHAR},
+        #{checkNum},
       </if>
       <if test="checkName != null">
-        #{checkName,jdbcType=VARCHAR},
+        #{checkName},
       </if>
       <if test="wardCode != null">
-        #{wardCode,jdbcType=VARCHAR},
+        #{wardCode},
       </if>
       <if test="checkPerson != null">
-        #{checkPerson,jdbcType=VARCHAR},
+        #{checkPerson},
       </if>
       <if test="checkPatientType != null">
-        #{checkPatientType,jdbcType=INTEGER},
+        #{checkPatientType},
       </if>
       <if test="checkPatientWard != null">
-        #{checkPatientWard,jdbcType=VARCHAR},
+        #{checkPatientWard},
       </if>
       <if test="followBeginDate != null">
-        #{followBeginDate,jdbcType=DATE},
+        #{followBeginDate},
       </if>
       <if test="followEndDate != null">
-        #{followEndDate,jdbcType=DATE},
+        #{followEndDate},
       </if>
       <if test="checkRatio != null">
-        #{checkRatio,jdbcType=VARCHAR},
+        #{checkRatio},
       </if>
       <if test="planNum != null">
-        #{planNum,jdbcType=BIGINT},
+        #{planNum},
       </if>
       <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
+        #{areaCode},
       </if>
       <if test="checkStatus !=null">
-      	#{checkStatus,jdbcType=INTEGER},
+      	#{checkStatus},
       </if>
       <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
+        #{creater},
       </if>
       <if test="createDate !=null">
-      	#{createDate,jdbcType=INTEGER},
+      	#{createDate},
       </if>
     </trim>
   </insert>
@@ -141,39 +150,36 @@
     update leanin_follow_check
     <set>
       <if test="checkName != null">
-        check_name = #{checkName,jdbcType=VARCHAR},
+        check_name = #{checkName},
       </if>
       <if test="wardCode != null">
-        ward_code = #{wardCode,jdbcType=VARCHAR},
+        ward_code = #{wardCode},
       </if>
       <if test="checkPerson != null">
-        check_person = #{checkPerson,jdbcType=VARCHAR},
+        check_person = #{checkPerson},
       </if>
       <if test="checkPatientType != null">
-        check_patient_type = #{checkPatientType,jdbcType=INTEGER},
+        check_patient_type = #{checkPatientType},
       </if>
       <if test="checkPatientWard != null">
-        check_patient_ward = #{checkPatientWard,jdbcType=VARCHAR},
+        check_patient_ward = #{checkPatientWard},
       </if>
       <if test="followBeginDate != null">
-        follow_begin_date = #{followBeginDate,jdbcType=DATE},
+        follow_begin_date = #{followBeginDate},
       </if>
       <if test="followEndDate != null">
-        follow_end_date = #{followEndDate,jdbcType=DATE},
+        follow_end_date = #{followEndDate},
       </if>
       <if test="checkRatio != null">
-        check_ratio = #{checkRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="planNum != null">
-        plan_num = #{planNum,jdbcType=BIGINT},
+        check_ratio = #{checkRatio},
       </if>
       <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
+        area_code = #{areaCode},
       </if>
       <if test="checkStatus != null">
-        check_status = #{checkStatus,jdbcType=INTEGER},
+        check_status = #{checkStatus},
       </if>
     </set>
-    where check_num = #{checkNum,jdbcType=VARCHAR}
+    where check_num = #{checkNum}
   </update>
 </mapper>

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(value="测试接口",description = "测试配置管理接口，提供数据模型的管理、查询接口")
 public interface TestApi {
 
-   //restful风格传参
+   /*//restful风格传参
     @ApiOperation("测试接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param1", value = "页码", required = true, paramType = "path", dataType = "int"),
@@ -22,5 +22,5 @@ public interface TestApi {
     public String test2(int param1,int param2);
 
     @ApiOperation("测试本地数据库接口")
-    public DiseaseInfoVo findByDiseaseNum(String diseaseNum);
+    public DiseaseInfoVo findByDiseaseNum(String diseaseNum);*/
 }

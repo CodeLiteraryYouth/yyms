@@ -13,8 +13,9 @@ import java.io.Serializable;
 @ToString
 public class BindPat implements Serializable {
 
-    private String patientName;//患者名称
     private String idCard;     //身份证号
+    private String openId;      //微信唯一标识
+    private String patientName;//患者名称
     private String phoneNum;    //手机号码
 
     private String code;        //授权码

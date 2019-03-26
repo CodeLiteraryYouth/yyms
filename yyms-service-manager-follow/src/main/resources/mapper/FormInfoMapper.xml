@@ -145,14 +145,15 @@
   <select id="findFormListByOpenid" resultMap="BaseResultMap1">
     select
     <include refid="ext"/>
-    from leanin_form_info lfi, leanin_plan_patient lpp ,leanin_plan_info lpi
+    from leanin_form_info lfi, leanin_plan_patient lpp ,leanin_plan_info lpi,leanin_patient_wx lpw
     where lfi.form_status >=0
     and lpp.patient_status = 1
     and lpi.plan_status = 0
+    and lpp.id_card = lpw.id_card
     and lfi.form_num = lpp.form_id
     and lpp.plan_num = lpi.plan_num
     and lpi.plan_type =#{planType}
-    and lpp.opend_id =#{openid}
+    and lpw.open_id =#{openid}
     and lpp.plan_pats_status = #{followStatus}
   </select>
 
@@ -161,13 +162,14 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_form_info lfi, leanin_follow_record lfr,leanin_plan_info lpi
+    from leanin_form_info lfi, leanin_follow_record lfr,leanin_plan_info lpi,leanin_patient_wx lpw
     where lfi.form_status >=0
     and lpi.plan_status = 0
     and lfi.form_num = lfr.form_id
+    and lfr.id_card = lpw.id_card
     and lfr.plan_num = lpi.plan_num
     and lpi.plan_type =#{planType}
-    and lfr.opend_id =#{openid}
+    and lpw.open_id =#{openid}
     and lfr.plan_pats_status = #{followStatus}
   </select>
 

@@ -1,17 +1,17 @@
 package com.leanin.mapper;
 
-import com.leanin.domain.vo.CallInfoVo;
+import com.leanin.domain.CallInfo;
 
 public interface CallInfoMapper {
     int deleteByPrimaryKey(String callId);
 
-    int insert(CallInfoVo record);
+    int insert(CallInfo record);
 
-    int insertSelective(CallInfoVo record);
+    int insertSelective(CallInfo record);
 
-    CallInfoVo selectByPrimaryKey(String callId);
+    CallInfo selectByPrimaryKey(String callId);
 
-    int updateByPrimaryKeySelective(CallInfoVo record);
+    int updateByPrimaryKeySelective(CallInfo record);
 
-    int updateByPrimaryKey(CallInfoVo record);
+    int updateByPrimaryKey(CallInfo record);
 }

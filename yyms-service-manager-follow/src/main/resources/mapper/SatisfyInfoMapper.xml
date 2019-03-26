@@ -80,21 +80,23 @@
   <select id="findStyInfoByOpenId" resultMap="BASE">
     select
       <include refid="BASE"/>
-    from leanin_satisfy_info lsi,leanin_satisfy_patient lsp
+    from leanin_satisfy_info lsi,leanin_satisfy_patient lsp,leanin_patient_wx lpw
     where lsi.satisfy_status = 0
     and lsp.patient_status = 0
     and lsi.satisfy_num = lsp.form_id
-    and lsp.open_id =#{openId}
+    and lsp.id_card = lpw.id_card
+    and lpw.open_id =#{openId}
     and lsp.finish_type =#{finishType}
   </select>
 
   <select id="findStyInfoByOpenIdExt" resultMap="BASE">
     select
     <include refid="BASE1"/>
-    from leanin_satisfy_info lsi,leanin_sty_info_record lsr
+    from leanin_satisfy_info lsi,leanin_sty_info_record lsr,leanin_patient_wx lpw
     where lsi.satisfy_status = 0
     and lsi.satisfy_num = lsr.satisfy_num
-    and lsr.open_id =#{openId}
+    and lsr.id_card = lpw.id_card
+    and lpw.open_id =#{openId}
     and lsr.finish_status =#{finishType}
   </select>
 

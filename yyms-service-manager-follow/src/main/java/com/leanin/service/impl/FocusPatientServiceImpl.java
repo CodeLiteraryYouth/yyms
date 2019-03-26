@@ -46,17 +46,21 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updatePatientStatus(Long focusId, Integer status) {
 		log.info("关注的病人主键为:"+focusId+"-"+"病人状态为:"+status);
+		FocusPatientVo focusPatientVo = focusPatientMapper.findPatientByFocusId(focusId);
+		if (focusPatientVo == null ){
+			return ReturnFomart.retParam(300,"数据不存在");
+		}
 		focusPatientMapper.updatePatientStatus(focusId, status);
-		return ReturnFomart.retParam(200, focusId);
+		return ReturnFomart.retParam(200, "操作成功");
 	}
 
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse insertFocusPatient(FocusPatientVo record) {
 		log.info("新增的关注病人信息为:"+ JSON.toJSONString(record));
-		FocusPatientVo patient=focusPatientMapper.selectFocusPatientById(record.getPatientId());
+		FocusPatientVo patient=focusPatientMapper.selectFocusPatientById(record.getPatientId(),record.getUserId());
 		if(CompareUtil.isNotEmpty(patient)) {
-			return ReturnFomart.retParam(4000, patient);
+			return ReturnFomart.retParam(4000, "已经关注请勿重新添加");
 		}
 		focusPatientMapper.insertFocusPatient(record);
 		return ReturnFomart.retParam(200, record);
@@ -67,7 +71,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 		String patientJson=redisTemplate.opsForValue().get("patient_"+patientId);
 		FocusPatientVo patient=null;
 		if(StringUtils.isEmpty(patientJson)) {
-			patient=focusPatientMapper.selectFocusPatientById(patientId);
+			patient=focusPatientMapper.selectFocusPatientById(patientId,userId);
 			log.info("查询的关注病人信息为:"+ JSON.toJSONString(patient));
 			redisTemplate.opsForValue().set("patient_"+patientId, JSON.toJSONString(patient));
 		} else {

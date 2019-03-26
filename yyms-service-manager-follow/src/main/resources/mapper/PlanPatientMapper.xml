@@ -367,5 +367,17 @@
         and id_card = #{idCard}
     </select>
 
+    <select id="findListByPlanNum" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient
+        where patient_status = 1
+        and plan_num in
+        <foreach collection="planNums" separator="," item="item" open="( " close=" )"
+                 index="index">
+            #{item}
+        </foreach>
+    </select>
+
 
 </mapper>

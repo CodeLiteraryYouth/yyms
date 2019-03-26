@@ -2,17 +2,21 @@ package com.leanin.mapper;
 
 
 import com.leanin.domain.vo.CheckPatientVo;
+import com.leanin.domain.vo.PlanPatientVo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface CheckPatientMapper {
-    int deleteByPrimaryKey(Long checkPatientId);
+    void add(PlanPatientVo planPatientVo);
 
-    int insert(CheckPatientVo record);
+    List<CheckPatientVo> findList(@Param("patientName") String patientName,@Param("finishStatus") Integer finishStatus);
 
-    int insertSelective(CheckPatientVo record);
+    Integer findCount(@Param("finishStatus") Integer finishStatus,@Param("checkNum") String checkNum);
 
-    CheckPatientVo selectByPrimaryKey(Long checkPatientId);
+    Integer findUnfinishCount(@Param("checkNum") String checkNum);
 
-    int updateByPrimaryKeySelective(CheckPatientVo record);
-
-    int updateByPrimaryKey(CheckPatientVo record);
+    CheckPatientVo findById(@Param("checkPatientId") Long checkPatientId);
 }

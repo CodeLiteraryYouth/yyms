@@ -36,6 +36,14 @@ public class FocusPatientVo {
 
     private Long userId;            //关注患者的用户
 
+    private String inhosNo;         //住院号
+
+    private String openId;          //微信唯一标识
+
+    private String patientWard;     //病人科室
+
+    private String areaCode;        //院区编号
+
 
 
 }

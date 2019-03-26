@@ -1,202 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.CheckPatientMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.CheckPatientVo">
-    <id column="check_patient_id" jdbcType="BIGINT" property="checkPatientId" />
-    <result column="check_num" jdbcType="VARCHAR" property="checkNum" />
-    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
-    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
-    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
-    <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone" />
-    <result column="patient_ward" jdbcType="VARCHAR" property="patientWard" />
-    <result column="patient_date_time" jdbcType="TIMESTAMP" property="patientDateTime" />
-    <result column="patient_doctor" jdbcType="VARCHAR" property="patientDoctor" />
-    <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition" />
-    <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous" />
-    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    check_patient_id, check_num, patient_id, patient_name, patient_sex, 
-    patient_age, patient_phone, patient_ward, patient_date_time, patient_doctor, patient_condition, 
-    patient_diagous, patient_type, area_code
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from leanin_check_patient
-    where check_patient_id = #{checkPatientId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from leanin_check_patient
-    where check_patient_id = #{checkPatientId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.leanin.domain.vo.CheckPatientVo">
-    insert into leanin_check_patient (check_patient_id, check_num, patient_id, 
-      patient_name, patient_sex, 
-      patient_age, patient_phone, patient_ward, 
-      patient_date_time, patient_doctor, patient_condition, 
-      patient_diagous, patient_type, area_code
-      )
-    values (#{checkPatientId,jdbcType=BIGINT}, #{checkNum,jdbcType=VARCHAR}, #{patientId,jdbcType=BIGINT}, 
-      #{patientName,jdbcType=VARCHAR}, #{patientSex,jdbcType=INTEGER}, 
-      #{patientAge,jdbcType=INTEGER}, #{patientPhone,jdbcType=VARCHAR}, #{patientWard,jdbcType=VARCHAR}, 
-      #{patientDateTime,jdbcType=TIMESTAMP}, #{patientDoctor,jdbcType=VARCHAR}, #{patientCondition,jdbcType=VARCHAR}, 
-      #{patientDiagous,jdbcType=VARCHAR}, #{patientType,jdbcType=INTEGER}, #{areaCode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.leanin.domain.vo.CheckPatientVo">
-    insert into leanin_check_patient
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="checkPatientId != null">
-        check_patient_id,
-      </if>
-      <if test="checkNum != null">
-        check_num,
-      </if>
-      <if test="patientId != null">
-        patient_id,
-      </if>
-      <if test="patientName != null">
-        patient_name,
-      </if>
-      <if test="patientSex != null">
-        patient_sex,
-      </if>
-      <if test="patientAge != null">
-        patient_age,
-      </if>
-      <if test="patientPhone != null">
-        patient_phone,
-      </if>
-      <if test="patientWard != null">
-        patient_ward,
-      </if>
-      <if test="patientDateTime != null">
-        patient_date_time,
-      </if>
-      <if test="patientDoctor != null">
-        patient_doctor,
-      </if>
-      <if test="patientCondition != null">
-        patient_condition,
-      </if>
-      <if test="patientDiagous != null">
-        patient_diagous,
-      </if>
-      <if test="patientType != null">
-        patient_type,
-      </if>
-      <if test="areaCode != null">
-        area_code,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="checkPatientId != null">
-        #{checkPatientId,jdbcType=BIGINT},
-      </if>
-      <if test="checkNum != null">
-        #{checkNum,jdbcType=VARCHAR},
-      </if>
-      <if test="patientId != null">
-        #{patientId,jdbcType=BIGINT},
-      </if>
-      <if test="patientName != null">
-        #{patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientSex != null">
-        #{patientSex,jdbcType=INTEGER},
-      </if>
-      <if test="patientAge != null">
-        #{patientAge,jdbcType=INTEGER},
-      </if>
-      <if test="patientPhone != null">
-        #{patientPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="patientWard != null">
-        #{patientWard,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDateTime != null">
-        #{patientDateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="patientDoctor != null">
-        #{patientDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="patientCondition != null">
-        #{patientCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDiagous != null">
-        #{patientDiagous,jdbcType=VARCHAR},
-      </if>
-      <if test="patientType != null">
-        #{patientType,jdbcType=INTEGER},
-      </if>
-      <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.CheckPatientVo">
-    update leanin_check_patient
-    <set>
-      <if test="checkNum != null">
-        check_num = #{checkNum,jdbcType=VARCHAR},
-      </if>
-      <if test="patientId != null">
-        patient_id = #{patientId,jdbcType=BIGINT},
-      </if>
-      <if test="patientName != null">
-        patient_name = #{patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientSex != null">
-        patient_sex = #{patientSex,jdbcType=INTEGER},
-      </if>
-      <if test="patientAge != null">
-        patient_age = #{patientAge,jdbcType=INTEGER},
-      </if>
-      <if test="patientPhone != null">
-        patient_phone = #{patientPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="patientWard != null">
-        patient_ward = #{patientWard,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDateTime != null">
-        patient_date_time = #{patientDateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="patientDoctor != null">
-        patient_doctor = #{patientDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="patientCondition != null">
-        patient_condition = #{patientCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="patientDiagous != null">
-        patient_diagous = #{patientDiagous,jdbcType=VARCHAR},
-      </if>
-      <if test="patientType != null">
-        patient_type = #{patientType,jdbcType=INTEGER},
-      </if>
-      <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where check_patient_id = #{checkPatientId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.CheckPatientVo">
-    update leanin_check_patient
-    set check_num = #{checkNum,jdbcType=VARCHAR},
-      patient_id = #{patientId,jdbcType=BIGINT},
-      patient_name = #{patientName,jdbcType=VARCHAR},
-      patient_sex = #{patientSex,jdbcType=INTEGER},
-      patient_age = #{patientAge,jdbcType=INTEGER},
-      patient_phone = #{patientPhone,jdbcType=VARCHAR},
-      patient_ward = #{patientWard,jdbcType=VARCHAR},
-      patient_date_time = #{patientDateTime,jdbcType=TIMESTAMP},
-      patient_doctor = #{patientDoctor,jdbcType=VARCHAR},
-      patient_condition = #{patientCondition,jdbcType=VARCHAR},
-      patient_diagous = #{patientDiagous,jdbcType=VARCHAR},
-      patient_type = #{patientType,jdbcType=INTEGER},
-      area_code = #{areaCode,jdbcType=VARCHAR}
-    where check_patient_id = #{checkPatientId,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.CheckPatientVo">
+        <id column="check_patient_id"  property="checkPatientId"/>
+        <result column="check_num"  property="checkNum"/>
+        <result column="patient_id"  property="patientId"/>
+        <result column="form_id"  property="formId"/>
+        <result column="opend_id"  property="opendId"/>
+        <result column="id_card"  property="idCard"/>
+        <result column="inhos_no"  property="inhosNo"/>
+        <result column="patient_name"  property="patientName"/>
+        <result column="patient_sex"  property="patientSex"/>
+        <result column="patient_age"  property="patientAge"/>
+        <result column="patient_phone"  property="patientPhone"/>
+        <result column="patient_ward" property="patientWard"/>
+        <result column="patient_status" property="patientStatus"/>
+        <result column="patient_condition" property="patientCondition"/>
+        <result column="patient_diagous" property="patientDiagous"/>
+        <result column="patient_source" property="patientSource"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="handle_sugges" property="handleSugges"/>
+        <result column="finish_status" property="finishStatus"/>
+        <result column="ex2" property="ex2"/>
+        <result column="ex3" property="ex3"/>
+        <result column="ex4" property="ex4"/>
+        <result column="ex5" property="ex5"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      check_patient_id,check_num,patient_id,form_id,opend_id,id_card,inhos_no,
+      patient_name,patient_sex,patient_age,patient_phone,patient_ward,patient_status,
+      patient_condition,patient_diagous,patient_source,area_code,handle_sugges,
+      finish_status,ex2,ex3,ex4,ex5
+    </sql>
+
+    <insert id="add">
+        insert into leanin_check_patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                check_num,
+            </if>
+            <if test="patientId != null">
+                patient_id,
+            </if>
+            <if test="formId != null">
+                form_id,
+            </if>
+            <if test="opendId != null">
+                opend_id,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="inhosNo != null">
+                inhos_no,
+            </if>
+            <if test="patientName != null">
+                patient_name,
+            </if>
+            <if test="patientSex != null">
+                patient_sex,
+            </if>
+            <if test="patientAge != null">
+                patient_age,
+            </if>
+            <if test="patientPhone != null">
+                patient_phone,
+            </if>
+            <if test="patientWard != null">
+                patient_ward,
+            </if>
+            <if test="patientStatus != null">
+                patient_status,
+            </if>
+            <if test="patientCondition != null">
+                patient_condition,
+            </if>
+            <if test="patientDiagous != null">
+                patient_diagous,
+            </if>
+            <if test="patientSource != null">
+                patient_source,
+            </if>
+            <if test="areaCode != null">
+                area_code,
+            </if>
+            <if test="handleSugges != null">
+                handle_sugges,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                #{planNum},
+            </if>
+            <if test="patientId != null">
+                #{patientId},
+            </if>
+            <if test="formId != null">
+                #{formId},
+            </if>
+            <if test="opendId != null">
+                #{opendId},
+            </if>
+            <if test="idCard != null">
+                #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                #{inhosNo},
+            </if>
+            <if test="patientName != null">
+                #{patientName},
+            </if>
+            <if test="patientSex != null">
+                #{patientSex},
+            </if>
+            <if test="patientAge != null">
+                #{patientAge},
+            </if>
+            <if test="patientPhone != null">
+                #{patientPhone},
+            </if>
+            <if test="patientWard != null">
+                #{patientWard},
+            </if>
+            <if test="patientStatus != null">
+                #{patientStatus},
+            </if>
+            <if test="patientCondition != null">
+                #{patientCondition},
+            </if>
+            <if test="patientDiagous != null">
+                #{patientDiagous},
+            </if>
+            <if test="patientSource != null">
+                #{patientSource},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode},
+            </if>
+            <if test="handleSugges != null">
+                #{handleSugges},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_check_patient
+        where patient_status = 1
+        <if test="patientName != null">
+            and patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+        <if test="finishStatus != null">
+            and finish_status = #{finishStatus}
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(check_patient_id)
+        from leanin_check_patient
+        where finish_status = #{finishStatus}
+        and patient_status = 1
+        and check_num =#{checkNum}
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_check_patient
+        where check_patient_id = #{checkPatientId}
+    </select>
+    <select id="findUnfinishCount" resultType="java.lang.Integer">
+        select count(check_patient_id)
+        from leanin_check_patient
+        where patient_status = 1
+        and finish_status = 1
+        and check_num =#{checkNum}
+    </select>
 </mapper>

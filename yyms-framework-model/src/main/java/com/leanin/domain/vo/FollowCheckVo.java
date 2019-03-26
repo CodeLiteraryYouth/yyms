@@ -24,7 +24,7 @@ public class FollowCheckVo {
 
     private String wardCode;	//抽查科室编码
 
-    private String checkPerson;	//抽查人员（以逗号拼接）
+    private Long checkPerson;	//抽查人员（以逗号拼接）
 
     private Integer checkPatientType;	//抽查人员类型（病人来源）
 
@@ -36,13 +36,15 @@ public class FollowCheckVo {
 
     private String checkRatio;	//抽查比例
 
-    private Long planNum;	//随访计划单号
+    private String planNum;	//随访计划单号
 
     private String areaCode;	//院区编码
     
     private int checkStatus;	//抽查状态
 
-    private String creater;	//创建人
+    private Long creater;	//创建人
     
-    private Date createrDate;	//创建时间
+    private Date createDate;	//创建时间
+
+    private Integer unfinishCount;  //待完成人数
 }

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author Administrator
  * @version 1.0
  **/
-//@Service
+@Service
 public class AuthService {
 
     /*@Autowired

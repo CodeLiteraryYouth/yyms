@@ -8,6 +8,7 @@ import com.leanin.domain.vo.MessagePatientVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.domain.vo.SatisfyPatientVo;
 import com.leanin.mapper.MessagePatientMapper;
+import com.leanin.mapper.PatientWxMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.SatisfyPatientMapper;
 import com.leanin.service.WeChatService;
@@ -36,19 +37,17 @@ public class WeChatServiceImpl implements WeChatService {
     private String appSecret;
 
     @Autowired
-    PlanPatientMapper planPatientMapper;
-
-    @Autowired
-    SatisfyPatientMapper satisfyPatientMapper;
-
-    @Autowired
-    MessagePatientMapper messagePatientMapper;
+    PatientWxMapper patientWxMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse bindPatient(BindPat bindPat) {
         if (bindPat.getCode() == null){
             return ReturnFomart.retParam(300,"授权码为空");
+        }
+        BindPat pat = patientWxMapper.findByIdCard(bindPat.getIdCard());
+        if (pat != null){
+            return ReturnFomart.retParam(400,"用户已经绑定信息，无需重复绑定");
         }
         //获取openid
         String openid = null;
@@ -68,27 +67,10 @@ public class WeChatServiceImpl implements WeChatService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //随访 宣教
-        List<PlanPatientVo> list=planPatientMapper.bindPatient(bindPat.getIdCard(),bindPat.getPatientName(),bindPat.getPhoneNum());
-        for (PlanPatientVo planPatientVo : list) {
-            //设置openid
-            planPatientVo.setOpendId(openid);
-            planPatientMapper.updatePlanPatient(planPatientVo);
-        }
+        bindPat.setOpenId(openid);
 
-        //满意度
-        List<SatisfyPatientVo> SatisfyPatientVos=satisfyPatientMapper.bindPatient(bindPat.getIdCard(),bindPat.getPatientName(),bindPat.getPhoneNum());
-        for (SatisfyPatientVo satisfyPatientVo : SatisfyPatientVos) {
-            satisfyPatientVo.setOpenId(openid);
-            satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
-        }
+        patientWxMapper.addPatientWx(bindPat);
 
-        /*//短信计划
-        List<MessagePatientVo> MessagePatientVos=messagePatientMapper.bindPatient(bindPat.getIdCard(),bindPat.getPatientName(),bindPat.getPhoneNum());
-        for (MessagePatientVo messagePatientVo : MessagePatientVos) {
-            messagePatientVo.setOpenId(openid);
-            messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
-        }*/
         return ReturnFomart.retParam(200,"用户信息绑定成功");
     }
 }

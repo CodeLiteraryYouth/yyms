@@ -12,7 +12,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 /**
  * quartz 定时任务配置类
  */
-@Configuration
+//@Configuration
 public class SchedulerListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired

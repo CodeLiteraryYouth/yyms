@@ -34,6 +34,7 @@ public interface FocusPatientMapper {
      * @param patientId
      * @return
      */
-	FocusPatientVo selectFocusPatientById(@Param("patientId") String patientId);
+	FocusPatientVo selectFocusPatientById(@Param("patientId") String patientId,@Param("userId")Long userId);
 
+    FocusPatientVo findPatientByFocusId(@Param("focusId") Long focusId);
 }

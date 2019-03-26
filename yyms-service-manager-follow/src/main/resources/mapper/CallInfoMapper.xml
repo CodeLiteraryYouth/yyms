@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.CallInfoMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.CallInfoVo">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.CallInfo">
     <id column="call_id" jdbcType="VARCHAR" property="callId" />
     <result column="call_type" jdbcType="INTEGER" property="callType" />
     <result column="call_number" jdbcType="VARCHAR" property="callNumber" />
@@ -33,7 +33,7 @@
     delete from leanin_call_info
     where call_id = #{callId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.leanin.domain.vo.CallInfoVo">
+  <insert id="insert" parameterType="com.leanin.domain.CallInfo">
     insert into leanin_call_info (call_id, call_type, call_number, 
       call_addre, call_deal_status, call_begin_date, 
       call_end_date, call_source_number, call_deal_name, 
@@ -47,7 +47,7 @@
       #{callCreateWard,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.leanin.domain.vo.CallInfoVo">
+  <insert id="insertSelective" parameterType="com.leanin.domain.CallInfo">
     insert into leanin_call_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="callId != null">
@@ -144,7 +144,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.CallInfoVo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.CallInfo">
     update leanin_call_info
     <set>
       <if test="callType != null">
@@ -192,7 +192,7 @@
     </set>
     where call_id = #{callId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.CallInfoVo">
+  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.CallInfo">
     update leanin_call_info
     set call_type = #{callType,jdbcType=INTEGER},
       call_number = #{callNumber,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leanin.mapper.CallBackMapper">	
-	<resultMap id="BaseResultMap" type="com.leanin.domain.dto.CallBackDto" >
+<mapper namespace="com.leanin.mapper.CallBackMapper">
+	<resultMap id="DealMap" type="com.leanin.domain.CallBackDeal" >
 		<id column="deal_num" jdbcType="BIGINT" property="dealNum"/>
 		<result column="admin_name" jdbcType="VARCHAR" property="adminName"/>
 		<result column="accu_parise_condi" jdbcType="LONGVARCHAR" property="accuParisCondi"/>
@@ -12,41 +12,50 @@
 		<result column="deal_name" jdbcType="VARCHAR" property="dealName"/>
 		<result column="deal_status" jdbcType="INTEGER" property="dealStatus"/>
 		<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-		<association property="callBack" column="call_back_num" javaType="com.leanin.domain.vo.CallBackVo">
-			<id column="call_back_num" jdbcType="VARCHAR" property="callBackNum"/>
-			<result column="call_back_ward" jdbcType="VARCHAR" property="callBackWard"/>
-			<result column="call_back_name" jdbcType="VARCHAR" property="callBackName"/>
-			<result column="call_back_text" jdbcType="LONGVARCHAR" property="callBackText"/>
-			<result column="patient_id" jdbcType="VARCHAR" property="patientId"/>
-			<result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
-			<result column="patient_phone" jdbcType="VARCHAR" property="phone"/>
-			<result column="patient_source" jdbcType="INTEGER" property="source"/>
-			<result column="call_back_date" jdbcType="DATE" property="callBackDate"/>
-			<result column="accu_parise_name" jdbcType="VARCHAR" property="acuuPariseName"/>
-			<result column="patient_realtion" jdbcType="VARCHAR" property="relation"/>
-			<result column="accu_parise_source" jdbcType="VARCHAR" property="accuParRela"/>
-			<result column="call_back_target" jdbcType="VARCHAR" property="target"/>
-			<result column="push_ward" jdbcType="VARCHAR" property="pushWard"/>
-			<result column="push_name" jdbcType="VARCHAR" property="pushName"/>
-			<result column="push_date" jdbcType="TIMESTAMP" property="pushDate"/>
-			<result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-			<result column="back_status" jdbcType="INTEGER" property="status"/>
-			<result column="accu_parise_type" jdbcType="INTEGER" property="callBackType"/>
-			<result column="assign_name" jdbcType="VARCHAR" property="assignName"/>
-		</association>
+	</resultMap>
+
+	<resultMap id="CallBackMap" type="com.leanin.domain.CallBack">
+			<id column="call_back_num" property="callBackNum"/>
+			<result column="call_back_ward"  property="callBackWard"/>
+			<result column="call_back_name"  property="callBackName"/>
+			<result column="call_back_text"  property="callBackText"/>
+			<result column="patient_id"  property="patientId"/>
+			<result column="patient_name"  property="patientName"/>
+			<result column="call_back_phone"  property="phone"/>
+			<result column="patient_source"  property="source"/>
+			<result column="call_back_date"  property="callBackDate"/>
+			<result column="accu_parise_name"  property="acuuPariseName"/>
+			<result column="patient_realtion"  property="relation"/>
+			<result column="accu_parise_source"  property="accuParRela"/>
+			<result column="call_back_target"  property="target"/>
+			<result column="push_ward"  property="pushWard"/>
+			<result column="push_name"  property="pushName"/>
+			<result column="push_date"  property="pushDate"/>
+			<result column="area_code"  property="areaCode"/>
+			<result column="call_back_status"  property="status"/>
+			<result column="accu_parise_type"  property="callBackType"/>
+			<result column="assign_name"  property="assignName"/>
 	</resultMap>
 	<sql id="Base_Column_List">
-		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.patient_phone,c.patient_source,c.call_back_date,
-		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.back_status,
+		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.call_back_phone,c.patient_source,c.call_back_date,
+		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.call_back_status,
 		d.deal_num,d.admin_name,d.accu_parise_condi,d.solv_accu_parise,d.is_phone,d.is_satisfy,d.conn_result,d.deal_name,d.deal_status,d.area_code,c.accu_parise_type,
 		c.assign_name,c.patient_name	
 	</sql>
+	<sql id="DealSql">
+		deal_num,admin_name,accu_parise_condi,solv_accu_parise,is_phone,is_satisfy,conn_result,deal_name,deal_status,area_code
+	</sql>
+	<sql id="CallBack_Sql">
+		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.call_back_phone,c.patient_source,c.call_back_date,
+		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.call_back_status,
+		c.accu_parise_type,c.assign_name,c.patient_name
+	</sql>
 	
-	<select id="findBackList" resultMap="BaseResultMap">
+	<select id="findBackList" resultMap="CallBackMap">
 		select 
-		<include refid="Base_Column_List"></include>
+		<include refid="CallBack_Sql"></include>
 		from leanin_call_back c,leanin_call_back_deal d where
-		c.call_back_num=d.call_back_num and c.back_status=#{status}
+		c.call_back_num=d.call_back_num and c.call_back_status=#{status}
 		<if test="beginDate !=null">
         	<![CDATA[and c.call_back_date >= #{beginDate,jdbcType=DATE}]]>
       	</if>
@@ -57,21 +66,28 @@
       		and d.deal_status=#{dealStatus,jdbcType=INTEGER}
       	</if>
       	<if test="accuseWard !=null">
-      		and c.callBackWard=#{accuseWard,jdbcType=VARCHAR}
+      		and c.call_back_ward=#{accuseWard,jdbcType=VARCHAR}
       	</if>
       	<if test="backNum !=null">
       		and c.call_back_num like CONCAT('%',#{backNum,jdbcType=VARCHAR},'%')
       	</if>
 	</select>
 	
-	<select id="findBackById" resultMap="BaseResultMap">
+	<select id="findBackById" resultMap="CallBackMap">
 		select 
-		<include refid="Base_Column_List"></include>
-		from leanin_call_back c,leanin_call_back_deal d where c.back_status=#{status}
+		<include refid="CallBack_Sql"></include>
+		from leanin_call_back c,leanin_call_back_deal d where c.call_back_status=#{status}
 		and c.call_back_num=d.call_back_num and c.call_back_num=#{backNum,jdbcType=VARCHAR}
 	</select>
-	
-	<insert id="addCallBack" parameterType="com.leanin.domain.vo.CallBackVo">
+
+	<select id="findBackDetail" resultMap="DealMap">
+		select
+		<include refid="DealSql"/>
+		from leanin_call_back_deal
+		where call_back_num = #{callBackNum}
+	</select>
+
+	<insert id="addCallBack" parameterType="com.leanin.domain.CallBack">
 		 insert into leanin_call_back
     	 <trim prefix="(" suffix=")" suffixOverrides=",">
     	 	<if test="callBackNum !=null">
@@ -93,7 +109,7 @@
     	 		patient_name,
     	 	</if>
     	 	<if test="phone !=null">
-    	 		patient_phone,
+				call_back_phone,
     	 	</if>
     	 	<if test="source !=null">
     	 		patient_source,
@@ -126,7 +142,7 @@
     	 		area_code,
     	 	</if>
     	 	<if test="status !=null">
-    	 		back_status,
+				call_back_status,
     	 	</if>
     	 	<if test="callBackType !=null">
     	 		accu_parise_type,
@@ -199,7 +215,7 @@
     	 </trim>
 	</insert>
 	
-	<insert id="addCallBackDeal" parameterType="com.leanin.domain.vo.CallBackDealVo">
+	<insert id="addCallBackDeal" parameterType="com.leanin.domain.CallBackDeal">
 		insert into leanin_call_back_deal
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="dealNum !=null">
@@ -273,7 +289,7 @@
 		</trim>
 	</insert>
 	
-	<update id="updateCallBackDeal" parameterType="com.leanin.domain.vo.CallBackDealVo">
+	<update id="updateCallBackDeal" parameterType="com.leanin.domain.CallBackDeal">
 		update leanin_call_back_deal
 		<set>
 			<if test="dealNum !=null">
