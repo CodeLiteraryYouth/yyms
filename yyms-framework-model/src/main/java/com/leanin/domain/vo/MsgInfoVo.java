@@ -38,4 +38,6 @@ public class MsgInfoVo {
 
     private String msgText;	//提醒语正文
 
+    private Integer shareStatus;    //1 不共享 2 共享
+
 }

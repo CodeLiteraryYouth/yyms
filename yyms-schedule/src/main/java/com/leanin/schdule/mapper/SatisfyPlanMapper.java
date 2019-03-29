@@ -15,42 +15,42 @@ public interface SatisfyPlanMapper {
 	 * @param satisfyPlanName
 	 * @return
 	 */
-	List<SatisfyPlanVo> findSatisfyPlanList(@Param("satisfyPlanName") String satisfyPlanName);
+//	List<SatisfyPlanVo> findSatisfyPlanList(@Param("satisfyPlanName") String satisfyPlanName);
 	/**
 	 * 更改满意度计划状态
 	 * @param planSatisfyNum
 	 * @param status
 	 * @return
 	 */
-    int updateSatisfyStatus(@Param("planSatisfyNum") String planSatisfyNum, @Param("status") int status);
+//    int updateSatisfyStatus(@Param("planSatisfyNum") String planSatisfyNum, @Param("status") int status);
     
     /**
      * 增加满意度计划
      * @param record
      * @return
      */
-    int addSatisfyPlan(SatisfyPlanVo record);
+//    int addSatisfyPlan(SatisfyPlanVo record);
 
     /**
      * 根据ID查询满意度计划信息
      * @param planSatisfyNum
      * @return
      */
-	SatisfyPlanVo findSatisfyPlanById(String planSatisfyNum);
+//	SatisfyPlanVo findSatisfyPlanById(String planSatisfyNum);
     
     /**
      * 根据名字查询满意度计划信息
      * @param satisfyPlanName
      * @return
      */
-	SatisfyPlanVo findSatisfyPlanByName(@Param("satisfyPlanName") String satisfyPlanName);
+//	SatisfyPlanVo findSatisfyPlanByName(@Param("satisfyPlanName") String satisfyPlanName);
 
     /**
      * 修改满意度计划信息
      * @param record
      * @return
      */
-    int updateSatisfyPlan(SatisfyPlanVo record);
+//    int updateSatisfyPlan(SatisfyPlanVo record);
 
 	List<SatisfyPlanVo> findList();
 }

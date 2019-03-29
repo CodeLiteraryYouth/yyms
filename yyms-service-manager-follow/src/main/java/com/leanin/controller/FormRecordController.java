@@ -24,4 +24,10 @@ public class FormRecordController {
         return formRecordService.findFormRecordByPid(patientPlanId);
     }
 
+    /*//根据患者id查询表单信息
+    @GetMapping("/findFormByplanPatientId")
+    public DataOutResponse findFormByplanPatientId(@RequestParam Long planPatientId){
+        return formRecordService.findFormByplanPatientId(planPatientId);
+    }*/
+
 }

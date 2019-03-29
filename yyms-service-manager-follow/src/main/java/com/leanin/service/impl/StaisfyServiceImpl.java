@@ -25,10 +25,10 @@ public class StaisfyServiceImpl implements SatisfyService {
 	private SatisfyInfoMapper satisfyInfoMapper;
 	
 	@Override
-	public DataOutResponse findSatisfyList(Integer page, Integer pageSize, Long typeId, String satisfyName) {
+	public DataOutResponse findSatisfyList(Integer page, Integer pageSize, Long typeId, String satisfyName,Integer shareStatus) {
 		log.info("类型ID"+typeId+"满意度表单名称:"+satisfyName);
 		PageHelper.startPage(page, pageSize);
-		List<SatisfyInfoVo> satisfyList=satisfyInfoMapper.findSatisfyList(typeId, satisfyName);
+		List<SatisfyInfoVo> satisfyList=satisfyInfoMapper.findSatisfyList(typeId, satisfyName,shareStatus);
 		PageInfo pageInfo=new PageInfo<>(satisfyList);
 		return ReturnFomart.retParam(200, pageInfo);
 	}
@@ -80,7 +80,7 @@ public class StaisfyServiceImpl implements SatisfyService {
 	@Override
 	public DataOutResponse findStyInfoByOpenId(String openId, Integer finishType) {
 		List<SatisfyInfoExt> list = satisfyInfoMapper.findStyInfoByOpenId(openId,finishType);
-		if ( finishType != 1){
+		if ( finishType != 1){//1 未完成  2 //已完成  //3过期  //4随访异常
 			List<SatisfyInfoExt> satisfyInfoExts =satisfyInfoMapper.findStyInfoByOpenIdExt(openId,finishType);
 			list.addAll(satisfyInfoExts);
 		}

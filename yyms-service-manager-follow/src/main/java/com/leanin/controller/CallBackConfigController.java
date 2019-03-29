@@ -23,15 +23,16 @@ public class CallBackConfigController extends BaseController {
 
 	@Autowired
 	private CallBackConfigService callBackConfigService;
-	
+
+	//
 	@GetMapping("findConfigListByType")
 	public DataOutResponse findConfigListByType(Integer configType) {
 		return callBackConfigService.findConfigListByType(configType);
 	}
 
 	@GetMapping("findConfigList")
-	public DataOutResponse findConfigList(@RequestParam Integer page, @RequestParam Integer size,Integer configType){
-		return callBackConfigService.findConfigList(page,size,configType);
+	public DataOutResponse findConfigList(@RequestParam Integer page, @RequestParam Integer pageSize,Integer configType){
+		return callBackConfigService.findConfigList(page,pageSize,configType);
 	}
 
 	

@@ -68,6 +68,7 @@ public class WorkJob {
                 Map map = CSMSUtils.sendMessage(content,"13817165550"
                         /*messagePatientVo.getPatientPhone()*/);
                 String msgStatus = (String) map.get("msg");
+                log.info("发送的内容和号码：{}",content,messagePatientVo.getPatientPhone(),msgStatus);
                 if (msgStatus.equals("true")){
                     messagePatientVo.setSendType(2);//发送成功
                 }else{
@@ -90,6 +91,7 @@ public class WorkJob {
         List<PlanInfoDto> planList = planInfoMapper.findAllPlan();
         log.info("计划信息列表为:" + JSON.toJSONString(planList));
         for (PlanInfoDto planInfo : planList) {
+            log.info("随访/满意度计划信息:{}",JSON.toJSONString(planInfo));
             //根据病人的编号查询计划病人信息
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), 0, null);
             log.info("该计划的病人列表信息为:" + JSON.toJSONString(planPatientList));
@@ -123,9 +125,16 @@ public class WorkJob {
         String msg = planInfo.getMsgInfo().getMsgText() + "表单的URL";
         log.info("发送的短信内容为:" + msg);
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
-        Map map = CSMSUtils.sendMessage(msg, "13817165550");//patientDto.getPatientPhone()
+        String param = "";
+        if (planInfo.getPlanType() == 1){
+            param = "http://192.168.0.123:8081/login#/postlist??planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
+        }else{
+            param = "http://192.168.0.123:8081/login#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
+        }
+        Map map = CSMSUtils.sendMessage(msg+param, "18556531536");//patientDto.getPatientPhone()
         //设置病人发送状态
         String msgStatus = (String) map.get("msg");
+        log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}",msg+param,patientDto.getPatientPhone(),msgStatus);
         if (msgStatus.equals("true")) {
             patientDto.setSendType(2); //发送成功
             if (planInfo.getPlanType() == 1) { //随访计划
@@ -146,8 +155,9 @@ public class WorkJob {
     @Transactional(rollbackFor = Exception.class)
     public void styPlan(){
         //查询所有计划信息
-        List<SatisfyPlanVo>planVos=satisfyPlanMapper.findList();
+        List<SatisfyPlanVo> planVos = satisfyPlanMapper.findList();
         for (SatisfyPlanVo planVo : planVos) {
+            log.info("满意度计划信息：{}",JSON.toJSONString(planVo));
             //获取计划对应的短消息 信息
             MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(planVo.getMsgId());
             //获取计划对应的患者信息
@@ -180,11 +190,15 @@ public class WorkJob {
             int days = (int) ((System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime()) / (1000*3600 * 24));
             if (System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime() > 0){
                 if (days > rangeDays){//判断是否过期
-                    satisfyPatientVo.setFinishType(3);//已过期
+                    if (satisfyPatientVo.getFinishType() == 1 ){
+                        satisfyPatientVo.setFinishType(3);//已过期
+                    }
                 }else{
                     if (satisfyPatientVo.getSendType() == 1){//未发送
-                        Map map = CSMSUtils.sendMessage(msgText, "13817165550"); //satisfyPatientVo.getPatientPhone()
+                        String param = "http://192.168.0.123:8081/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
+                        Map map = CSMSUtils.sendMessage(msgText+param, "18556531536"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
+                        log.info("满意度短信：{}",msgText+param,satisfyPatientVo.getPatientPhone(),msgStatus,satisfyPlanVo.getSatisfyNum());
                         if (msgStatus.equals("true")){
                             satisfyPatientVo.setSendType(2); //已发送短信
                         }else{
@@ -290,10 +304,10 @@ public class WorkJob {
             planPatientVo.setNextDate(date); //设置下次随访时间
             planPatientVo.setSendType(1); //未发送
             planPatientVo.setPlanPatsStatus(0); //未发送状态
-//            planPatientVo.setFollowType(1);
+            planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
             planPatientVo.setHandleSugges("");
-            planPatientMapper.updatePlanPatient(planPatientVo);
         }
+        planPatientMapper.updatePlanPatient(planPatientVo);
         return true;
     }
 
@@ -417,7 +431,6 @@ public class WorkJob {
         String result = HttpClientUtil.doPostCarryJson(url, dataStr);
 
         Map map = JSON.parseObject(result, Map.class);
-
 
     }
 

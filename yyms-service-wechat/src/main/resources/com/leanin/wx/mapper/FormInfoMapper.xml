@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.wx.mapper.FormInfoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FormInfoVo">
+    <id column="form_num" jdbcType="VARCHAR" property="formNum" />
+    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
+    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
+    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
+    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
+    <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
+    <result column="form_name" jdbcType="VARCHAR" property="formName" />
+    <result column="form_title" jdbcType="LONGVARCHAR" property="formTitle" />
+    <result column="form_bottom" jdbcType="LONGVARCHAR" property="formBottom" />
+    <result column="form_status" jdbcType="INTEGER" property="formStatus" />
+    <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
+    <result column="form_type" jdbcType="INTEGER" property="formType" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <association property="createrName" column="form_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
+  </resultMap>
+
+  <resultMap id="BaseResultMap1" type="com.leanin.domain.vo.FormInfoExt">
+    <id column="form_num" jdbcType="VARCHAR" property="formNum" />
+    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
+    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
+    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
+    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
+    <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
+    <result column="form_name" jdbcType="VARCHAR" property="formName" />
+    <result column="form_title" jdbcType="LONGVARCHAR" property="formTitle" />
+    <result column="form_bottom" jdbcType="LONGVARCHAR" property="formBottom" />
+    <result column="form_status" jdbcType="INTEGER" property="formStatus" />
+    <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
+    <result column="form_type" jdbcType="INTEGER" property="formType" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+    <result column="patient_plan_id"  property="planPatientId" />
+  </resultMap>
+
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.FormInfoVo">
+    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+  </resultMap>
+  
+  <resultMap id="CommonResult" type="com.leanin.domain.dto.CommonFormInfoDto" >
+  	<id column="ward_id" jdbcType="BIGINT" property="wardId" />
+  	<result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
+  	<result column="ward_name" jdbcType="VARCHAR" property="wardName" />
+  	<collection property="formList" column="ward_code" ofType="com.leanin.domain.vo.FormInfoVo">
+  		<id column="form_num" jdbcType="VARCHAR" property="formNum" />
+	    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
+	    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
+	    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
+	    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
+	    <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
+	    <result column="form_name" jdbcType="VARCHAR" property="formName" />
+	    <result column="form_title" jdbcType="VARCHAR" property="formTitle" />
+	    <result column="form_bottom" jdbcType="VARCHAR" property="formBottom" />
+	    <result column="form_status" jdbcType="INTEGER" property="formStatus" />
+	    <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
+	    <result column="form_type" jdbcType="INTEGER" property="formType" />
+	    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+	    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+  	</collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    form_num, form_creater, form_create_time, form_form_id, form_function, form_refer, 
+    form_name, form_title, form_bottom, form_status, creater_ward, form_type, area_code
+  </sql>
+  <sql id="Blob_Column_List">
+    form_text
+  </sql>
+  <sql id="wx">
+    lfi.form_num, lfi.form_creater, lfi.form_create_time, lfi.form_form_id, lfi.form_function, lfi.form_refer,
+    lfi.form_name, lfi.form_title, lfi.form_bottom, lfi.form_status, lfi.creater_ward, lfi.form_type, lfi.area_code,
+    lfi.form_text,lpp.patient_plan_id
+  </sql>
+  <sql id="wxext">
+    lfi.form_num, lfi.form_creater, lfi.form_create_time, lfi.form_form_id, lfi.form_function, lfi.form_refer,
+    lfi.form_name, lfi.form_title, lfi.form_bottom, lfi.form_status, lfi.creater_ward, lfi.form_type, lfi.area_code,
+    lfi.form_text
+  </sql>
+  <sql id="Common_list">
+  	w.ward_id,w.ward_code,w.ward_name,f.form_num, f.form_creater, f.form_create_time, f.form_form_id,
+  	f.form_function, f.form_refer, f.form_name, f.form_title, f.form_bottom,  
+    f.form_status, f.creater_ward, f.form_type, f.area_code, f.form_text
+  </sql>
+  <select id="findFormListByTypeId" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info
+    where form_status>=0 and form_form_id=#{formTypeId}
+    <if test="formName !=null">
+    	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <select id="findFormListByWardCode" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info
+    where form_status =1 and form_type=#{formType} and creater_ward=#{wardCode}
+    <if test="formName !=null">
+    	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <select id="findCommonForm" resultMap="CommonResult">
+  	select 
+  	<include refid="Common_list" />
+  	from leanin_ward_info w,leanin_form_info f
+  	where w.ward_code=f.creater_ward
+  	and f.form_status=1 and f.form_type =#{formType,jdbcType=INTEGER}
+  	<if test="formName !=null">
+    	and f.form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <select id="findFormList" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info
+    where form_status>=0 and form_type =#{formType,jdbcType=INTEGER}
+    <if test="formName !=null">
+    	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <select id="findFormInfoById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info where form_status>=0
+    and form_num = #{formNum,jdbcType=VARCHAR}
+  </select>
+  <select id="findFormInfoByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	 select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from leanin_form_info where form_status>=0 
+    and form_name = #{formName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findFormListByOpenid" resultMap="BaseResultMap1">
+    select
+    <include refid="wx"/>
+    from leanin_form_info lfi, leanin_plan_patient lpp ,leanin_plan_info lpi,leanin_patient_wx lpw
+    where lfi.form_status >=0
+    and lpp.patient_status = 1
+    and lpi.plan_status = 0
+    and lpp.patient_id = lpw.patient_id
+    and lfi.form_num = lpp.form_id
+    and lpp.plan_num = lpi.plan_num
+    and lpi.plan_type =#{planType}
+    and lpw.open_id =#{openid}
+    and lpp.plan_pats_status = #{followStatus}
+  </select>
+
+  <select id="findFormListByOpenidExt" resultMap="BaseResultMap1">
+    select
+    <include refid="wxext" />
+    from leanin_form_info lfi, leanin_follow_record lfr,leanin_plan_info lpi,leanin_patient_wx lpw
+    where lfi.form_status >=0
+    and lpi.plan_status = 0
+    and lfi.form_num = lfr.form_id
+    and lfr.patient_id = lpw.patient_id
+    and lfr.plan_num = lpi.plan_num
+    and lpi.plan_type =#{planType}
+    and lpw.open_id =#{openid}
+    and lfr.plan_pats_status = #{followStatus}
+  </select>
+
+  <update id="updateFormStatus">
+    update leanin_form_info set form_status=#{formStatus,jdbcType=INTEGER}
+    where form_num = #{formNum,jdbcType=VARCHAR}
+  </update>
+  <insert id="addFormInfo" parameterType="com.leanin.domain.vo.FormInfoVo">
+    insert into leanin_form_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="formNum != null">
+        form_num,
+      </if>
+      <if test="formCreater != null">
+        form_creater,
+      </if>
+      <if test="formCreateTime != null">
+        form_create_time,
+      </if>
+      <if test="formFormId != null">
+        form_form_id,
+      </if>
+      <if test="formFunction != null">
+        form_function,
+      </if>
+      <if test="formRefer != null">
+        form_refer,
+      </if>
+      <if test="formName != null">
+        form_name,
+      </if>
+      <if test="formTitle != null">
+        form_title,
+      </if>
+      <if test="formBottom != null">
+        form_bottom,
+      </if>
+      <if test="formStatus != null">
+        form_status,
+      </if>
+      <if test="createrWard != null">
+        creater_ward,
+      </if>
+      <if test="formType != null">
+        form_type,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="formText != null">
+        form_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="formNum != null">
+        #{formNum,jdbcType=VARCHAR},
+      </if>
+      <if test="formCreater != null">
+        #{formCreater,jdbcType=BIGINT},
+      </if>
+      <if test="formCreateTime != null">
+        #{formCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="formFormId != null">
+        #{formFormId,jdbcType=BIGINT},
+      </if>
+      <if test="formFunction != null">
+        #{formFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="formRefer != null">
+        #{formRefer,jdbcType=VARCHAR},
+      </if>
+      <if test="formName != null">
+        #{formName,jdbcType=VARCHAR},
+      </if>
+      <if test="formTitle != null">
+        #{formTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="formBottom != null">
+        #{formBottom,jdbcType=VARCHAR},
+      </if>
+      <if test="formStatus != null">
+        #{formStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createrWard != null">
+        #{createrWard,jdbcType=VARCHAR},
+      </if>
+      <if test="formType != null">
+        #{formType,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="formText != null">
+        #{formText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateFormInfo" parameterType="com.leanin.domain.vo.FormInfoVo">
+    update leanin_form_info
+    <set>
+      <if test="formCreater != null">
+        form_creater = #{formCreater,jdbcType=BIGINT},
+      </if>
+      <if test="formCreateTime != null">
+        form_create_time = #{formCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="formFormId != null">
+        form_form_id = #{formFormId,jdbcType=BIGINT},
+      </if>
+      <if test="formFunction != null">
+        form_function = #{formFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="formRefer != null">
+        form_refer = #{formRefer,jdbcType=VARCHAR},
+      </if>
+      <if test="formName != null">
+        form_name = #{formName,jdbcType=VARCHAR},
+      </if>
+      <if test="formTitle != null">
+        form_title = #{formTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="formBottom != null">
+        form_bottom = #{formBottom,jdbcType=VARCHAR},
+      </if>
+      <if test="formStatus != null">
+        form_status = #{formStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createrWard != null">
+        creater_ward = #{createrWard,jdbcType=VARCHAR},
+      </if>
+      <if test="formType != null">
+        form_type = #{formType,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="formText != null">
+        form_text = #{formText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where form_num = #{formNum,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -29,10 +29,10 @@ public class FormInfoServiceImpl implements FormInfoService {
 
 	
 	@Override
-	public DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType) {
+	public DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer shareStatus) {
 		log.info("表单的单名为:"+formName+"-"+"表单的类型为:"+formType);
 		PageHelper.startPage(page, pageSize);
-		List<FormInfoVo> formList=formInfoMapper.findFormList(formName, formType);
+		List<FormInfoVo> formList=formInfoMapper.findFormList(formName, formType,shareStatus);
 		PageInfo pageInfo=new PageInfo<>(formList);
 		return ReturnFomart.retParam(200, pageInfo);
 	}
@@ -42,6 +42,9 @@ public class FormInfoServiceImpl implements FormInfoService {
 	public DataOutResponse updateFormStatus(String formNum, Integer formStatus) {
 		log.info("表单的单号为:"+formNum+"-"+"表单的状态为:"+formStatus);
 		FormInfoVo formInfo=formInfoMapper.findFormInfoById(formNum);
+		if (formInfo == null){
+			return ReturnFomart.retParam(300,"数据不存在");
+		}
 		log.info("修改表单状态的信息为:"+ JSON.toJSONString(formInfo));
 		//修改表单状态
 		formInfoMapper.updateFormStatus(formNum, formStatus);
@@ -95,10 +98,10 @@ public class FormInfoServiceImpl implements FormInfoService {
 	}
 
 	@Override
-	public DataOutResponse findCommonForm(Integer page,Integer pageSize,Integer formType, String formName) {
+	public DataOutResponse findCommonForm(Integer page,Integer pageSize,Integer formType, String formName,Integer shareStatus) {
 		log.info("表单的类型为:"+formType+"-"+"搜索的表单名为:"+formName);
 		PageHelper.startPage(page, pageSize);
-		List<CommonFormInfoDto> commonForm=formInfoMapper.findCommonForm(formType, formName);
+		List<CommonFormInfoDto> commonForm=formInfoMapper.findCommonForm(formType, formName,shareStatus);
 		PageInfo pageInfo=new PageInfo<>(commonForm);
 		return ReturnFomart.retParam(200, pageInfo);
 	}

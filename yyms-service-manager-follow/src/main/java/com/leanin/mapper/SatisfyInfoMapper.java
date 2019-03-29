@@ -12,7 +12,7 @@ public interface SatisfyInfoMapper {
 	 * 查询满意度表单列表
 	 * @return
 	 */
-	List<SatisfyInfoVo> findSatisfyList(@Param("typeId") Long typeId, @Param("satisfyName") String satisfyName);
+	List<SatisfyInfoVo> findSatisfyList(@Param("typeId") Long typeId, @Param("satisfyName") String satisfyName,@Param("shareStatus")Integer shareStatus);
 	/**
 	 * 注销满意度表单
 	 * @param satisfyNum
@@ -51,4 +51,6 @@ public interface SatisfyInfoMapper {
 	List<SatisfyInfoExt> findStyInfoByOpenId(@Param("openId") String openId,@Param("finishType") Integer finishType);
 
 	List<SatisfyInfoExt> findStyInfoByOpenIdExt(@Param("openId")String openId,@Param("finishType") Integer finishType);
+
+	SatisfyInfoVo findSatisfyByIdAndStatus(@Param("formNum") String formNum,@Param("formStatus") Integer formStatus,@Param("planPatientId")Long planPatientId);
 }

@@ -15,20 +15,20 @@ public interface MsgInfoMapper {
 	 * @param msgName
 	 * @return
 	 */
-	List<MsgInfoVo> findMsgListByTypeId(@Param("typeId") Long typeId, @Param("msgName") String msgName);
+//	List<MsgInfoVo> findMsgListByTypeId(@Param("typeId") Long typeId, @Param("msgName") String msgName);
 	/**
 	 * 更改提醒库状态
 	 * @param msgId
 	 * @return
 	 */
-    int updateMsgStatus(@Param("msgId") String msgId, @Param("status") Integer status);
+//    int updateMsgStatus(@Param("msgId") String msgId, @Param("status") Integer status);
 
     /**
      * 增加提醒库内容
      * @param record
      * @return
      */
-    int addMsgInfo(MsgInfoVo record);
+//    int addMsgInfo(MsgInfoVo record);
 
     /**
      * 根据表单号查询提醒库信息
@@ -42,13 +42,13 @@ public interface MsgInfoMapper {
      * @param msgName
      * @return
      */
-	MsgInfoVo findMsgInfoByName(@Param("msgName") String msgName);
+//	MsgInfoVo findMsgInfoByName(@Param("msgName") String msgName);
 
     /**
       * 编辑提醒库内容
      * @param record
      * @return
      */
-    int updateMsgInfo(MsgInfoVo record);
+//    int updateMsgInfo(MsgInfoVo record);
 
 }

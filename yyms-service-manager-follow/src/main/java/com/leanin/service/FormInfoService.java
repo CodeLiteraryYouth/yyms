@@ -16,13 +16,13 @@ public interface FormInfoService {
 	 * @param formName
 	 * @return
 	 */
-	DataOutResponse findCommonForm(Integer page, Integer pageSize, Integer formType, String formName);
+	DataOutResponse findCommonForm(Integer page, Integer pageSize, Integer formType, String formName,Integer shareStatus);
 	/**
 	 * 根据表单名字搜索
 	 * @param formType
 	 * @return
 	 */
-	DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType);
+	DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer shareStatus);
 
 	/**
 	 * 根绝分类ID查询表单信息

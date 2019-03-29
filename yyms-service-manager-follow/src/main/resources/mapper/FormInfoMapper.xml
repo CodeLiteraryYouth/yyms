@@ -15,6 +15,7 @@
     <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
     <result column="form_type" jdbcType="INTEGER" property="formType" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="share_status" property="shareStatus" />
     <association property="createrName" column="form_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
@@ -35,6 +36,7 @@
     <result column="form_type" jdbcType="INTEGER" property="formType" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+    <result column="share_status" property="shareStatus" />
     <result column="patient_plan_id"  property="planPatientId" />
   </resultMap>
 
@@ -62,24 +64,30 @@
 	    <result column="form_type" jdbcType="INTEGER" property="formType" />
 	    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
 	    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+        <result column="share_status" property="shareStatus" />
   	</collection>
   </resultMap>
   
   <sql id="Base_Column_List">
     form_num, form_creater, form_create_time, form_form_id, form_function, form_refer, 
-    form_name, form_title, form_bottom, form_status, creater_ward, form_type, area_code
+    form_name, form_title, form_bottom, form_status, creater_ward, form_type, area_code,share_status
   </sql>
   <sql id="Blob_Column_List">
     form_text
   </sql>
-  <sql id="ext">
+  <sql id="wx">
     lfi.form_num, lfi.form_creater, lfi.form_create_time, lfi.form_form_id, lfi.form_function, lfi.form_refer,
     lfi.form_name, lfi.form_title, lfi.form_bottom, lfi.form_status, lfi.creater_ward, lfi.form_type, lfi.area_code,
-    lfi.form_text,lpp.patient_plan_id
+    lfi.form_text, lfi.share_status,lpp.patient_plan_id
+  </sql>
+  <sql id="wxext">
+    lfi.form_num, lfi.form_creater, lfi.form_create_time, lfi.form_form_id, lfi.form_function, lfi.form_refer,
+    lfi.form_name, lfi.form_title, lfi.form_bottom, lfi.form_status, lfi.creater_ward, lfi.form_type, lfi.area_code,
+    lfi.form_text,lfi.share_status
   </sql>
   <sql id="Common_list">
   	w.ward_id,w.ward_code,w.ward_name,f.form_num, f.form_creater, f.form_create_time, f.form_form_id,
-  	f.form_function, f.form_refer, f.form_name, f.form_title, f.form_bottom,  
+  	f.form_function, f.form_refer, f.form_name, f.form_title, f.form_bottom,f.share_status,
     f.form_status, f.creater_ward, f.form_type, f.area_code, f.form_text
   </sql>
   <select id="findFormListByTypeId" resultMap="ResultMapWithBLOBs">
@@ -113,6 +121,9 @@
   	<if test="formName !=null">
     	and f.form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
     </if>
+    <if test="shareStatus != null">
+      and share_status = #{shareStatus}
+    </if>
   </select>
   <select id="findFormList" resultMap="ResultMapWithBLOBs">
   	select 
@@ -120,9 +131,13 @@
     ,
     <include refid="Blob_Column_List" />
     from leanin_form_info
-    where form_status>=0 and form_type =#{formType,jdbcType=INTEGER}
+    where form_status>=0
+    and form_type =#{formType,jdbcType=INTEGER}
     <if test="formName !=null">
     	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="shareStatus != null">
+      and share_status = #{shareStatus}
     </if>
   </select>
   <select id="findFormInfoById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
@@ -144,12 +159,12 @@
 
   <select id="findFormListByOpenid" resultMap="BaseResultMap1">
     select
-    <include refid="ext"/>
+    <include refid="wx"/>
     from leanin_form_info lfi, leanin_plan_patient lpp ,leanin_plan_info lpi,leanin_patient_wx lpw
     where lfi.form_status >=0
     and lpp.patient_status = 1
     and lpi.plan_status = 0
-    and lpp.id_card = lpw.id_card
+    and lpp.patient_id = lpw.patient_id
     and lfi.form_num = lpp.form_id
     and lpp.plan_num = lpi.plan_num
     and lpi.plan_type =#{planType}
@@ -159,21 +174,34 @@
 
   <select id="findFormListByOpenidExt" resultMap="BaseResultMap1">
     select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
+    <include refid="wxext" />
     from leanin_form_info lfi, leanin_follow_record lfr,leanin_plan_info lpi,leanin_patient_wx lpw
     where lfi.form_status >=0
     and lpi.plan_status = 0
     and lfi.form_num = lfr.form_id
-    and lfr.id_card = lpw.id_card
+    and lfr.patient_id = lpw.patient_id
     and lfr.plan_num = lpi.plan_num
     and lpi.plan_type =#{planType}
     and lpw.open_id =#{openid}
     and lfr.plan_pats_status = #{followStatus}
   </select>
 
-  <update id="updateFormStatus">
+    <select id="findFormInfoByIdAndStatus" resultMap="ResultMapWithBLOBs">
+      select
+      <!--<include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />-->
+      lfi.*
+      from leanin_form_info lfi,leanin_plan_info lpi,leanin_plan_patient lpp
+      where lfi.form_status >= 0
+      and lpi.follow_form_num = lfi.form_num
+      and lpi.plan_num = lpp.plan_num
+      and lpp.patient_plan_id = #{planPatientId}
+      and lpp.form_status = #{formStatus}
+      and lfi.form_num = #{formNum}
+    </select>
+
+    <update id="updateFormStatus">
     update leanin_form_info set form_status=#{formStatus,jdbcType=INTEGER}
     where form_num = #{formNum,jdbcType=VARCHAR}
   </update>
@@ -222,6 +250,9 @@
       <if test="formText != null">
         form_text,
       </if>
+      <if test="shareStatus != null">
+        share_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="formNum != null">
@@ -266,6 +297,9 @@
       <if test="formText != null">
         #{formText,jdbcType=LONGVARCHAR},
       </if>
+      <if test="shareStatus != null">
+        #{shareStatus},
+      </if>
     </trim>
   </insert>
   <update id="updateFormInfo" parameterType="com.leanin.domain.vo.FormInfoVo">
@@ -309,6 +343,9 @@
       </if>
       <if test="formText != null">
         form_text = #{formText,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shareStatus != null">
+        share_status = #{shareStatus},
       </if>
     </set>
     where form_num = #{formNum,jdbcType=VARCHAR}

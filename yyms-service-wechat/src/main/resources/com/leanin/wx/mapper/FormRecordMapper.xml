@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.wx.mapper.FormRecordMapper">
+
+    <resultMap id="BASE_MAP" type="com.leanin.domain.vo.FormRecordVo">
+        <id property="formId" column="form_id"></id>
+        <result property="formNum" column="form_num"></result>
+        <result property="formFormId" column="form_form_id"></result>
+        <result property="formFunction" column="form_function"></result>
+        <result property="formRefer" column="form_refer"></result>
+        <result property="formName" column="form_name"></result>
+        <result property="formTitle" column="form_title"></result>
+        <result property="formBottom" column="form_bottom"></result>
+        <result property="formText" column="form_text"></result>
+        <result property="formType" column="form_type"></result>
+        <result property="areaCode" column="area_code"></result>
+        <result property="patientPlanId" column="patient_plan_id"></result>
+        <result property="createId" column="create_id"></result>
+        <result property="createTime" column="create_time"></result>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        form_id,form_num,form_form_id,form_function,form_refer,
+        form_name,form_title,form_bottom,form_text,form_type,
+        area_code,patient_plan_id,create_id,create_time
+    </sql>
+
+    <insert id="addFormRecord">
+        insert into leanin_form_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="formRecordVo.formNum != null">
+              form_num,
+          </if>
+          <if test="formRecordVo.formFormId != null">
+              form_form_id,
+          </if>
+          <if test="formRecordVo.formFunction != null">
+              form_function,
+          </if>
+          <if test="formRecordVo.formRefer != null">
+              form_refer,
+          </if>
+          <if test="formRecordVo.formName != null">
+              form_name,
+          </if>
+          <if test="formRecordVo.formTitle != null">
+              form_title,
+          </if>
+          <if test="formRecordVo.formBottom != null">
+              form_bottom,
+          </if>
+          <if test="formRecordVo.formText != null">
+              form_text,
+          </if>
+          <if test="formRecordVo.formType != null">
+              form_type,
+          </if>
+          <if test="formRecordVo.areaCode != null">
+              area_code,
+          </if>
+          <if test="formRecordVo.patientPlanId != null">
+              patient_plan_id,
+          </if>
+          <if test="formRecordVo.createId != null">
+              create_id,
+          </if>
+          <if test="formRecordVo.createTime != null">
+              create_time,
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="formRecordVo.formNum != null">
+                #{formRecordVo.formNum},
+            </if>
+            <if test="formRecordVo.formFormId != null">
+                #{formRecordVo.formFormId},
+            </if>
+            <if test="formRecordVo.formFunction != null">
+                #{formRecordVo.formFunction},
+            </if>
+            <if test="formRecordVo.formRefer != null">
+                #{formRecordVo.formRefer},
+            </if>
+            <if test="formRecordVo.formName != null">
+                #{formRecordVo.formName},
+            </if>
+            <if test="formRecordVo.formTitle != null">
+                #{formRecordVo.formTitle},
+            </if>
+            <if test="formRecordVo.formBottom != null">
+                #{formRecordVo.formBottom},
+            </if>
+            <if test="formRecordVo.formText != null">
+                #{formRecordVo.formText},
+            </if>
+            <if test="formRecordVo.formType != null">
+                #{formRecordVo.formType},
+            </if>
+            <if test="formRecordVo.areaCode != null">
+                #{formRecordVo.areaCode},
+            </if>
+            <if test="formRecordVo.patientPlanId != null">
+                #{formRecordVo.patientPlanId},
+            </if>
+            <if test="formRecordVo.createId != null">
+                #{formRecordVo.createId},
+            </if>
+            <if test="formRecordVo.createTime != null">
+                #{formRecordVo.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findFormRecordByPid" resultMap="BASE_MAP">
+        SELECT
+        <include refid="BASE_SQL"/>
+        FROM leanin_form_record
+        WHERE patient_plan_id = #{patientPlanId}
+        ORDER BY create_time DESC
+        LIMIT 1
+    </select>
+</mapper>

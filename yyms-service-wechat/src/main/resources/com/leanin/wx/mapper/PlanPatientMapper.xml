@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.wx.mapper.PlanPatientMapper">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
+        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
+        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
+        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
+        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
+        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
+        <result column="follow_type" jdbcType="INTEGER" property="followType"/>
+        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
+        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
+        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
+        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="plan_pats_status" jdbcType="INTEGER" property="planPatsStatus"/>
+        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
+        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
+        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <result column="handle_sugges" property="handleSugges"></result>
+        <result column="id_card" property="idCard"></result>
+        <result column="inhos_no" property="inhosNo"></result>
+        <result column="opend_id" property="opendId"></result>
+        <result column="form_id" property="formId"></result>
+        <association property="planInfoVo" column="plan_num" javaType="com.leanin.domain.vo.PlanInfoVo"
+                     select="com.leanin.mapper.PlanInfoMapper.findPlanInfoById">
+        </association>
+    </resultMap>
+    <resultMap id="BASE_MAP" type="com.leanin.domain.vo.PlanPatientVo">
+        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
+        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
+        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
+        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
+        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
+        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
+        <result column="follow_type" jdbcType="INTEGER" property="followType"/>
+        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
+        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
+        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
+        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="plan_pats_status" jdbcType="INTEGER" property="planPatsStatus"/>
+        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
+        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
+        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <result column="handle_sugges" property="handleSugges"></result>
+        <result column="id_card" property="idCard"></result>
+        <result column="inhos_no" property="inhosNo"></result>
+        <result column="opend_id" property="opendId"></result>
+        <result column="form_id" property="formId"></result>
+    </resultMap>
+    <sql id="Base_Column_List">
+    patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
+    patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
+    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,
+    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id
+  </sql>
+    <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient
+        where patient_status = 1
+        and patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+        limit 1
+    </select>
+    <!--根据计划id 和 状态 查询 患者信息-->
+    <select id="findPlanPatientList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_patient
+        WHERE patient_status != 2
+        <if test="planNum != null">
+            and plan_num=#{planNum}
+        </if>
+        <if test="status != null">
+            and plan_pats_status=#{status}
+        </if>
+        <if test="patientName != null ">
+            and patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+
+    </select>
+    <select id="findPlanPatientByPatientId" resultType="com.leanin.domain.vo.PlanPatientVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_patient
+        WHERE patient_id=#{patientId}
+    </select>
+
+    <select id="findUnfinishCount" resultType="java.lang.Integer">
+        SELECT COUNT(patient_id)
+        FROM  leanin_plan_patient
+        WHERE plan_num=#{planNum} AND plan_pats_status = 1
+    </select>
+    <select id="findFinishCount" resultType="java.lang.Integer">
+        SELECT COUNT(patient_id)
+        FROM  leanin_plan_patient
+        WHERE plan_num=#{planNum} AND plan_pats_status=2
+    </select>
+    <select id="findPastCount" resultType="java.lang.Integer">
+        SELECT COUNT(patient_id)
+        FROM  leanin_plan_patient
+        WHERE plan_num=#{planNum} AND plan_pats_status=3
+    </select>
+    <select id="findDeadCount" resultType="java.lang.Integer">
+        SELECT COUNT(patient_id)
+        FROM  leanin_plan_patient
+        WHERE plan_num=#{planNum} AND plan_pats_status=-1
+    </select>
+
+
+    <update id="updatePatientStatus">
+    update leanin_plan_patient set plan_pats_status=#{status}
+    where patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+  </update>
+    <update id="updatePatientStatusById">
+        update leanin_plan_patient set patient_status=2
+        where patient_plan_id = #{patientPlanId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updatePlanPatient">
+        UPDATE leanin_plan_patient
+        <set>
+            <if test="planPatientVo.planNum != null">
+                plan_num = #{planPatientVo.planNum},
+            </if>
+            <if test="planPatientVo.patientId != null ">
+                patient_id = #{planPatientVo.patientId},
+            </if>
+            <if test="planPatientVo.sendType != null">
+                send_type = #{planPatientVo.sendType},
+            </if>
+            <if test="planPatientVo.patientName != null">
+                patient_name = #{planPatientVo.patientName},
+            </if>
+            <if test="planPatientVo.patientSex != null">
+                patient_sex = #{planPatientVo.patientSex},
+            </if>
+            <if test="planPatientVo.patientAge != null ">
+                patient_age = #{planPatientVo.patientAge},
+            </if>
+            <if test="planPatientVo.patientPhone != null ">
+                patient_phone = #{planPatientVo.patientPhone},
+            </if>
+            <if test="planPatientVo.patientWard != null ">
+                patient_ward = #{planPatientVo.patientWard},
+            </if>
+            <if test="planPatientVo.followType != null ">
+                follow_type = #{planPatientVo.followType},
+            </if>
+            <if test="planPatientVo.patientStatus != null">
+                patient_status = #{planPatientVo.patientStatus},
+            </if>
+            <if test="planPatientVo.patientCondition != null ">
+                patient_condition = #{planPatientVo.patientCondition},
+            </if>
+            <if test="planPatientVo.patientDiagous != null ">
+                patient_diagous = #{planPatientVo.patientDiagous},
+            </if>
+            <if test="planPatientVo.patientType != null ">
+                patient_type = #{planPatientVo.patientType},
+            </if>
+            <if test="planPatientVo.areaCode != null ">
+                area_code = #{planPatientVo.areaCode},
+            </if>
+            <if test="planPatientVo.planPatsStatus != null ">
+                plan_pats_status = #{planPatientVo.planPatsStatus},
+            </if>
+            <if test="planPatientVo.rulesInfoId != null">
+                rules_info_id = #{planPatientVo.rulesInfoId},
+            </if>
+            <if test="planPatientVo.nextDate != null">
+                next_date = #{planPatientVo.nextDate},
+            </if>
+            <if test="planPatientVo.patientSource != null">
+                patient_source = #{planPatientVo.patientSource},
+            </if>
+            <if test="planPatientVo.handleSugges != null">
+                handle_sugges = #{planPatientVo.handleSugges},
+            </if>
+            <if test="planPatientVo.idCard != null">
+                id_card = #{planPatientVo.idCard},
+            </if>
+            <if test="planPatientVo.inhosNo != null">
+                inhos_no = #{planPatientVo.inhosNo},
+            </if>
+            <if test="planPatientVo.opendId != null">
+                opend_id = #{planPatientVo.opendId},
+            </if>
+        </set>
+        where patient_plan_id = #{planPatientVo.patientPlanId}
+    </update>
+
+    <insert id="addPlanPatient">
+        insert into leanin_plan_patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                plan_num,
+            </if>
+            <if test="patientId != null">
+                patient_id,
+            </if>
+            <if test="sendType != null">
+                send_type,
+            </if>
+            <if test="patientName != null">
+                patient_name,
+            </if>
+            <if test="patientSex != null">
+                patient_sex,
+            </if>
+            <if test="patientAge != null">
+                patient_age,
+            </if>
+            <if test="patientPhone != null">
+                patient_phone,
+            </if>
+            <if test="patientWard !=null">
+                patient_ward,
+            </if>
+            <if test="followType != null">
+                follow_type,
+            </if>
+            <if test="patientStatus != null">
+                patient_status,
+            </if>
+            <if test="patientCondition != null">
+                patient_condition,
+            </if>
+            <if test="patientDiagous != null">
+                patient_diagous,
+            </if>
+            <if test="patientType != null">
+                patient_type,
+            </if>
+            <if test="areaCode != null">
+                area_code,
+            </if>
+            <if test="planPatsStatus !=null">
+                plan_pats_status,
+            </if>
+            <if test="rulesInfoId !=null">
+                rules_info_id,
+            </if>
+            <if test="nextDate !=null">
+                next_date,
+            </if>
+            <if test="patientSource !=null">
+                patient_source,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="inhosNo != null">
+                inhos_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planNum != null">
+                #{planNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientId != null">
+                #{patientId,jdbcType=BIGINT},
+            </if>
+            <if test="sendType != null">
+                #{sendType,jdbcType=INTEGER},
+            </if>
+            <if test="patientName != null">
+                #{patientName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientSex != null">
+                #{patientSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientAge != null">
+                #{patientAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientPhone != null">
+                #{patientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientWard != null">
+                #{patientWard,jdbcType=VARCHAR},
+            </if>
+            <if test="followType != null">
+                #{followType,jdbcType=INTEGER},
+            </if>
+            <if test="patientStatus != null">
+                #{patientStatus,jdbcType=INTEGER},
+            </if>
+            <if test="patientCondition != null">
+                #{patientCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDiagous != null">
+                #{patientDiagous,jdbcType=VARCHAR},
+            </if>
+            <if test="patientType != null">
+                #{patientType,jdbcType=INTEGER},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planPatsStatus !=null">
+                #{planPatsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="rulesInfoId !=null">
+                #{rulesInfoId,jdbcType=LONG},
+            </if>
+            <if test="nextDate !=null">
+                #{nextDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="patientSource !=null">
+                #{patientSource,jdbcType=INTEGER},
+            </if>
+            <if test="idCard != null">
+                #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                #{inhosNo},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findPatsByParam" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_patient
+        WHERE patient_status = 1
+        AND plan_num IN (
+            SELECT pi.plan_num
+            FROM leanin_plan_info pi
+            WHERE pi.plan_status >= 0
+            AND pi.plan_type = #{myFollowReq.planType}
+            <if test="myFollowReq.planId != null">
+                AND pi.plan_num = #{myFollowReq.planId}
+            </if>
+            <if test="myFollowReq.planType == 1">
+                AND pi.plan_duty_per = #{myFollowReq.userId}
+            </if>
+            <if test="myFollowReq.planType == 2">
+                AND pi.plan_creater = #{myFollowReq.userId}
+            </if>
+        )
+        <if test="myFollowReq.startDate != null">
+            AND next_date &gt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.endDate != null ">
+            AND next_date &lt;= #{myFollowReq.startDate}
+        </if>
+        <if test="myFollowReq.folStatus != null">
+            AND plan_pats_status =#{myFollowReq.folStatus}
+        </if>
+        <if test="myFollowReq.patName != null">
+            AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
+        </if>
+    </select>
+    <select id="bindPatient" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient
+        where patient_status = 1
+        and patient_name = #{patientName}
+        and patient_phone = #{phoneNum}
+        and id_card = #{idCard}
+    </select>
+
+    <select id="findListByPlanNum" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient
+        where patient_status = 1
+        and plan_num in
+        <foreach collection="planNums" separator="," item="item" open="( " close=" )"
+                 index="index">
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>

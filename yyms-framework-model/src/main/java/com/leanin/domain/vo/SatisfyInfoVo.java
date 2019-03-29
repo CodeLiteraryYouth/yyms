@@ -35,6 +35,9 @@ public class SatisfyInfoVo {
     private String satisfyText;	//表单正文
 
     private String satisfyTitle;//表单头
+
     private String satisfyBottom;//表单尾
+
+    private Integer shareStatus;    //1 不共享 2 共享
 
 }

@@ -10,7 +10,7 @@ public interface SatisfyService {
 	 * 查询满意度表单列表
 	 * @return
 	 */
-	DataOutResponse findSatisfyList(Integer page, Integer pageSize, Long typeId, String satisfyName);
+	DataOutResponse findSatisfyList(Integer page, Integer pageSize, Long typeId, String satisfyName,Integer shareStatus);
 	/**
 	 * 注销满意度表单
 	 * @param satisfyNum

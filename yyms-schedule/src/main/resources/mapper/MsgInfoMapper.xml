@@ -21,7 +21,7 @@
   <sql id="Blob_Column_List">
     msg_text
   </sql>
-  <select id="findMsgListByTypeId" resultMap="ResultMapWithBLOBs">
+  <!--<select id="findMsgListByTypeId" resultMap="ResultMapWithBLOBs">
   	select 
     <include refid="Base_Column_List" />
     ,
@@ -34,7 +34,7 @@
         and msg_name like CONCAT('%',#{msgName},'%')
     </if>
     order by msg_create_time DESC
-  </select>
+  </select>-->
   <select id="findMsgInfoById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
@@ -44,7 +44,7 @@
     and msg_id = #{msgId,jdbcType=VARCHAR}
   </select>
   
-  <select id="findMsgInfoByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <!--<select id="findMsgInfoByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -146,5 +146,5 @@
       </if>
     </set>
     where msg_id = #{msgId,jdbcType=VARCHAR}
-  </update>
+  </update>-->
 </mapper>

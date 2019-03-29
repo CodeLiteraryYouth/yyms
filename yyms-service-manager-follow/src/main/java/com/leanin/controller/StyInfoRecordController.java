@@ -6,9 +6,7 @@ import com.leanin.service.StyInfoRecordService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +19,11 @@ public class StyInfoRecordController extends BaseController {
 
     @PostMapping("/addStyInfoRecord")
     public DataOutResponse addStyInfoRecord(){
+        return null;
+    }
+
+    @GetMapping("/findStyInfoRecordByPid")
+    public DataOutResponse findStyInfoRecordByPid(@RequestParam Long planPatientId){
         return null;
     }
 

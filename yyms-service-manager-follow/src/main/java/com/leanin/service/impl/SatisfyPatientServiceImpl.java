@@ -87,10 +87,11 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
         }
         String uuid = UUIDUtils.getUUID();
         styInfoRecordVo.setSatisfyId(uuid);
-        styInfoRecordVo.setOpenId(satisfyPatientVo.getOpenId());
+        styInfoRecordVo.setFormStatus(satisfyPatientVo.getFormStatus());
         styInfoRecordVo.setCreateTime(new Date());
         styInfoRecordVo.setIdCard(satisfyPatientVo.getIdCard());
         styInfoRecordVo.setInhosNo(satisfyPatientVo.getInhosNo());
+        styInfoRecordVo.setPatientId(satisfyPatientVo.getPatientId());
         styInfoRecordMapper.addRecord(styInfoRecordVo);
         if (finishType != null){
             satisfyPatientVo.setFinishType(finishType);

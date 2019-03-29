@@ -19,14 +19,16 @@ public class FormController extends BaseController {
 	
 	@GetMapping("findCommonForm")
 	public DataOutResponse findCommonForm(@RequestParam Integer page, @RequestParam Integer pageSize,
-										  @RequestParam Integer formType, @RequestParam(required=false) String formName) {
-		return formInfoService.findCommonForm(page,pageSize,formType, formName);
+										  @RequestParam Integer formType, @RequestParam(required=false) String formName,
+											Integer shareStatus) {
+		return formInfoService.findCommonForm(page,pageSize,formType, formName,shareStatus);
 	}
 	
 	@GetMapping("findFormList")
 	public DataOutResponse findFormList(@RequestParam Integer page, @RequestParam Integer pageSize,
-                                        @RequestParam(required=false) String formName, @RequestParam Integer formType) {
-		return formInfoService.findFormList(page, pageSize, formName, formType);
+                                        @RequestParam(required=false) String formName, @RequestParam Integer formType,
+										Integer shareStatus) {
+		return formInfoService.findFormList(page, pageSize, formName, formType,shareStatus);
 	}
 	
 	@GetMapping("updateFormStatus")

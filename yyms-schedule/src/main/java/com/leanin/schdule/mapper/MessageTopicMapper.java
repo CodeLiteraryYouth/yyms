@@ -33,28 +33,28 @@ public interface MessageTopicMapper {
      * @param record
      * @return
      */
-    int addMsgTopic(MessageTopicVo record);
+//    int addMsgTopic(MessageTopicVo record);
 
     /**
      * 根据ID查询短信主题信息
      * @param msgTopicId
      * @return
      */
-    MessageTopicVo findMsgTopicById(String msgTopicId);
+//    MessageTopicVo findMsgTopicById(String msgTopicId);
 
     /**
      * 根据短信主题名查询短信主题信息
      * @param msgTopicName
      * @return
      */
-    MessageTopicVo findMsgTopicByName(String msgTopicName);
+//    MessageTopicVo findMsgTopicByName(String msgTopicName);
 
     /**
      * 修改短信主题内容
      * @param record
      * @return
      */
-    int updateMsgTopic(MessageTopicVo record);
+//    int updateMsgTopic(MessageTopicVo record);
 
-    List<MessageTopicVo> findList();
+//    List<MessageTopicVo> findList();
 }

@@ -20,6 +20,7 @@ public class RulesInfoController extends BaseController {
 	
 	@GetMapping("findCommonRules")
 	public DataOutResponse findCommonRules(@RequestParam Integer rulesType, @RequestParam(required=false) String rulesName) {
+		LyOauth2Util.UserJwt user = getUser(request);
 		return rulesInfoService.findCommonRules(rulesType, rulesName);
 	}
 	

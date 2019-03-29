@@ -29,7 +29,7 @@
     </if>
   </select>
 
-  <select id="findMsgTopicById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <!--<select id="findMsgTopicById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_msg_topic
@@ -144,5 +144,5 @@
       </if>
     </set>
     where msg_topic_id = #{msgTopicId,jdbcType=VARCHAR}
-  </update>
+  </update>-->
 </mapper>

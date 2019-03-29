@@ -19,14 +19,14 @@ public interface PlanPatientMapper {
      * @param patientPlanId
      * @return
      */
-    int updatePatientStatus(@Param("patientPlanId") String patientPlanId, @Param("status") Integer status);
+//    int updatePatientStatus(@Param("patientPlanId") String patientPlanId, @Param("status") Integer status);
 
     /**
      * 移入计划病人
      * @param patientInfo
      * @return
      */
-    int addPlanPatient(PlanPatientVo patientInfo);
+//    int addPlanPatient(PlanPatientVo patientInfo);
 
 //    /**
 //     * 批量移入计划病人
@@ -51,34 +51,34 @@ public interface PlanPatientMapper {
      */
     List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum, @Param("status") Integer status, @Param("patientName") String patientName);
 
-    void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
+//    void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
 
     /**
      * 根据patientId查询 患者信息
      * @param patientId
      * @return
      */
-    PlanPatientVo findPlanPatientByPatientId(@Param("patientId") Long patientId);
+//    PlanPatientVo findPlanPatientByPatientId(@Param("patientId") Long patientId);
 
     /*
      * 待随访人数
      */
-    Integer findUnfinishCount(@Param("planNum") String planNum);
+//    Integer findUnfinishCount(@Param("planNum") String planNum);
 
     /*
      * 已完成随访人数
      */
-    Integer findFinishCount(@Param("planNum") String planNum);
+//    Integer findFinishCount(@Param("planNum") String planNum);
 
     /*
      * 过期随访人数
      */
-    Integer findPastCount(@Param("planNum") String planNum);
+//    Integer findPastCount(@Param("planNum") String planNum);
 
     /*
      * 过期随访人数
      */
-    Integer findDeadCount(@Param("planNum") String planNum);
+//    Integer findDeadCount(@Param("planNum") String planNum);
 
     void updatePlanPatient(@Param("planPatientVo") PlanPatientVo planPatientVo);
 

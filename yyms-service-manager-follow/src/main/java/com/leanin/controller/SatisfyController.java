@@ -21,8 +21,9 @@ public class SatisfyController extends BaseController {
 	
 	@GetMapping("findSatisfyList")
 	public DataOutResponse findSatisfyList(@RequestParam Integer page, @RequestParam Integer pageSize,
-										   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String satisfyName) {
-		return satisfyService.findSatisfyList(page, pageSize, typeId, satisfyName);
+										   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String satisfyName,
+											Integer shareStatus) {
+		return satisfyService.findSatisfyList(page, pageSize, typeId, satisfyName,shareStatus);
 	}
 	
 	@GetMapping("findSatisfyById")

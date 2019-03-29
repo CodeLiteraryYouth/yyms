@@ -32,7 +32,7 @@ public class CallBackServiceImpl implements CallBackService {
                                         Integer dealStatus, String accuseWard, String backNum, int status) {
         log.info("起始时间为:"+beginDate+"结束时间为:"+endDate+"处理状态:"+dealStatus+"科室:"+accuseWard+"单号:"+backNum);
         PageHelper.startPage(page, pageSize);
-        List<CallBackDto> backList=callBackMapper.findBackList(beginDate, endDate, dealStatus, accuseWard, backNum,status);
+        List<CallBack> backList=callBackMapper.findBackList(beginDate, endDate, dealStatus, accuseWard, backNum,status);
         PageInfo pageInfo=new PageInfo<>(backList);
         return ReturnFomart.retParam(200, pageInfo);
     }

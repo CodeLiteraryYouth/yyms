@@ -10,6 +10,7 @@
     <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
     <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
     <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+    <result column="share_status" property="shareStatus" />
     <association property="createrName" column="msg_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
@@ -23,13 +24,14 @@
     <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
     <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
     <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+    <result column="share_status" property="shareStatus" />
   </resultMap>
   <resultMap extends="BaseResultMap1" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.MsgInfoVo">
     <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
   </resultMap>
   <sql id="Base_Column_List">
     msg_id, follow_form_id, msg_name, msg_creater, msg_create_time, msg_create_ward, 
-    msg_status, area_coe
+    msg_status, area_coe,share_status
   </sql>
   <sql id="Blob_Column_List">
     msg_text
@@ -99,6 +101,9 @@
       <if test="msgText != null">
         msg_text,
       </if>
+      <if test="shareStatus != null">
+        share_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="msgId != null">
@@ -128,6 +133,9 @@
       <if test="msgText != null">
         #{msgText,jdbcType=LONGVARCHAR},
       </if>
+      <if test="shareStatus != null">
+        #{shareStatus},
+      </if>
     </trim>
   </insert>
   <update id="updateMsgInfo" parameterType="com.leanin.domain.vo.MsgInfoVo">
@@ -156,6 +164,9 @@
       </if>
       <if test="msgText != null">
         msg_text = #{msgText,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shareStatus != null">
+        share_status = #{shareStatus},
       </if>
     </set>
     where msg_id = #{msgId,jdbcType=VARCHAR}

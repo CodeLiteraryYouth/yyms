@@ -21,7 +21,7 @@
         <result column="suggess" property="suggess"/>
         <result column="id_card" property="idCard"/>
         <result column="inhos_no" property="inhosNo"/>
-        <result column="open_id" property="openId"/>
+        <result column="form_status" property="formStatus"/>
         <result column="form_id" property="formId"/>
         <association property="satisfyPlanVo" column="satisfy_plan_num" javaType="com.leanin.domain.vo.SatisfyPlanVo"
                      select="com.leanin.mapper.SatisfyPlanMapper.findSatisfyPlanById">
@@ -47,14 +47,14 @@
         <result column="suggess" property="suggess"/>
         <result column="id_card" property="idCard"/>
         <result column="inhos_no" property="inhosNo"/>
-        <result column="open_id" property="openId"/>
+        <result column="form_status" property="formStatus"/>
         <result column="form_id" property="formId"/>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
     patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
     patient_condition, patient_diagous, patient_type, patient_status,
-    area_code,id_card,inhos_no,open_id,suggess,form_id
+    area_code,id_card,inhos_no,form_status,suggess,form_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -67,7 +67,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
-        WHERE patient_status=0
+        WHERE patient_status = 0
         <if test="satisfyPlanNum != null ">
             AND satisfy_plan_num = #{satisfyPlanNum}
         </if>
@@ -173,6 +173,9 @@
             <if test="inhosNo != null">
                 inhos_no,
             </if>
+            <if test="formStatus != null">
+                form_status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -224,10 +227,13 @@
                 #{areaCode,jdbcType=VARCHAR},
             </if>
             <if test="idCard != null">
-                id_card = #{idCard},
+                #{idCard},
             </if>
             <if test="inhosNo != null">
-                inhos_no = #{inhosNo},
+                #{inhosNo},
+            </if>
+            <if test="formStatus != null">
+                #{formStatus},
             </if>
         </trim>
     </insert>
@@ -288,8 +294,8 @@
             <if test="inhosNo != null">
                 inhos_no = #{inhosNo},
             </if>
-            <if test="openId != null">
-                open_id = #{openId},
+            <if test="formStatus != null">
+                form_status = #{formStatus},
             </if>
         </set>
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}

@@ -37,7 +37,7 @@ public class PlanPatientRecordVo implements Serializable {
 
     private String patientWard;  //出院科室
 
-    private Integer followType;    //随访状态  1未完成  2 已完成
+    private Integer formStatus;    //随访状态  1未完成  2 已完成
 
     private Integer patientStatus;    //患者状态  1 正在使用 2 已删除
 

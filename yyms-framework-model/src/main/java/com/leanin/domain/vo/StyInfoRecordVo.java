@@ -27,7 +27,8 @@ public class StyInfoRecordVo {
     private Integer finishStatus;   //完成状态  1 已完成
     private Long    planPatientId;     //患者主键
     private Long    operatingId;       //操作人id
-    private String  openId;         //微信唯一标识
+    private Long   patientId;       //患者主键
+    private Integer  formStatus;         //微信唯一标识
     private String  idCard;         //身份证号
     private String  inhosNo;        //住院号
     private String  ex4;

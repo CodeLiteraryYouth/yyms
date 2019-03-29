@@ -18,12 +18,12 @@
     patient_msg_id, msg_topic_id, patient_id, patient_name, patient_sex, patient_age, 
     patient_phone, patient_id_card, patient_type, area_code,send_type
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <!--<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
-  </select>
+  </select>-->
   <!--条件查询-->
   <select id="findList" resultMap="BaseResultMap">
     SELECT
@@ -37,7 +37,7 @@
       and send_type = #{sendType}
     </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </delete>
@@ -123,7 +123,7 @@
         #{sendType,jdbcType=INTEGER},
       </if>
     </trim>
-  </insert>
+  </insert>-->
   <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.MessagePatientVo">
     update leanin_msg_patient
     <set>
@@ -160,7 +160,7 @@
     </set>
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.MessagePatientVo">
+  <!--<update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.MessagePatientVo">
     update leanin_msg_patient
     set msg_topic_id = #{msgTopicId,jdbcType=VARCHAR},
       patient_id = #{patientId,jdbcType=BIGINT},
@@ -173,5 +173,5 @@
       area_code = #{areaCode,jdbcType=VARCHAR}
       send_type = #{sendType,jdbcType=INTEGER}
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
-  </update>
+  </update>-->
 </mapper>

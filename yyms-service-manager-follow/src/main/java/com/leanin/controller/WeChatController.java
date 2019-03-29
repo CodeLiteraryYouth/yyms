@@ -17,9 +17,16 @@ public class WeChatController {
     @Autowired
     WeChatService weChatService;
 
+    @PostMapping
+    public DataOutResponse login(String code){
+        return weChatService.login(code);
+    }
+
     @PostMapping("/bindPatient")
     public DataOutResponse bindPatient(@RequestBody BindPat bindPat){
         return weChatService.bindPatient(bindPat);
     }
+
+
 
 }

@@ -10,7 +10,7 @@
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
         <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
-        <result column="follow_type" jdbcType="INTEGER" property="followType"/>
+        <result column="form_status" jdbcType="INTEGER" property="formStatus"/>
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
         <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
@@ -38,7 +38,7 @@
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
         <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
-        <result column="follow_type" jdbcType="INTEGER" property="followType"/>
+        <result column="form_status" jdbcType="INTEGER" property="formStatus"/>
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
         <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
@@ -56,7 +56,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
-    patient_age, patient_phone,patient_ward,follow_type, patient_status, patient_condition,
+    patient_age, patient_phone,patient_ward,form_status, patient_status, patient_condition,
     patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,
     next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id
   </sql>
@@ -150,8 +150,8 @@
             <if test="planPatientVo.patientWard != null ">
                 patient_ward = #{planPatientVo.patientWard},
             </if>
-            <if test="planPatientVo.followType != null ">
-                follow_type = #{planPatientVo.followType},
+            <if test="planPatientVo.formStatus != null ">
+                form_status = #{planPatientVo.formStatus},
             </if>
             <if test="planPatientVo.patientStatus != null">
                 patient_status = #{planPatientVo.patientStatus},
@@ -223,8 +223,8 @@
             <if test="patientWard !=null">
                 patient_ward,
             </if>
-            <if test="followType != null">
-                follow_type,
+            <if test="formStatus != null">
+                form_status,
             </if>
             <if test="patientStatus != null">
                 patient_status,
@@ -285,8 +285,8 @@
             <if test="patientWard != null">
                 #{patientWard,jdbcType=VARCHAR},
             </if>
-            <if test="followType != null">
-                #{followType,jdbcType=INTEGER},
+            <if test="formStatus != null">
+                #{formStatus,jdbcType=INTEGER},
             </if>
             <if test="patientStatus != null">
                 #{patientStatus,jdbcType=INTEGER},

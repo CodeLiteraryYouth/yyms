@@ -245,9 +245,12 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if (patient == null){
             return ReturnFomart.retParam(300, "信息不存在");
         }
-        formRecordMapper.addFormRecord(formRecordVo);
+        if (patient.getFormStatus() == 1){//表单完成状态
+            formRecordMapper.addFormRecord(formRecordVo);//添加表单记录
+            patient.setFormStatus(2);//改成已添加
+        }
+
         if (followType != null){
-            patient.setFollowType(followType);
             patient.setPlanPatsStatus(followType);
         }
         if (handleSugges != null){

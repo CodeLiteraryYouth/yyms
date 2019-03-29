@@ -48,4 +48,6 @@ public class FormInfoVo {
 
     private String formText;	//表单文本数据
 
+    private Integer shareStatus;    //1 不共享 2 共享
+
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.wx.mapper.StyInfoRecordMapper">
+
+    <insert id="addRecord">
+        insert into leanin_sty_info_record
+        <trim prefix="(" suffix=" )" suffixOverrides=",">
+            <if test="styInfoRecordVo.satisfyId != null">
+                satisfy_id,
+            </if>
+            <if test="styInfoRecordVo.satisfyNum != null">
+                satisfy_num,
+            </if>
+            <if test="styInfoRecordVo.satisfyName != null">
+                satisfy_name,
+            </if>
+            <if test="styInfoRecordVo.createTime != null">
+                create_time,
+            </if>
+            <if test="styInfoRecordVo.formCreater != null">
+                form_creater,
+            </if>
+            <if test="styInfoRecordVo.satisfyText != null">
+                satisfy_text,
+            </if>
+            <if test="styInfoRecordVo.satisfyTypeId != null">
+                satisfy_type_id,
+            </if>
+            <if test="styInfoRecordVo.satisfyTitle != null">
+                satisfy_title,
+            </if>
+            <if test="styInfoRecordVo.satisfyBottom != null">
+                satisfy_bottom,
+            </if>
+            <if test="styInfoRecordVo.areaCode != null">
+                area_code,
+            </if>
+            <if test="styInfoRecordVo.finishStatus != null">
+                finish_status,
+            </if>
+            <if test="styInfoRecordVo.planPatientId != null">
+                plan_patient_id,
+            </if>
+            <if test="styInfoRecordVo.operatingId != null">
+                operating_id,
+            </if>
+            <if test="styInfoRecordVo.patientId != null">
+                patient_id,
+            </if>
+            <if test="styInfoRecordVo.openId != null">
+                open_id,
+            </if>
+            <if test="styInfoRecordVo.idCard != null">
+                id_card,
+            </if>
+            <if test="styInfoRecordVo.inhosNo != null">
+                inhos_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="styInfoRecordVo.satisfyId != null">
+                #{styInfoRecordVo.satisfyId},
+            </if>
+            <if test="styInfoRecordVo.satisfyNum != null">
+                #{styInfoRecordVo.satisfyNum},
+            </if>
+            <if test="styInfoRecordVo.satisfyName != null">
+                #{styInfoRecordVo.satisfyName},
+            </if>
+            <if test="styInfoRecordVo.createTime != null">
+                #{styInfoRecordVo.createTime},
+            </if>
+            <if test="styInfoRecordVo.formCreater != null">
+                #{styInfoRecordVo.formCreater},
+            </if>
+            <if test="styInfoRecordVo.satisfyText != null">
+                #{styInfoRecordVo.satisfyText},
+            </if>
+            <if test="styInfoRecordVo.satisfyTypeId != null">
+                #{styInfoRecordVo.satisfyTypeId},
+            </if>
+            <if test="styInfoRecordVo.satisfyTitle != null">
+                #{styInfoRecordVo.satisfyTitle},
+            </if>
+            <if test="styInfoRecordVo.satisfyBottom != null">
+                #{styInfoRecordVo.satisfyBottom},
+            </if>
+            <if test="styInfoRecordVo.areaCode != null">
+                #{styInfoRecordVo.areaCode},
+            </if>
+            <if test="styInfoRecordVo.finishStatus != null">
+                #{styInfoRecordVo.finishStatus},
+            </if>
+            <if test="styInfoRecordVo.planPatientId != null">
+                #{styInfoRecordVo.planPatientId},
+            </if>
+            <if test="styInfoRecordVo.operatingId != null">
+                #{styInfoRecordVo.operatingId},
+            </if>
+            <if test="styInfoRecordVo.patientId != null">
+                #{styInfoRecordVo.patientId},
+            </if>
+            <if test="styInfoRecordVo.openId != null">
+                #{styInfoRecordVo.openId},
+            </if>
+            <if test="styInfoRecordVo.idCard != null">
+                #{styInfoRecordVo.idCard},
+            </if>
+            <if test="styInfoRecordVo.inhosNo != null">
+                #{styInfoRecordVo.inhosNo},
+            </if>
+        </trim>
+    </insert>
+</mapper>

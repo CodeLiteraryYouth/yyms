@@ -44,8 +44,11 @@
             <if test="styInfoRecordVo.operatingId != null">
                 operating_id,
             </if>
-            <if test="styInfoRecordVo.openId != null">
-                open_id,
+            <if test="styInfoRecordVo.patientId != null">
+                patient_id,
+            </if>
+            <if test="styInfoRecordVo.formStatus != null">
+                form_status,
             </if>
             <if test="styInfoRecordVo.idCard != null">
                 id_card,
@@ -94,8 +97,11 @@
             <if test="styInfoRecordVo.operatingId != null">
                 #{styInfoRecordVo.operatingId},
             </if>
-            <if test="styInfoRecordVo.openId != null">
-                #{styInfoRecordVo.openId},
+            <if test="styInfoRecordVo.patientId != null">
+                #{styInfoRecordVo.patientId},
+            </if>
+            <if test="styInfoRecordVo.formStatus != null">
+                #{styInfoRecordVo.formStatus},
             </if>
             <if test="styInfoRecordVo.idCard != null">
                 #{styInfoRecordVo.idCard},

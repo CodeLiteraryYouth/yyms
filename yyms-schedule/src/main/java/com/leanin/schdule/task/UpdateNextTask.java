@@ -124,7 +124,7 @@ public class UpdateNextTask implements Job {
             planPatientVo.setNextDate(date); //设置下次随访时间
             planPatientVo.setSendType(1); //未发送
             planPatientVo.setPlanPatsStatus(0);
-            planPatientVo.setFollowType(1);
+            planPatientVo.setFormStatus(1);
             planPatientVo.setHandleSugges("");
             planPatientMapper.updatePlanPatient(planPatientVo);
         }

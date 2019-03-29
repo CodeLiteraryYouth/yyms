@@ -18,18 +18,25 @@
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
+        <result column="suggess" property="suggess"/>
+        <result column="id_card" property="idCard"/>
+        <result column="inhos_no" property="inhosNo"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="form_id" property="formId"/>
     </resultMap>
+
     <sql id="Base_Column_List">
-    patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
-    patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
-    patient_condition, patient_diagous, patient_type, patient_status, area_code
-  </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
+        patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
+        patient_condition, patient_diagous, patient_type, patient_status,
+        area_code,id_card,inhos_no,form_status,suggess,form_id
+    </sql>
+    <!--<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
-    </select>
+    </select>-->
 
     <select id="findList" resultMap="BaseResultMap">
         SELECT
@@ -60,7 +67,7 @@
     </select>
 
     <!--根据计划id 查询未完成人数-->
-    <select id="findUnfinishCount" resultType="java.lang.Integer">
+    <!--<select id="findUnfinishCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM leanin_satisfy_patient
         WHERE satisfy_plan_num = #{satisfyPlanNum} and finish_type = 1 and patient_status = 0
@@ -186,7 +193,7 @@
                 #{areaCode,jdbcType=VARCHAR},
             </if>
         </trim>
-    </insert>
+    </insert>-->
     <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
         update leanin_satisfy_patient
         <set>
@@ -238,7 +245,7 @@
         </set>
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
+    <!--<update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
     update leanin_satisfy_patient
     set satisfy_plan_num = #{satisfyPlanNum,jdbcType=VARCHAR},
       patient_id = #{patientId,jdbcType=BIGINT},
@@ -257,10 +264,10 @@
       area_code = #{areaCode,jdbcType=VARCHAR}
     where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
   </update>
-    <!--修改患者状态   0 未删除 1 已删除-->
+    &lt;!&ndash;修改患者状态   0 未删除 1 已删除&ndash;&gt;
     <update id="updatePatientStatus">
       UPDATE leanin_satisfy_patient
       SET patient_status = 1
       WHERE patient_satisfy_id = #{patientSatisfyId}
-    </update>
+    </update>-->
 </mapper>

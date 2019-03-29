@@ -21,6 +21,7 @@
         <module>yyms-oauth</module>
         <module>yyms-gateway</module>
         <module>yyms-service-mq</module>
+        <module>yyms-service-wechat</module>
     </modules>
 
     <parent>

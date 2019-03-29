@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  **/
 
-@Component
+//@Component
 public class LoginFilter extends ZuulFilter {
 
     @Autowired

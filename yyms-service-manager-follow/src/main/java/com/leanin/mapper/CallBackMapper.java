@@ -21,7 +21,7 @@ public interface CallBackMapper {
 	 * @param backNum
 	 * @return
 	 */
-	List<CallBackDto> findBackList(@Param("beginDate") String beginDate, @Param("endDate") String endDate, @Param("dealStatus") Integer dealStatus,
+	List<CallBack> findBackList(@Param("beginDate") String beginDate, @Param("endDate") String endDate, @Param("dealStatus") Integer dealStatus,
                                    @Param("accuseWard") String accuseWard, @Param("backNum") String backNum, @Param("status") int status);
 	
 	/**

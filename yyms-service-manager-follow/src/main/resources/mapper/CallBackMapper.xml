@@ -35,6 +35,7 @@
 			<result column="call_back_status"  property="status"/>
 			<result column="accu_parise_type"  property="callBackType"/>
 			<result column="assign_name"  property="assignName"/>
+			<result column="deal_status"  property="dealStatus"/>
 	</resultMap>
 	<sql id="Base_Column_List">
 		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.call_back_phone,c.patient_source,c.call_back_date,
@@ -48,7 +49,7 @@
 	<sql id="CallBack_Sql">
 		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.call_back_phone,c.patient_source,c.call_back_date,
 		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.call_back_status,
-		c.accu_parise_type,c.assign_name,c.patient_name
+		c.accu_parise_type,c.assign_name,c.patient_name,d.deal_status
 	</sql>
 	
 	<select id="findBackList" resultMap="CallBackMap">

@@ -7,17 +7,17 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface MessagePatientMapper {
-    int deleteByPrimaryKey(Long patientMsgId);
+//    int deleteByPrimaryKey(Long patientMsgId);
 
-    int insert(MessagePatientVo record);
+//    int insert(MessagePatientVo record);
 
-    int insertSelective(MessagePatientVo record);
+//    int insertSelective(MessagePatientVo record);
 
-    MessagePatientVo selectByPrimaryKey(Long patientMsgId);
+//    MessagePatientVo selectByPrimaryKey(Long patientMsgId);
 
     int updateByPrimaryKeySelective(MessagePatientVo record);
 
-    int updateByPrimaryKey(MessagePatientVo record);
+//    int updateByPrimaryKey(MessagePatientVo record);
 
     List<MessagePatientVo> findList(@Param("patientName") String patientName, @Param("sendType") Integer sendType);
 }

@@ -15,7 +15,7 @@ public interface FormInfoMapper {
 	 * @param formName
 	 * @return
 	 */
-	List<CommonFormInfoDto> findCommonForm(@Param("formType") Integer formType, @Param("formName") String formName);
+	List<CommonFormInfoDto> findCommonForm(@Param("formType") Integer formType, @Param("formName") String formName,@Param("shareStatus")Integer shareStatus);
 
 	/**
 	 * 根绝分类ID查询表单信息
@@ -38,7 +38,7 @@ public interface FormInfoMapper {
 	 * @param formType
 	 * @return
 	 */
-	List<FormInfoVo> findFormList(@Param("formName") String formName, @Param("formType") Integer formType);
+	List<FormInfoVo> findFormList(@Param("formName") String formName, @Param("formType") Integer formType,@Param("shareStatus") Integer shareStatus);
 	/**
 	 * 修改表单状态
 	 * @param formNum
@@ -79,4 +79,6 @@ public interface FormInfoMapper {
 	List<FormInfoExt> findFormListByOpenid(@Param("openid") String openid, @Param("followStatus") Integer followStatus, @Param("planType") Integer planType);
 
 	List<FormInfoExt> findFormListByOpenidExt(@Param("openid")String openid,@Param("followStatus") Integer followStatus,@Param("planType") Integer planType);
+
+    FormInfoVo findFormInfoByIdAndStatus(@Param("formNum") String formNum,@Param("formStatus") Integer formStatus,@Param("planPatientId")Long planPatientId );
 }

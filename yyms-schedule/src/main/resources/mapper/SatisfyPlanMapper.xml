@@ -27,7 +27,7 @@
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
   </resultMap>
 
-  <resultMap id="unfinishResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
+  <!--<resultMap id="unfinishResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
     <id column="plan_satisfy_num" jdbcType="VARCHAR" property="planSatisfyNum" />
     <result column="plan_satisfy_name" jdbcType="VARCHAR" property="planSatisfyName" />
     <result column="patient_type" jdbcType="INTEGER" property="patientType" />
@@ -53,9 +53,8 @@
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
     <association property="unfinishCount" column="plan_satisfy_num"
                  javaType="integer" select="com.leanin.schdule.mapper.SatisfyPatientMapper.findUnfinishCount">
-
     </association>
-  </resultMap>
+  </resultMap>-->
 
   <sql id="Base_Column_List">
     plan_satisfy_num, plan_satisfy_name, patient_type, plan_satisfy_begin_date, plan_satisfy_end_date, 
@@ -64,7 +63,7 @@
     satisfy_rules_text, satisfy_disease_name,satisfy_plan_ward,msg_id,msg_type
   </sql>
 
-  <select id="findSatisfyPlanList" parameterType="java.lang.String" resultMap="unfinishResultMap">
+  <!--<select id="findSatisfyPlanList" parameterType="java.lang.String" resultMap="unfinishResultMap">
   	select 
     <include refid="Base_Column_List" />
     from leanin_satisfy_plan where satisfy_plan_status >= 0
@@ -299,7 +298,7 @@
       </if>
     </set>
     where plan_satisfy_num = #{planSatisfyNum,jdbcType=VARCHAR}
-  </update>
+  </update>-->
 
   <select id="findList" resultMap="BaseResultMap">
     SELECT

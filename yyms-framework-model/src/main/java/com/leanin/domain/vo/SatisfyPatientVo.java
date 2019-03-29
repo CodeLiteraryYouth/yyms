@@ -59,7 +59,7 @@ public class SatisfyPatientVo implements Serializable {
 
     private String inhosNo; //住院号
 
-    private String openId;  //openid
+    private Integer formStatus;  //表单填写状态啊
 
     private String formId;  //满意度表单id
 

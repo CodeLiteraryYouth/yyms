@@ -11,13 +11,16 @@
     <result column="creater" jdbcType="BIGINT" property="creater" />
     <result column="satisfy_title"  property="satisfyTitle" />
     <result column="satisfy_bottom" property="satisfyBottom" />
+    <result column="share_status" property="shareStatus" />
     <association property="createrName" column="creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
   </resultMap>
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.SatisfyInfoVo">
     <result column="satisfy_text" jdbcType="LONGVARCHAR" property="satisfyText" />
   </resultMap>
+
   <resultMap id="BASE" type="com.leanin.domain.vo.SatisfyInfoExt">
     <id column="satisfy_num" jdbcType="VARCHAR" property="satisfyNum" />
     <result column="satisfy_name" jdbcType="VARCHAR" property="satisfyName" />
@@ -30,22 +33,23 @@
     <result column="satisfy_bottom" property="satisfyBottom" />
     <result column="satisfy_text" jdbcType="LONGVARCHAR" property="satisfyText" />
     <result column="patient_satisfy_id" property="satisfyPatientId"/>
+    <result column="share_status" property="shareStatus" />
   </resultMap>
   
   <sql id="Base_Column_List">
     satisfy_num, satisfy_name, satisfy_date, satisfy_status, satisfy_type_id, area_code, 
-    creater
+    creater,share_status
   </sql>
   <sql id="Blob_Column_List">
     satisfy_text,satisfy_title,satisfy_bottom
   </sql>
   <sql id="BASE">
-    lsi.satisfy_num, lsi.satisfy_name, lsi.satisfy_date, lsi.satisfy_status, lsi.satisfy_type_id, lsi.area_code,
-    lsi.creater,lsi.satisfy_text,lsi.satisfy_title,lsi.satisfy_bottom,lsp.patient_satisfy_id
+    lsi.satisfy_num, lsi.satisfy_name, lsi.satisfy_date, lsi.satisfy_status, lsi.satisfy_type_id,lsi.area_code,
+    lsi.creater,lsi.satisfy_text,lsi.satisfy_title,lsi.satisfy_bottom,lsi.share_status,lsp.patient_satisfy_id
   </sql>
   <sql id="BASE1">
     lsi.satisfy_num, lsi.satisfy_name, lsi.satisfy_date, lsi.satisfy_status, lsi.satisfy_type_id, lsi.area_code,
-    lsi.creater,lsi.satisfy_text,lsi.satisfy_title,lsi.satisfy_bottom
+    lsi.creater,lsi.satisfy_text,lsi.satisfy_title,lsi.satisfy_bottom,lsi.share_status
   </sql>
   <select id="findSatisfyList" resultMap="ResultMapWithBLOBs">
   	select
@@ -58,6 +62,9 @@
     </if>
     <if test="typeId != null">
         and satisfy_type_id=#{typeId}
+    </if>
+    <if test="shareStatus != null">
+      and share_status = #{shareStatus}
     </if>
   </select>
   <select id="findSatisfyById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
@@ -84,7 +91,7 @@
     where lsi.satisfy_status = 0
     and lsp.patient_status = 0
     and lsi.satisfy_num = lsp.form_id
-    and lsp.id_card = lpw.id_card
+    and lsp.patient_id = lpw.patient_id
     and lpw.open_id =#{openId}
     and lsp.finish_type =#{finishType}
   </select>
@@ -95,9 +102,24 @@
     from leanin_satisfy_info lsi,leanin_sty_info_record lsr,leanin_patient_wx lpw
     where lsi.satisfy_status = 0
     and lsi.satisfy_num = lsr.satisfy_num
-    and lsr.id_card = lpw.id_card
+    and lsr.patient_id = lpw.patient_id
     and lpw.open_id =#{openId}
     and lsr.finish_status =#{finishType}
+  </select>
+
+  <select id="findSatisfyByIdAndStatus" resultMap="ResultMapWithBLOBs">
+    select
+    <!--<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />-->
+      lsi.*
+    from leanin_satisfy_info lsi,leanin_satisfy_plan lspl,leanin_satisfy_patient lsp
+    where lsi.satisfy_status >= 0
+    and lspl.satisfy_num = lsi.satisfy_num
+    and lspl.plan_satisfy_num = lsp.satisfy_plan_num
+    and lsp.patient_satisfy_id = #{planPatientId}
+    and lsi.satisfy_num = #{formNum}
+    and lsp.form_status = #{formStatus}
   </select>
 
   <update id="logoutSatisfyInfo" parameterType="java.lang.String">
@@ -134,6 +156,9 @@
       <if test="satisfyBottom != null">
         satisfy_bottom,
       </if>
+      <if test="shareStatus != null">
+        share_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="satisfyNum != null">
@@ -163,6 +188,9 @@
       <if test="satisfyBottom != null">
         #{satisfyBottom},
       </if>
+      <if test="shareStatus != null">
+        #{shareStatus},
+      </if>
     </trim>
   </insert>
   <update id="updateSatisfyInfo" parameterType="com.leanin.domain.vo.SatisfyInfoVo">
@@ -191,6 +219,9 @@
       </if>
       <if test="satisfyBottom != null">
         satisfy_bottom = #{satisfyBottom},
+      </if>
+      <if test="shareStatus != null">
+        share_status = #{shareStatus},
       </if>
     </set>
     where satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
