@@ -10,8 +10,8 @@ eureka:
     registerWithEureka: true #服务注册开关
     fetchRegistry: true #服务发现开关
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-#      defaultZone: http://192.168.0.122:50101/eureka/,http://192.168.0.122:50102/eureka/  #浪潮
+#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
 #    ip-address: 192.168.0.122

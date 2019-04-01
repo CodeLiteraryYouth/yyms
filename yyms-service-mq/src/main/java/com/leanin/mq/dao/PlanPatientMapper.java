@@ -52,7 +52,7 @@ public interface PlanPatientMapper {
     List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum, @Param("status") Integer status);
 
     //修改随访状态
-    void updateFollowType(@Param("patientPlanId") Long patientPlanId);
+//    void updateFollowType(@Param("patientPlanId") Long patientPlanId);
 
     void updatePlanPatient(@Param("planPatientVo") PlanPatientVo planPatientVo);
 }

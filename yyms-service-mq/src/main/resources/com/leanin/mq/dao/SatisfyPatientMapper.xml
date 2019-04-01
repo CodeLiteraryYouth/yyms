@@ -19,11 +19,12 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="send_type" jdbcType="INTEGER" property="sendType"/>
         <result column="form_id" property="formId"/>
+        <result column="form_status" property="formStatus"/>
     </resultMap>
     <sql id="Base_Column_List">
     patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
     patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
-    patient_condition, patient_diagous, patient_type, patient_status, area_code,form_id
+    patient_condition, patient_diagous, patient_type, patient_status, area_code,form_id,form_status
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -129,6 +130,9 @@
             <if test="formId != null">
                 form_id,
             </if>
+            <if test="formStatus != null">
+                form_status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -181,6 +185,9 @@
             </if>
             <if test="formId != null">
                 #{formId},
+            </if>
+            <if test="formStatus != null">
+                #{formStatus},
             </if>
         </trim>
     </insert>

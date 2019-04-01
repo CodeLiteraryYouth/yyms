@@ -207,7 +207,7 @@ public class PlanPatientMQ {
                 String patientPhone = (String) map.get("patientPhone");
                 planPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
                 planPatientVo.setPatientWard(planInfo.getPatsWardCode());//设置病人科室  可能是集合
-                planPatientVo.setFollowType(1);//设置随访状态 1 未完成  2 已完成
+                planPatientVo.setFormStatus(1);//设置随访状态 1 未完成  2 已完成
                 planPatientVo.setPatientStatus(1);//设置 状态  1：未删除  2 已删除
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
