@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.FocusPatientMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FocusPatientVo">
-    <id column="focus_id" jdbcType="BIGINT" property="focusId" />
-    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
-    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
-    <result column="patient_birthday" jdbcType="VARCHAR" property="patientBirthday" />
-    <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone" />
-    <result column="patient_id_card" jdbcType="VARCHAR" property="patientIdCard" />
-    <result column="focus_status" jdbcType="INTEGER" property="focusStatus" />
-    <result column="patient_source" jdbcType="INTEGER" property="patientSource" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <id column="focus_id"  property="focusId" />
+    <result column="patient_id"  property="patientId" />
+    <result column="patient_name"  property="patientName" />
+    <result column="patient_sex"  property="patientSex" />
+    <result column="patient_birthday"  property="patientBirthday" />
+    <result column="patient_phone"  property="patientPhone" />
+    <result column="patient_id_card"  property="patientIdCard" />
+    <result column="focus_status"  property="focusStatus" />
+    <result column="patient_source"  property="patientSource" />
+    <result column="user_id"  property="userId" />
     <result column="inhos_no" property="inhosNo" />
     <result column="open_id" property="openId" />
     <result column="patient_ward" property="patientWard" />
@@ -30,7 +30,7 @@
        and patient_name like CONCAT('%',#{patientName},'%')
     </if>
   </select>
-  <select id="selectFocusPatientById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectFocusPatientById" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_focus_patient where focus_status > 0
@@ -94,28 +94,28 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="patientId != null">
-        #{patientId,jdbcType=VARCHAR},
+        #{patientId},
       </if>
       <if test="patientName != null">
-        #{patientName,jdbcType=VARCHAR},
+        #{patientName},
       </if>
       <if test="patientSex != null">
-        #{patientSex,jdbcType=INTEGER},
+        #{patientSex},
       </if>
       <if test="patientBirthday != null">
-        #{patientBirthday,jdbcType=VARCHAR},
+        #{patientBirthday},
       </if>
       <if test="patientPhone != null">
-        #{patientPhone,jdbcType=VARCHAR},
+        #{patientPhone},
       </if>
       <if test="patientIdCard != null">
-        #{patientIdCard,jdbcType=VARCHAR},
+        #{patientIdCard},
       </if>
       <if test="focusStatus != null">
-        #{focusStatus,jdbcType=INTEGER},
+        #{focusStatus},
       </if>
       <if test="patientSource != null">
-        #{patientSource,jdbcType=INTEGER},
+        #{patientSource},
       </if>
       <if test="userId != null">
         #{userId},

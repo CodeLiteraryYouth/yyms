@@ -2,6 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.StyInfoRecordMapper">
 
+    <resultMap id="BaseMap" type="com.leanin.domain.vo.StyInfoRecordVo">
+        <id column="satisfy_id" property="satisfyId"/>
+        <result column="satisfy_num" property="satisfyNum"/>
+        <result column="satisfy_name" property="satisfyName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="form_creater" property="formCreater"/>
+        <result column="satisfy_text" property="satisfyText"/>
+        <result column="satisfy_type_id" property="satisfyTypeId"/>
+        <result column="satisfy_title" property="satisfyTitle"/>
+        <result column="satisfy_bottom" property="satisfyBottom"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="finish_status" property="finishStatus"/>
+        <result column="plan_patient_id" property="planPatientId"/>
+        <result column="operating_id" property="operatingId"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="id_card" property="idCard"/>
+        <result column="inhos_no" property="inhosNo"/>
+        <result column="patient_id" property="patientId"/>
+    </resultMap>
+
+    <sql id="BaseSql">
+        satisfy_id,satisfy_num,satisfy_name,create_time,form_creater,satisfy_text,
+        satisfy_type_id,satisfy_title,satisfy_bottom,area_code,finish_status,plan_patient_id,
+        operating_id,form_status,id_card,inhos_no,patient_id
+    </sql>
+
+    <select id="findStyInfoRecord" resultMap="BaseMap">
+        select
+        <include refid="BaseSql"/>
+        from leanin_sty_info_record
+        where form_status = 2
+        and plan_patient_id = #{planPatientId}
+        order by create_time desc
+        limit 1
+    </select>
+
     <insert id="addRecord">
         insert into leanin_sty_info_record
         <trim prefix="(" suffix=" )" suffixOverrides=",">
@@ -111,4 +147,6 @@
             </if>
         </trim>
     </insert>
+
+
 </mapper>

@@ -2,6 +2,7 @@ package com.leanin.controller;
 
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.StyInfoRecordVo;
 import com.leanin.service.StyInfoRecordService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
@@ -11,20 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/StyInfoRecord")
+@RequestMapping("/styInfoRecord")
 public class StyInfoRecordController extends BaseController {
 
     @Autowired
     StyInfoRecordService styInfoRecordService;
 
+    //增加满意度表单记录
     @PostMapping("/addStyInfoRecord")
-    public DataOutResponse addStyInfoRecord(){
-        return null;
+    public DataOutResponse addStyInfoRecord(@RequestBody StyInfoRecordVo styInfoRecordVo){
+        return styInfoRecordService.addStyInfoRecord(styInfoRecordVo);
     }
 
     @GetMapping("/findStyInfoRecordByPid")
     public DataOutResponse findStyInfoRecordByPid(@RequestParam Long planPatientId){
-        return null;
+        return styInfoRecordService.findStyInfoRecordByPid(planPatientId);
     }
 
 

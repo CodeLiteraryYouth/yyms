@@ -53,4 +53,6 @@ public interface SatisfyInfoMapper {
 	List<SatisfyInfoExt> findStyInfoByOpenIdExt(@Param("openId")String openId,@Param("finishType") Integer finishType);
 
 	SatisfyInfoVo findSatisfyByIdAndStatus(@Param("formNum") String formNum,@Param("formStatus") Integer formStatus,@Param("planPatientId")Long planPatientId);
+
+    SatisfyInfoVo findSatisfyByPid(@Param("planPatientId") Long planPatientId);
 }

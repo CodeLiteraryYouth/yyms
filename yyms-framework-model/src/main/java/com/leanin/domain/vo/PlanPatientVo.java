@@ -51,7 +51,7 @@ public class PlanPatientVo implements Serializable {
 
     private String areaCode;    //院区编码
 
-    private Integer planPatsStatus; //-1:已移除 0：正在使用
+    private Integer planPatsStatus; //
 
     private Long rulesInfoId; //随访规则id
 

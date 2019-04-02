@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Param;
 public interface StyInfoRecordMapper {
 
     void addRecord(@Param("styInfoRecordVo") StyInfoRecordVo styInfoRecordVo);
+
+    StyInfoRecordVo findStyInfoRecord(@Param("planPatientId") Long planPatientId);
 }

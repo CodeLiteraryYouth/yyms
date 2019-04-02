@@ -1,6 +1,7 @@
 package com.leanin.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.FocusPatientVo;
 import com.leanin.service.FocusPatientService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 关注病人Controller
@@ -25,9 +27,9 @@ public class FocusPatientController extends BaseController {
 	private FocusPatientService focusPatientService;
 	
 	@GetMapping("findPatientList")
-	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName) {
+	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,Integer page,Integer pageSize) {
 		LyOauth2Util.UserJwt user = getUser(request);
-		return focusPatientService.findPatientList(patientName,user.getId());
+		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize);
 	}
 	
 	@PostMapping("addFocusPatient")
@@ -38,8 +40,9 @@ public class FocusPatientController extends BaseController {
 	}
 	
 	@GetMapping("updatePatientStatus")
-	public DataOutResponse updatePatientStatus(@RequestParam Long focusId, @RequestParam Integer status) {
-		return focusPatientService.updatePatientStatus(focusId, status);
+	public DataOutResponse updatePatientStatus(@RequestParam String focusId, @RequestParam Integer status) {
+        String[] longs = focusId.split(",");
+		return focusPatientService.updatePatientStatus(longs, status);
 	}
 	
 	@GetMapping("selectFocusPatientById")

@@ -122,16 +122,16 @@ public class WorkJob {
     }
 
     private void sendMessage(PlanInfoDto planInfo, PlanPatientVo patientDto) {
-        String msg = planInfo.getMsgInfo().getMsgText() + "表单的URL";
+        String msg = planInfo.getMsgInfo().getMsgText();
         log.info("发送的短信内容为:" + msg);
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
         String param = "";
-        if (planInfo.getPlanType() == 1){
-            param = "http://192.168.0.123:8081/login#/postlist??planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
-        }else{
+        if (planInfo.getPlanType() == 1){//随访
+            param = "http://192.168.0.123:8081/login#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
+        }else{//宣教
             param = "http://192.168.0.123:8081/login#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
         }
-        Map map = CSMSUtils.sendMessage(msg+param, "18556531536");//patientDto.getPatientPhone()
+        Map map = CSMSUtils.sendMessage(msg+param, "13817165550");//patientDto.getPatientPhone()
         //设置病人发送状态
         String msgStatus = (String) map.get("msg");
         log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}",msg+param,patientDto.getPatientPhone(),msgStatus);
@@ -196,7 +196,7 @@ public class WorkJob {
                 }else{
                     if (satisfyPatientVo.getSendType() == 1){//未发送
                         String param = "http://192.168.0.123:8081/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
-                        Map map = CSMSUtils.sendMessage(msgText+param, "18556531536"); //satisfyPatientVo.getPatientPhone()
+                        Map map = CSMSUtils.sendMessage(msgText+param, "13817165550"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
                         log.info("满意度短信：{}",msgText+param,satisfyPatientVo.getPatientPhone(),msgStatus,satisfyPlanVo.getSatisfyNum());
                         if (msgStatus.equals("true")){

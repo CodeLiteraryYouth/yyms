@@ -49,10 +49,10 @@ public class FollowCheckServiceImpl implements FollowCheckService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updateCheckStatus(String checkNum, int status) {
-        followCheckMapper.updateCheckStatus(checkNum, status);
         FollowCheckVo followCheck = followCheckMapper.findCheckById(checkNum);
         log.info("修改状态的抽查信息为:" + JSON.toJSONString(followCheck));
-        return ReturnFomart.retParam(200, followCheck);
+        followCheckMapper.updateCheckStatus(checkNum, status);
+        return ReturnFomart.retParam(200, "操作成功");
     }
 
     @Override

@@ -4,6 +4,8 @@ package com.leanin.service;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.FocusPatientVo;
 
+import java.util.List;
+
 public interface FocusPatientService {
 
 	/**
@@ -11,7 +13,7 @@ public interface FocusPatientService {
 	 * @param patientName
 	 * @return
 	 */
-	DataOutResponse findPatientList(String patientName,Long userId);
+	DataOutResponse findPatientList(String patientName,Long userId,Integer page,Integer pageSize);
 	
 	/**
 	 * 修改病人的状态信息
@@ -19,7 +21,7 @@ public interface FocusPatientService {
 	 * @param status
 	 * @return
 	 */
-	DataOutResponse updatePatientStatus(Long focusId, Integer status);
+	DataOutResponse updatePatientStatus(String[] focusId, Integer status);
 	
 	 /**
      * 保存关注患者的信息

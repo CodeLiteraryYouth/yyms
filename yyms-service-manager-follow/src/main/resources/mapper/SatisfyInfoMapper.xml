@@ -122,7 +122,17 @@
     and lsp.form_status = #{formStatus}
   </select>
 
-  <update id="logoutSatisfyInfo" parameterType="java.lang.String">
+    <select id="findSatisfyByPid" resultMap="ResultMapWithBLOBs">
+      select
+      lsi.*
+      from leanin_satisfy_info lsi, leanin_satisfy_patient lsp,leanin_satisfy_plan lspl
+      where lsi.satisfy_status = 0
+      and lsi.satisfy_num = lspl.satisfy_num
+      and lspl.plan_satisfy_num = lsp.satisfy_plan_num
+      and lsp.patient_satisfy_id = #{planPatientId}
+    </select>
+
+    <update id="logoutSatisfyInfo" parameterType="java.lang.String">
     update leanin_satisfy_info set satisfy_status=-1
     where satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
   </update>
