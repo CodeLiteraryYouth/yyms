@@ -25,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 public class OauthApplication {
     public static void main(String[] args) {
         SpringApplication.run(OauthApplication.class, args);
-
     }
 
 
