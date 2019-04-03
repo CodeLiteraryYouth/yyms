@@ -17,6 +17,7 @@ public class FormController {
 	public DataOutResponse findFormListByOpenid(@RequestParam String openid, @RequestParam Integer followStatus,
 												@RequestParam Integer planType){
 		return formInfoService.findFormListByOpenid(openid,followStatus,planType);
+
 	}
 
 }
