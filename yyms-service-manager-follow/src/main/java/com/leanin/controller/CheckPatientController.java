@@ -26,4 +26,10 @@ public class CheckPatientController {
         return checkPatientService.findById(checkPatientId);
     }
 
+    //批量删除
+    @GetMapping("delByIds")
+    public DataOutResponse delByIds(@RequestParam String ids){
+        return checkPatientService.delByIds(ids);
+    }
+
 }

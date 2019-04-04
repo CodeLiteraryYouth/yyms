@@ -62,6 +62,11 @@ public class SatisfyPlanController extends BaseController {
 		return satisfyPlanService.findAll(user.getId());
 	}
 
+	@GetMapping("findByWard")
+	public DataOutResponse findByWard(@RequestParam String patientWard){
+		return satisfyPlanService.findByWard(patientWard);
+	}
+
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();
 		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);

@@ -11,26 +11,26 @@ public interface AdminUserService {
 	 * @param adminUser
 	 * @return
 	 */
-	DataOutResponse insertAdminUser(AdminUserVo adminUser);
+//	DataOutResponse insertAdminUser(AdminUserVo adminUser);
 
     /**
      * 修改管理员用户
      * @param adminUser
      * @return
      */
-	DataOutResponse updateAdminUser(AdminUserVo adminUser);
+//	DataOutResponse updateAdminUser(AdminUserVo adminUser);
     
     /**
      * 查询管理员用户列表
      * @param userCode
      * @return
      */
-	DataOutResponse findUserinfo(String userCode);
+//	DataOutResponse findUserinfo(String userCode);
     
     /**
      * 注销管理员用户
      * @param adminId
      * @return
      */
-	DataOutResponse updateUserState(Long adminId);
+//	DataOutResponse updateUserState(Long adminId);
 }

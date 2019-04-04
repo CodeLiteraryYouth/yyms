@@ -56,9 +56,10 @@ public class MsgInfoController extends BaseController {
 
 	//手动发送短信
 	@GetMapping("sendMessage")
-	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,@RequestParam("formId") String formId){
-		List<Long> longs = JSON.parseArray(ids, Long.class);
-		return msgInfoService.sendMessage(longs,type,formId);
+	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,String formId){
+//		List<Long> longs = JSON.parseArray(ids, Long.class);
+		String[] idList = ids.split(",");
+		return msgInfoService.sendMessage(idList,type,formId);
 	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

@@ -19,4 +19,6 @@ public interface CheckPatientMapper {
     Integer findUnfinishCount(@Param("checkNum") String checkNum);
 
     CheckPatientVo findById(@Param("checkPatientId") Long checkPatientId);
+
+    void updateById(@Param("id") long id);
 }

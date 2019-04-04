@@ -143,6 +143,13 @@
         </trim>
     </insert>
 
+    <!---->
+    <update id="updateById">
+        update leanin_check_patient
+        set patient_status = 2
+        where check_patient_id = #{id}
+    </update>
+
     <select id="findList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -177,4 +184,6 @@
         and finish_status = 1
         and check_num =#{checkNum}
     </select>
+
+
 </mapper>

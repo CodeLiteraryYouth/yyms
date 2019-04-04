@@ -23,8 +23,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public DataOutResponse findListByParam(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -43,8 +43,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public DataOutResponse findOutHosPatientByParam(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -67,8 +67,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public Map findOutHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -92,8 +92,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public Map findInHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -118,8 +118,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public List<Map> findInHosRecordById(Map paramMap) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         //获取webService返回结果
@@ -144,8 +144,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public List<Map> findOutHosRecordById(String patientId) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         //获取webService返回结果
@@ -169,8 +169,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public Map findInHosPatientById(String patientId) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 
         Map dataMap=new HashMap();
         try {
@@ -187,8 +187,8 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     public Map findOutHosPatientById(String patientId) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-//        Client client = dcf.createClient("http://2399d4m434.qicp.vip:55891/soap/test?wsdl");
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = dcf.createClient("http://192.168.0.102:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 
         Map dataMap=new HashMap();
         try {

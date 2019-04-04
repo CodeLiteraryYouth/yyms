@@ -76,7 +76,7 @@ public class FollowCheckServiceImpl implements FollowCheckService {
         }
         List<PlanPatientVo> list = planPatientMapper.findListByPlanNum(planNum);
         //获取比例
-        int size = (int) (list.size() * ratio);
+        int size =(int) Math.ceil((list.size() * ratio));
         //随机抽取患者
         Random random = new Random();
         for (int i = 0; i < size; i++) {

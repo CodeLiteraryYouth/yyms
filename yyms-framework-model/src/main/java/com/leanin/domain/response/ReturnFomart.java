@@ -50,6 +50,7 @@ public class ReturnFomart {
         
         messageMap.put("3001", "excel文件中的餐次不能为空");
         messageMap.put("3002", "excel文件中的菜品不能为空");
+        messageMap.put("3003","数据重复，请勿重复插入");
     }
     public static DataOutResponse retParam(int status,Object data) {
         DataOutResponse json = new DataOutResponse(status, messageMap.get(String.valueOf(status)), data);

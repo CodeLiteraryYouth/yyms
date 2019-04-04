@@ -60,7 +60,6 @@ public class PlanPatientController extends BaseController {
 
     @PostMapping("addPatientList")
     public DataOutResponse addPatientList(@RequestBody List<PlanPatientVo> PlanPatients){
-
         return planPatientService.addPatientList(PlanPatients);
     }
 
@@ -80,9 +79,13 @@ public class PlanPatientController extends BaseController {
      * @return
      */
     @GetMapping("findPlanPatientById")
-    public DataOutResponse findPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource,String planNum,Integer planType){
-        return planPatientService.findPlanPatientById(patientId,patientSource,planNum,planType);
+    public DataOutResponse findPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource,String planNum,Integer planType,@RequestParam Integer type){
+        return planPatientService.findPlanPatientById(patientId,patientSource,planNum,planType,type);
     }
+
+
+
+
 
     @PostMapping("updatePatById")
     public DataOutResponse updatePlanPatient(@RequestParam Long patientPlanId, Integer followType, String handleSugges,@RequestBody FormRecordVo formRecordVo){

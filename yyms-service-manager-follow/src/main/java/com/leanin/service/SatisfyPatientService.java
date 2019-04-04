@@ -2,6 +2,7 @@ package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.SatisfyInfoVo;
+import com.leanin.domain.vo.SatisfyPatientVo;
 import com.leanin.domain.vo.StyInfoRecordVo;
 
 import java.util.Date;
@@ -16,4 +17,6 @@ public interface SatisfyPatientService {
     DataOutResponse delPatientList(List<Long> longs1);
 
     DataOutResponse updateByPid(Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo);
+
+    DataOutResponse addPatentList(List<SatisfyPatientVo> satisfyPatientVos);
 }

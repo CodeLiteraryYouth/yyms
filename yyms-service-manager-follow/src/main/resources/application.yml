@@ -1,13 +1,10 @@
+server:
+  port: 8088 #端口号
 spring:
   application:
     name: yyms-service-manager-follow
 #  servlet:
 #    context-path: /follow
-##端口号
-server:
-  port: 8088
----
-spring:
   redis:
     host: 39.108.217.158
     port: 6379

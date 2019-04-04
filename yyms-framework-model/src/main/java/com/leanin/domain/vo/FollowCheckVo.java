@@ -26,6 +26,8 @@ public class FollowCheckVo {
 
     private Long checkPerson;	//抽查人员（以逗号拼接）
 
+    private String checkPersonName; //抽查人姓名
+
     private Integer checkPatientType;	//抽查人员类型（病人来源）
 
     private String checkPatientWard;	//病人科室
@@ -42,7 +44,8 @@ public class FollowCheckVo {
     
     private int checkStatus;	//抽查状态
 
-    private Long creater;	//创建人
+    private Long creater;	    //创建人
+    private String createrName; //创建人姓名
     
     private Date createDate;	//创建时间
 

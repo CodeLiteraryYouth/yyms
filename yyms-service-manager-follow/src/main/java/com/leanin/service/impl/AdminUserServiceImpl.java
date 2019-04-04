@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author zd
  * @date 2018/12/24
  */
-@Service
+//@Service
 public class AdminUserServiceImpl implements AdminUserService {
 
-	@Autowired
+	/*@Autowired
 	private AdminUserMapper adminMapper;
 	
 	@Override
@@ -50,6 +50,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 	public DataOutResponse updateUserState(Long adminId) {
 		adminMapper.updateUserState(adminId);
 		return ReturnFomart.retParam(200, adminId);
-	}
+	}*/
 
 }

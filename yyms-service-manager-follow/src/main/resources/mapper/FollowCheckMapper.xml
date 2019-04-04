@@ -21,6 +21,12 @@
   <resultMap extends="BaseResultMap" id="unfinishResultMap" type="com.leanin.domain.vo.FollowCheckVo" >
     <association property="unfinishCount" column="check_num" javaType="int"
                  select="com.leanin.mapper.CheckPatientMapper.findUnfinishCount"></association>
+    <association property="checkPersonName" column="check_person" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
+    <association property="createrName" column="check_craeter" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -39,22 +45,24 @@
   </select>
 
 
-  <select id="findCheckById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findCheckById" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_follow_check where check_status>=0
     and check_num = #{checkNum,jdbcType=VARCHAR}
   </select>
-  <select id="findCheckByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findCheckByName"  resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_follow_check where check_status>=0
     and check_name = #{checkName,jdbcType=VARCHAR}
   </select>
+
   <update id="updateCheckStatus">
     update leanin_follow_check set check_status=#{status}
     where check_num = #{checkNum,jdbcType=VARCHAR}
   </update>
+
   <insert id="addCheckInfo" parameterType="com.leanin.domain.vo.FollowCheckVo">
     insert into leanin_follow_check
     <trim prefix="(" suffix=")" suffixOverrides=",">

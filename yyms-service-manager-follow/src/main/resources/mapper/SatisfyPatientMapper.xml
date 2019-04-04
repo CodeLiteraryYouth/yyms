@@ -176,6 +176,9 @@
             <if test="formStatus != null">
                 form_status,
             </if>
+            <if test="formId != null">
+                form_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -234,6 +237,9 @@
             </if>
             <if test="formStatus != null">
                 #{formStatus},
+            </if>
+            <if test="formId != null">
+                #{formId},
             </if>
         </trim>
     </insert>
@@ -369,5 +375,14 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_satisfy_id = #{patientSatisfyId}
+    </select>
+
+    <select id="findByPnumAndPid" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_satisfy_patient
+        where satisfy_plan_num = #{satisfyPlanNum}
+        and patient_id = #{patientId}
+        and patient_status = 0
     </select>
 </mapper>

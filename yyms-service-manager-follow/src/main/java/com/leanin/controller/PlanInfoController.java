@@ -7,7 +7,6 @@ import com.leanin.model.response.ResponseResult;
 import com.leanin.service.PlanInfoService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,6 +84,13 @@ public class PlanInfoController extends BaseController {
 	public DataOutResponse findPlanListByType(@RequestParam Integer planType){
 		return planInfoService.findPlanListByType(planType);
 	}
+
+	//根据病人科室查询计划
+	@GetMapping("findByWard")
+	public DataOutResponse findByWard(@RequestParam("patientWard") String patientWard){
+		return planInfoService.findByWard(patientWard);
+	}
+
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();

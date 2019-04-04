@@ -52,6 +52,8 @@ public class CheckPatientVo {
     private String areaCode;	//院区编码
 
     private String finishStatus;
+
+
     private String ex2;
     private String ex3;
     private String ex4;

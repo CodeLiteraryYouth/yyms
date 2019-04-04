@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
  * @author zd
  * @date 2018/12/24
  */
-@RestController
-@RequestMapping("adminUser")
-@Slf4j
+//@RestController
+//@RequestMapping("adminUser")
+//@Slf4j
 public class AdminUserController {
 
-	@Autowired
+	/*@Autowired
 	private AdminUserService adminUserService;
 	
 	@GetMapping("findAdminUserInfo")
@@ -44,5 +44,5 @@ public class AdminUserController {
 	public DataOutResponse updateUserState(@RequestParam Long adminId) {
 		log.info("注销的管理ID为:"+adminId);
 		return adminUserService.updateUserState(adminId);
-	}
+	}*/
 }

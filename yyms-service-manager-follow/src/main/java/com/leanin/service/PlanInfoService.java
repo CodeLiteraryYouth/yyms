@@ -55,4 +55,6 @@ public interface PlanInfoService {
 
     //查询所有计划信息
     DataOutResponse findAllPlan(Integer planType,Long userId);
+
+    DataOutResponse findByWard(String patientWard);
 }

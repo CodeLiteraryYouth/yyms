@@ -38,4 +38,6 @@ public interface SatisfyPatientMapper {
     List<SatisfyPatientVo> findPatsByParam(@Param("myFollowReq") MyFollowReq myFollowReq);
 
     List<SatisfyPatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
+
+    SatisfyPatientVo findByPnumAndPid(@Param("patientId") Long patientId,@Param("satisfyPlanNum") String satisfyPlanNum);
 }

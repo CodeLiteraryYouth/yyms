@@ -76,4 +76,5 @@ public interface PlanInfoMapper {
 
     String findPlanNameById(@Param("planNum") String planNum);
 
+    List<PlanInfoVo> findByWard(@Param("patientWard") String patientWard);
 }

@@ -44,5 +44,5 @@ public interface MsgInfoService {
 	DataOutResponse updateMsgInfo(MsgInfoVo record);
 
 	//手动发送短信
-    DataOutResponse sendMessage(List<Long> longs,Integer type,String formId);
+    DataOutResponse sendMessage(String[] longs,Integer type,String formId);
 }

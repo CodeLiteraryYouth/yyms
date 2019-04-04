@@ -42,4 +42,5 @@ public interface SatisfyPlanService {
 
     DataOutResponse findAll(Long userId);
 
+    DataOutResponse findByWard(String patientWard);
 }

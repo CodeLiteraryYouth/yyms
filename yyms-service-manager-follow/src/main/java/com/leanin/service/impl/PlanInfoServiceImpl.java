@@ -251,4 +251,10 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         return ReturnFomart.retParam(200, planInfoVos);
     }
 
+    @Override
+    public DataOutResponse findByWard(String patientWard) {
+        List<PlanInfoVo> list = planInfoMapper.findByWard(patientWard);
+        return ReturnFomart.retParam(200,list);
+    }
+
 }

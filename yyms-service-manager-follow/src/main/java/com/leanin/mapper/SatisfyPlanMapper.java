@@ -2,6 +2,7 @@ package com.leanin.mapper;
 
 import java.util.List;
 
+import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.SatisfyPlanVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,6 @@ public interface SatisfyPlanMapper {
     String findPNById(@Param("planNum") String planNum);
 
     List<SatisfyPlanVo> findAll(@Param("userId") Long userId);
+
+    List<SatisfyPlanVo> findByWard(@Param("patientWard") String patientWard);
 }

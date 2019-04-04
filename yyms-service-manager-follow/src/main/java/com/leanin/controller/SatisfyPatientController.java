@@ -3,6 +3,7 @@ package com.leanin.controller;
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.SatisfyInfoVo;
+import com.leanin.domain.vo.SatisfyPatientVo;
 import com.leanin.domain.vo.StyInfoRecordVo;
 import com.leanin.service.SatisfyPatientService;
 import com.leanin.utils.LyOauth2Util;
@@ -74,6 +75,14 @@ public class SatisfyPatientController extends BaseController {
 //        Long[] longs=new Long[5];
         return satisfyPatientService.delPatientList(longs1);
     }
+
+
+    @PostMapping("/addPatentList")
+    public DataOutResponse addPatentList(@RequestBody List<SatisfyPatientVo> satisfyPatientVos){
+        return satisfyPatientService.addPatentList(satisfyPatientVos);
+    }
+
+
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
         LyOauth2Util lyOauth2Util = new LyOauth2Util();

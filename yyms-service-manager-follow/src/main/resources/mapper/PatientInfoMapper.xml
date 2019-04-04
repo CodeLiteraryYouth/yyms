@@ -74,7 +74,7 @@
     </if>
     order by create_time desc
   </select>
-  <select id="findPatientById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findPatientById" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     	from leanin_patient_info where patient_info_id = #{patientInfoId,jdbcType=VARCHAR}

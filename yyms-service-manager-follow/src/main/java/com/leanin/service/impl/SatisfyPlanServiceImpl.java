@@ -236,4 +236,10 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
         return ReturnFomart.retParam(200, satisfyPlanMapper.findAll(userId));
     }
 
+    @Override
+    public DataOutResponse findByWard(String patientWard) {
+        List<SatisfyPlanVo> list = satisfyPlanMapper.findByWard(patientWard);
+        return ReturnFomart.retParam(200,list);
+    }
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.SatisfyPlanMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
+  <resultMap id="Base" type="com.leanin.domain.vo.SatisfyPlanVo">
     <id column="plan_satisfy_num" jdbcType="VARCHAR" property="planSatisfyNum" />
     <result column="plan_satisfy_name" jdbcType="VARCHAR" property="planSatisfyName" />
     <result column="patient_type" jdbcType="INTEGER" property="patientType" />
@@ -25,6 +25,10 @@
     <result column="satisfy_plan_ward" jdbcType="VARCHAR" property="satisfyPlanWard" />
     <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
+  </resultMap>
+
+  <resultMap extends="Base" id="BaseResultMap" type="com.leanin.domain.vo.SatisfyPlanVo">
+
     <association property="createrName" column="plan_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
@@ -113,6 +117,15 @@
       from leanin_satisfy_plan
       where satisfy_plan_status>=0
       and discover_person = #{userId}
+    </select>
+
+
+    <select id="findByWard" resultMap="Base">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_satisfy_plan
+        where satisfy_plan_status = 0
+        and patient_ward like CONCAT('%',#{patientWard},'%')
     </select>
 
     <update id="updateSatisfyStatus">

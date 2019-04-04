@@ -94,7 +94,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataOutResponse sendMessage(List<Long> longs,Integer type,String formId) {
+	public DataOutResponse sendMessage(String[] longs,Integer type,String formId) {
 		switch (type){
 			case 1://随访
 				followPlan(longs,formId);
@@ -113,8 +113,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		return ReturnFomart.retParam(200, "发送成功");
 	}
 
-	private void  followPlan(List<Long> longs,String formId){
-		for (Long aLong : longs) {
+	private void  followPlan(String[] longs,String formId){
+		for (String Longstr : longs) {
+			long aLong = Long.parseLong(Longstr);
 			PlanPatientVo planPatient =planPatientMapper.findPlanPatientById(aLong);
 			PlanInfoVo planInfoVo = planInfoMapper.findPlanInfoById(planPatient.getPlanNum());
 
@@ -123,14 +124,14 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			String param = "";
 			if (planInfoVo.getPlanType() == 1){//随访计划
 				param = "http://192.168.0.123:8081/login#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
-				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13817165550");
+				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "18556531536");
 			}else {//宣教
 				if (formId != null){
 					param = "http://192.168.0.123:8081/login#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
 				}else {
 					param = "http://192.168.0.123:8081/login#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
 				}
-				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13817165550");
+				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13675853622");
 			}
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
@@ -146,13 +147,14 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		}
 	}
 
-	private void styPlan(List<Long> longs,String formId){
-		for (Long aLong : longs) {
+	private void styPlan(String[] longs,String formId){
+		for (String LongStr : longs) {
+			long aLong = Long.parseLong(LongStr);
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
 			String param = "http://192.168.0.123:8081/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
-			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, satisfyPatientVo.getPatientPhone());
+			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,"13675853622" /*satisfyPatientVo.getPatientPhone()*/);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				satisfyPatientVo.setSendType(2); //发送成功
@@ -166,8 +168,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		}
 	}
 
-	private void msgPlan(List<Long> longs,String formId){
-		for (Long aLong : longs) {
+	private void msgPlan(String[] longs,String formId){
+		for (String LongStr : longs) {
+			long aLong = Long.parseLong(LongStr);
 			MessagePatientVo messagePatientVo=messagePatientMapper.findById(aLong);
 			MessageTopicVo msgTopic = new MessageTopicVo();
 			if (formId != null ){
@@ -176,8 +179,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				msgTopic = messageTopicMapper.findMsgTopicById(messagePatientVo.getMsgTopicId());
 			}
 			String content =msgTopic.getMsgTopicHead()+msgTopic.getMsgContent();
-			Map map = CSMSUtils.sendMessage(content,
-					messagePatientVo.getPatientPhone());
+			Map map = CSMSUtils.sendMessage(content,"13675853622"
+					/*messagePatientVo.getPatientPhone()*/);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				messagePatientVo.setSendType(2);//发送成功

@@ -46,4 +46,21 @@ public class CheckPatientServiceImpl implements CheckPatientService {
         }
         return ReturnFomart.retParam(200,checkPatientVo);
     }
+
+    @Override
+    public DataOutResponse delByIds(String ids) {
+        String[] idList = ids.split(",");
+        for (String idstr : idList) {
+            long id = Long.parseLong(idstr);
+            CheckPatientVo patientVo = checkPatientMapper.findById(id);
+            if (patientVo == null){
+                return ReturnFomart.retParam(300,"所选信息不存在");
+            }
+            patientVo.setPatientStatus(2);//删除
+            checkPatientMapper.updateById(id);
+
+        }
+        return ReturnFomart.retParam(200,"操作成功");
+
+    }
 }

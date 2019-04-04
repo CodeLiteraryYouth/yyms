@@ -50,7 +50,7 @@ public interface PlanPatientService {
      * @param patientId
      * @return
      */
-    DataOutResponse findPlanPatientById(Long patientId,Integer patientSource,String planNum,Integer planType);
+    DataOutResponse findPlanPatientById(Long patientId,Integer patientSource,String planNum,Integer planType,Integer type);
 
     //根据计划id 查询全部患者信息
     DataOutResponse findListByPlanId(String planNum);

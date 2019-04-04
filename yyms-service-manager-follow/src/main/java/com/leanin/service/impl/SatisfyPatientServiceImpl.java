@@ -1,13 +1,16 @@
 package com.leanin.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.SatisfyInfoVo;
 import com.leanin.domain.vo.SatisfyPatientVo;
+import com.leanin.domain.vo.SatisfyPlanVo;
 import com.leanin.domain.vo.StyInfoRecordVo;
 import com.leanin.mapper.SatisfyPatientMapper;
+import com.leanin.mapper.SatisfyPlanMapper;
 import com.leanin.mapper.StyInfoRecordMapper;
 import com.leanin.service.SatisfyPatientService;
 import com.leanin.utils.UUIDUtils;
@@ -15,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SatisfyPatientServiceImpl implements SatisfyPatientService {
@@ -28,6 +28,9 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
 
     @Autowired
     StyInfoRecordMapper styInfoRecordMapper;
+
+    @Autowired
+    SatisfyPlanMapper satisfyPlanMapper;
 
     //条件查询满意度计划的 患者信息
     @Override
@@ -101,5 +104,44 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
         }
         satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
         return ReturnFomart.retParam(200,"操作成功");
+    }
+
+    @Override
+    @Transactional
+    public DataOutResponse addPatentList(List<SatisfyPatientVo> satisfyPatientVos) {
+        for (SatisfyPatientVo satisfyPatientVo : satisfyPatientVos) {
+            SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
+            SatisfyPatientVo vo = satisfyPatientMapper.findByPnumAndPid(satisfyPatientVo.getPatientId(),satisfyPatientVo.getSatisfyPlanNum());
+            if (vo != null ){
+                return ReturnFomart.retParam(3003,"计划患者已存在，请勿重复导入数据");
+            }
+            satisfyPatientVo.setFinishType(1);
+            satisfyPatientVo.setFormStatus(1);
+            satisfyPatientVo.setPatientStatus(0);
+            satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
+            satisfyPatientVo.setSendType(1);
+            satisfyPatientVo.setPatientDateTime(setDate(satisfyPlan,satisfyPatientVo.getPatientDateTime()));
+            satisfyPatientMapper.insertSelective(satisfyPatientVo);
+        }
+        return ReturnFomart.retParam(200,"操作成功");
+    }
+
+    private Date setDate(SatisfyPlanVo satisfyPlan,Date lastDate){
+        String rulesText = satisfyPlan.getRulesText();
+        Map rulesMap = JSON.parseObject(rulesText, Map.class);
+
+        String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
+        String timeNumStr = (String) rulesMap.get("timeNum");
+        int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        String timeSelect = (String) rulesMap.get("timeSelect");//1出院
+        String rangeDays = (String) rulesMap.get("rangeDays");//范围天数
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(lastDate);
+        calendar.add(Calendar.DATE, Integer.parseInt(timeNumStr));
+        calendar.set(Calendar.HOUR_OF_DAY, timeChoosed + 5);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date time = calendar.getTime();
+        return time;
     }
 }

@@ -87,4 +87,5 @@ public interface PlanPatientMapper {
 
     List<PlanPatientVo> findListByPlanNum(@Param("planNums") String[] planNums);
 
+    PlanPatientVo findByPnumAndPid(@Param("patientId") Long patientId,@Param("planNum") String planNum);
 }
