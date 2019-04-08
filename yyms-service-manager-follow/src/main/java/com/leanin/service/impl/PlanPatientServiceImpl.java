@@ -350,7 +350,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
      * @param patientName
      * @return
      */
-    @Override
+    /*@Override
     public DataOutResponse findPlanPatientList(Date startDate, Date endDate, String planNum, String patientName) {
 
         //获取登录人信息 判断是否是管理员
@@ -360,14 +360,14 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
 //        planPatientMapper.findPlanPatientList()
         return null;
-    }
+    }*/
 
     //根据patientId查询患者信息和病史
     @Override
     public DataOutResponse findPlanPatientById(Long patientId, Integer patientSource, String planNum, Integer planType, Integer type) {
         Map dataMap = new HashMap();
 //        Integer patientSource = planPatient.getPatientSource();
-        if (type == 1) {//建档
+        if (type == 1) {//查看档案
             //查询本地患者信息
             PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
             if (PatientInfoVo != null) {//
@@ -378,7 +378,13 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         } else {//随访
             dataMap = getRecord(patientId + "", patientSource, dataMap);
             PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(patientId);
-            dataMap.put("patientInfo", planPatient);
+//            PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
+//            if (PatientInfoVo != null ){
+//                dataMap.put("patientInfo", PatientInfoVo);
+//            }else {
+                dataMap.put("patientInfo", planPatient);
+//            }
+
         }
 
         if (planNum != null && !"".equals(planNum)) {

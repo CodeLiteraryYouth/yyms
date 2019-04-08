@@ -108,6 +108,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			case 4://短信主题
 				msgPlan(longs,formId);
 				break;
+			case 5://在线宣教
+				break;
 		}
 
 		return ReturnFomart.retParam(200, "发送成功");

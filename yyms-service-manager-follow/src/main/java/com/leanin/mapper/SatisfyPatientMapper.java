@@ -29,7 +29,8 @@ public interface SatisfyPatientMapper {
 
     List<SatisfyPatientVo> findList(@Param("satisfyPlanNum") String satisfyPlanNum,@Param("sendType") Integer sendType,
                                     @Param("patientWard") String patientWard, @Param("patientName") String patientName,
-                                    @Param("startDate") Date startDate,@Param("endDate") Date endDate,@Param("finishType") Integer finishType);
+                                    @Param("startDate") Date startDate,@Param("endDate") Date endDate,
+                                    @Param("finishType") Integer finishType,@Param("patientSource") Integer patientSource);
 
     void updatePatientStatus(@Param("patientSatisfyId") Long patientSatisfyId);
 

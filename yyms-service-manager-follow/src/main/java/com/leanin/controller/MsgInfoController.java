@@ -3,6 +3,7 @@ package com.leanin.controller;
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MsgInfoVo;
+import com.leanin.domain.vo.OnlineEdu;
 import com.leanin.service.MsgInfoService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
@@ -60,6 +61,16 @@ public class MsgInfoController extends BaseController {
 //		List<Long> longs = JSON.parseArray(ids, Long.class);
 		String[] idList = ids.split(",");
 		return msgInfoService.sendMessage(idList,type,formId);
+	}
+
+	//在线宣教
+	@PostMapping("sendEduMessage")
+	public DataOutResponse sendEduMessage(@RequestBody List<OnlineEdu> onlineEdus){
+		LyOauth2Util.UserJwt user = getUser(request);
+		for (OnlineEdu edus : onlineEdus) {
+			edus.setSendUser(user.getId());
+		}
+		return msgInfoService.sendEduMessage(onlineEdus);
 	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

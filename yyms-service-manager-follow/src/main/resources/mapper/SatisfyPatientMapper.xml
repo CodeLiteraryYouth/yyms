@@ -89,6 +89,9 @@
         <if test="finishType != null ">
             AND finish_type = #{finishType}
         </if>
+        <if test="patientSource != null ">
+            AND patient_type = #{patientSource}
+        </if>
     </select>
 
     <!--根据计划id 查询未完成人数-->
