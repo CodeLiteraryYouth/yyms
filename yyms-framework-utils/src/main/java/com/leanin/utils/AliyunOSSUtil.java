@@ -23,6 +23,7 @@ import java.util.UUID;
 public class AliyunOSSUtil {
 
     public static String upload(File file){
+
         log.info("=========>OSS文件上传开始："+file.getName());
         String endpoint= OssProperties.OSS_END_POINT;
         String accessKeyId=OssProperties.OSS_ACCESS_KEY_ID;

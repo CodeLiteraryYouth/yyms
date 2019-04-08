@@ -194,6 +194,13 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.leanin</groupId>
+            <artifactId>excel-util</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/excel-utils-1.0.jar</systemPath>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -214,6 +221,7 @@
                 <configuration>
                     <mainClass>com.leanin.FollowApplication</mainClass>
                     <layout>JAR</layout>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
             <!-- mybatis generator 自动生成代码插件 -->
