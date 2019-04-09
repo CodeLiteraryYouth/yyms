@@ -7,6 +7,7 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.*;
 import com.leanin.mapper.*;
+import com.leanin.repository.OnlineEduRepository;
 import com.leanin.service.MsgInfoService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
@@ -47,6 +48,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Autowired
 	MessagePatientMapper messagePatientMapper;
+
+	@Autowired
+	OnlineEduRepository onlineEduRepository;
 
 	@Override
 	public DataOutResponse findMsgListByTypeId(Integer page, Integer pageSize, Long typeId, String msgName) {
@@ -113,6 +117,32 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		}
 
 		return ReturnFomart.retParam(200, "发送成功");
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus) {
+		for (OnlineEdu edu : onlineEdus) {
+			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(edu.getMsgId());
+			if (msgInfo == null){
+				return ReturnFomart.retParam(1001,"数据不存在");
+			}
+			edu.setEduId(null);
+//			edu.setSendStatus(1);
+			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
+			String param = "http://192.168.0.123:8081/login#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
+
+			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
+			String msgStatus = (String) map.get("msg");
+			if (msgStatus.equals("true")){
+				onlineEdu.setSendStatus(2);
+			}else{
+				onlineEdu.setSendStatus(3);
+			}
+			edu.setSendTime(new Date());
+			OnlineEdu save = onlineEduRepository.save(onlineEdu);
+		}
+		return ReturnFomart.retParam(200,"操作成功");
 	}
 
 	private void  followPlan(String[] longs,String formId){

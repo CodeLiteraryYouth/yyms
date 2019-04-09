@@ -7,19 +7,21 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @ToString
 @Entity
 @Table(name = "leanin_online_edu")
-@GenericGenerator(name = "jpa-identity", strategy = "identity")
-public class OnlineEdu {
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+public class OnlineEdu implements Serializable {
 
     @Id
     @Column(name = "edu_id")
-    @GeneratedValue(generator = "jpa-identity")
-    private Long eduId;            //主键
+    @GeneratedValue(generator = "jpa-uuid")
+//    @GenericGenerator(name = "system-identity",strategy = "identity")
+    private String eduId;            //主键
 
     @Column(name = "patient_id")
     private String patientId;      //患者主键
@@ -31,7 +33,7 @@ public class OnlineEdu {
     private String formId;         //表单主键
 
     @Column(name = "form_status")
-    private String formStatus;      //完成状态 1 未完成 2 已完成
+    private Integer formStatus;      //完成状态 1 未完成 2 已完成
 
     @Column(name = "send_user")
     private Long sendUser;      //发送人主键
@@ -50,5 +52,13 @@ public class OnlineEdu {
 
     @Column(name = "send_status")
     private Integer sendStatus;     //发送状态
+
+    @Column(name = "msg_id")
+    private String msgId;     //短信主键
+
+    @Column(name = "phone_num")
+    private String phoneNum;     //短信主键
+
+
 
 }

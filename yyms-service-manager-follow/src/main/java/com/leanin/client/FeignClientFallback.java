@@ -45,8 +45,8 @@ public class FeignClientFallback implements ManagerPatientClient {
         return null;
     }
 
-    @Override
+    /*@Override
     public String findUserName(Long adminId) {
         return null;
-    }
+    }*/
 }
