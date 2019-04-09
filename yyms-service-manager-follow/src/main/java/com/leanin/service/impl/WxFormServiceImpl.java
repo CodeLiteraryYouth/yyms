@@ -36,7 +36,7 @@ public class WxFormServiceImpl implements WxFormService {
 
     @Override
     public DataOutResponse getWxForm(Integer planType, String formNum,Long planPatientId) {
-        // 1随访  2宣教  3满意度
+        // 1随访  2宣教  3满意度  4 在线宣教
         if (planType == 3 ){
             SatisfyInfoVo SatisfyInfoVo = satisfyInfoMapper.findSatisfyByIdAndStatus(formNum,1,planPatientId);
             if (SatisfyInfoVo != null){

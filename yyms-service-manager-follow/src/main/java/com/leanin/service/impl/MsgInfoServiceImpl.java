@@ -135,7 +135,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
-				onlineEdu.setSendStatus(2);
+				onlineEdu.setSendStatus(2);//已发送短信
+				onlineEdu.setFormStatus(2);//已完成阅读状态
 			}else{
 				onlineEdu.setSendStatus(3);
 			}

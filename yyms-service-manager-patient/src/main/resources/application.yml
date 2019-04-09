@@ -14,8 +14,6 @@ eureka:
 #      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
-#    ip-address: 192.168.0.122
-#    ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port} #指定实例id
 #安全配置
 #security:

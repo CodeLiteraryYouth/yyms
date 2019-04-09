@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.OnlineEduMapper">
+
+    <resultMap id="Base" type="com.leanin.domain.vo.OnlineEdu">
+        <id property="eduId" column="edu_id"/>
+        <result property="patientId" column="patient_id"/>
+        <result property="patientName" column="patient_name"/>
+        <result property="formId" column="form_id"/>
+        <result property="formStatus" column="form_status"/>
+        <result property="sendUser" column="send_user"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="bedNo" column="bed_no"/>
+        <result property="inhosNo" column="inhos_no"/>
+        <result property="inhosDate" column="inhos_date"/>
+        <result property="sendStatus" column="send_status"/>
+        <result property="msgId" column="msg_id"/>
+        <result property="phoneNum" column="phone_num"/>
+    </resultMap>
+
+    <resultMap extends="Base" id="ExtResultMap" type="com.leanin.domain.vo.OnlineEduVo">
+        <association property="adminUserVo" column="sendUser" javaType="com.leanin.domain.vo.AdminUserVo">
+            <id property="adminId" column="admin_id"/>
+            <result property="adminName" column="admin_name"/>
+            <result property="wardCode" column="admin_ward_code"/>
+        </association>
+        <association property="formInfoVo" column="formId" javaType="com.leanin.domain.vo.FormInfoVo">
+            <id property="formNum" column="form_num"/>
+            <result property="formName" column="form_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="ExtSql">
+        loe.*,lau.admin_id,lau.admin_name,lau.admin_ward_code,lfi.form_num,lfi.form_name
+    </sql>
+
+    <select id="findListByParam" resultMap="ExtResultMap">
+        select
+        <include refid="ExtSql"/>
+        from leanin_online_edu loe,leanin_admin_user lau,leanin_form_info lfi
+        where loe.send_user = lau.admin_id
+        and loe.form_id = lfi.form_num
+        and lau.admin_state = 1
+        and lfi.form_status = 0
+        <if test="patientId != null ">
+            and loe.patient_id = #{patientId}
+        </if>
+        <if test="formStatus != null ">
+            and loe.form_status = #{formStatus}
+        </if>
+        <if test="sendStatus != null ">
+            and loe.send_status = #{sendStatus}
+        </if>
+        <if test="dept != null">
+            and lau.admin_ward_code like CONCAT('%',#{dept},'%')
+        </if>
+        <if test="patientName != null ">
+            and loe.patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+        <if test="sendName != null ">
+            and lau.admin_name like CONCAT('%',#{sendName},'%')
+        </if>
+
+    </select>
+</mapper>
