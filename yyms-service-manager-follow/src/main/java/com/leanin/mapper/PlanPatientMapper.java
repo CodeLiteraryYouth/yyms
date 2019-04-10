@@ -1,10 +1,12 @@
 package com.leanin.mapper;
 
 
+import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -88,4 +90,8 @@ public interface PlanPatientMapper {
     List<PlanPatientVo> findListByPlanNum(@Param("planNums") String[] planNums);
 
     PlanPatientVo findByPnumAndPid(@Param("patientId") Long patientId,@Param("planNum") String planNum);
+
+    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") int status*/);
+
+    List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
 }

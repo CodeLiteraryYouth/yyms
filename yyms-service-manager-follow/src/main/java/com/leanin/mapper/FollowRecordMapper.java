@@ -1,10 +1,12 @@
 package com.leanin.mapper;
 
+import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.vo.FormInfoExt;
 import com.leanin.domain.vo.PlanPatientRecordVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 //随访记录表
@@ -20,4 +22,7 @@ public interface FollowRecordMapper {
     //修改患者状态
     void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
 
+    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") Integer status*/);
+
+    List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
 }
