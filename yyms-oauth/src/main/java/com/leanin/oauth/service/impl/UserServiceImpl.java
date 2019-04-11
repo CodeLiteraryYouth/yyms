@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                     userRoleVo.setRoleId(roleId);
                     userRoleVo.setCreateTime(new Date());
                     userRoleVo.setCreator(null);
-                    userRoleMapper.addUserRole(userRoleVo);
+                    userRoleMapper.insert(userRoleVo);
                 }else {
                     ExceptionCast.cast(AuthCode.ROLE_REPETITION);
                 }
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                     userRoleVo.setRoleId(roleId);
                     userRoleVo.setCreateTime(new Date());
                     userRoleVo.setCreator(null);
-                    userRoleMapper.addUserRole(userRoleVo);
+                    userRoleMapper.insert(userRoleVo);
                 }else {
 
 //                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);

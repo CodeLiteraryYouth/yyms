@@ -42,8 +42,8 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-#      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
+#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
     register-with-eureka: true
     fetch-registry: true
     registry-fetch-interval-seconds: 30

@@ -134,7 +134,6 @@ public class AudioUploadServiceImpl implements AudioUploadService {
             /*leaninAudioUpDao.setHoldingTime(timeString);*/
             leaninAudioUpDao.setCreateTime(new Date());
             leaninAudioUpDaoMapper.insert(leaninAudioUpDao);
-
           /*  //插入文件id
             leaninCallLogInfoDao.setAutioUpId(leaninAudioUpDao.getAudioUpId());
 
