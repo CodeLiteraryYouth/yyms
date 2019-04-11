@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.LeaninAudioUpDaoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.LeaninAudioUpDao">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="audio_up_id" jdbcType="BIGINT" property="audioUpId" />
+    <result column="audio_source" jdbcType="INTEGER" property="audioSource" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="format" jdbcType="VARCHAR" property="format" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="call_start_time" jdbcType="TIMESTAMP" property="callStartTime" />
+    <result column="call_end_time" jdbcType="TIMESTAMP" property="callEndTime" />
+    <result column="holding_time" jdbcType="VARCHAR" property="holdingTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    audio_up_id, audio_source, path, format, duration, create_time, call_start_time, 
+    call_end_time, holding_time
+  </sql>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.LeaninCallLogInfoDaoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.LeaninCallLogInfoDao">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="call_log_info_id" jdbcType="BIGINT" property="callLogInfoId" />
+    <result column="follow_plan_id" jdbcType="BIGINT" property="followPlanId" />
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="autio_up_id" jdbcType="BIGINT" property="autioUpId" />
+    <result column="follow_plan_name" jdbcType="VARCHAR" property="followPlanName" />
+    <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    <result column="call_type" jdbcType="INTEGER" property="callType" />
+    <result column="call_creater_id" jdbcType="BIGINT" property="callCreaterId" />
+    <result column="call_creater_name" jdbcType="VARCHAR" property="callCreaterName" />
+    <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="call_creater_number" jdbcType="VARCHAR" property="callCreaterNumber" />
+    <result column="customer_number" jdbcType="VARCHAR" property="customerNumber" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="createor_id" jdbcType="BIGINT" property="createorId" />
+    <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+  </resultMap>
+
+  <resultMap id="ResultVoMap" type="com.leanin.vo.CallLoginfoVo" extends="BaseResultMap">
+    <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="phoneTime" jdbcType="VARCHAR" property="phoneTime" />
+    <result column="holdingTime" jdbcType="VARCHAR" property="holdingTime" />
+  </resultMap>
+
+  <resultMap id="ResultDtoMap" type="com.leanin.dto.CallLogInfoDto" extends="BaseResultMap">
+    <result column="audioUpId" jdbcType="BIGINT" property="audioUpId" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="format" jdbcType="VARCHAR" property="format" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="callStartTime" jdbcType="VARCHAR" property="callStartTime" />
+    <result column="callEndTime" jdbcType="VARCHAR" property="callEndTime" />
+    <result column="holdingTime" jdbcType="VARCHAR" property="holdingTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    call_log_info_id, follow_plan_id, section_id, autio_up_id, follow_plan_name, section_name, 
+    call_type, call_creater_id, call_creater_name, customer_id, customer_name, call_creater_number, 
+    customer_number, remark, create_time, createor_id, is_delete
+  </sql>
+
+  <select id="findList" resultMap="ResultVoMap" parameterType="com.leanin.dto.query.QueryCallLogInfoDto">
+    select
+  c.autio_up_id,
+  c.call_creater_name,
+  c.call_creater_number,
+  c.call_log_info_id,
+  c.customer_id,
+  c.customer_name,
+  c.customer_number as phoneNumber,
+  c.follow_plan_id,
+  c.section_id,
+  c.section_name,
+  c.remark,
+  a.holding_time as holdingTime,
+  DATE_FORMAT(a.call_start_time ,'%Y-%m-%d %H:%i:%s') as phoneTime
+
+  from leanin_call_log_info c
+  LEFT JOIN leanin_audio_up  a on a.audio_up_id = c.autio_up_id
+
+    <if test="startTime !=null and startTime !='' ">
+      and a.call_start_time &gt;=#{startTime}
+    </if>
+    <if test="endTime !=null and  endTime !=''">
+      and a.call_start_time &lt;date_sub(#{endTime},interval -1 day)
+    </if>
+  where c.is_delete = "N"
+
+    <if test="followPlanId !=null and followPlanId !=''">
+      c.follow_plan_id = #{followPlanId}
+    </if>
+
+    <if test="sectionId !=null and sectionId !=''">
+      c.section_id = #{sectionId}
+    </if>
+
+    <if test="customerName !=null and customerName !=''">
+      c.customer_name like concat('%', #{customerName}, '%')
+    </if>
+    ORDER BY
+    c.create_time
+    desc
+  </select>
+
+  <select id="findCallLogInfoById" resultMap="ResultDtoMap">
+    select
+    c.autio_up_id,
+    c.call_creater_name,
+    c.call_creater_number,
+    c.call_log_info_id,
+    c.customer_id,
+    c.customer_name,
+    c.customer_number,
+    c.follow_plan_id,
+    c.section_id,
+    c.section_name,
+    c.remark,
+    a.duration as duration,
+    a.format as format,
+    a.holding_time as holdingTime,
+    a.path as path,
+    DATE_FORMAT(a.call_start_time ,'%Y-%m-%d %H:%i:%s') as callStartTime,
+    DATE_FORMAT(a.call_end_time ,'%Y-%m-%d %H:%i:%s') as callEndTime
+    from leanin_call_log_info c
+    LEFT JOIN leanin_audio_up  a on a.audio_up_id = c.autio_up_id
+    where c.is_delete = "N"
+    and c.call_log_info_id = #{callLogInfoId}
+  </select>
+</mapper>

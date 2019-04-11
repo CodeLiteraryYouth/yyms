@@ -21,5 +21,7 @@ public class CustomException extends RuntimeException {
         return resultCode;
     }
 
-
+    public CustomException(String msg){
+        super(msg);
+}
 }

@@ -1,6 +1,7 @@
 package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.dto.AudioUpDto;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,5 +17,5 @@ public interface AudioUploadService  {
          * 录音上传
          * @param file
          */
-        DataOutResponse uploadVoice(MultipartFile file);
+        DataOutResponse uploadVoice(MultipartFile file, AudioUpDto audioUpDto);
 }

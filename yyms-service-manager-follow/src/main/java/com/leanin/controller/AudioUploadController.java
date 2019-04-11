@@ -2,13 +2,12 @@ package com.leanin.controller;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.dto.AudioUpDto;
 import com.leanin.service.AudioUploadService;
 import com.leanin.web.BaseController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -18,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @ClassName AudioUploadController
+ * @ClassName 上传录音文件
  * @Description TODO
  * @Author 刘壮
  * @Date 2019/4/8 14:15
@@ -26,18 +25,45 @@ import java.util.Optional;
  * @Version 1.0
  */
 @RestController
-@RequestMapping(value = "uploadVoice",method = RequestMethod.POST)
+@RequestMapping("audioUpload")
 public class AudioUploadController extends BaseController{
     @Autowired
     private AudioUploadService audioUploadService;
-    public DataOutResponse uploadVoice(HttpServletRequest request,@RequestParam("file") MultipartFile file){
+
+    @RequestMapping(value = "uploadVoice",method = RequestMethod.POST)
+    public DataOutResponse uploadVoice(HttpServletRequest request,
+                                       @RequestParam("file") MultipartFile file,
+                                       @ModelAttribute AudioUpDto audioUpDto){
             try {
-                return audioUploadService.uploadVoice(file);
+
+                return audioUploadService.uploadVoice(file,audioUpDto);
             } catch (Exception e) {
-                e.printStackTrace();
+                return   ReturnFomart.retParam(404,e.getMessage());
             }
-        return   ReturnFomart.retParam(200, "无文件上传");
 
     }
-    }
+    @RequestMapping(value = "uploadVoiceget")
+    public DataOutResponse uploadVoiceget(HttpServletRequest request,
+                                       @ModelAttribute AudioUpDto audioUpDto) {
+        try {
+            CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+            if (commonsMultipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+                Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+                Optional<MultipartFile> optional = fileMap.values().stream().findFirst();
+                if (!optional.isPresent()) {
+                    return ReturnFomart.retParam(404, "无文件上传");
+                }
 
+                MultipartFile file = optional.get();
+
+                return audioUploadService.uploadVoice(file, audioUpDto);
+            }else{
+                return ReturnFomart.retParam(404, "无文件上传");
+            }
+        } catch(Exception e){
+                return ReturnFomart.retParam(404, e.getMessage());
+            }
+
+    }
+}

@@ -100,6 +100,13 @@
             <artifactId>spring-boot-starter-log4j</artifactId>
             <version>1.3.8.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
         <!-- 整合aop技术 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,10 +125,11 @@
 
         <!-- mybatis -->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.0</version>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.0.2</version>
         </dependency>
+
 
         <!-- JSON串的序列化 -->
         <dependency>
@@ -168,18 +176,20 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
             <version>2.1.0.RC3</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
             <version>2.0.1.RELEASE</version>
         </dependency>
+
+
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -194,6 +204,7 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.leanin</groupId>
             <artifactId>excel-util</artifactId>
@@ -201,6 +212,17 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/excel-utils-1.0.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.leanin</groupId>
+            <artifactId>java</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/com.jave-1.0.3.jar</systemPath>
+        </dependency>
+
+     
+
     </dependencies>
     <repositories>
         <repository>

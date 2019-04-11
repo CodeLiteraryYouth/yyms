@@ -23,7 +23,7 @@ public class MessageTopicController extends BaseController {
 	private MessageTopicService messageTopicService;
 	
 	@GetMapping("findMsgTopicList")
-	public DataOutResponse findMsgTopicList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String msgTopicName) {
+	public DataOutResponse findMsgTopicList(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, @RequestParam(value="msgTopicName",required=false) String msgTopicName) {
 		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName);
 	}
 	
@@ -41,7 +41,7 @@ public class MessageTopicController extends BaseController {
 	}
 	
 	@GetMapping("findMsgTopicById")
-	public DataOutResponse findMsgTopicById(@RequestParam String msgTopicId) {
+	public DataOutResponse findMsgTopicById(@RequestParam("msgTopicId") String msgTopicId) {
 		return messageTopicService.findMsgTopicById(msgTopicId);
 	}
 	

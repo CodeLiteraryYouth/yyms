@@ -1,8 +1,11 @@
 server:
-  port: 8088 #端口号
+  port: 8056 #端口号
 spring:
   application:
     name: yyms-service-manager-follow
+  http:
+    multipart:
+      enabled: true
 #  servlet:
 #    context-path: /follow
   redis:
@@ -23,7 +26,7 @@ spring:
     virtual-host: /
   datasource: #数据源
     druid:
-      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://localhost:3306/leanin_follow?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver

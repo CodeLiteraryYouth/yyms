@@ -41,6 +41,6 @@ public interface ManagerPatientClient {
 
 
     @GetMapping("/user/findUserName")
-    public String findUserName(@RequestParam Long adminId);
+    public String findUserName(@RequestParam("adminId") Long adminId);
 
 }
