@@ -74,9 +74,10 @@ public class WorkJob {
                 }else{
                     messagePatientVo.setSendType(3);//发送失败
                 }
-                messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
-                msgRecordMapper.addMsgRecord(new MessageRecord(null,messageTopicVo.getMsgTopicCreater(),messageTopicVo.getMsgTopicCreaterWard(),
-                        new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),messageTopicVo.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId()));
+                messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
+                msgRecordMapper.addMsgRecord(new MessageRecord(null,0l,messageTopicVo.getMsgTopicCreaterWard(),
+                        new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),messageTopicVo.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),messagePatientVo.getPatientId()+"",
+                        messageTopicVo.getMsgTopicId(),messageTopicVo.getMsgTopicId()));
             }
 
         }
@@ -145,8 +146,9 @@ public class WorkJob {
         } else {
             patientDto.setSendType(3); //发送失败
         }
-        msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfo.getPlanDutyPer(),planInfo.getPlanWardCode(),new Date(),
-                patientDto.getPatientPhone(),msg,patientDto.getSendType(),null,planInfo.getPlanType(),patientDto.getPatientPlanId()));
+        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l,planInfo.getPlanWardCode(),new Date(),
+                patientDto.getPatientPhone(),msg,patientDto.getSendType(),null,planInfo.getPlanType(),patientDto.getPatientPlanId(),
+                patientDto.getPatientId()+"",patientDto.getFormId(),patientDto.getPlanNum()));
         planPatientMapper.updatePlanPatient(patientDto);
     }
 
@@ -204,8 +206,9 @@ public class WorkJob {
                         }else{
                             satisfyPatientVo.setSendType(3); //发送失败
                         }
-                        msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlanVo.getDiscoverPerson(),satisfyPlanVo.getSatisfyPlanWard(),new Date(),
-                                satisfyPatientVo.getPatientPhone(),msgText,satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId()));
+                        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l,satisfyPlanVo.getSatisfyPlanWard(),new Date(),
+                                satisfyPatientVo.getPatientPhone(),msgText,satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
+                                satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPlanVo.getPlanSatisfyName()));
                     }
                 }
                 satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);

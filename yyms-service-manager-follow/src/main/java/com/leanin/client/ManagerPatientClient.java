@@ -40,7 +40,7 @@ public interface ManagerPatientClient {
     public List<Map> findOutHosRecordById(@RequestParam(value = "patientId",required = true) String patientId);
 
 
-    @GetMapping("/user/findUserName")
-    public String findUserName(@RequestParam("adminId") Long adminId);
+    /*@GetMapping("/user/findUserName")
+    public String findUserName(@RequestParam Long adminId);*/
 
 }

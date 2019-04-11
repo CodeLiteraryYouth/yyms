@@ -39,6 +39,7 @@ public class ReturnFomart {
         messageMap.put("1015", "用户信息失效，请重新获取");
 
         messageMap.put("2010", "缺少参数或值为空");
+        messageMap.put("2011", "数据不存在");
         messageMap.put("2029", "参数不合法");
         messageMap.put("2020", "无效的Token");
         messageMap.put("2021", "无操作权限");

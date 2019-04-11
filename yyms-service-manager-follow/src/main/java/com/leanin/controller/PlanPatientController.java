@@ -68,10 +68,10 @@ public class PlanPatientController extends BaseController {
      * 我的随访
      * @return
      */
-    @GetMapping("findPlanPatientList")
+    /*@GetMapping("findPlanPatientList")
     public DataOutResponse findPlanPatientList(Date startDate,Date endDate,String planNum,String patientName){
         return planPatientService.findPlanPatientList(startDate,endDate,planNum,patientName);
-    }
+    }*/
 
     /**
      * 根据患者id查询患者信息 和病史

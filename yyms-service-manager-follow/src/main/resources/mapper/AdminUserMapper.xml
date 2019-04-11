@@ -22,7 +22,7 @@
     admin_desc, admin_phone, area_code, admin_id_card,admin_sex,admin_birthday,organ_attri,
     remark
   </sql>
-  <select id="findUserinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <!--<select id="findUserinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select 
   	<include refid="Base_Column_List"></include>
   	from leanin_admin_user where admin_state>=0 
@@ -94,5 +94,5 @@
     update leanin_admin_user
     set admin_state = -1
     where admin_id = #{adminId,jdbcType=BIGINT}
-  </update>
+  </update>-->
 </mapper>

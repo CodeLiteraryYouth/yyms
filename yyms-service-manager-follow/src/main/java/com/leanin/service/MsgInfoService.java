@@ -3,6 +3,7 @@ package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MsgInfoVo;
+import com.leanin.domain.vo.OnlineEdu;
 
 import java.util.List;
 
@@ -45,4 +46,6 @@ public interface MsgInfoService {
 
 	//手动发送短信
     DataOutResponse sendMessage(String[] longs,Integer type,String formId);
+
+    DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus);
 }

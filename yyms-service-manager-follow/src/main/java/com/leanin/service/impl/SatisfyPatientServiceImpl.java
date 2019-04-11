@@ -34,7 +34,9 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
 
     //条件查询满意度计划的 患者信息
     @Override
-    public DataOutResponse findList(Integer currentPage, Integer pageSize, String satisfyPlanNum, Integer sendType, String patientWard, String patientName, Date startDate, Date endDate, Integer finishType) {
+    public DataOutResponse findList(Integer currentPage, Integer pageSize, String satisfyPlanNum, Integer sendType,
+                                    String patientWard, String patientName, Date startDate, Date endDate,
+                                    Integer finishType,Integer patientSource) {
         if (currentPage == null || currentPage <=0){//当前页
             currentPage=1;
         }
@@ -58,7 +60,8 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
 //        }
 
         PageHelper.startPage(currentPage,pageSize);
-        Page<SatisfyPatientVo> page = (Page<SatisfyPatientVo>) satisfyPatientMapper.findList(satisfyPlanNum,sendType,patientWard,patientName,startDate,endDate,finishType);
+        Page<SatisfyPatientVo> page = (Page<SatisfyPatientVo>) satisfyPatientMapper.findList(satisfyPlanNum,sendType,patientWard,
+                patientName,startDate,endDate,finishType,patientSource);
 
         //封装参数
         Map dataMap =new HashMap();

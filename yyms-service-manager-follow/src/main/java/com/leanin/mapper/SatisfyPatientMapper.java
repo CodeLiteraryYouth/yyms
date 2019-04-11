@@ -1,6 +1,7 @@
 package com.leanin.mapper;
 
 
+import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.domain.vo.SatisfyPatientVo;
@@ -29,7 +30,8 @@ public interface SatisfyPatientMapper {
 
     List<SatisfyPatientVo> findList(@Param("satisfyPlanNum") String satisfyPlanNum,@Param("sendType") Integer sendType,
                                     @Param("patientWard") String patientWard, @Param("patientName") String patientName,
-                                    @Param("startDate") Date startDate,@Param("endDate") Date endDate,@Param("finishType") Integer finishType);
+                                    @Param("startDate") Date startDate,@Param("endDate") Date endDate,
+                                    @Param("finishType") Integer finishType,@Param("patientSource") Integer patientSource);
 
     void updatePatientStatus(@Param("patientSatisfyId") Long patientSatisfyId);
 
@@ -40,4 +42,8 @@ public interface SatisfyPatientMapper {
     List<SatisfyPatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
 
     SatisfyPatientVo findByPnumAndPid(@Param("patientId") Long patientId,@Param("satisfyPlanNum") String satisfyPlanNum);
+
+    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+
+    List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
 }

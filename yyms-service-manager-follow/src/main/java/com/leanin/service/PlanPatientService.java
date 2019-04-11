@@ -43,7 +43,7 @@ public interface PlanPatientService {
      * @param patientName
      * @return
      */
-    DataOutResponse findPlanPatientList(Date startDate, Date endDate, String planNum, String patientName);
+//    DataOutResponse findPlanPatientList(Date startDate, Date endDate, String planNum, String patientName);
 
     /**
      * 根据patientId查询患者信息和病史

@@ -54,6 +54,13 @@
         <result column="opend_id" property="opendId"></result>
         <result column="form_id" property="formId"></result>
     </resultMap>
+
+    <resultMap id="CountMap" type="com.leanin.domain.common.AnalysisVo">
+        <result property="status" column="plan_pats_status"/>
+        <result property="count" column="c"/>
+        <result property="month" column="m"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
     patient_age, patient_phone,patient_ward,form_status, patient_status, patient_condition,
@@ -392,6 +399,51 @@
         WHERE patient_id=#{patientId}
         AND plan_num = #{planNum}
         AND patient_status = 1
+    </select>
+
+    <select id="findCountByParam" resultMap="CountMap">
+        select count(*) c,lpp.plan_pats_status
+        from leanin_plan_patient lpp,leanin_plan_info lpi
+        where lpp.patient_status = 1
+        and lpp.plan_num = lpi.plan_num
+        and lpi.plan_status =0
+        and lpi.plan_type =1
+        <!--<if test="status != null">
+            and plan_pats_status = #{status}
+        </if>-->
+        <if test="planNum != null">
+            and lpp.plan_num = #{planNum}
+        </if>
+        <if test="patientSource != null">
+            and lpp.patient_source = #{patientSource}
+        </if>
+        <if test="dept != null">
+            and lpp.patient_ward like CONCAT('%',#{dept},'%')
+        </if>
+        <if test="startDate != null">
+            and lpp.next_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and lpp.next_date &lt;= #{endDate}
+        </if>
+        group by lpp.plan_pats_status
+        order by lpp.plan_pats_status
+    </select>
+    <select id="findUserCount" resultMap="CountMap">
+        SELECT
+        COUNT(lpp.plan_pats_status) c,MONTH(lpp.next_date) m,lpp.plan_pats_status
+        FROM
+          leanin_plan_patient lpp
+        WHERE YEAR(lpp.next_date) = #{time}
+        and lpp.plan_num in (
+            select lpi.plan_num
+            from leanin_plan_info lpi
+            where lpi.plan_duty_per = #{userId}
+            and lpi.plan_status = 0
+            and lpi.plan_type =1
+        )
+        GROUP BY lpp.plan_pats_status,MONTH(lpp.next_date)
+        ORDER BY MONTH(lpp.next_date) ASC
     </select>
 
 

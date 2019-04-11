@@ -67,6 +67,13 @@ public class SatisfyPlanController extends BaseController {
 		return satisfyPlanService.findByWard(patientWard);
 	}
 
+	//根据满意度状态查询满意度计划
+	/*@GetMapping("findListByParam")
+	public DataOutResponse findListByParam(String startDate,String endDate,Integer patientSource,String planNum){
+
+	}*/
+
+
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();
 		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);

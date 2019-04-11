@@ -1,7 +1,6 @@
 package com.leanin.mapper;
 
 import com.leanin.domain.vo.MessageRecord;
-import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

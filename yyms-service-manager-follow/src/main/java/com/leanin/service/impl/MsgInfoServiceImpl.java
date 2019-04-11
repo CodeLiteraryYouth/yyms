@@ -7,6 +7,7 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.*;
 import com.leanin.mapper.*;
+import com.leanin.repository.OnlineEduRepository;
 import com.leanin.service.MsgInfoService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
@@ -47,6 +48,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Autowired
 	MessagePatientMapper messagePatientMapper;
+
+	@Autowired
+	OnlineEduRepository onlineEduRepository;
 
 	@Override
 	public DataOutResponse findMsgListByTypeId(Integer page, Integer pageSize, Long typeId, String msgName) {
@@ -108,9 +112,38 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			case 4://短信主题
 				msgPlan(longs,formId);
 				break;
+			case 5://在线宣教
+				break;
 		}
 
 		return ReturnFomart.retParam(200, "发送成功");
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus) {
+		for (OnlineEdu edu : onlineEdus) {
+			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(edu.getMsgId());
+			if (msgInfo == null){
+				return ReturnFomart.retParam(1001,"数据不存在");
+			}
+			edu.setEduId(null);
+//			edu.setSendStatus(1);
+			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
+			String param = "http://192.168.0.123:8081/login#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
+
+			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
+			String msgStatus = (String) map.get("msg");
+			if (msgStatus.equals("true")){
+				onlineEdu.setSendStatus(2);//已发送短信
+				onlineEdu.setFormStatus(2);//已完成阅读状态
+			}else{
+				onlineEdu.setSendStatus(3);
+			}
+			edu.setSendTime(new Date());
+			OnlineEdu save = onlineEduRepository.save(onlineEdu);
+		}
+		return ReturnFomart.retParam(200,"操作成功");
 	}
 
 	private void  followPlan(String[] longs,String formId){
@@ -143,7 +176,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			planPatientMapper.updatePlanPatient(planPatient);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
-					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId()));
+					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
+					planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 		}
 	}
 
@@ -164,7 +198,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
-					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId()));
+					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
+					satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 		}
 	}
 
@@ -189,7 +224,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
-					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId()));
+					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
+					messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 		}
 	}
 

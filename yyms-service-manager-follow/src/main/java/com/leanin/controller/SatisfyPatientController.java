@@ -28,7 +28,8 @@ public class SatisfyPatientController extends BaseController {
     @GetMapping("/findList")
     public DataOutResponse findList( Integer currentPage,  Integer pageSize, String satisfyPlanNum,
                                      Integer sendType,  String patientWard, Integer finishType,
-                                     String patientName,  String startDateStr,  String endDateStr) {
+                                     String patientName,  String startDateStr,  String endDateStr,
+                                     Integer patientSource) {
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
         Date startDate =null;
         Date endDate =null;
@@ -47,7 +48,7 @@ public class SatisfyPatientController extends BaseController {
             }
         }
 
-        return satisfyPatientService.findList(currentPage,pageSize,satisfyPlanNum,sendType,patientWard,patientName,startDate,endDate,finishType);
+        return satisfyPatientService.findList(currentPage,pageSize,satisfyPlanNum,sendType,patientWard,patientName,startDate,endDate,finishType,patientSource);
     }
 
     /**
