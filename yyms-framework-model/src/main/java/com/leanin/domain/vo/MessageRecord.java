@@ -14,7 +14,7 @@ import java.util.Date;
 public class MessageRecord {
 
     private Long msgSendId;         //主键
-    private Long msgSendName;     //发送人
+    private Long msgSendName;       //发送人
     private String msgSendWard;     //发送科室
     private Date msgSendDate;       //发送时间
     private String msgSendNum;      //被发送人手机号
@@ -22,6 +22,9 @@ public class MessageRecord {
     private Integer msgSendStatus;  //发送状态
     private String msgThem;         //短信主题
     private Integer planType;       //计划类型
-    private Long patientId;         //患者唯一标记
+    private Long planPatientId;     //计划患者id
+    private String patientId;       //患者唯一标记
+    private String formId;          //表单id
+    private String planNum;         //计划号
 
 }

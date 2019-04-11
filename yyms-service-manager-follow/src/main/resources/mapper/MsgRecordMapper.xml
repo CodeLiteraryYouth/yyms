@@ -2,18 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.MsgRecordMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessageRecord">
-        <id column="msg_send_id" jdbcType="BIGINT" property="msgSendId" />
-        <result column="msg_send_name" jdbcType="BIGINT" property="msgSendName" />
-        <result column="msg_send_ward" jdbcType="VARCHAR" property="msgSendWard" />
-        <result column="msg_send_date" jdbcType="TIMESTAMP" property="msgSendDate" />
-        <result column="msg_send_num" jdbcType="VARCHAR" property="msgSendNum" />
-        <result column="msg_text" jdbcType="LONGVARCHAR" property="msgText" />
-        <result column="msg_send_status" jdbcType="INTEGER" property="msgSendStatus" />
-        <result column="patient_id" jdbcType="BIGINT" property="patientId" />
+        <id column="msg_send_id"  property="msgSendId" />
+        <result column="msg_send_name"  property="msgSendName" />
+        <result column="msg_send_ward"  property="msgSendWard" />
+        <result column="msg_send_date"  property="msgSendDate" />
+        <result column="msg_send_num"  property="msgSendNum" />
+        <result column="msg_text"  property="msgText" />
+        <result column="msg_send_status"  property="msgSendStatus" />
+        <result column="msg_them"  property="msgThem" />
+        <result column="plan_type"  property="planType" />
+        <result column="patient_id"  property="patientId" />
+        <result column="plan_patient_id"  property="planPatientId" />
+        <result column="form_id"  property="formId" />
+        <result column="plan_num"  property="planNum" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status,patient_id
+        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status
+        plan_patient_id,patient_id,form_id,plan_num
     </sql>
 
     <insert id="addMsgRecord">
@@ -43,8 +49,17 @@
             <if test="messageRecord.planType != null">
                 plan_type,
             </if>
+            <if test="messageRecord.planPatientId != null">
+                plan_patient_id,
+            </if>
             <if test="messageRecord.patientId != null">
                 patient_id,
+            </if>
+            <if test="messageRecord.formId != null">
+                form_id,
+            </if>
+            <if test="messageRecord.planNum != null">
+                plan_num,
             </if>
         </trim>
         <trim prefix=" value(" suffix=" )" suffixOverrides=",">
@@ -72,8 +87,17 @@
             <if test="messageRecord.planType != null">
                 #{messageRecord.planType},
             </if>
+            <if test="messageRecord.planPatientId != null">
+                #{messageRecord.planPatientId},
+            </if>
             <if test="messageRecord.patientId != null">
                 #{messageRecord.patientId},
+            </if>
+            <if test="messageRecord.formId != null">
+                #{messageRecord.formId},
+            </if>
+            <if test="messageRecord.planNum != null">
+                #{messageRecord.planNum},
             </if>
         </trim>
     </insert>

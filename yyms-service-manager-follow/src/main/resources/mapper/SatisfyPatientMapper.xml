@@ -50,12 +50,19 @@
         <result column="form_status" property="formStatus"/>
         <result column="form_id" property="formId"/>
     </resultMap>
+
+    <resultMap id="CountMap" type="com.leanin.domain.common.AnalysisVo">
+        <result property="month" column="m"/>
+        <result property="count" column="c"/>
+        <result property="status" column="finish_type"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
-    patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
-    patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
-    patient_condition, patient_diagous, patient_type, patient_status,
-    area_code,id_card,inhos_no,form_status,suggess,form_id
-  </sql>
+        patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
+        patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
+        patient_condition, patient_diagous, patient_type, patient_status,
+        area_code,id_card,inhos_no,form_status,suggess,form_id
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -387,5 +394,54 @@
         where satisfy_plan_num = #{satisfyPlanNum}
         and patient_id = #{patientId}
         and patient_status = 0
+    </select>
+
+    <select id="findCountByParam" resultMap="CountMap">
+        SELECT
+          COUNT(lsp.`patient_satisfy_id`) c,
+          lsp.`finish_type`
+        FROM
+          `leanin_satisfy_patient` lsp,
+          `leanin_satisfy_plan` lspl
+        WHERE lsp.patient_status = 0
+          AND lsp.`satisfy_plan_num` = lspl.`plan_satisfy_num`
+          and lspl.satisfy_plan_status = 0
+          <if test="patientSource != null">
+              and lsp.patient_type = #{patientSource}
+          </if>
+          <if test="planNum != null">
+              and lsp.satisfy_plan_num = #{planNum}
+          </if>
+          <if test="dept != null">
+              and lsp.patient_ward like CONCAT('%',#{dept},'%')
+          </if>
+          <if test="startDate != null">
+              and lsp.patient_date_time &gt;= #{startDate}
+          </if>
+          <if test="endDate != null">
+              and lsp.patient_date_time &lt;= #{endDate}
+          </if>
+        GROUP BY lsp.`finish_type`
+        ORDER BY lsp.`finish_type`
+    </select>
+    <select id="findUserCount" resultMap="CountMap">
+        SELECT
+          COUNT(lsp.`patient_satisfy_id`) c,
+          MONTH(lsp.`patient_date_time`) m,
+          lsp.`finish_type`
+        FROM
+          `leanin_satisfy_patient` lsp
+        WHERE lsp.`patient_status` = 0
+          AND YEAR(lsp.`patient_date_time`) = #{time}
+          AND lsp.`satisfy_plan_num` IN
+          (SELECT
+            lspl.`plan_satisfy_num`
+          FROM
+            `leanin_satisfy_plan` lspl
+          WHERE lspl.`satisfy_plan_status` = 0
+            AND lspl.`discover_person` = #{userId})
+        GROUP BY lsp.`finish_type`,
+          MONTH(lsp.`patient_date_time`)
+        ORDER BY lsp.`finish_type`
     </select>
 </mapper>

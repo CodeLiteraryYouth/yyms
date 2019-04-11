@@ -176,7 +176,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			planPatientMapper.updatePlanPatient(planPatient);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
-					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId()));
+					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
+					planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 		}
 	}
 
@@ -197,7 +198,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
-					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId()));
+					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
+					satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 		}
 	}
 
@@ -222,7 +224,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			}
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
-					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId()));
+					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
+					messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 		}
 	}
 
