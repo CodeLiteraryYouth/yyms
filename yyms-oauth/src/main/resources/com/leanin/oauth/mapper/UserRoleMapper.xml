@@ -14,7 +14,15 @@
         id,user_id,role_id,create_time,creator
     </sql>
 
-    <!--<insert id="addUserRole">
+    <delete id="deleteByUidAndRid">
+        DELETE
+        FROM
+          `leanin_user_role`
+        WHERE user_id = #{adminId}
+          AND role_id = #{roleId}
+    </delete>
+
+    <insert id="addUserRole">
         INSERT INTO leanin_user_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userRoleVo.userId  != null">
@@ -44,7 +52,7 @@
                 #{userRoleVo.creator},
             </if>
         </trim>
-    </insert>-->
+    </insert>
 
     <select id="findByUidAndRid" resultMap="Base_Result_Map">
         SELECT

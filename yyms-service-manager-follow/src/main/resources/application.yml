@@ -1,5 +1,5 @@
 server:
-  port: 8056 #端口号
+  port: 8088 #端口号
 spring:
   application:
     name: yyms-service-manager-follow
@@ -26,7 +26,7 @@ spring:
     virtual-host: /
   datasource: #数据源
     druid:
-      url: jdbc:mysql://localhost:3306/leanin_follow?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
+      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver
@@ -42,8 +42,8 @@ spring:
 eureka:
   client:
     service-url:
-#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
+      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+#      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
     register-with-eureka: true
     fetch-registry: true
     registry-fetch-interval-seconds: 30

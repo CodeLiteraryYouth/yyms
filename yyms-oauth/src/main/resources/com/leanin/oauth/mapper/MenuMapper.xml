@@ -37,5 +37,18 @@
         )
 
     </select>
+    <select id="findByRoleId" resultMap="Base_Result_Map">
+        SELECT
+          <include refid="Base_Sql"/>
+        FROM
+          `leanin_menu_permissions` lmp
+        WHERE lmp.`menu_is_delete` = 1
+          AND lmp.`id` IN
+          (SELECT
+            lrm.`menu_id`
+          FROM
+            `leanin_role_menu_permission` lrm
+          WHERE lrm.`role_id` = #{roleId})
+    </select>
 
 </mapper>

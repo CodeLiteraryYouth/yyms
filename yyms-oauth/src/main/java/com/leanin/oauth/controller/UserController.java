@@ -4,6 +4,8 @@ import com.leanin.api.auth.UserControllerApi;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
 import com.leanin.oauth.service.UserService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class UserController implements UserControllerApi{
+public class UserController extends BaseController implements UserControllerApi{
 
     @Autowired
     UserService userService;
@@ -21,7 +23,7 @@ public class UserController implements UserControllerApi{
     @Override
     @PostMapping("/addUser")
     public DataOutResponse addUser(@RequestBody AdminUserVo adminUserVo) {
-        return userService.addUser(adminUserVo);
+        return userService.addUser(adminUserVo,request);
     }
 
     @Override
@@ -33,7 +35,7 @@ public class UserController implements UserControllerApi{
     @Override
     @PutMapping("/updateUser")
     public DataOutResponse updateUser(@RequestBody AdminUserVo adminUserVo) {
-        return userService.updateUser(adminUserVo);
+        return userService.updateUser(adminUserVo,request);
     }
 
     @Override
@@ -60,6 +62,8 @@ public class UserController implements UserControllerApi{
     public String findUserName(Long adminId) {
         return userService.findUserName(adminId);
     }
+
+
 
 
 }

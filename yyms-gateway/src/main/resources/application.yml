@@ -18,7 +18,7 @@ spring:
 zuul:
   host:
     connect-timeout-millis: 60000
-    socket-timeout-millis: 6000
+    socket-timeout-millis: 60000
   routes:
     yyms-service-manager-follow:
       path: /follow/**
@@ -40,8 +40,8 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
+      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+#      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
   instance:
     prefer-ip-address:  true
     instance-id: ${spring.application.name}:${server.port}
@@ -51,5 +51,10 @@ ribbon:
   OkToRetryOnAllOperations: false
   ConnectTimeout: 60000
   ReadTimeout: 60000
-  eureka:
-    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 60000

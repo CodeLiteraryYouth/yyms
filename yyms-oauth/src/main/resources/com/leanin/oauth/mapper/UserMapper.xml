@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.oauth.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.leanin.domain.dao.UserDao">
+        <id property="adminId" column="admin_id"/>
+        <result property="adminName" column="admin_name"/>
+        <result property="workNum" column="admin_work_num"/>
+        <result property="password" column="admin_password"/>
+        <result property="wardCode" column="admin_ward_code"/>
+        <result property="jobTitle" column="admin_job_title"/>
+        <result property="adminDesc" column="admin_desc"/>
+        <result property="phone" column="admin_phone"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="idCard" column="admin_id_card"/>
+        <result property="sex" column="admin_sex"/>
+        <result property="birthday" column="admin_birthday"/>
+        <result property="organAscri" column="organ_attri"/>
+        <result property="remark" column="remark"/>
+        <result property="adminState" column="admin_state"/>
+        <result property="hospitalName" column="hospital_name"/>
+        <result property="userType" column="user_type"/>
+    </resultMap>
 
     <!--关联查询   关联角色 和 权限-->
     <resultMap id="DTO_Result_Map" type="com.leanin.domain.dto.AdminUserDto">
@@ -239,10 +258,18 @@
         from leanin_admin_user
         where admin_id =#{adminId}
     </select>
+
     <select id="findAllUser" resultMap="VO_Result_Map">
         select
         <include refid="Base_Sql"/>
         from leanin_admin_user
         where admin_state = 1
+    </select>
+
+    <select id="findUserDtoId" resultMap="DTO_Result_Map">
+        SELECT
+        <include refid="Base_Sql"/>
+        FROM leanin_admin_user
+        WHERE admin_id = #{adminUserId} and admin_state != 2
     </select>
 </mapper>

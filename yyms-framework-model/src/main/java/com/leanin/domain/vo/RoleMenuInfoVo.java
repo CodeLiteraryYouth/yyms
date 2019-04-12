@@ -15,6 +15,7 @@ import java.util.Date;
  */
 @Data
 @ToString
+@Entity
 @Table(name = "leanin_role_menu_permission")
 public class RoleMenuInfoVo {
 

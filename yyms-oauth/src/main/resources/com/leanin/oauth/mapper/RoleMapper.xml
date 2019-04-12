@@ -13,9 +13,25 @@
         <result property="hospitalAreaCode" column="hospital_area_code"></result>
     </resultMap>
 
+    <resultMap extends="Base_Result_Map" id="Role_Menu_Result" type="com.leanin.domain.response.RoleInfoReP">
+        <collection property="menus" column="roleId" ofType="com.leanin.domain.vo.MenuPermissionVo"
+                    select="com.leanin.oauth.mapper.MenuMapper.findByRoleId">
+        </collection>
+    </resultMap>
+
+
     <sql id="Base_Sql">
         role_id,role_name,role_desc,role_create_time,role_creater,role_status,role_remark,hospital_area_code
     </sql>
+
+    <!--<insert id="addRole">
+        insert into leanin_role
+        <trim prefix="( " suffix=" )" suffixOverrides=",">
+            <if test="roleInfoVo">
+
+            </if>
+        </trim>
+    </insert>-->
 
     <select id="findRoleListByUserId" resultMap="Base_Result_Map">
         SELECT
@@ -27,4 +43,13 @@
             WHERE ur.user_id = #{userId}
         )
     </select>
+    <select id="findRoleId" resultMap="Role_Menu_Result">
+        select
+        <include refid="Base_Sql"/>
+        from leanin_role
+        where role_id =#{roleId}
+        and role_status =1
+    </select>
+
+
 </mapper>
