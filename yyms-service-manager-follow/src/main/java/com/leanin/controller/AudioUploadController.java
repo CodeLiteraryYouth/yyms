@@ -7,6 +7,7 @@ import com.leanin.service.AudioUploadService;
 import com.leanin.web.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,6 +31,7 @@ public class AudioUploadController extends BaseController{
     @Autowired
     private AudioUploadService audioUploadService;
 
+    @PreAuthorize("hasAnyAuthority('root','phone')")
     @RequestMapping(value = "uploadVoice",method = RequestMethod.POST)
     public DataOutResponse uploadVoice(HttpServletRequest request,
                                        @RequestParam("file") MultipartFile file,
@@ -42,6 +44,8 @@ public class AudioUploadController extends BaseController{
             }
 
     }
+
+    @PreAuthorize("hasAnyAuthority('root','phone')")
     @RequestMapping(value = "uploadVoiceget")
     public DataOutResponse uploadVoiceget(HttpServletRequest request,
                                        @ModelAttribute AudioUpDto audioUpDto) {

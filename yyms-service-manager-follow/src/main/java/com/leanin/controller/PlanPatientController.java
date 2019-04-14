@@ -8,6 +8,7 @@ import com.leanin.service.PlanPatientService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class PlanPatientController extends BaseController {
      * @param pageSize
      * @return
      */
+    @PreAuthorize("hasAnyAuthority('root','root1')")
     @GetMapping("findPlanPatientListByPlanId")
     public DataOutResponse findPlanPatientListByPlanId(@RequestParam(required=false) String planNum, @RequestParam(required=false) Integer planPatsStatus,
                                                        @RequestParam(required=false) Integer currentPage, @RequestParam(required=false) Integer pageSize,
@@ -37,6 +39,7 @@ public class PlanPatientController extends BaseController {
     }
 
     //根据planId查询计划患者信息  全部查询 供其他模块调用
+//    @PreAuthorize("hasAuthority('root')")
     @GetMapping("findListByPlanId")
     public DataOutResponse findListByPlanId(@RequestParam(required=true) String planNum){
         return planPatientService.findListByPlanId(planNum);
@@ -82,9 +85,6 @@ public class PlanPatientController extends BaseController {
     public DataOutResponse findPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource,String planNum,Integer planType,@RequestParam Integer type){
         return planPatientService.findPlanPatientById(patientId,patientSource,planNum,planType,type);
     }
-
-
-
 
 
     @PostMapping("updatePatById")

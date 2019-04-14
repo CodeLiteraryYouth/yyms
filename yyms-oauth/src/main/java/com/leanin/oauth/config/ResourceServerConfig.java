@@ -1,4 +1,4 @@
-package com.leanin.config;
+package com.leanin.oauth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

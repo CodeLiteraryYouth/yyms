@@ -1,11 +1,13 @@
 package com.leanin.oauth.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leanin.domain.request.RoleInfoVoReq;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.response.RoleInfoReP;
+import com.leanin.domain.vo.MenuPermissionVo;
 import com.leanin.domain.vo.RoleInfoVo;
 import com.leanin.domain.vo.RoleMenuInfoVo;
 import com.leanin.oauth.mapper.RoleMapper;
@@ -21,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -81,7 +86,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updateRole(RoleInfoVoReq roleInfoVoReq) {
-//        RoleInfoVo role = roleInfoRepository.findByRoleIdAndAndRoleStatus(roleInfoVo.getRoleId(), 1);
         RoleInfoReP roleInfoReP = roleMapper.findRoleId(roleInfoVoReq.getRoleId());
         if (roleInfoReP == null){
             log.error("角色不存在{}",JSON.toJSONString(roleInfoVoReq));
@@ -91,8 +95,23 @@ public class RoleServiceImpl implements RoleService {
         BeanUtils.copyProperties(roleInfoVoReq,roleInfoVo);
         RoleInfoVo save = roleInfoRepository.save(roleInfoVo);
 
-        for (Long menuId : roleInfoVoReq.getMenuIds()) {
-
+        List<Long> menuIds = roleInfoVoReq.getMenuIds();//修改角色后绑定的权限id
+        for (Long menuId : menuIds) {
+            RoleMenuInfoVo roleMenuInfoVo = roleMenuRepository.findByRoleIdAndPermissionId(roleInfoReP.getRoleId(), menuId);
+            if (roleMenuInfoVo == null){
+                roleMenuInfoVo = new RoleMenuInfoVo();
+                roleMenuInfoVo.setId(null);
+                roleMenuInfoVo.setRoleId(roleInfoReP.getRoleId());
+                roleMenuInfoVo.setPermissionId(menuId);
+                roleMenuInfoVo.setCreateTime(new Date());
+                roleMenuRepository.save(roleMenuInfoVo);
+            }
+        }
+        for (MenuPermissionVo menu : roleInfoReP.getMenus()) {
+            //遍历原角色绑定的权限
+            if (!menuIds.contains(menu.getId())){
+                    roleMenuRepository.deleteByRoleIdAndAndPermissionId(roleInfoReP.getRoleId(),menu.getId());
+            }
         }
         log.info("修改成功:{}",JSON.toJSONString(save));
         return ReturnFomart.retParam(200,save);
@@ -100,8 +119,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public DataOutResponse findRoleById(Long roleId) {
-        RoleInfoVo roleInfoVo = roleInfoRepository.findByRoleIdAndAndRoleStatus(roleId, 1);
-        return ReturnFomart.retParam(200,roleInfoVo);
+        RoleInfoReP roleInfoReP = roleMapper.findRoleId(roleId);
+        return ReturnFomart.retParam(200,roleInfoReP);
     }
 
     @Override
@@ -113,8 +132,12 @@ public class RoleServiceImpl implements RoleService {
             pageSize = 10;
         }
         PageHelper.startPage(currentPage,pageSize);
-//        roleInfoRepository
-        return null;
+        Page<RoleInfoReP> page = (Page<RoleInfoReP>) roleMapper.findByRoleName(roleName);
+
+        Map resultMap =new HashMap();
+        resultMap.put("totalCount",page.getTotal());
+        resultMap.put("list",page.getResult());
+        return ReturnFomart.retParam(200,resultMap);
     }
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest request){

@@ -14,7 +14,7 @@
     </resultMap>
 
     <resultMap extends="Base_Result_Map" id="Role_Menu_Result" type="com.leanin.domain.response.RoleInfoReP">
-        <collection property="menus" column="roleId" ofType="com.leanin.domain.vo.MenuPermissionVo"
+        <collection property="menus" column="role_id" ofType="com.leanin.domain.vo.MenuPermissionVo"
                     select="com.leanin.oauth.mapper.MenuMapper.findByRoleId">
         </collection>
     </resultMap>
@@ -49,6 +49,16 @@
         from leanin_role
         where role_id =#{roleId}
         and role_status =1
+    </select>
+
+    <select id="findByRoleName" resultMap="Role_Menu_Result">
+        select
+        <include refid="Base_Sql"/>
+        from leanin_role
+        where role_status =1
+        <if test="roleName != null">
+            and role_name like CONCAT('%',#{roleName},'%')
+        </if>
     </select>
 
 

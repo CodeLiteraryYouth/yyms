@@ -56,19 +56,20 @@ public class UserServiceImpl implements UserService {
 
         LyOauth2Util.UserJwt userJwt = getUser(request);
         if (roleIds.size() > 0) {
+            UserRoleVo userRoleVo =new UserRoleVo();
             for (Long roleId : roleIds) {
-                UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(userByWorkNum.getAdminId(), roleId);
-                if (userRoleVo == null) {
-                    userRoleVo = new UserRoleVo();
+//                UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(userByWorkNum.getAdminId(), roleId);
+//                if (userRoleVo == null) {
+//                    userRoleVo = new UserRoleVo();
                     userRoleVo.setId(null);
                     userRoleVo.setUserId(userByWorkNum.getAdminId());
                     userRoleVo.setRoleId(roleId);
                     userRoleVo.setCreateTime(new Date());
                     userRoleVo.setCreator(userJwt.getId());
                     userRoleMapper.addUserRole(userRoleVo);
-                } else {
-                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
-                }
+//                } else {
+//                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
+//                }
 
             }
         }

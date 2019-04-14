@@ -9,6 +9,7 @@ import com.leanin.web.BaseController;
 import org.junit.Test;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -138,5 +139,14 @@ public class TestController extends BaseController implements TestApi  {
         String string = "123456";
         int index = string.indexOf(",");
         System.out.println(index);
+    }
+
+    @Test
+    public void bc(){
+        //$2a$10$bN2SGsAWI4v3tCgqQx2/F.VNBKSGchE.qhpml6nyNkgfJJhsYbyUa
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String password = bCryptPasswordEncoder.encode("leanin9527");
+        System.out.println(password);
+
     }
 }

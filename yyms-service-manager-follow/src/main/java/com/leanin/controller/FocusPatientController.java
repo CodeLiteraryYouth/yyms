@@ -9,6 +9,7 @@ import com.leanin.utils.LyOauth2Util;
 import com.leanin.utils.UUIDUtils;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,26 +26,30 @@ public class FocusPatientController extends BaseController {
 
 	@Autowired
 	private FocusPatientService focusPatientService;
-	
+
+	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("findPatientList")
 	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,Integer page,Integer pageSize) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','addFocusPat')")
 	@PostMapping("addFocusPatient")
 	public DataOutResponse addFocusPatient(@RequestBody FocusPatientVo focusPatient) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		focusPatient.setUserId(user.getId());
 		return focusPatientService.insertFocusPatient(focusPatient);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','delFocusPat')")
 	@GetMapping("updatePatientStatus")
 	public DataOutResponse updatePatientStatus(@RequestParam String focusId, @RequestParam Integer status) {
         String[] longs = focusId.split(",");
 		return focusPatientService.updatePatientStatus(longs, status);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("selectFocusPatientById")
 	public DataOutResponse selectFocusPatientById(@RequestParam String patientId) {
 		LyOauth2Util.UserJwt user = getUser(request);

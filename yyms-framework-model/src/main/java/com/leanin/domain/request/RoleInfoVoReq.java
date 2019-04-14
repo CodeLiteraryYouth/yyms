@@ -11,5 +11,5 @@ import java.util.List;
 @ToString
 public class RoleInfoVoReq extends RoleInfoVo {
 
-    private List<Long> menuIds;
+    private List<Long> menuIds;//权限集合
 }

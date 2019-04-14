@@ -15,6 +15,8 @@ public interface RoleMapper /*extends BaseMapper<RoleInfoVo>*/ {
 
     RoleInfoReP findRoleId(@Param("roleId") Long roleId);
 
+    List<RoleInfoReP> findByRoleName(@Param("roleName") String roleName);
+
 
 //    void addRole(@Param("roleInfoVo") RoleInfoVo roleInfoVo);
 }
