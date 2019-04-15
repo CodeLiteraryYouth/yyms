@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.jwt.Jwt;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -148,5 +151,18 @@ public class TestController extends BaseController implements TestApi  {
         String password = bCryptPasswordEncoder.encode("leanin9527");
         System.out.println(password);
 
+    }
+
+    @Test
+    public void jwttoken(){
+        //公钥
+        String publickey = "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1wtzjn4om6eZNB9oxB69/GYbvPl0ncGWP8Semdyfu4YH0rsBj4jmB14BRoAKYT3IQfW8YyZY8okdHLaSA0GAgTq36u+JKYQ0D4q1V7ufEVkFeTFgvEUrxs+Utuuju+vWvkDO7fmHgqbEgy5AKs1eHTtev7LDNwbg6EKFwOl8rdYLww7enEkVYyP1Je5tlCubc7sXIA4JQnofhbI5wIQGUXpAzAeuQmDlfuT5QzLhRSzZBuAO5+dSwXtNa/x0NUVP/VDOAdfOo+5IZQalEo77CMHsR3eJp+v96Mz+8spHhsQUHAWs14p7q4ooIZ36PDt0FuNAosKCh+maWOXNpSZiDwIDAQAB-----END PUBLIC KEY-----";
+        //jwt令牌
+        String jwtString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTUzNDE4NDEsInVzZXJfbmFtZSI6ImxlYW5pbjk1MjciLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6ImRhNDRlNmQ2LTI4OGYtNGYxZC04OTJkLTI2ZGZiOGZkMTkyNyIsImNsaWVudF9pZCI6IkxlYW5pbldlYkFwcCIsInNjb3BlIjpbImFwcCJdfQ.7B-ARIa422L1BqHB_bbsljyucaDAjkUwD3wu1C3-2TM";
+        //校验jwt令牌
+        Jwt jwt = JwtHelper.decodeAndVerify(jwtString, new RsaVerifier(publickey));
+        //拿到jwt令牌中自定义的内容
+        String claims = jwt.getClaims();
+        System.out.println(claims);
     }
 }

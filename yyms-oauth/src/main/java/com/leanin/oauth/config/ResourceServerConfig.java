@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
  * @author Administrator
  * @version 1.0
  **/
-@Configuration
-@EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)//激活方法上的PreAuthorize注解
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+//@Configuration
+//@EnableResourceServer
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)//激活方法上的PreAuthorize注解
+public class ResourceServerConfig /*extends ResourceServerConfigurerAdapter*/ {
 
-    //公钥
+    /*//公钥
     private static final String PUBLIC_KEY = "publickey.txt";
 
     //定义JJwtAccessTokenConverter，使用jwt令牌
@@ -44,10 +44,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 
 
-    /*
+    *//*
      * 获取非对称加密公钥 Key
      * @return 公钥 Key
-     */
+     *//*
     private String getPubKey() {
         Resource resource = new ClassPathResource(PUBLIC_KEY);
         try {
@@ -68,5 +68,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/swagger-resources","/swagger-resources/configuration/security",
                         "/swagger-ui.html","/webjars/**").permitAll()
                 .anyRequest().authenticated();
-    }
+    }*/
 }

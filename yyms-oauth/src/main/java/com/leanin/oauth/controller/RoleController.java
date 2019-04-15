@@ -3,7 +3,6 @@ package com.leanin.oauth.controller;
 import com.leanin.api.auth.RoleControllerApi;
 import com.leanin.domain.request.RoleInfoVoReq;
 import com.leanin.domain.response.DataOutResponse;
-import com.leanin.domain.vo.RoleInfoVo;
 import com.leanin.oauth.service.RoleService;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
