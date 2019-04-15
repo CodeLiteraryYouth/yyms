@@ -1,4 +1,4 @@
-package com.leanin.oauth.controller;
+package com.leanin.ucenter.controller;
 
 import com.leanin.api.auth.AuthControllerApi;
 import com.leanin.domain.plan.response.AuthCode;
@@ -8,7 +8,7 @@ import com.leanin.domain.vo.AuthToken;
 import com.leanin.domain.vo.LoginRequestVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.model.response.CommonCode;
-import com.leanin.oauth.service.AuthService;
+import com.leanin.ucenter.service.AuthService;
 import com.leanin.utils.CookieUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

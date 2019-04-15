@@ -1,6 +1,7 @@
 package com.leanin.oauth.controller;
 
 import com.leanin.api.auth.UserControllerApi;
+import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
 import com.leanin.oauth.service.UserService;
@@ -71,6 +72,10 @@ public class UserController extends BaseController implements UserControllerApi{
         return userService.findUserName(adminId);
     }
 
+    @GetMapping("/findUserByWorkNum")
+    public AdminUserDto findUserByWorkNum(@RequestParam("username")String username){
+        return userService.findUserByWorkNum(username);
+    }
 
 
 

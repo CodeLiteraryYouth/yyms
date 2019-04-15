@@ -1,4 +1,4 @@
-package com.leanin.oauth.config;
+package com.leanin.ucenter.config;
 
 import com.leanin.domain.vo.UserJwt;
 import org.springframework.beans.factory.annotation.Autowired;

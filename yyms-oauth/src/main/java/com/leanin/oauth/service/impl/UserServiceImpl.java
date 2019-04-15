@@ -155,4 +155,9 @@ public class UserServiceImpl implements UserService {
     public DataOutResponse findAllUser() {
         return ReturnFomart.retParam(200, userMapper.findAllUser());
     }
+
+    @Override
+    public AdminUserDto findUserByWorkNum(String username) {
+        return userMapper.findUserByWorkNum(username);
+    }
 }

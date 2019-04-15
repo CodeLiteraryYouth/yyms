@@ -30,7 +30,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableFeignClients //开始feignClient
 @EnableDiscoveryClient
 @EnableEurekaClient
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @EnableHystrix
 @ComponentScan("com.leanin.domain")	//扫描model包
 @MapperScan("com.leanin.mapper")	//扫描mapper包
@@ -38,7 +38,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan("com.leanin")
 @ComponentScan("com.leanin.api")//扫描api
 @SpringBootApplication
-
 public class FollowApplication {
 
 	public static void main(String[] args) {

@@ -35,6 +35,11 @@ zuul:
       serviceId: yyms-oauth
       sensitiveHeaders:
       strip-prefix: true
+    yyms-service-oauth-center:
+      path: /ucenter/**
+      serviceId: yyms-service-oauth-center
+      sensitiveHeaders:
+      strip-prefix: true
 eureka:
   client:
     registerWithEureka: true

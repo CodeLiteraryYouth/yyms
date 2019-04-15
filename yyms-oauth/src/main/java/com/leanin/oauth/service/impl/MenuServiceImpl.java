@@ -3,6 +3,7 @@ package com.leanin.oauth.service.impl;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.MenuPermissionVo;
+import com.leanin.oauth.mapper.MenuMapper;
 import com.leanin.oauth.repository.MenuRepository;
 import com.leanin.oauth.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Autowired
     MenuRepository menuRepository;
+
+    @Autowired
+    MenuMapper menuMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -56,5 +60,10 @@ public class MenuServiceImpl implements MenuService {
     public DataOutResponse findByPid(Integer pid) {
         List<MenuPermissionVo> menuPermissionVos = menuRepository.findByMenuPidAndMenuIsDelete(pid, 1);
         return ReturnFomart.retParam(200,menuPermissionVos);
+    }
+
+    @Override
+    public List<MenuPermissionVo> findMenuListByUserId(Long userId) {
+        return menuMapper.findMenuListByUserId(userId);
     }
 }

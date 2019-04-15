@@ -31,9 +31,9 @@ public class AudioUploadController extends BaseController{
     @Autowired
     private AudioUploadService audioUploadService;
 
+    @PreAuthorize("hasAnyAuthority('root','phone')")
     @RequestMapping(value = "uploadVoice")
-    public DataOutResponse uploadVoiceget(HttpServletRequest request
-                                      ) {
+    public DataOutResponse uploadVoiceget(HttpServletRequest request) {
         try {
             CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
             if (commonsMultipartResolver.isMultipart(request)) {

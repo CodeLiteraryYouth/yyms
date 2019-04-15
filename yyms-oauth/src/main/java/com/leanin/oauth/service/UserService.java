@@ -1,5 +1,6 @@
 package com.leanin.oauth.service;
 
+import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
 
@@ -21,4 +22,6 @@ public interface UserService {
     String findUserName(Long adminId);
 
     DataOutResponse findAllUser();
+
+    AdminUserDto findUserByWorkNum(String username);
 }
