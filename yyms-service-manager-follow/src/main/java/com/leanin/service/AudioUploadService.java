@@ -17,5 +17,5 @@ public interface AudioUploadService  {
          * 录音上传
          * @param file
          */
-        DataOutResponse uploadVoice(MultipartFile file, AudioUpDto audioUpDto);
+        DataOutResponse uploadVoice(MultipartFile file);
 }

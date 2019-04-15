@@ -33,27 +33,16 @@ public class LeaninAudioUpDao {
      * 音频时长(秒)
      */
     private Integer duration;
+    /**
+     * 来电唯一标识
+     */
+    @Column(name = "call_uuid")
+    private String callUuid;
 
     @Column(name = "create_time")
     private Date createTime;
 
-    /**
-     * 开始拨打时间
-     */
-    @Column(name = "call_start_time")
-    private Date callStartTime;
-
-    /**
-     * 结束拨打时间
-     */
-    @Column(name = "call_end_time")
-    private Date callEndTime;
-
-    /**
-     * 通话时长
-     */
-    @Column(name = "holding_time")
-    private String holdingTime;
+    
 
     /**
      * 获取录音id
@@ -159,96 +148,18 @@ public class LeaninAudioUpDao {
         this.createTime = createTime;
     }
 
-    /**
-     * 获取开始拨打时间
-     *
-     * @return call_start_time - 开始拨打时间
-     */
-    public Date getCallStartTime() {
-        return callStartTime;
-    }
+   
 
-    /**
-     * 设置开始拨打时间
-     *
-     * @param callStartTime 开始拨打时间
-     */
-    public void setCallStartTime(Date callStartTime) {
-        this.callStartTime = callStartTime;
-    }
+    
+    
 
-    /**
-     * 获取结束拨打时间
-     *
-     * @return call_end_time - 结束拨打时间
-     */
-    public Date getCallEndTime() {
-        return callEndTime;
-    }
+    public String getCallUuid() {
+		return callUuid;
+	}
 
-    /**
-     * 设置结束拨打时间
-     *
-     * @param callEndTime 结束拨打时间
-     */
-    public void setCallEndTime(Date callEndTime) {
-        this.callEndTime = callEndTime;
-    }
+	public void setCallUuid(String callUuid) {
+		this.callUuid = callUuid;
+	}
 
-    /**
-     * 获取通话时长
-     *
-     * @return holding_time - 通话时长
-     */
-    public String getHoldingTime() {
-        return holdingTime;
-    }
 
-    /**
-     * 设置通话时长
-     *
-     * @param holdingTime 通话时长
-     */
-    public void setHoldingTime(String holdingTime) {
-        this.holdingTime = holdingTime;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        LeaninAudioUpDao other = (LeaninAudioUpDao) that;
-        return (this.getAudioUpId() == null ? other.getAudioUpId() == null : this.getAudioUpId().equals(other.getAudioUpId()))
-            && (this.getAudioSource() == null ? other.getAudioSource() == null : this.getAudioSource().equals(other.getAudioSource()))
-            && (this.getPath() == null ? other.getPath() == null : this.getPath().equals(other.getPath()))
-            && (this.getFormat() == null ? other.getFormat() == null : this.getFormat().equals(other.getFormat()))
-            && (this.getDuration() == null ? other.getDuration() == null : this.getDuration().equals(other.getDuration()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getCallStartTime() == null ? other.getCallStartTime() == null : this.getCallStartTime().equals(other.getCallStartTime()))
-            && (this.getCallEndTime() == null ? other.getCallEndTime() == null : this.getCallEndTime().equals(other.getCallEndTime()))
-            && (this.getHoldingTime() == null ? other.getHoldingTime() == null : this.getHoldingTime().equals(other.getHoldingTime()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getAudioUpId() == null) ? 0 : getAudioUpId().hashCode());
-        result = prime * result + ((getAudioSource() == null) ? 0 : getAudioSource().hashCode());
-        result = prime * result + ((getPath() == null) ? 0 : getPath().hashCode());
-        result = prime * result + ((getFormat() == null) ? 0 : getFormat().hashCode());
-        result = prime * result + ((getDuration() == null) ? 0 : getDuration().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getCallStartTime() == null) ? 0 : getCallStartTime().hashCode());
-        result = prime * result + ((getCallEndTime() == null) ? 0 : getCallEndTime().hashCode());
-        result = prime * result + ((getHoldingTime() == null) ? 0 : getHoldingTime().hashCode());
-        return result;
-    }
 }

@@ -85,4 +85,17 @@ public class CallLogInfoController extends BaseController {
             return ReturnFomart.retParam(404,e.getMessage());
         }
     }
+    /**
+     * 插入记录
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "insertCallLog")
+    public DataOutResponse insertCallLog (@ModelAttribute("callLogInfoDto") CallLogInfoDto callLogInfoDto){
+        try {
+            return  callLogInfoService.insertCallLog(callLogInfoDto);
+        }catch (Exception e){
+            return ReturnFomart.retParam(404,e.getMessage());
+        }
+    }
 }

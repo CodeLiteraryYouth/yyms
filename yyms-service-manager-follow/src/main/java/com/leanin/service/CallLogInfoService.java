@@ -41,4 +41,10 @@ public interface CallLogInfoService{
      * @return
      */
     DataOutResponse delete(String ids);
+    /**
+     * 插入通话记录
+     * @param callLogInfoDto
+     * @return
+     */
+	DataOutResponse insertCallLog(CallLogInfoDto callLogInfoDto);
 }

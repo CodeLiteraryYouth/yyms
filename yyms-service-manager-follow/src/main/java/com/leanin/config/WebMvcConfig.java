@@ -34,7 +34,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     registry.addResourceHandler("/upload/**").addResourceLocations(filePath);
 
         }
-    @Bean(name = "multipartResolver")
+   /* @Bean(name = "multipartResolver")
     public MultipartResolver multipartResolver(){
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
@@ -42,6 +42,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         resolver.setMaxInMemorySize(40960);
         resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
         return resolver;
-    }
+    }*/
 
 }

@@ -3,9 +3,9 @@ server:
 spring:
   application:
     name: yyms-service-manager-follow
-  http:
-    multipart:
-      enabled: true
+#  servlet:
+#    multipart:
+#      enabled: true
 #  servlet:
 #    context-path: /follow
   redis:
@@ -26,7 +26,7 @@ spring:
     virtual-host: /
   datasource: #数据源
     druid:
-      url: jdbc:mysql://localhost:3306/leanin_follow?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
+      url: jdbc:mysql://127.0.0.1:3306/leanin_follow?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver

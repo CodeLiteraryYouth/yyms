@@ -30,21 +30,9 @@ public class AudioUploadController extends BaseController{
     @Autowired
     private AudioUploadService audioUploadService;
 
-    @RequestMapping(value = "uploadVoice",method = RequestMethod.POST)
-    public DataOutResponse uploadVoice(HttpServletRequest request,
-                                       @RequestParam("file") MultipartFile file,
-                                       @ModelAttribute AudioUpDto audioUpDto){
-            try {
-
-                return audioUploadService.uploadVoice(file,audioUpDto);
-            } catch (Exception e) {
-                return   ReturnFomart.retParam(404,e.getMessage());
-            }
-
-    }
-    @RequestMapping(value = "uploadVoiceget")
-    public DataOutResponse uploadVoiceget(HttpServletRequest request,
-                                       @ModelAttribute AudioUpDto audioUpDto) {
+    @RequestMapping(value = "uploadVoice")
+    public DataOutResponse uploadVoiceget(HttpServletRequest request
+                                      ) {
         try {
             CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
             if (commonsMultipartResolver.isMultipart(request)) {
@@ -57,7 +45,7 @@ public class AudioUploadController extends BaseController{
 
                 MultipartFile file = optional.get();
 
-                return audioUploadService.uploadVoice(file, audioUpDto);
+                return audioUploadService.uploadVoice(file);
             }else{
                 return ReturnFomart.retParam(404, "无文件上传");
             }

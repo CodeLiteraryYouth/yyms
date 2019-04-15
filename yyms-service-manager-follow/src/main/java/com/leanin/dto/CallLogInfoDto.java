@@ -39,19 +39,13 @@ public class CallLogInfoDto extends LeaninCallLogInfoDao {
          * 音频时长(秒)
          */
         private Integer duration;
-
         /**
-         * 开始拨打时间
+         * 开始时间
          */
-        private String callStartTime;
-
+        private String callStartTimeString;
         /**
-         * 结束拨打时间
+         * 结束时间
          */
-        private String callEndTime;
+        private String callEndTimeString;
 
-        /**
-         * 通话时长
-         */
-        private String holdingTime;
         }

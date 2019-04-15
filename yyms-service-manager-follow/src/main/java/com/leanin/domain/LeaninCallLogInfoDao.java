@@ -14,7 +14,7 @@ public class LeaninCallLogInfoDao {
      * 随访计划id
      */
     @Column(name = "follow_plan_id")
-    private Long followPlanId;
+    private String followPlanId;
 
     /**
      * 科室id
@@ -27,7 +27,11 @@ public class LeaninCallLogInfoDao {
      */
     @Column(name = "autio_up_id")
     private Long autioUpId;
-
+    /**
+     * 来电唯一标识
+     */
+    @Column(name = "call_uuid")
+    private String callUuid;
     /**
      * 随访计划名称
      */
@@ -81,7 +85,23 @@ public class LeaninCallLogInfoDao {
      */
     @Column(name = "customer_number")
     private String customerNumber;
+    /**
+     * 开始拨打时间
+     */
+    @Column(name = "call_start_time")
+    private Date callStartTime;
 
+    /**
+     * 结束拨打时间
+     */
+    @Column(name = "call_end_time")
+    private Date callEndTime;
+
+    /**
+     * 通话时长
+     */
+    @Column(name = "holding_time")
+    private String holdingTime;
     /**
      * 备注
      */
@@ -124,7 +144,7 @@ public class LeaninCallLogInfoDao {
      *
      * @return follow_plan_id - 随访计划id
      */
-    public Long getFollowPlanId() {
+    public String getFollowPlanId() {
         return followPlanId;
     }
 
@@ -133,7 +153,7 @@ public class LeaninCallLogInfoDao {
      *
      * @param followPlanId 随访计划id
      */
-    public void setFollowPlanId(Long followPlanId) {
+    public void setFollowPlanId(String followPlanId) {
         this.followPlanId = followPlanId;
     }
 
@@ -263,7 +283,15 @@ public class LeaninCallLogInfoDao {
         this.callCreaterName = callCreaterName;
     }
 
-    /**
+    public String getCallUuid() {
+		return callUuid;
+	}
+
+	public void setCallUuid(String callUuid) {
+		this.callUuid = callUuid;
+	}
+
+	/**
      * 获取客户id
      *
      * @return customer_id - 客户id
@@ -353,7 +381,31 @@ public class LeaninCallLogInfoDao {
         this.remark = remark;
     }
 
-    /**
+    public Date getCallStartTime() {
+		return callStartTime;
+	}
+
+	public void setCallStartTime(Date callStartTime) {
+		this.callStartTime = callStartTime;
+	}
+
+	public Date getCallEndTime() {
+		return callEndTime;
+	}
+
+	public void setCallEndTime(Date callEndTime) {
+		this.callEndTime = callEndTime;
+	}
+
+	public String getHoldingTime() {
+		return holdingTime;
+	}
+
+	public void setHoldingTime(String holdingTime) {
+		this.holdingTime = holdingTime;
+	}
+
+	/**
      * 获取创建时间
      *
      * @return create_time - 创建时间

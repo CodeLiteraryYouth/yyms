@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="call_log_info_id" jdbcType="BIGINT" property="callLogInfoId" />
-    <result column="follow_plan_id" jdbcType="BIGINT" property="followPlanId" />
+    <result column="follow_plan_id" jdbcType="VARCHAR" property="followPlanId" />
     <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
     <result column="autio_up_id" jdbcType="BIGINT" property="autioUpId" />
     <result column="follow_plan_name" jdbcType="VARCHAR" property="followPlanName" />
@@ -22,12 +22,15 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="createor_id" jdbcType="BIGINT" property="createorId" />
     <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+    <result column="call_uuid" jdbcType="VARCHAR" property="callUuid" />
+     <result column="call_start_time" jdbcType="TIMESTAMP" property="callStartTime" />
+    <result column="call_end_time" jdbcType="TIMESTAMP" property="callEndTime" />
+    <result column="holding_time" jdbcType="VARCHAR" property="holdingTime" />
   </resultMap>
 
   <resultMap id="ResultVoMap" type="com.leanin.vo.CallLoginfoVo" extends="BaseResultMap">
     <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
     <result column="phoneTime" jdbcType="VARCHAR" property="phoneTime" />
-    <result column="holdingTime" jdbcType="VARCHAR" property="holdingTime" />
   </resultMap>
 
   <resultMap id="ResultDtoMap" type="com.leanin.dto.CallLogInfoDto" extends="BaseResultMap">
@@ -35,9 +38,8 @@
     <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="format" jdbcType="VARCHAR" property="format" />
     <result column="duration" jdbcType="INTEGER" property="duration" />
-    <result column="callStartTime" jdbcType="VARCHAR" property="callStartTime" />
-    <result column="callEndTime" jdbcType="VARCHAR" property="callEndTime" />
-    <result column="holdingTime" jdbcType="VARCHAR" property="holdingTime" />
+    <result column="callStartTimeString" jdbcType="VARCHAR" property="callStartTimeString" />
+    <result column="callEndTimeString" jdbcType="VARCHAR" property="callEndTimeString" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -45,11 +47,11 @@
     -->
     call_log_info_id, follow_plan_id, section_id, autio_up_id, follow_plan_name, section_name, 
     call_type, call_creater_id, call_creater_name, customer_id, customer_name, call_creater_number, 
-    customer_number, remark, create_time, createor_id, is_delete
+    customer_number, remark, create_time, createor_id, is_delete,call_uuid,call_start_time,call_end_time,holding_time
   </sql>
 
   <select id="findList" resultMap="ResultVoMap" parameterType="com.leanin.dto.query.QueryCallLogInfoDto">
-    select
+        select
   c.autio_up_id,
   c.call_creater_name,
   c.call_creater_number,
@@ -57,21 +59,25 @@
   c.customer_id,
   c.customer_name,
   c.customer_number as phoneNumber,
+  c.follow_plan_name,
   c.follow_plan_id,
+  c.call_start_time,
+  c.call_end_time,
   c.section_id,
+  c.call_uuid,
   c.section_name,
   c.remark,
-  a.holding_time as holdingTime,
-  DATE_FORMAT(a.call_start_time ,'%Y-%m-%d %H:%i:%s') as phoneTime
+  c.holding_time,
+  DATE_FORMAT(c.call_start_time ,'%Y-%m-%d %H:%i:%s') as phoneTime
 
   from leanin_call_log_info c
-  LEFT JOIN leanin_audio_up  a on a.audio_up_id = c.autio_up_id
+  LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
 
     <if test="startTime !=null and startTime !='' ">
-      and a.call_start_time &gt;=#{startTime}
+      and c.call_start_time &gt;=#{startTime}
     </if>
     <if test="endTime !=null and  endTime !=''">
-      and a.call_start_time &lt;date_sub(#{endTime},interval -1 day)
+      and c.call_start_time &lt;date_sub(#{endTime},interval -1 day)
     </if>
   where c.is_delete = "N"
 
@@ -99,19 +105,21 @@
     c.call_log_info_id,
     c.customer_id,
     c.customer_name,
+    c.follow_plan_name,
     c.customer_number,
     c.follow_plan_id,
+   	c.holding_time,
     c.section_id,
     c.section_name,
     c.remark,
     a.duration as duration,
     a.format as format,
-    a.holding_time as holdingTime,
+    c.holding_time,
     a.path as path,
-    DATE_FORMAT(a.call_start_time ,'%Y-%m-%d %H:%i:%s') as callStartTime,
-    DATE_FORMAT(a.call_end_time ,'%Y-%m-%d %H:%i:%s') as callEndTime
+    DATE_FORMAT(c.call_start_time ,'%Y-%m-%d %H:%i:%s') as callStartTimeString,
+    DATE_FORMAT(c.call_end_time ,'%Y-%m-%d %H:%i:%s') as callEndTimeString
     from leanin_call_log_info c
-    LEFT JOIN leanin_audio_up  a on a.audio_up_id = c.autio_up_id
+    LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
     where c.is_delete = "N"
     and c.call_log_info_id = #{callLogInfoId}
   </select>

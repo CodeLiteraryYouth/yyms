@@ -11,15 +11,22 @@
     <result column="format" jdbcType="VARCHAR" property="format" />
     <result column="duration" jdbcType="INTEGER" property="duration" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="call_start_time" jdbcType="TIMESTAMP" property="callStartTime" />
-    <result column="call_end_time" jdbcType="TIMESTAMP" property="callEndTime" />
-    <result column="holding_time" jdbcType="VARCHAR" property="holdingTime" />
+    <result column="call_uuid" jdbcType="VARCHAR" property="callUuid" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    audio_up_id, audio_source, path, format, duration, create_time, call_start_time, 
-    call_end_time, holding_time
+    audio_up_id, audio_source, path, format, duration, create_time, 
+    call_uuid
   </sql>
+  <select id="selectByCallUuid" resultMap="BaseResultMap">
+  	SELECT 
+  	* 
+  	from 
+  	leanin_audio_up a 
+  	where 
+  	a.call_uuid = #{callUuid} 
+  	limit 1
+  </select>
 </mapper>
