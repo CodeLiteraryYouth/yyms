@@ -3,15 +3,16 @@ package com.leanin.oauth.service;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
 
-    DataOutResponse addUser(AdminUserVo adminUserVo);
+    DataOutResponse addUser(AdminUserVo adminUserVo, HttpServletRequest request);
 
     DataOutResponse uptUserStatus(Long adminUserId,Integer status);
 
-    DataOutResponse updateUser(AdminUserVo adminUserVo);
+    DataOutResponse updateUser(AdminUserVo adminUserVo,HttpServletRequest request);
 
     DataOutResponse findUserById(Long adminId);
 

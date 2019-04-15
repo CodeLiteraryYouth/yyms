@@ -18,7 +18,7 @@ spring:
 zuul:
   host:
     connect-timeout-millis: 60000
-    socket-timeout-millis: 6000
+    socket-timeout-millis: 60000
   routes:
     yyms-service-manager-follow:
       path: /follow/**
@@ -51,5 +51,10 @@ ribbon:
   OkToRetryOnAllOperations: false
   ConnectTimeout: 60000
   ReadTimeout: 60000
-  eureka:
-    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 60000

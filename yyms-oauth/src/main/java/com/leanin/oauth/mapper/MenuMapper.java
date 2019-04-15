@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface MenuMapper {
+public interface MenuMapper /*extends BaseMapper<MenuPermissionVo>*/ {
 
     List<MenuPermissionVo> findMenuListByUserId(@Param("userId") Long userId);
+
+    List<MenuPermissionVo> findByRoleId(@Param("roleId") Long roleId);
 }

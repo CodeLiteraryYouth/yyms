@@ -45,6 +45,9 @@ public class FormRecordServiceImpl implements FormRecordService {
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planPatient.getPlanNum());
         if (planPatient.getFormStatus() == 1) {//未填写表单
             FormInfoVo formInfo = formInfoMapper.findFormInfoById(planInfo.getPlanNum());
+            if (formInfo == null){
+                return ReturnFomart.retParam(96,"数据不存在" );
+            }
             return ReturnFomart.retParam(200, formInfo);
         } else {
             FormRecordVo formRecord = formRecordMapper.findFormRecordByPid(patientPlanId);

@@ -5,6 +5,7 @@ import com.leanin.excel.core.ExcelExporterUtils;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,28 +26,32 @@ public class CallBackConfigController extends BaseController {
 	@Autowired
 	private CallBackConfigService callBackConfigService;
 
-	//
+	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigListByType")
 	public DataOutResponse findConfigListByType(Integer configType) {
 		return callBackConfigService.findConfigListByType(configType);
 	}
 
+	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigList")
 	public DataOutResponse findConfigList(@RequestParam Integer page, @RequestParam Integer pageSize,Integer configType){
 		return callBackConfigService.findConfigList(page,pageSize,configType);
 	}
 
 
+	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigById")
 	public DataOutResponse findConfigById(@RequestParam String configNum) {
 		return callBackConfigService.findConfigById(configNum);
 	}
 
+	@PreAuthorize("hasAnyAuthority('root','delConfig')")
 	@GetMapping("updateConfigStatus")
 	public DataOutResponse updateConfigStatus(@RequestParam String configNum,@RequestParam int status) {
 		return callBackConfigService.updateConfigStatus(configNum, status);
 	}
 
+	@PreAuthorize("hasAnyAuthority('root','addConfig')")
 	@PostMapping("addConfig")
 	public DataOutResponse addConfig(@RequestBody CallBackConfig record) {
 		LyOauth2Util.UserJwt user = getUser(request);
@@ -55,6 +60,7 @@ public class CallBackConfigController extends BaseController {
 		return callBackConfigService.addConfig(record);
 	}
 
+	@PreAuthorize("hasAnyAuthority('root','updateConfig')")
 	@PostMapping("updateConfig")
 	public DataOutResponse updateConfig(@RequestBody CallBackConfig record) {
 		return callBackConfigService.updateConfig(record);

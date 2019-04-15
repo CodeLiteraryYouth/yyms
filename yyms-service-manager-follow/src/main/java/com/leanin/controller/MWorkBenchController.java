@@ -6,6 +6,7 @@ import com.leanin.service.MWorkBenchService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class MWorkBenchController extends BaseController {
 
     //我的随访和我的宣教
     //获取患者信息
+    @PreAuthorize("hasAnyAuthority('root','myFollow')")
     @PostMapping("/findPats")
     public DataOutResponse findPats(@RequestBody MyFollowReq myFollowReq){
         LyOauth2Util.UserJwt user = getUser(request);
@@ -29,6 +31,7 @@ public class MWorkBenchController extends BaseController {
         return mWorkBenchService.findPats(myFollowReq);
     }
 
+    @PreAuthorize("hasAnyAuthority('root','mySatisfy')")
     //我的满意度
     @PostMapping("/findStyPats")
     public DataOutResponse findStyPats(@RequestBody MyFollowReq myFollowReq){

@@ -7,6 +7,7 @@ import com.leanin.utils.LyOauth2Util;
 import com.leanin.utils.UUIDUtils;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,17 +19,20 @@ public class FollowCheckController extends BaseController {
 
 	@Autowired
 	private FollowCheckService followCheckService;
-	
+
+	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
 	@GetMapping("findCheckList")
 	public DataOutResponse findCheckList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String checkName) {
 		return followCheckService.findCheckList(page, pageSize, checkName);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','delCheckPlan')")
 	@GetMapping("updateCheckStatus")
 	public DataOutResponse updateCheckStatus(@RequestParam String checkNum, @RequestParam int status) {
 		return followCheckService.updateCheckStatus(checkNum, status);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','addCheckPlan')")
 	@PostMapping("addCheckInfo")
 	public DataOutResponse addCheckInfo(@RequestBody FollowCheckVo followCheck) {
 		String uuid = UUIDUtils.getUUID();
@@ -38,12 +42,14 @@ public class FollowCheckController extends BaseController {
 		followCheck.setCreateDate(new Date());//创建日期
 		return followCheckService.addCheckInfo(followCheck);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
 	@GetMapping("findCheckById")
 	public DataOutResponse findCheckById(@RequestParam String checkNum) {
 		return followCheckService.findCheckById(checkNum);
 	}
-	
+
+	@PreAuthorize("hasAnyAuthority('root','updateCheckPlan')")
 	@PostMapping("updateCheckInfo")
 	public DataOutResponse updateCheckInfo(@RequestBody FollowCheckVo followCheck) {
 		return followCheckService.updateCheckInfo(followCheck);

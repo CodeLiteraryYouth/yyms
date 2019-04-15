@@ -18,8 +18,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/userlogin","/userlogout","/userjwt",
-                "/user/**");
+        web.ignoring().antMatchers("/userlogin","/userlogout","/userjwt");
 
     }
     @Bean
@@ -33,6 +32,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()

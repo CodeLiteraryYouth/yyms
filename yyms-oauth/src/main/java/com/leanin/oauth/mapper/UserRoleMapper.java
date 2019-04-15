@@ -5,9 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface UserRoleMapper {
+public interface UserRoleMapper /*extends BaseMapper<UserRoleVo>*/ {
 
     UserRoleVo findByUidAndRid(@Param("adminId") Long adminId,@Param("roleId") Long roleId);
+
+    void deleteByUidAndRid(@Param("adminId") Long adminId,@Param("roleId") Long roleId);
 
     void addUserRole(@Param("userRoleVo") UserRoleVo userRoleVo);
 }

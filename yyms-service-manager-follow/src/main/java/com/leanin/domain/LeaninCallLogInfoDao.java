@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "leanin_call_log_info")
 public class LeaninCallLogInfoDao {
+
     @Id
     @Column(name = "call_log_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

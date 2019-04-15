@@ -14,6 +14,14 @@
         id,user_id,role_id,create_time,creator
     </sql>
 
+    <delete id="deleteByUidAndRid">
+        DELETE
+        FROM
+          `leanin_user_role`
+        WHERE user_id = #{adminId}
+          AND role_id = #{roleId}
+    </delete>
+
     <insert id="addUserRole">
         INSERT INTO leanin_user_role
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -71,7 +71,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         List<String> user_permission = new ArrayList<>();
         permissions.forEach(item -> user_permission.add(item.getMenuIdentify()));//item.getMenuIdentify();
-        //使用静态的权限表示用户所拥有的权限
+        //添加权限
         String user_permission_string = StringUtils.join(user_permission.toArray(), ",");
         UserJwt userDetails = new UserJwt(username,
                 password,

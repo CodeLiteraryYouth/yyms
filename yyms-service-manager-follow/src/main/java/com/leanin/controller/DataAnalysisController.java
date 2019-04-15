@@ -4,6 +4,7 @@ package com.leanin.controller;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.service.DataAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ public class DataAnalysisController {
      * @param planType      计划类型  1随访  3满意度
      * @return
      */
+    @PreAuthorize("hasAnyAuthority('root','dataAly')")
     @GetMapping("followAnalysis")
     public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam Integer planType){
         return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType);
@@ -39,6 +41,7 @@ public class DataAnalysisController {
      * @param planType      计划类型  1随访  3满意度
      * @return
      */
+    @PreAuthorize("hasAnyAuthority('root','userDataAly')")
     @GetMapping("userFollowAnalysis")
     public DataOutResponse userFollowAnalysis(@RequestParam("userId") Long userId,@RequestParam("time") String time,@RequestParam("planType") Integer planType){
         return dataAnalysisService.userFollowAnalysis(userId,time,planType);

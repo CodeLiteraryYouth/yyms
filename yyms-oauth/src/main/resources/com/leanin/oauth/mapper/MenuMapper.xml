@@ -8,7 +8,7 @@
         <result property="menuPid" column="menu_pid"></result>
         <result property="menuRemark" column="menu_remark"></result>
         <result property="menuCreatetime" column="menu_createtime"></result>
-        <result property="menuIsDelete" column="menu_isDelete"></result>
+        <result property="menuIsDelete" column="menu_is_delete"></result>
         <result property="menuState" column="menu_state"></result>
         <result property="menuType" column="menu_type"></result>
         <result property="menuIdentify" column="menu_identify"></result>
@@ -18,24 +18,39 @@
     </resultMap>
 
     <sql id="Base_Sql">
-        id,menu_name,menu_pid,menu_remark,menu_createtime,menu_isDelete,
+        id,menu_name,menu_pid,menu_remark,menu_createtime,menu_is_delete,
         menu_state,menu_type,menu_identify,menu_sort,menu_ico,menu_url
     </sql>
 
     <select id="findMenuListByUserId" resultMap="Base_Result_Map">
         SELECT
-        <include refid="Base_Sql"/>
-        FROM leanin_menu_permissions
-        WHERE id IN (
+        lmp.*
+        FROM leanin_menu_permissions lmp
+        WHERE lmp.menu_is_delete = 1
+        and lmp.id IN (
             SELECT DISTINCT mp.menu_id
             FROM leanin_role_menu_permission mp
-            WHERE mp.role_id IN (
+            WHERE
+            mp.role_id IN (
                 SELECT DISTINCT ur.role_id
                 FROM leanin_user_role ur
                 WHERE ur.user_id = #{userId}
             )
         )
 
+    </select>
+    <select id="findByRoleId" resultMap="Base_Result_Map">
+        SELECT
+          lmp.*
+        FROM
+          `leanin_menu_permissions` lmp
+        WHERE lmp.`menu_is_delete` = 1
+          AND lmp.`id` IN
+          (SELECT
+            lrm.`menu_id`
+          FROM
+            `leanin_role_menu_permission` lrm
+          WHERE lrm.`role_id` = #{roleId})
     </select>
 
 </mapper>
