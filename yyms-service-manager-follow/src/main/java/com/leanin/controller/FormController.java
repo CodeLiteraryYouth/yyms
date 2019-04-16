@@ -26,9 +26,9 @@ public class FormController extends BaseController {
 	
 	@GetMapping("findFormList")
 	public DataOutResponse findFormList(@RequestParam Integer page, @RequestParam Integer pageSize,
-                                        @RequestParam(required=false) String formName, @RequestParam Integer formType,
-										Integer shareStatus) {
-		return formInfoService.findFormList(page, pageSize, formName, formType,shareStatus);
+										String formName, Integer formType,
+										Integer formFormId, Integer shareStatus) {
+		return formInfoService.findFormList(page, pageSize, formName, formType,formFormId,shareStatus);
 	}
 	
 	@GetMapping("updateFormStatus")

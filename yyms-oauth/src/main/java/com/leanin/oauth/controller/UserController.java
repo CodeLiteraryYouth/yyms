@@ -4,16 +4,13 @@ import com.leanin.api.auth.UserControllerApi;
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
+import com.leanin.domain.vo.LoginRequestVo;
 import com.leanin.oauth.service.UserService;
-import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -75,6 +72,16 @@ public class UserController extends BaseController implements UserControllerApi{
     @GetMapping("/findUserByWorkNum")
     public AdminUserDto findUserByWorkNum(@RequestParam("username")String username){
         return userService.findUserByWorkNum(username);
+    }
+
+    @PostMapping("/updatePassWord")
+    public DataOutResponse updatePassWord(@RequestBody LoginRequestVo loginRequestVo){
+        return userService.updatePassWord(loginRequestVo);
+    }
+
+    @GetMapping("/sendCheckCode")
+    public DataOutResponse sendCheckCode(@RequestParam("phone") String phone){
+        return userService.sendCheckCode(phone);
     }
 
 

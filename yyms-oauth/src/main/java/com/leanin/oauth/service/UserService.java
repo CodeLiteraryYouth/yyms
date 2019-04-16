@@ -3,6 +3,7 @@ package com.leanin.oauth.service;
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.AdminUserVo;
+import com.leanin.domain.vo.LoginRequestVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -24,4 +25,8 @@ public interface UserService {
     DataOutResponse findAllUser();
 
     AdminUserDto findUserByWorkNum(String username);
+
+    DataOutResponse updatePassWord(LoginRequestVo loginRequestVo);
+
+    DataOutResponse sendCheckCode(String phone);
 }

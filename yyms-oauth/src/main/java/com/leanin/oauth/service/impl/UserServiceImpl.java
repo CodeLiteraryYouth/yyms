@@ -9,22 +9,23 @@ import com.leanin.domain.plan.response.AuthCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.AdminUserVo;
+import com.leanin.domain.vo.LoginRequestVo;
+import com.leanin.domain.vo.RoleInfoVo;
 import com.leanin.domain.vo.UserRoleVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.oauth.mapper.UserMapper;
 import com.leanin.oauth.mapper.UserRoleMapper;
 import com.leanin.oauth.service.UserService;
+import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.LyOauth2Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRoleMapper userRoleMapper;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest request) {
         LyOauth2Util lyOauth2Util = new LyOauth2Util();
@@ -96,7 +100,7 @@ public class UserServiceImpl implements UserService {
             return ReturnFomart.retParam(1010, "用户不存在");
         }
         List<Long> roleIds = adminUserVo.getRoleIds();
-        List<RoleInfoDto> roleList = user.getRoleList();
+        List<RoleInfoVo> roleList = user.getRoleList();
         LyOauth2Util.UserJwt userJwt = getUser(request);
         if (roleIds.size() > 0) {//判断是否有角色
             for (Long roleId : roleIds) {
@@ -113,8 +117,8 @@ public class UserServiceImpl implements UserService {
 //                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
             }
         }
-        for (RoleInfoDto roleInfoDto : roleList) {
-            if (!roleList.contains(roleInfoDto.getRoleId())) {
+        for (RoleInfoVo roleInfoDto : roleList) {
+            if (!roleIds.contains(roleInfoDto.getRoleId())) {
                 userRoleMapper.deleteByUidAndRid(user.getAdminId(), roleInfoDto.getRoleId());
             }
         }
@@ -159,5 +163,41 @@ public class UserServiceImpl implements UserService {
     @Override
     public AdminUserDto findUserByWorkNum(String username) {
         return userMapper.findUserByWorkNum(username);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updatePassWord(LoginRequestVo loginRequestVo) {
+        AdminUserVo user = userMapper.findUserId(loginRequestVo.getUserId());
+        if (user == null ){
+            return ReturnFomart.retParam(1010,"用户未注册");
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder =new BCryptPasswordEncoder();
+        boolean matches = bCryptPasswordEncoder.matches(loginRequestVo.getPassword(), user.getPassword());
+        if (!matches){//原密码不正确
+            return ReturnFomart.retParam(1016,"原密码错误，请输入正确的原密码");
+        }
+        String newPassword = bCryptPasswordEncoder.encode(loginRequestVo.getNewPassword());
+        user.setPassword(newPassword);
+        userMapper.updateUserPassword(newPassword,user.getAdminId());
+        return ReturnFomart.retParam(200,"密码修改成功");
+    }
+
+
+    @Override
+    public DataOutResponse sendCheckCode(String phone) {
+        Random random =new Random();
+        String checkCode= "";
+        for (int i = 0; i < 6; i++) {
+            int anInt = random.nextInt(10);
+            checkCode=checkCode+anInt;
+        }
+        Map map = CSMSUtils.sendMessage(checkCode, phone);
+        String msgStatus = (String) map.get("msg");
+        if (!msgStatus.equals("true")){
+            return ReturnFomart.retParam(3301,"验证码发送失败");
+        }
+//        stringRedisTemplate.
+        return null;
     }
 }

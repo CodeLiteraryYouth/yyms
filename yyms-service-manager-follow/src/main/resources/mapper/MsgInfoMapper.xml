@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.MsgInfoMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MsgInfoVo">
-    <id column="msg_id" jdbcType="VARCHAR" property="msgId" />
-    <result column="follow_form_id" jdbcType="BIGINT" property="followFormId" />
-    <result column="msg_name" jdbcType="VARCHAR" property="msgName" />
+    <id column="msg_id" property="msgId" />
+    <result column="follow_form_id" property="followFormId" />
+    <result column="msg_name" property="msgName" />
     <result column="msg_creater" property="msgCreater" />
-    <result column="msg_create_time" jdbcType="TIMESTAMP" property="msgCreateTime" />
-    <result column="msg_create_ward" jdbcType="VARCHAR" property="msgCreateWard" />
-    <result column="msg_status" jdbcType="INTEGER" property="msgStatus" />
-    <result column="area_coe" jdbcType="VARCHAR" property="areaCoe" />
+    <result column="msg_create_time"  property="msgCreateTime" />
+    <result column="msg_create_ward" property="msgCreateWard" />
+    <result column="msg_status" property="msgStatus" />
+    <result column="area_coe" property="areaCoe" />
     <result column="share_status" property="shareStatus" />
+    <result column="msg_text" property="msgText" />
     <association property="createrName" column="msg_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
@@ -36,12 +37,13 @@
   <sql id="Blob_Column_List">
     msg_text
   </sql>
-  <select id="findMsgListByTypeId" resultMap="ResultMapWithBLOBs">
+  <select id="findMsgListByTypeId" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_msg_info where msg_status>=0
+    from leanin_msg_info
+    where msg_status>=0
     <if test="typeId != null">
      	and follow_form_id=#{typeId}
     </if>

@@ -3,10 +3,12 @@ package com.leanin.mapper;
 import com.leanin.domain.dto.CommonFormInfoDto;
 import com.leanin.domain.vo.FormInfoExt;
 import com.leanin.domain.vo.FormInfoVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface FormInfoMapper {
 
 	/**
@@ -38,7 +40,7 @@ public interface FormInfoMapper {
 	 * @param formType
 	 * @return
 	 */
-	List<FormInfoVo> findFormList(@Param("formName") String formName, @Param("formType") Integer formType,@Param("shareStatus") Integer shareStatus);
+	List<FormInfoVo> findFormList(@Param("formName") String formName, @Param("formType") Integer formType,@Param("formFormId") Integer formFormId,@Param("shareStatus") Integer shareStatus);
 	/**
 	 * 修改表单状态
 	 * @param formNum
