@@ -60,6 +60,7 @@ public class ReturnFomart {
         messageMap.put("3201","角色不存在");
 
         messageMap.put("3301","验证码发送失败");
+        messageMap.put("3302","请不要频繁获取验证码");
 
 
     }
