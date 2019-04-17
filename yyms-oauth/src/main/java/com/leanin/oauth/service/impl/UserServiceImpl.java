@@ -140,9 +140,9 @@ public class UserServiceImpl implements UserService {
 //                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
             }
         }
-        for (RoleInfoVo roleInfoDto : roleList) {
-            if (!roleIds.contains(roleInfoDto.getRoleId())) {
-                userRoleMapper.deleteByUidAndRid(user.getAdminId(), roleInfoDto.getRoleId());
+        for (RoleInfoVo roleInfoVo : roleList) {
+            if (!roleIds.contains(roleInfoVo.getRoleId())) {
+                userRoleMapper.deleteByUidAndRid(user.getAdminId(), roleInfoVo.getRoleId());
             }
         }
 

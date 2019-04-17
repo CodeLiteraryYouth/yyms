@@ -22,7 +22,7 @@
         <module>yyms-gateway</module>
         <module>yyms-service-mq</module>
         <module>yyms-service-wechat</module>
-        <module>yyms-service-user</module>
+        <module>yyms-service-oauth-center</module>
     </modules>
 
     <parent>
