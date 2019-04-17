@@ -57,5 +57,11 @@ ribbon:
   OkToRetryOnAllOperations: false  #对所有操作请求都进行重试，如果是get则可以，如果是post，put等操作没有实现幂等的情况下是很危险的,所以设置为false
   ConnectTimeout: 60000  #请求连接的超时时间
   ReadTimeout: 60000 #请求处理的超时时间
+csms:
+  accessKeyId: 18556531536
+  accessKeySecret: 723c422c49c7c3a6d1c0f7953
+  templateUrl: http://api.feige.ee/SmsService/Template
+  signId: 86057
+  templateId: 63236
 
 

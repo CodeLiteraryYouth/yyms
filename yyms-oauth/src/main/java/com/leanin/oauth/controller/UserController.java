@@ -79,6 +79,11 @@ public class UserController extends BaseController implements UserControllerApi{
         return userService.updatePassWord(loginRequestVo);
     }
 
+    @GetMapping("/updatePhone")
+    public DataOutResponse updatePhone(@RequestParam("userId") Long userId,@RequestParam("phone")String phone,@RequestParam("checkCode")String checkCode){
+        return userService.updatePhone(userId,phone,checkCode);
+    }
+
     @GetMapping("/sendCheckCode")
     public DataOutResponse sendCheckCode(@RequestParam("phone") String phone){
         return userService.sendCheckCode(phone);

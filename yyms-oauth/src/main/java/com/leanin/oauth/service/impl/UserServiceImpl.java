@@ -3,38 +3,58 @@ package com.leanin.oauth.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.leanin.domain.dao.UserDao;
 import com.leanin.domain.dto.AdminUserDto;
-import com.leanin.domain.dto.RoleInfoDto;
-import com.leanin.domain.plan.response.AuthCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.AdminUserVo;
 import com.leanin.domain.vo.LoginRequestVo;
 import com.leanin.domain.vo.RoleInfoVo;
 import com.leanin.domain.vo.UserRoleVo;
-import com.leanin.exception.ExceptionCast;
 import com.leanin.oauth.mapper.UserMapper;
 import com.leanin.oauth.mapper.UserRoleMapper;
 import com.leanin.oauth.service.UserService;
-import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.LyOauth2Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
+
+    @Value("${csms.accessKeyId}")
+    String accessKeyId;
+
+    @Value("${csms.accessKeySecret}")
+    String accessKeySecret;
+
+    @Value("${csms.templateUrl}")
+    String requestUrl;
+
+    @Value("${csms.signId}")
+    long signId;
+
+    @Value("${csms.templateId}")
+    long templateId;
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @Autowired
     UserRoleMapper userRoleMapper;
@@ -193,9 +213,10 @@ public class UserServiceImpl implements UserService {
         String checkStr = stringRedisTemplate.opsForValue().get(phone);
         Map check = new HashMap();
         if (checkStr != null) {//获取缓存中的验证码
-            check = JSON.parseObject(checkStr,Map.class);
+            check = JSON.parseObject(checkStr, Map.class);
             Integer count = Integer.parseInt(check.get("count").toString());
             if (count > 3) {
+                log.info("异常手机号：{}",phone);
                 return ReturnFomart.retParam(3302, "请不要频繁获取验证码");
             }
             check.put("count", count + 1);
@@ -209,14 +230,73 @@ public class UserServiceImpl implements UserService {
             int anInt = random.nextInt(10);
             checkCode = checkCode + anInt;
         }
-        Map map = CSMSUtils.sendMessage(checkCode, phone);
-        String msgStatus = (String) map.get("msg");
-        if (!msgStatus.equals("true")) {
+        boolean flag = sendmsg(checkCode, phone);
+        if (!flag) {
             return ReturnFomart.retParam(3301, "验证码发送失败");
         }
         check.put("code", checkCode);
         //存对应手机号发送的验证码到缓存中 设置过期时间 为60秒
-        stringRedisTemplate.opsForValue().set(phone,JSON.toJSONString(check),60, TimeUnit.SECONDS);
-        return ReturnFomart.retParam(200,"验证码发送成功");
+        stringRedisTemplate.opsForValue().set(phone, JSON.toJSONString(check), 300, TimeUnit.SECONDS);
+        return ReturnFomart.retParam(200, "验证码发送成功");
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updatePhone(Long userId, String phone, String checkCode) {
+        String string = stringRedisTemplate.opsForValue().get(phone);
+        if (string == null ){
+            return ReturnFomart.retParam(3303,"验证码已失效，请重新获取验证码");
+        }
+        Map map = JSON.parseObject(string, Map.class);
+        String code = (String) map.get("code");
+        if (!code.equals(checkCode)){
+            return ReturnFomart.retParam(3304,"请输入正确的验证码");
+        }
+        AdminUserVo user = userMapper.findUserId(userId);
+        if (user == null){
+            return ReturnFomart.retParam(1010,"用户未注册");
+        }
+        user.setPhone(phone);
+        userMapper.updateUser(user);
+        return ReturnFomart.retParam(200,"手机号修改成功");
+    }
+
+
+    private boolean sendmsg(String content, String mobile) {
+        try {
+
+//            HttpClient httpClient = new HttpClient(requestUrl);
+            Map<String,Object> dataMap = new HashMap<>();
+            dataMap.put("Account", accessKeyId);
+            dataMap.put("Pwd", accessKeySecret);
+            dataMap.put("Content", content);
+            dataMap.put("Mobile", mobile);
+            dataMap.put("SignId", signId);
+            dataMap.put("TemplateId", templateId);
+            //请求头
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity entity = new HttpEntity(dataMap, headers);
+            ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(requestUrl, entity, String.class);
+            String result = stringResponseEntity.getBody();
+//            httpClient.setHttps(false);
+//            httpClient.setParameter(dataMap);
+//            httpClient.post();
+
+//            String result = httpClient.getContent();
+            Map map = JSON.parseObject(result, Map.class);
+            String message = (String) map.get("Message");
+            System.out.println(map);
+            if (message.equals("OK")){
+                log.info("验证码发送成功：{}","手机号："+mobile+"验证码："+content);
+                return true;
+            }else {
+                log.info("验证码发送失败：{}","手机号："+mobile+"验证码："+content);
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("短信发送的异常：{}",e.getMessage());
+            return false;
+        }
     }
 }

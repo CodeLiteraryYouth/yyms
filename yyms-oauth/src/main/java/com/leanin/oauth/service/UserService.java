@@ -29,4 +29,6 @@ public interface UserService {
     DataOutResponse updatePassWord(LoginRequestVo loginRequestVo);
 
     DataOutResponse sendCheckCode(String phone);
+
+    DataOutResponse updatePhone(Long userId, String phone, String checkCode);
 }

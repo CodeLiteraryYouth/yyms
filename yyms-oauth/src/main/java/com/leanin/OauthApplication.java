@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan("com.leanin.api") //扫描工具类
 @ComponentScan("com.leanin.oauth") //
 public class OauthApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(OauthApplication.class, args);
     }
