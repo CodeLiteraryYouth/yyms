@@ -148,7 +148,7 @@ public class TestController extends BaseController implements TestApi  {
     public void bc(){
         //$2a$10$bN2SGsAWI4v3tCgqQx2/F.VNBKSGchE.qhpml6nyNkgfJJhsYbyUa
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String password = bCryptPasswordEncoder.encode("leanin9527");
+        String password = bCryptPasswordEncoder.encode("d8f8c8d302982d6d540d10628749db25");
         System.out.println(password);
 
     }

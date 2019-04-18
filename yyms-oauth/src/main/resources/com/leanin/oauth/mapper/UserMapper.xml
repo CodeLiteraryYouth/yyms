@@ -176,6 +176,7 @@
         </trim>
     </insert>
 
+
     <update id="updateUser">
         UPDATE leanin_admin_user
         <set>
@@ -226,6 +227,16 @@
             </if>
         </set>
         WHERE admin_id = #{adminUserVo.adminId}
+    </update>
+
+    <update id="updateUserPassword">
+        UPDATE leanin_admin_user
+        <set>
+            <if test="password != null">
+                admin_password = #{password}
+            </if>
+        </set>
+        WHERE admin_id = #{userId}
     </update>
 
     <select id="findUserByWorkNum" resultMap="DTO_Result_Map">

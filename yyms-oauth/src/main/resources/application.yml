@@ -46,8 +46,8 @@ eureka:
     registerWithEureka: true #服务注册开关
     fetchRegistry: true #服务发现开关
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-#      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
+#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/   #浪潮
   instance:
     prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
     instance-id: ${spring.application.name}:${server.port} #指定实例id
@@ -57,5 +57,11 @@ ribbon:
   OkToRetryOnAllOperations: false  #对所有操作请求都进行重试，如果是get则可以，如果是post，put等操作没有实现幂等的情况下是很危险的,所以设置为false
   ConnectTimeout: 60000  #请求连接的超时时间
   ReadTimeout: 60000 #请求处理的超时时间
+csms:
+  accessKeyId: 18556531536
+  accessKeySecret: 723c422c49c7c3a6d1c0f7953
+  templateUrl: http://api.feige.ee/SmsService/Template
+  signId: 86057
+  templateId: 63236
 
 

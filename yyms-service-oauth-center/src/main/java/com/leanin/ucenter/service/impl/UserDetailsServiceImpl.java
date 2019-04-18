@@ -1,10 +1,9 @@
-package com.leanin.oauth.service.impl;
+package com.leanin.ucenter.service.impl;
 
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.vo.MenuPermissionVo;
 import com.leanin.domain.vo.UserJwt;
-import com.leanin.oauth.mapper.MenuMapper;
-import com.leanin.oauth.mapper.UserMapper;
+import com.leanin.ucenter.client.UserClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
@@ -28,12 +26,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     ClientDetailsService clientDetailsService;
 
-    @Autowired
+/*    @Autowired
     UserMapper userMapper;
 
     @Autowired
-    MenuMapper menuMapper;
+    MenuMapper menuMapper;*/
 
+    @Autowired
+    UserClient userClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -53,13 +53,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
         //根据数据库查询用户信息
-        AdminUserDto adminUserDto = userMapper.findUserByWorkNum(username);
+//        AdminUserDto adminUserDto = userMapper.findUserByWorkNum(username);
+        AdminUserDto adminUserDto = userClient.findUserByWorkNum(username);
         if (adminUserDto == null) {
             //返回空给spring security表示用户不存在
             return null;
         }
         //根据用户id 获取用户权限
-        List<MenuPermissionVo> menuPermissionDtos = menuMapper.findMenuListByUserId(adminUserDto.getAdminId());
+        List<MenuPermissionVo> menuPermissionDtos = userClient.findMenuListByUserId(adminUserDto.getAdminId());
         adminUserDto.setMenuPermissionVoList(menuPermissionDtos);//权限暂时用静态的
 
         //取出正确密码（hash值）

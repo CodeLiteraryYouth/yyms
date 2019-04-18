@@ -1,4 +1,4 @@
-package com.leanin.oauth.config;
+package com.leanin.ucenter.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.bootstrap.encrypt.KeyProperties;

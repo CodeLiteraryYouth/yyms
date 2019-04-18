@@ -37,6 +37,7 @@ public class ReturnFomart {
         messageMap.put("1013", "用户帐号冻结");
         messageMap.put("1014", "用户信息编辑失败");
         messageMap.put("1015", "用户信息失效，请重新获取");
+        messageMap.put("1016", "原密码错误");
 
         messageMap.put("2010", "缺少参数或值为空");
         messageMap.put("2011", "数据不存在");
@@ -57,6 +58,12 @@ public class ReturnFomart {
         messageMap.put("3102","权限不存在");
 
         messageMap.put("3201","角色不存在");
+
+        messageMap.put("3301","验证码发送失败");
+        messageMap.put("3302","请不要频繁获取验证码");
+        messageMap.put("3303","验证码已失效，请重新获取验证码");
+        messageMap.put("3304","请输入正确的验证码");
+
 
     }
     public static DataOutResponse retParam(int status,Object data) {

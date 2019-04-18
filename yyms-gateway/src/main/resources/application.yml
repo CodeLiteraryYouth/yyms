@@ -35,13 +35,18 @@ zuul:
       serviceId: yyms-oauth
       sensitiveHeaders:
       strip-prefix: true
+    yyms-service-oauth-center:
+      path: /ucenter/**
+      serviceId: yyms-service-oauth-center
+      sensitiveHeaders:
+      strip-prefix: true
 eureka:
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
-#      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
+#      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
+      defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮
   instance:
     prefer-ip-address:  true
     instance-id: ${spring.application.name}:${server.port}

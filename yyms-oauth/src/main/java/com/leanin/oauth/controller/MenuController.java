@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/menu")
 public class MenuController implements MenuControllerApi{
@@ -44,4 +46,8 @@ public class MenuController implements MenuControllerApi{
     }
 
 
+    @GetMapping("/findMenuListByUserId")
+    public List<MenuPermissionVo> findMenuListByUserId(@RequestParam("userId") Long userId){
+        return menuService.findMenuListByUserId(userId);
+    }
 }

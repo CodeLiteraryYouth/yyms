@@ -1,4 +1,4 @@
-package com.leanin.oauth.service;
+package com.leanin.ucenter.service;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.plan.response.AuthCode;
@@ -98,7 +98,7 @@ public class AuthService {
     private AuthToken applyToken(String username, String password, String clientId, String clientSecret){
         //从eureka中获取认证服务的地址（因为spring security在认证服务中）
         //从eureka中获取认证服务的一个实例的地址
-        ServiceInstance serviceInstance = loadBalancerClient.choose("yyms-oauth");
+        ServiceInstance serviceInstance = loadBalancerClient.choose("yyms-service-oauth-center");
         //此地址就是http://ip:port
         URI uri = serviceInstance.getUri();
         //令牌申请的地址 http://localhost:40400/auth/oauth/token

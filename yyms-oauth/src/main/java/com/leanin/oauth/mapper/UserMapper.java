@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface UserMapper extends BaseMapper<UserDao> {
+public interface UserMapper /*extends BaseMapper<UserDao>*/ {
 
     AdminUserDto findUserByWorkNum(@Param("workNum") String workNum);
 
@@ -28,4 +28,5 @@ public interface UserMapper extends BaseMapper<UserDao> {
 
     List<AdminUserVo> findAllUser();
 
+    void updateUserPassword(@Param("password") String newPassword,@Param("userId") Long userId);
 }

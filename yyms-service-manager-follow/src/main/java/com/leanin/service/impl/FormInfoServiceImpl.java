@@ -29,10 +29,10 @@ public class FormInfoServiceImpl implements FormInfoService {
 
 	
 	@Override
-	public DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer shareStatus) {
+	public DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer formFormId,Integer shareStatus) {
 		log.info("表单的单名为:"+formName+"-"+"表单的类型为:"+formType);
 		PageHelper.startPage(page, pageSize);
-		List<FormInfoVo> formList=formInfoMapper.findFormList(formName, formType,shareStatus);
+		List<FormInfoVo> formList=formInfoMapper.findFormList(formName, formType,formFormId,shareStatus);
 		PageInfo pageInfo=new PageInfo<>(formList);
 		return ReturnFomart.retParam(200, pageInfo);
 	}

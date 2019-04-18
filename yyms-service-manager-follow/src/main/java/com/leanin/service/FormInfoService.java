@@ -22,7 +22,7 @@ public interface FormInfoService {
 	 * @param formType
 	 * @return
 	 */
-	DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer shareStatus);
+	DataOutResponse findFormList(Integer page, Integer pageSize, String formName, Integer formType,Integer formFormId,Integer shareStatus);
 
 	/**
 	 * 根绝分类ID查询表单信息

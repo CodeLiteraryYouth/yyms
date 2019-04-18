@@ -1,6 +1,7 @@
 package com.leanin.domain.dto;
 
 import com.leanin.domain.vo.MenuPermissionVo;
+import com.leanin.domain.vo.RoleInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +24,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminUserDto /*implements UserDetails*/ {
+public class AdminUserDto implements Serializable {
 
 	private Long adminId;				//管理员ID
 
@@ -57,7 +60,7 @@ public class AdminUserDto /*implements UserDetails*/ {
 
 	private Integer userType;			//用户类型
 
-	private List<RoleInfoDto> roleList;	//该用户的角色信息
+	private List<RoleInfoVo> roleList;	//该用户的角色信息
 
 	private List<MenuPermissionVo> menuPermissionVoList; //权限集合
 

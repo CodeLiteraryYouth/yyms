@@ -2,20 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.FormInfoMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FormInfoVo">
-    <id column="form_num" jdbcType="VARCHAR" property="formNum" />
-    <result column="form_creater" jdbcType="BIGINT" property="formCreater" />
-    <result column="form_create_time" jdbcType="TIMESTAMP" property="formCreateTime" />
-    <result column="form_form_id" jdbcType="BIGINT" property="formFormId" />
-    <result column="form_function" jdbcType="VARCHAR" property="formFunction" />
-    <result column="form_refer" jdbcType="VARCHAR" property="formRefer" />
-    <result column="form_name" jdbcType="VARCHAR" property="formName" />
-    <result column="form_title" jdbcType="LONGVARCHAR" property="formTitle" />
-    <result column="form_bottom" jdbcType="LONGVARCHAR" property="formBottom" />
-    <result column="form_status" jdbcType="INTEGER" property="formStatus" />
-    <result column="creater_ward" jdbcType="VARCHAR" property="createrWard" />
-    <result column="form_type" jdbcType="INTEGER" property="formType" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <id column="form_num"  property="formNum" />
+    <result column="form_creater"  property="formCreater" />
+    <result column="form_create_time" property="formCreateTime" />
+    <result column="form_form_id" property="formFormId" />
+    <result column="form_function"  property="formFunction" />
+    <result column="form_refer" property="formRefer" />
+    <result column="form_name" property="formName" />
+    <result column="form_title" property="formTitle" />
+    <result column="form_bottom" property="formBottom" />
+    <result column="form_status" property="formStatus" />
+    <result column="creater_ward" property="createrWard" />
+    <result column="form_type" property="formType" />
+    <result column="area_code" property="areaCode" />
     <result column="share_status" property="shareStatus" />
+    <result column="form_text" property="formText" />
     <association property="createrName" column="form_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
@@ -42,7 +43,7 @@
 
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leanin.domain.vo.FormInfoVo">
-    <result column="form_text" jdbcType="LONGVARCHAR" property="formText" />
+    <result column="form_text" property="formText" />
   </resultMap>
   
   <resultMap id="CommonResult" type="com.leanin.domain.dto.CommonFormInfoDto" >
@@ -90,17 +91,7 @@
   	f.form_function, f.form_refer, f.form_name, f.form_title, f.form_bottom,f.share_status,
     f.form_status, f.creater_ward, f.form_type, f.area_code, f.form_text
   </sql>
-  <select id="findFormListByTypeId" resultMap="ResultMapWithBLOBs">
-  	select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from leanin_form_info
-    where form_status>=0 and form_form_id=#{formTypeId}
-    <if test="formName !=null">
-    	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
-    </if>
-  </select>
+
   <select id="findFormListByWardCode" resultMap="ResultMapWithBLOBs">
   	select 
     <include refid="Base_Column_List" />
@@ -125,16 +116,36 @@
       and share_status = #{shareStatus}
     </if>
   </select>
-  <select id="findFormList" resultMap="ResultMapWithBLOBs">
-  	select 
+
+  <select id="findFormListByTypeId" resultMap="ResultMapWithBLOBs">
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from leanin_form_info
-    where form_status>=0
-    and form_type =#{formType,jdbcType=INTEGER}
+    where form_status >= 0
+    and form_form_id=#{formTypeId}
     <if test="formName !=null">
-    	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+      and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <select id="findFormList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM
+    leanin_form_info
+    WHERE form_status >= 0
+    <if test="formType != null">
+      AND form_type = #{formType}
+    </if>
+    <if test="formName != null">
+      AND form_name LIKE CONCAT('%', #{formName}, '%')
+    </if>
+    <if test="formFormId != null">
+      and form_form_id = #{formFormId}
     </if>
     <if test="shareStatus != null">
       and share_status = #{shareStatus}
