@@ -32,8 +32,8 @@ auth:
   tokenValiditySeconds: 1200  #token存储到redis的过期时间
   clientId: LeaninWebApp
   clientSecret: LeaninWebApp
-#  cookieDomain: http://sf-system.leanin.com.cn #网址域名
-  cookieDomain: localhost #网址域名
+  cookieDomain: leanin.com.cn #网址域名
+#  cookieDomain: localhost #网址域名
   cookieMaxAge: -1
 encrypt:
   key-store:

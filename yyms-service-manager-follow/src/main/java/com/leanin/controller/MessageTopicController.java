@@ -38,7 +38,7 @@ public class MessageTopicController extends BaseController {
 	@PostMapping("addMsgTopic")
 	public DataOutResponse addMsgTopic(@RequestBody MessageTopicVo messageTopic) {
 		LyOauth2Util.UserJwt userJwt = getUser(request);
-		messageTopic.setCreaterName(userJwt.getId());
+		messageTopic.setMsgTopicCreater(userJwt.getId());
 		messageTopic.setMsgTopicCreaterWard(userJwt.getWardCode());
 		return messageTopicService.addMsgTopic(messageTopic);
 	}

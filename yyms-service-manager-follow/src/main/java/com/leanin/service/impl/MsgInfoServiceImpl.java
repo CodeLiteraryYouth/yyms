@@ -112,7 +112,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			case 4://短信主题
 				msgPlan(longs,formId);
 				break;
-			case 5://在线宣教
+			case 5://普通短信发送
+				break;
+			case 6:
 				break;
 		}
 
@@ -130,7 +132,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			edu.setEduId(null);
 //			edu.setSendStatus(1);
 			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
-			String param = "http://192.168.0.123:8081/login#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
+			String param = "http://sf-system.leanin.com.cn/login#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
 
 			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
 			String msgStatus = (String) map.get("msg");
@@ -156,13 +158,13 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			Map map = new HashMap();
 			String param = "";
 			if (planInfoVo.getPlanType() == 1){//随访计划
-				param = "http://192.168.0.123:8081/login#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
+				param = "http://sf-system.leanin.com.cn/login#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
 				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "18556531536");
 			}else {//宣教
 				if (formId != null){
-					param = "http://192.168.0.123:8081/login#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
+					param = "http://sf-system.leanin.com.cn/login#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
 				}else {
-					param = "http://192.168.0.123:8081/login#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
+					param = "http://sf-system.leanin.com.cn/login#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
 				}
 				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13675853622");
 			}
@@ -187,7 +189,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
-			String param = "http://192.168.0.123:8081/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
+			String param = "http://sf-system.leanin.com.cn/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
 			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,"13675853622" /*satisfyPatientVo.getPatientPhone()*/);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){

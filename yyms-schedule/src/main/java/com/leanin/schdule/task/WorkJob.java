@@ -128,9 +128,9 @@ public class WorkJob {
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
         String param = "";
         if (planInfo.getPlanType() == 1){//随访
-            param = "http://192.168.0.123:8081/login#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/login#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
         }else{//宣教
-            param = "http://192.168.0.123:8081/login#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/login#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
         }
         Map map = CSMSUtils.sendMessage(msg+param, "13817165550");//patientDto.getPatientPhone()
         //设置病人发送状态
@@ -197,7 +197,7 @@ public class WorkJob {
                     }
                 }else{
                     if (satisfyPatientVo.getSendType() == 1){//未发送
-                        String param = "http://192.168.0.123:8081/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
+                        String param = "http://sf-system.leanin.com.cn/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
                         Map map = CSMSUtils.sendMessage(msgText+param, "13817165550"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
                         log.info("满意度短信：{}",msgText+param,satisfyPatientVo.getPatientPhone(),msgStatus,satisfyPlanVo.getSatisfyNum());

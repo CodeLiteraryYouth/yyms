@@ -34,7 +34,7 @@ public class MessageTopicVo {
 
     private Long msgTopicCreater;	//短信主题创建人
 
-    private Long createrName;     //创建人名称
+    private String createrName;     //创建人名称
 
     private String msgTopicCreaterWard;  //短信主题创建人所属科室
 

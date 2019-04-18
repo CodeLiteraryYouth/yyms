@@ -30,7 +30,7 @@ public class PlanPatientController extends BaseController {
      * @param pageSize
      * @return
      */
-    @PreAuthorize("hasAnyAuthority('root','root1')")
+//    @PreAuthorize("hasAnyAuthority('root')")
     @GetMapping("findPlanPatientListByPlanId")
     public DataOutResponse findPlanPatientListByPlanId(@RequestParam(required=false) String planNum, @RequestParam(required=false) Integer planPatsStatus,
                                                        @RequestParam(required=false) Integer currentPage, @RequestParam(required=false) Integer pageSize,

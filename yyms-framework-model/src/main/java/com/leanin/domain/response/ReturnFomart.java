@@ -65,6 +65,12 @@ public class ReturnFomart {
         messageMap.put("3304","请输入正确的验证码");
 
 
+        messageMap.put("3401","绑定患者失败");
+        messageMap.put("3402","信息已绑定，无需重复绑定");
+
+
+
+
     }
     public static DataOutResponse retParam(int status,Object data) {
         DataOutResponse json = new DataOutResponse(status, messageMap.get(String.valueOf(status)), data);
