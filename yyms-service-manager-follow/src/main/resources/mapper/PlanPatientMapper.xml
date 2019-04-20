@@ -96,7 +96,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_plan_patient
-        WHERE patient_id=#{patientId}
+        WHERE patient_status = 1
+        and patient_id=#{patientId}
     </select>
 
     <select id="findUnfinishCount" resultType="java.lang.Integer">
@@ -444,6 +445,14 @@
         )
         GROUP BY lpp.plan_pats_status,MONTH(lpp.next_date)
         ORDER BY MONTH(lpp.next_date) ASC
+    </select>
+    <select id="findPlanPatientByPIdAndPNum" resultMap="BASE_MAP">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM leanin_plan_patient
+        WHERE patient_status = 1
+        and patient_id=#{patientId}
+        and plan_num = #{planNum}
     </select>
 
 

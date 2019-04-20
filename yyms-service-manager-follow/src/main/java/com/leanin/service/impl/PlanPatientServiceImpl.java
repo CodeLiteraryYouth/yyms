@@ -18,6 +18,7 @@ import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -475,6 +476,18 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         }
         planPatientMapper.updatePlanPatient(patient);
         return ReturnFomart.retParam(200, "保存成功");
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updateStatus(Long planPatientId, Integer status) {
+        PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(planPatientId);
+        if (planPatient == null){
+            return ReturnFomart.retParam(2011,"数据不存在");
+        }
+        planPatient.setPlanPatsStatus(status);
+        planPatientMapper.updatePlanPatient(planPatient);
+        return ReturnFomart.retParam(200,planPatient);
     }
 
 

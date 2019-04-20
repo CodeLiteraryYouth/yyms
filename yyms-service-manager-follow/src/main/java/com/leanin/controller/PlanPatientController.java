@@ -92,6 +92,18 @@ public class PlanPatientController extends BaseController {
         return planPatientService.updatePlanPatient(patientPlanId,followType,handleSugges,formRecordVo);
     }
 
+    /**
+     * 修改计划患者状态
+     * @param planPatientId  计划患者主键
+     * @param status 状态
+     * @return
+     */
+    @GetMapping("updateStatus")
+    public DataOutResponse updateStatus(@RequestParam("planPatientId") Long planPatientId,@RequestParam("status")Integer status){
+        return planPatientService.updateStatus(planPatientId,status);
+    }
+
+
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
         LyOauth2Util lyOauth2Util = new LyOauth2Util();

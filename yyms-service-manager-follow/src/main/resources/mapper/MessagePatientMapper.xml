@@ -2,24 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.MessagePatientMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessagePatientVo">
-    <id column="patient_msg_id" jdbcType="BIGINT" property="patientMsgId" />
-    <result column="msg_topic_id" jdbcType="VARCHAR" property="msgTopicId" />
-    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
-    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
-    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
-    <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone" />
-    <result column="patient_id_card" jdbcType="VARCHAR" property="patientIdCard" />
-    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="send_type" jdbcType="INTEGER" property="sendType" />
+    <id column="patient_msg_id"  property="patientMsgId" />
+    <result column="msg_topic_id"  property="msgTopicId" />
+    <result column="patient_id"  property="patientId" />
+    <result column="patient_name"  property="patientName" />
+    <result column="patient_sex"  property="patientSex" />
+    <result column="patient_age"  property="patientAge" />
+    <result column="patient_phone"  property="patientPhone" />
+    <result column="patient_id_card"  property="patientIdCard" />
+    <result column="patient_type"  property="patientType" />
+    <result column="area_code"  property="areaCode" />
+    <result column="send_type"  property="sendType" />
     <result column="id_card"  property="idCard" />
     <result column="inhos_no"  property="inhosNo" />
     <result column="open_id" property="openId" />
+    <result column="patient_status" property="patientStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     patient_msg_id, msg_topic_id, patient_id, patient_name, patient_sex, patient_age, 
-    patient_phone, patient_id_card, patient_type, area_code,send_type,id_card,inhos_no,open_id
+    patient_phone, patient_id_card, patient_type, area_code,send_type,id_card,inhos_no,open_id,
+    patient_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -58,9 +60,16 @@
     and patient_phone = #{phoneNum}
     and id_card = #{idCard}
   </select>
+    <select id="findByPIdAndPnum" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from leanin_msg_patient
+      where msg_topic_id = #{planNum}
+      and patient_id = #{patientId}
+    </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </delete>
@@ -159,50 +168,54 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.leanin.domain.vo.MessagePatientVo">
+
+  <update id="updateByPrimaryKeySelective" >
     update leanin_msg_patient
     <set>
-      <if test="msgTopicId != null">
-        msg_topic_id = #{msgTopicId,jdbcType=VARCHAR},
+      <if test="record.msgTopicId != null">
+        msg_topic_id = #{record.msgTopicId},
       </if>
-      <if test="patientId != null">
-        patient_id = #{patientId,jdbcType=BIGINT},
+      <if test="record.patientId != null">
+        patient_id = #{record.patientId},
       </if>
-      <if test="patientName != null">
-        patient_name = #{patientName,jdbcType=VARCHAR},
+      <if test="record.patientName != null">
+        patient_name = #{record.patientName},
       </if>
-      <if test="patientSex != null">
-        patient_sex = #{patientSex,jdbcType=INTEGER},
+      <if test="record.patientSex != null">
+        patient_sex = #{record.patientSex},
       </if>
-      <if test="patientAge != null">
-        patient_age = #{patientAge,jdbcType=INTEGER},
+      <if test="record.patientAge != null">
+        patient_age = #{record.patientAge},
       </if>
-      <if test="patientPhone != null">
-        patient_phone = #{patientPhone,jdbcType=VARCHAR},
+      <if test="record.patientPhone != null">
+        patient_phone = #{record.patientPhone},
       </if>
-      <if test="patientIdCard != null">
-        patient_id_card = #{patientIdCard,jdbcType=VARCHAR},
+      <if test="record.patientIdCard != null">
+        patient_id_card = #{record.patientIdCard},
       </if>
-      <if test="patientType != null">
-        patient_type = #{patientType,jdbcType=INTEGER},
+      <if test="record.patientType != null">
+        patient_type = #{record.patientType},
       </if>
-      <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
+      <if test="record.areaCode != null">
+        area_code = #{record.areaCode},
       </if>
-      <if test="sendType != null">
-        send_type = #{sendType,jdbcType=INTEGER},
+      <if test="record.sendType != null">
+        send_type = #{record.sendType},
       </if>
-      <if test="idCard != null">
-        id_card = #{idCard},
+      <if test="record.idCard != null">
+        id_card = #{record.idCard},
       </if>
-      <if test="inhosNo != null">
-        inhos_no =#{inhosNo},
+      <if test="record.inhosNo != null">
+        inhos_no =#{record.inhosNo},
       </if>
-      <if test="openId != null">
-        open_id =#{openId},
+      <if test="record.openId != null">
+        open_id =#{record.openId},
+      </if>
+      <if test="record.patientStatus != null">
+        patient_status =#{record.patientStatus},
       </if>
     </set>
-    where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
+    where patient_msg_id = #{record.patientMsgId}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.leanin.domain.vo.MessagePatientVo">
     update leanin_msg_patient

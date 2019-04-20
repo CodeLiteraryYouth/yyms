@@ -38,4 +38,6 @@ public class PatientInfoController {
 	public DataOutResponse findPatientById(@RequestParam String patientId) {
 		return patientInfoService.findPatientById(patientId);
 	}
+
+
 }

@@ -2,9 +2,11 @@ package com.leanin.service;
 
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.MessageRecord;
 import com.leanin.domain.vo.MsgInfoVo;
 import com.leanin.domain.vo.OnlineEdu;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface MsgInfoService {
@@ -45,7 +47,10 @@ public interface MsgInfoService {
 	DataOutResponse updateMsgInfo(MsgInfoVo record);
 
 	//手动发送短信
-    DataOutResponse sendMessage(String[] longs,Integer type,String formId);
+    DataOutResponse sendMessage(String[] longs,Integer type,String formId,String msgId);
 
     DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus);
+
+	DataOutResponse sendCommonMsg(List<MessageRecord> messageRecord, HttpServletRequest request);
+
 }

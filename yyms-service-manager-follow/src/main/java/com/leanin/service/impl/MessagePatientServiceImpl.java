@@ -35,4 +35,12 @@ public class MessagePatientServiceImpl implements MessagePatientService {
         dataMap.put("list",page.getResult());
         return ReturnFomart.retParam(200, dataMap);
     }
+
+    @Override
+    public DataOutResponse updateStatus(Long planPatientId, Integer status) {
+        MessagePatientVo messagePatientVo = messagePatientMapper.findById(planPatientId);
+        messagePatientVo.setPatientStatus(status);
+        messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
+        return ReturnFomart.retParam(200,messagePatientVo);
+    }
 }

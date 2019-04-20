@@ -129,6 +129,18 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
         return ReturnFomart.retParam(200,"操作成功");
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updateStatus(Long planPatientId, Integer status) {
+        SatisfyPatientVo satisfyPatient = satisfyPatientMapper.findByStyPatId(planPatientId);
+        if (satisfyPatient == null){
+            return ReturnFomart.retParam(2011,"数据不存在");
+        }
+        satisfyPatient.setFinishType(status);
+        satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatient);
+        return ReturnFomart.retParam(200,satisfyPatient);
+    }
+
     private Date setDate(SatisfyPlanVo satisfyPlan,Date lastDate){
         String rulesText = satisfyPlan.getRulesText();
         Map rulesMap = JSON.parseObject(rulesText, Map.class);

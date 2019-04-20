@@ -391,9 +391,11 @@
         select
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
-        where satisfy_plan_num = #{satisfyPlanNum}
+        where patient_status = 0
+        <if test="satisfyPlanNum != null">
+            satisfy_plan_num = #{satisfyPlanNum}
+        </if>
         and patient_id = #{patientId}
-        and patient_status = 0
     </select>
 
     <select id="findCountByParam" resultMap="CountMap">

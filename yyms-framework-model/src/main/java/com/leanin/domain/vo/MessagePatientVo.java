@@ -44,4 +44,6 @@ public class MessagePatientVo {
 
     private String openId;      //openid
 
+    private Integer patientStatus;  //-1 收案 1 未完成 2已完成
+
 }

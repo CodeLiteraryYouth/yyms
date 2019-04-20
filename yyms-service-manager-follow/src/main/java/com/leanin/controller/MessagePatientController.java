@@ -23,5 +23,16 @@ public class MessagePatientController {
         return messagePatientService.findList(currentPage,pageSize,patientName,sendType);
     }
 
+    /**
+     *
+     * @param planPatientId 计划患者主键
+     * @param status 状态
+     * @return
+     */
+    @GetMapping("updateStatus")
+    public DataOutResponse updateStatus(@RequestParam("planPatientId")Long planPatientId,@RequestParam("status")Integer status){
+        return messagePatientService.updateStatus(planPatientId,status);
+    }
+
 
 }

@@ -66,6 +66,17 @@ public class SatisfyPatientController extends BaseController {
         return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo);
     }
 
+    /**
+     * 修改满意度计划患者状态
+     * @param planPatientId 计划患者主键
+     * @param status 状态
+     * @return
+     */
+    @GetMapping("updateStatus")
+    public DataOutResponse updateStatus(@RequestParam("planPatientId")Long planPatientId,@RequestParam("status") Integer status){
+        return satisfyPatientService.updateStatus(planPatientId,status);
+    }
+
     @GetMapping("/delPatientList")
     public DataOutResponse delPatientList(@RequestParam String patientSatisfyId){
         List<Long> longs1 = JSON.parseArray(patientSatisfyId, Long.class);

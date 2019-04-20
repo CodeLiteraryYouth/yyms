@@ -20,4 +20,6 @@ public interface SatisfyPatientService {
     DataOutResponse updateByPid(Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo);
 
     DataOutResponse addPatentList(List<SatisfyPatientVo> satisfyPatientVos);
+
+    DataOutResponse updateStatus(Long planPatientId, Integer status);
 }

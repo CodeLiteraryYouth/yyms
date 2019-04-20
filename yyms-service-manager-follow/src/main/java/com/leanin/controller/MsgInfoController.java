@@ -2,9 +2,11 @@ package com.leanin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.MessageRecord;
 import com.leanin.domain.vo.MsgInfoVo;
 import com.leanin.domain.vo.OnlineEdu;
 import com.leanin.service.MsgInfoService;
+import com.leanin.service.MsgRecordService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +66,15 @@ public class MsgInfoController extends BaseController {
 	//手动发送短信
 	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
 	@GetMapping("sendMessage")
-	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,String formId){
+	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,String formId,String msgId){
 //		List<Long> longs = JSON.parseArray(ids, Long.class);
 		String[] idList = ids.split(",");
-		return msgInfoService.sendMessage(idList,type,formId);
+		return msgInfoService.sendMessage(idList,type,formId,msgId);
+	}
+
+	@PostMapping("sendCommonMsg")
+	public DataOutResponse sendCommonMsg(@RequestBody List<MessageRecord> messageRecord){
+		return msgInfoService.sendCommonMsg(messageRecord,request);
 	}
 
 	//在线宣教

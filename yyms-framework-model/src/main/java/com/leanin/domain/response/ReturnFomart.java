@@ -63,6 +63,7 @@ public class ReturnFomart {
         messageMap.put("3302","请不要频繁获取验证码");
         messageMap.put("3303","验证码已失效，请重新获取验证码");
         messageMap.put("3304","请输入正确的验证码");
+        messageMap.put("3305","短信发送失败");
 
 
         messageMap.put("3401","绑定患者失败");

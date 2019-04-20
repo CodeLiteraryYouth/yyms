@@ -60,6 +60,8 @@ public interface PlanPatientMapper {
      */
     PlanPatientVo findPlanPatientByPatientId(@Param("patientId") Long patientId);
 
+    PlanPatientVo findPlanPatientByPIdAndPNum(@Param("patientId") Long patientId,@Param("planNum") String planNum);
+
     /*
      * 待随访人数
      */

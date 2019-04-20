@@ -11,11 +11,13 @@ import com.leanin.repository.OnlineEduRepository;
 import com.leanin.service.MsgInfoService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
+import com.leanin.utils.LyOauth2Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,26 +100,27 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataOutResponse sendMessage(String[] longs,Integer type,String formId) {
+	public DataOutResponse sendMessage(String[] longs,Integer type,String formId,String msgId) {
+		boolean flag = true;
 		switch (type){
 			case 1://随访
-				followPlan(longs,formId);
+				flag = followPlan(longs, formId);
 				break;
 			case 2://宣教
-				followPlan(longs,formId);
+				flag = followPlan(longs,formId);
 				break;
 			case 3:// 满意度
-				styPlan(longs,formId);
+				flag = styPlan(longs,formId);
 				break;
 			case 4://短信主题
-				msgPlan(longs,formId);
+				flag = msgPlan(longs,formId);
 				break;
-			case 5://普通短信发送
-				break;
-			case 6:
+			default:
 				break;
 		}
-
+		if (!flag){
+			return ReturnFomart.retParam(3305,"短信发送失败");
+		}
 		return ReturnFomart.retParam(200, "发送成功");
 	}
 
@@ -140,7 +143,8 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				onlineEdu.setSendStatus(2);//已发送短信
 				onlineEdu.setFormStatus(2);//已完成阅读状态
 			}else{
-				onlineEdu.setSendStatus(3);
+//				onlineEdu.setSendStatus(3);
+				return ReturnFomart.retParam(3305,"短信发送失败");
 			}
 			edu.setSendTime(new Date());
 			OnlineEdu save = onlineEduRepository.save(onlineEdu);
@@ -148,7 +152,28 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		return ReturnFomart.retParam(200,"操作成功");
 	}
 
-	private void  followPlan(String[] longs,String formId){
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse sendCommonMsg(List<MessageRecord> messageRecord, HttpServletRequest request) {
+		LyOauth2Util.UserJwt user = getUser(request);
+		for (MessageRecord record : messageRecord) {
+			Map map = CSMSUtils.sendMessage(record.getMsgText(), record.getMsgSendNum());
+			String msg = (String) map.get("msg");
+			if (msg.equals("true")){
+				record.setMsgSendStatus(2);
+			}else{
+//				record.setMsgSendStatus(3);
+				return ReturnFomart.retParam(3305,"短信发送失败");
+			}
+			record.setMsgSendDate(new Date());
+			record.setMsgSendName(user.getId());
+			record.setMsgSendWard(user.getWardCode());
+			msgRecordMapper.addMsgRecord(record);
+		}
+		return ReturnFomart.retParam(200,"发送成功");
+	}
+
+	private boolean  followPlan(String[] longs,String formId){
 		for (String Longstr : longs) {
 			long aLong = Long.parseLong(Longstr);
 			PlanPatientVo planPatient =planPatientMapper.findPlanPatientById(aLong);
@@ -174,16 +199,18 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setFormStatus(1);		//设置成表单未完成状态
 				planPatient.setPlanPatsStatus(1); 	//修改成带随访状态
 			}else {
-				planPatient.setSendType(3); //发送失败
+//				planPatient.setSendType(3); //发送失败
+				return false;
 			}
 			planPatientMapper.updatePlanPatient(planPatient);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
 					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
 					planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 		}
+		return true;
 	}
 
-	private void styPlan(String[] longs,String formId){
+	private boolean styPlan(String[] longs,String formId){
 		for (String LongStr : longs) {
 			long aLong = Long.parseLong(LongStr);
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
@@ -195,17 +222,19 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			if (msgStatus.equals("true")){
 				satisfyPatientVo.setSendType(2); //发送成功
 				satisfyPatientVo.setFormStatus(1);//表单未完成
-			}else {
-				satisfyPatientVo.setSendType(3); //发送失败
+			}else {//发送失败
+//				satisfyPatientVo.setSendType(3); //发送失败
+				return false;
 			}
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
 					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
 					satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 		}
+		return true;
 	}
 
-	private void msgPlan(String[] longs,String formId){
+	private boolean msgPlan(String[] longs,String formId){
 		for (String LongStr : longs) {
 			long aLong = Long.parseLong(LongStr);
 			MessagePatientVo messagePatientVo=messagePatientMapper.findById(aLong);
@@ -222,13 +251,20 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			if (msgStatus.equals("true")){
 				messagePatientVo.setSendType(2);//发送成功
 			}else{
-				messagePatientVo.setSendType(3);//发送失败
+				return false;
+//				messagePatientVo.setSendType(3);//发送失败
 			}
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
 					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
 					messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 		}
+		return true;
 	}
 
+	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+		LyOauth2Util lyOauth2Util = new LyOauth2Util();
+		LyOauth2Util.UserJwt userJwt = lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+		return userJwt;
+	}
 }
