@@ -27,6 +27,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,25 +101,39 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         PlanInfoVo planResult = planInfoMapper.findPlanInfoByName(record.getPlanName());
         Map resMap = new HashMap();
         // 封装参数
+        Map paramMap = new HashMap();
         //科室集合
         String patsWardCode = planResult.getPatsWardCode();
-        List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
+        if (patsWardCode != null){
+            List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
+            paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
+        }
+
         //疾病集合
         String diseaseCode = planResult.getDiseaseCode();
-        List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
-        Map paramMap = new HashMap();
-        paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
-        paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
-        paramMap.put("planSex", planResult.getPlanSex());//病人性别 1男 2女
-        paramMap.put("beginDate", planResult.getPlanBeginTime());//开始区间
-        paramMap.put("endDate", planResult.getPlanEndTime());//结束区间
+        if (diseaseCode != null){
+            List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
+            paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
+        }
+
+        if (planResult.getPlanSex() != 3 ){
+            paramMap.put("planSex", planResult.getPlanSex());//病人性别 1男 2女
+        }
+        if (planResult.getPlanBeginTime() != null){
+            paramMap.put("beginDate", planResult.getPlanBeginTime());//开始区间
+        }
+        if (planResult.getPlanEndTime() != null){
+            paramMap.put("endDate", planResult.getPlanEndTime());//结束区间
+        }
         String planAgeInterval = planResult.getPlanAgeInterval();//年龄区间
-        if (planAgeInterval != null) {//年龄区间
+        if (planAgeInterval != null && planAgeInterval.contains(",")) {//年龄区间
             String[] split = planAgeInterval.split(",");
             paramMap.put("startAge", split[0]);
             paramMap.put("endAge", split[1]);
         }
-        paramMap.put("planExisPhone", planResult.getPlanExisPhone());//有无联系方式 1有 2无
+        if (planResult.getPlanExisPhone() != null){
+            paramMap.put("planExisPhone",planResult.getPlanExisPhone());//有无联系方式 1有 2无
+        }
         //判断病人来源 (1:出院 2：门诊 3：在院 4：体检 5：建档)
         switch (record.getPatientInfoSource()) {
             case 1: {//出院

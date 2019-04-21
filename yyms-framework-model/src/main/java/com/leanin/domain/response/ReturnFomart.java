@@ -67,7 +67,7 @@ public class ReturnFomart {
 
 
         messageMap.put("3401","绑定患者失败");
-        messageMap.put("3402","信息已绑定，无需重复绑定");
+        messageMap.put("3402","计划不存在或者规则不存在或者患者信息已绑定");
 
 
 

@@ -39,6 +39,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updateNoticeStatus(Long noticeId, int status) {
         NoticeInfoVo noticeInfo=noticeInfoMapper.findNoticeById(noticeId);
+        if (noticeInfo == null){
+            return ReturnFomart.retParam(96,"信息不存在");
+        }
         log.info("公告信息为:"+ JSON.toJSONString(noticeInfo));
         noticeInfoMapper.updateNoticeStatus(noticeId, status);
         return ReturnFomart.retParam(200,noticeInfo);
@@ -69,7 +72,7 @@ public class NoticeServiceImpl implements NoticeService {
         log.info("修改的公告信息为:"+JSON.toJSONString(record));
         NoticeInfoVo noticeInfo=noticeInfoMapper.findNoticeById(record.getNoticeId());
         if (CompareUtil.isEmpty(noticeInfo) || noticeInfo.getStatus()==1) {
-            return ReturnFomart.retParam(96,noticeInfo);
+            return ReturnFomart.retParam(96,"信息不存在");
         }
         noticeInfoMapper.updateNoticeInfo(record);
         return ReturnFomart.retParam(200,record);

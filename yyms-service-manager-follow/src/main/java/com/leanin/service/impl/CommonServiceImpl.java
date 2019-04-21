@@ -7,7 +7,6 @@ import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.*;
 import com.leanin.mapper.*;
 import com.leanin.service.CommonService;
-import com.netflix.discovery.converters.Auto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,11 @@ public class CommonServiceImpl implements CommonService {
     }
 
     private boolean importMessage(List<ImportPatientReq> data,String planNum){
+
         MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(planNum);
+        if(msgTopic == null){
+            return false;
+        }
         MessagePatientVo messagePatientVo =new MessagePatientVo();
         for (ImportPatientReq patientReq : data) {
             MessagePatientVo patientVo = messagePatientMapper.findByPIdAndPnum(patientReq.getPatientId(),planNum);
@@ -101,13 +104,20 @@ public class CommonServiceImpl implements CommonService {
 //            messagePatientVo.setAreaCode();//设置院区编码
             messagePatientMapper.insertSelective(messagePatientVo);
         }
+        log.info("导入的短信计划的计划号为：{}",planNum);
+        log.info("导入的短信计划的患者信息为：{}",JSON.toJSONString(data));
         return true;
+
+
 
     }
 
     private boolean importSatisfyPlan(List<ImportPatientReq> data,String planNum){
         //获取满意度计划信息
         SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planNum);
+        if ( satisfyPlan == null){
+            return false;
+        }
         //获取规则内容
         String rulesText = satisfyPlan.getRulesText();
         Map rulesMap = JSON.parseObject(rulesText, Map.class);
@@ -153,13 +163,21 @@ public class CommonServiceImpl implements CommonService {
             satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
             satisfyPatientMapper.insertSelective(satisfyPatientVo);
         }
+        log.info("导入的满意度计划的计划号为：{}",planNum);
+        log.info("导入的满意度计划的患者信息为：{}",JSON.toJSONString(data));
         return true;
     }
 
     private boolean importFollow(List<ImportPatientReq> data,String planNum){
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);
         log.info("导入患者的计划为:{}",planNum);
+        if(planInfo == null){
+            return false;
+        }
         RulesInfoVo rules = rulesInfoMapper.findRulesById(planInfo.getRulesInfoNum());
+        if(rules == null){
+            return false;
+        }
         String rulesInfoText = rules.getRulesInfoText();
         Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);//获取规则
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
@@ -277,6 +295,8 @@ public class CommonServiceImpl implements CommonService {
             planPatientMapper.addPlanPatient(planPatientVo);//将数据存到数据中
 
         }
+        log.info("导入的随访/宣教计划的计划号为：{}",planNum);
+        log.info("导入的随访/宣教计划的患者信息为：{}",JSON.toJSONString(data));
         return true;
     }
     //设置普通随访时间

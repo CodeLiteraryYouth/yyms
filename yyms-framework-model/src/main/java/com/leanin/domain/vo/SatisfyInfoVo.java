@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * 满意度表单
  * @author Administrator
@@ -20,7 +22,7 @@ public class SatisfyInfoVo {
 
     private String satisfyName;	//满意度表单名称
 
-    private String satisfyDate;	//满意度题型
+    private Date satisfyDate;	//满意度创建时间
 
     private Integer satisfyStatus;	//（-1：已删除 0：正在使用）
 

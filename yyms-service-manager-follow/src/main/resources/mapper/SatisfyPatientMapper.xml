@@ -393,7 +393,7 @@
         from leanin_satisfy_patient
         where patient_status = 0
         <if test="satisfyPlanNum != null">
-            satisfy_plan_num = #{satisfyPlanNum}
+            and satisfy_plan_num = #{satisfyPlanNum}
         </if>
         and patient_id = #{patientId}
     </select>

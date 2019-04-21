@@ -74,15 +74,17 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		}
 		Map resMap = new HashMap();
 		// 封装参数
+		Map paramMap = new HashMap();
 		//科室集合
 //		String patsWardCode = messageTopicVo.getPatsWardCode();
 //		List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
 		//疾病集合
 		String diseaseCode = messageTopicVo.getDiseaseName();
-		List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
-		Map paramMap = new HashMap();
+		if (diseaseCode != null){
+			List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
+			paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
+		}
 //		paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
-		paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
 //		paramMap.put("planSex", 1);//病人性别 1男 2女
 //		paramMap.put("beginDate", planResult.getPlanBeginTime());//开始区间
 //		paramMap.put("endDate", planResult.getPlanEndTime());//结束区间
