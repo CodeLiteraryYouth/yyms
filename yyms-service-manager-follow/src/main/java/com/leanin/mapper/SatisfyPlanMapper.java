@@ -56,4 +56,6 @@ public interface SatisfyPlanMapper {
     List<SatisfyPlanVo> findAll(@Param("userId") Long userId);
 
     List<SatisfyPlanVo> findByWard(@Param("patientWard") String patientWard);
+
+    SatisfyPlanVo findByParamId(@Param("msgId") String msgId,@Param("formId")String formId);
 }

@@ -70,7 +70,7 @@ public class WeChatServiceImpl implements WeChatService {
         }
         BindPat pat = patientWxMapper.findByIdCard(bindPat.getIdCard());
         if (pat != null) {
-            return ReturnFomart.retParam(3402, "用户已经绑定信息，无需重复绑定");
+            return ReturnFomart.retParam(200, pat.getOpenId());
         }
         //获取openid
         String openid = null;

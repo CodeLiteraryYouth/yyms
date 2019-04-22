@@ -5,9 +5,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.SatisfyInfoExt;
 import com.leanin.domain.vo.SatisfyInfoVo;
+import com.leanin.domain.vo.SatisfyPlanVo;
+import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.SatisfyInfoMapper;
+import com.leanin.mapper.SatisfyPlanMapper;
 import com.leanin.service.SatisfyService;
 import com.leanin.utils.CompareUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,12 @@ public class StaisfyServiceImpl implements SatisfyService {
 
 	@Autowired
 	private SatisfyInfoMapper satisfyInfoMapper;
+
+	@Autowired
+	PlanInfoMapper planInfoMapper;
+
+	@Autowired
+	SatisfyPlanMapper satisfyPlanMapper;
 	
 	@Override
 	public DataOutResponse findSatisfyList(Integer page, Integer pageSize, Long typeId, String satisfyName,Integer shareStatus) {
@@ -37,6 +47,17 @@ public class StaisfyServiceImpl implements SatisfyService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse logoutSatisfyInfo(String satisfyNum) {
 		SatisfyInfoVo satisfyInfo=satisfyInfoMapper.findSatisfyById(satisfyNum);
+		if (satisfyInfo == null){
+			return ReturnFomart.retParam(1,"信息不存在");
+		}
+		/*PlanInfoVo planInfoVo = planInfoMapper.findByParamId(msgId,null,null);
+		if (planInfoVo != null ){
+			return ReturnFomart.retParam(3502,"短信信息已被使用不能删除或者禁用");
+		}*/
+		SatisfyPlanVo satisfyPlanVo = satisfyPlanMapper.findByParamId(null,satisfyNum);
+		if (satisfyPlanVo != null ){
+			return ReturnFomart.retParam(3601,"满意度表单已被使用不能删除或者禁用");
+		}
 		log.info("满意度题型为:"+ JSON.toJSONString(satisfyInfo));
 		satisfyInfoMapper.logoutSatisfyInfo(satisfyNum);
 		return ReturnFomart.retParam(200, satisfyInfo);

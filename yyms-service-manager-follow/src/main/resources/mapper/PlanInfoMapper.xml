@@ -418,9 +418,26 @@
 
     <select id="findByWard" resultMap="Base">
         select
-        <include refid="Base_Column_List"/>
+          <include refid="Base_Column_List"/>
         from leanin_plan_info
         where plan_status = 0
         and pats_ward_code like CONCAT('%',#{patientWard},'%')
+    </select>
+
+    <select id="findByParamId" resultMap="Base">
+        select
+          <include refid="Base_Column_List"/>
+        from leanin_plan_info
+        where plan_status = 0
+        <if test="msgId != null">
+            and msg_id = #{msgId}
+        </if>
+        <if test="formId != null">
+            and follow_form_num = #{formId}
+        </if>
+        <if test="ruleId != null">
+            and rules_info_num = #{ruleId}
+        </if>
+        limit 1
     </select>
 </mapper>

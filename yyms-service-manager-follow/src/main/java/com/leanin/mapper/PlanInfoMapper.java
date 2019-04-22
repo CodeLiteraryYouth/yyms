@@ -55,7 +55,7 @@ public interface PlanInfoMapper {
 
 	/**
 	 * 根据导入数据状态查询
-	 * @param i
+	 * @param
 	 * @return
 	 */
 	List<PlanInfoVo> findPlanListByImportData(@Param("importData") int importData);
@@ -77,4 +77,6 @@ public interface PlanInfoMapper {
     String findPlanNameById(@Param("planNum") String planNum);
 
     List<PlanInfoVo> findByWard(@Param("patientWard") String patientWard);
+
+    PlanInfoVo findByParamId(@Param("msgId") String msgId,@Param("formId")String formId,@Param("ruleId")String ruleId);
 }

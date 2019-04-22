@@ -128,6 +128,20 @@
         and patient_ward like CONCAT('%',#{patientWard},'%')
     </select>
 
+    <select id="findByParamId" resultMap="Base">
+      select
+        <include refid="Base_Column_List"/>
+      from leanin_satisfy_plan
+      where satisfy_plan_status = 0
+      <if test="msgId != null">
+        and msg_id = #{msgId}
+      </if>
+      <if test="formId != null">
+        and satisfy_num = #{formId}
+      </if>
+      limit 1
+    </select>
+
     <update id="updateSatisfyStatus">
     update leanin_satisfy_plan set satisfy_plan_status=#{status}
     where plan_satisfy_num = #{planSatisfyNum,jdbcType=VARCHAR}

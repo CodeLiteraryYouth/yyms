@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.leanin.domain.vo.*;
 import com.leanin.mq.config.RabbitMQConfig;
 import com.leanin.mq.dao.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
+@Slf4j
 public class PlanPatientMQ {
 
     @Autowired
@@ -49,8 +48,10 @@ public class PlanPatientMQ {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_SEND_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void msgQueue(String msgTopicId){
+        log.info("添加短信计划的主键是:{}",msgTopicId);
         MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(msgTopicId);
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("msgPlan").get(msgTopic.getMsgTopicId());
+        log.info("导入计划患者的信息:{}", JSON.toJSONString(list));
         MessagePatientVo messagePatientVo =new MessagePatientVo();
         for (Map map : list) {
             messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());//设置短信主题计划id
@@ -77,6 +78,7 @@ public class PlanPatientMQ {
 //            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
 //            messagePatientVo.setPatientIdCard();//身份证号
 //            messagePatientVo.setAreaCode();//设置院区编码
+            log.info("短信计划患者信息:{}",JSON.toJSONString(messagePatientVo));
             messagePatientMapper.insertSelective(messagePatientVo);
         }
         Long delete = redisTemplate.boundHashOps("msgPlan").delete(msgTopic.getMsgTopicId());
@@ -87,10 +89,12 @@ public class PlanPatientMQ {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_INSERT_SP)
     @Transactional(rollbackFor = Exception.class)
     public void insertSatisfyPlan(String planSatisfyNum){
+        log.info("添加满意度计划的主键是:{}",planSatisfyNum);
         //获取满意度计划信息
         SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planSatisfyNum);
         //获取缓存中的患者信息
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("satisfyPlan").get(planSatisfyNum);
+        log.info("添加满意度计划患者信息是:{}",JSON.toJSONString(list));
         //获取规则内容
         String rulesText = satisfyPlan.getRulesText();
         Map rulesMap = JSON.parseObject(rulesText, Map.class);
@@ -135,6 +139,7 @@ public class PlanPatientMQ {
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
             satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
+            log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
             satisfyPatientMapper.insertSelective(satisfyPatientVo);
         }
         Long delete = redisTemplate.boundHashOps("satisfyPlan").delete(planSatisfyNum);
@@ -146,11 +151,13 @@ public class PlanPatientMQ {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_INSERT_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void insertData(String planNum) {
+        log.info("添加随访/宣教计划主键是:{}",planNum);
         //获取计划信息
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);
 //        log.info("计划信息为:" + planNum);
         //获取缓存中的病人数据
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("plan").get(planNum);
+        log.info("添加随访/宣教计划的患者信息是:{}",JSON.toJSONString(list));
         if (list != null && list.size() > 0) {//有缓存
             //获取规则信息
             RulesInfoVo rules = rulesInfoMapper.findRulesById(planInfo.getRulesInfoNum());
@@ -268,7 +275,7 @@ public class PlanPatientMQ {
                     break;*/
                 }
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
-
+                log.info("随访/宣教患者信息:{}",JSON.toJSONString(planPatientVo));
                 planPatientMapper.addPlanPatient(planPatientVo);//将数据存到数据中
 
             }

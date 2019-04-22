@@ -57,7 +57,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_msg_info where msg_status>=0
+    from leanin_msg_info where msg_status >= 0
     and msg_id = #{msgId,jdbcType=VARCHAR}
   </select>
   

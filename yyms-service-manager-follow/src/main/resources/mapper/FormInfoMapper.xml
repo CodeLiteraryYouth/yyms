@@ -207,7 +207,7 @@
       where lfi.form_status >= 0
       and lpi.follow_form_num = lfi.form_num
       and lpi.plan_num = lpp.plan_num
---       and lpp.patient_plan_id = #{planPatientId}
+      and lpp.patient_plan_id = #{planPatientId}
       and lpp.form_status = #{formStatus}
       and lfi.form_num = #{formNum}
     </select>

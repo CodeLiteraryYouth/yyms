@@ -66,6 +66,18 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updateMsgStatus(String msgId, int status) {
+		MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(msgId);
+		if (msgInfo == null){
+			return ReturnFomart.retParam(3501,"短信信息不存在");
+		}
+		PlanInfoVo planInfoVo = planInfoMapper.findByParamId(msgId,null,null);
+		if (planInfoVo != null ){
+			return ReturnFomart.retParam(3502,"短信信息已被使用不能删除或者禁用");
+		}
+		SatisfyPlanVo satisfyPlanVo = satisfyPlanMapper.findByParamId(msgId,null);
+		if (satisfyPlanVo != null ){
+			return ReturnFomart.retParam(3502,"短信信息已被使用不能删除或者禁用");
+		}
 		log.info("提醒主键:"+msgId+"-"+"提醒状态:"+status);
 		msgInfoMapper.updateMsgStatus(msgId, status);
 		return ReturnFomart.retParam(200, status);
@@ -135,7 +147,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			edu.setEduId(null);
 //			edu.setSendStatus(1);
 			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
-			String param = "http://sf-system.leanin.com.cn/login#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
+			String param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
 
 			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
 			String msgStatus = (String) map.get("msg");
@@ -183,13 +195,13 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			Map map = new HashMap();
 			String param = "";
 			if (planInfoVo.getPlanType() == 1){//随访计划
-				param = "http://sf-system.leanin.com.cn/login#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
+				param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
 				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "18556531536");
 			}else {//宣教
 				if (formId != null){
-					param = "http://sf-system.leanin.com.cn/login#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
+					param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
 				}else {
-					param = "http://sf-system.leanin.com.cn/login#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
+					param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
 				}
 				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13675853622");
 			}
@@ -216,7 +228,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
-			String param = "http://sf-system.leanin.com.cn/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
+			String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
 			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,"13675853622" /*satisfyPatientVo.getPatientPhone()*/);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){

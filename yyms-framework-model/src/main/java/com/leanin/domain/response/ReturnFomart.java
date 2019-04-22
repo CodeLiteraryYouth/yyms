@@ -14,6 +14,8 @@ public class ReturnFomart {
     static {
         messageMap.put("0", "系统异常，请联系管理员");
 
+        messageMap.put("1", "信息不存在");
+
         messageMap.put("200", "Success");
         messageMap.put("400", "Bad Request!");
         messageMap.put("401", "NotAuthorization");
@@ -63,11 +65,21 @@ public class ReturnFomart {
         messageMap.put("3302","请不要频繁获取验证码");
         messageMap.put("3303","验证码已失效，请重新获取验证码");
         messageMap.put("3304","请输入正确的验证码");
-        messageMap.put("3305","短信发送失败");
+        messageMap.put("3305","患者手机号码不存在");
 
 
         messageMap.put("3401","绑定患者失败");
         messageMap.put("3402","计划不存在或者规则不存在或者患者信息已绑定");
+
+
+        messageMap.put("3501","短信信息不存在");
+        messageMap.put("3502","短信信息已被使用不能删除或者禁用");
+
+
+        messageMap.put("3601","满意度表单已被使用不能删除或者禁用");
+
+        messageMap.put("3701","随访规则已被使用不能删除或者禁用");
+
 
 
 

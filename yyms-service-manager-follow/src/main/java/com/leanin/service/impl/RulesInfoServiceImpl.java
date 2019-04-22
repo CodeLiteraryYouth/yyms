@@ -6,8 +6,12 @@ import com.github.pagehelper.PageInfo;
 import com.leanin.domain.dto.CommonRulesInfoDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.domain.vo.RulesInfoVo;
+import com.leanin.domain.vo.SatisfyPlanVo;
+import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.RulesInfoMapper;
+import com.leanin.mapper.SatisfyPlanMapper;
 import com.leanin.service.RulesInfoService;
 import com.leanin.utils.CompareUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,12 @@ public class RulesInfoServiceImpl implements RulesInfoService {
 
 	@Autowired
 	private RulesInfoMapper rulesInfoMapper;
+
+	@Autowired
+	PlanInfoMapper planInfoMapper;
+
+	@Autowired
+	SatisfyPlanMapper satisfyPlanMapper;
 	
 	@Override
 	public DataOutResponse findCommonRules(Integer rulesType, String rulesName) {
@@ -48,7 +58,11 @@ public class RulesInfoServiceImpl implements RulesInfoService {
 		log.info("修改状态的ID为:"+rulesInfoId+"修改的状态为:"+status);
 		RulesInfoVo rules=rulesInfoMapper.findRulesById(rulesInfoId);
 		if (rules == null){
-			return ReturnFomart.retParam(300, "用户不存在");
+			return ReturnFomart.retParam(1, "信息不存在");
+		}
+		PlanInfoVo planInfoVo = planInfoMapper.findByParamId(null,null,rulesInfoId+"");
+		if (planInfoVo != null ){
+			return ReturnFomart.retParam(3701,"随访规则已被使用不能删除或者禁用");
 		}
 		rulesInfoMapper.updateRulesState(rulesInfoId, status);
 		return ReturnFomart.retParam(200, "修改成功");

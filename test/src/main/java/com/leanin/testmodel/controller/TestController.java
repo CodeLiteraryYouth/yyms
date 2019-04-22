@@ -1,10 +1,13 @@
 package com.leanin.testmodel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.aliyun.oss.OSSClient;
 import com.leanin.api.test.TestApi;
 import com.leanin.domain.vo.DiseaseInfoVo;
 import com.leanin.testmodel.service.DiseaseInfoService;
 import com.leanin.testmodel.task.MyScheduler;
+import com.leanin.utils.HttpClient;
+import com.leanin.utils.HttpClientUtil;
 import com.leanin.web.BaseController;
 import org.junit.Test;
 import org.quartz.SchedulerException;
@@ -21,6 +24,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
@@ -164,5 +169,60 @@ public class TestController extends BaseController implements TestApi  {
         //拿到jwt令牌中自定义的内容
         String claims = jwt.getClaims();
         System.out.println(claims);
+    }
+
+
+    @Test
+    public void wxTest(){
+        Map<String,String> param=new HashMap<>();
+        String token_url="https://api.weixin.qq.com/cgi-bin/token?" +
+                "grant_type=client_credential&" +
+                "appid=" +"wx1f020aa42d92b635"+
+                "&secret="+"b8511f28b20390602cf63ce8c376f6fd";
+        //2.使用httpclient 发送请求
+//        String access_token = "20_B7Jihn0idl6BD1qK_-MQGS-VuMGZn7mITZeRUdMOrkayK61VcMFfY73tdLTMJ0MCQ-nbsNJFUBRO4COrCVx5TbkQJt7QmvSTy9nPjDXYDmkph5otML3cM_Kw1VaDFaHIcmaPstchUJh8q4OeIUZbABAVHM";
+        String access_token = null;
+        try {
+            HttpClient httpClient =new HttpClient(token_url);
+            httpClient.setHttps(true);//设置https 访问协议
+            httpClient.get();//设置https 请求方式
+
+            //3.接受返回来的数据
+            String content = httpClient.getContent();//获取返回参数
+            Map map = JSON.parseObject(content, Map.class);
+            access_token = (String) map.get("access_token");
+        } catch (Exception e) {
+
+        }
+
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
+        Map data = new HashMap();
+//        data.put("touser","oY_Qq6MwwsdJdI_vlD5I5bW1xSjM");
+        data.put("touser","oY_Qq6DSu1nCDqzhSywVfgpcYSxI");
+        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
+        String urlString = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=207&palnType=1&formNum=201904181457339548";
+        data.put("url",urlString);
+        Map user =new HashMap();
+        Map first = new HashMap();
+        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
+        user.put("first",first);
+        Map keyword1 = new HashMap();
+        keyword1.put("value","9527");
+        user.put("keyword1",keyword1);
+        Map keyword2 = new HashMap();
+        keyword2.put("value","2019-3-14");
+        user.put("keyword2",keyword2);
+        Map keyword3 = new HashMap();
+        keyword3.put("value","建德人民医院");
+        user.put("keyword3",keyword3);
+        Map remark = new HashMap();
+        remark.put("value","点击“详情”进行出院随访填写");
+        user.put("remark",remark);
+        data.put("data",user);
+        String dataStr = JSON.toJSONString(data);
+        String result = HttpClientUtil.doPostCarryJson(url, dataStr);
+
+        Map map = JSON.parseObject(result, Map.class);
+
     }
 }

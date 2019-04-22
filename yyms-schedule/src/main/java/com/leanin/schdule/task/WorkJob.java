@@ -110,7 +110,7 @@ public class WorkJob {
                             break;
                         //微信公众号
                         case 2:
-
+                            sendWxMsg(planInfo, patientDto);
                             break;
                         case 3://短信
                             sendMessage(planInfo, patientDto);
@@ -128,9 +128,9 @@ public class WorkJob {
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
         String param = "";
         if (planInfo.getPlanType() == 1){//随访
-            param = "http://sf-system.leanin.com.cn/login#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
         }else{//宣教
-            param = "http://sf-system.leanin.com.cn/login#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
         }
         Map map = CSMSUtils.sendMessage(msg+param, "13817165550");//patientDto.getPatientPhone()
         //设置病人发送状态
@@ -197,7 +197,7 @@ public class WorkJob {
                     }
                 }else{
                     if (satisfyPatientVo.getSendType() == 1){//未发送
-                        String param = "http://sf-system.leanin.com.cn/login#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
+                        String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
                         Map map = CSMSUtils.sendMessage(msgText+param, "13817165550"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
                         log.info("满意度短信：{}",msgText+param,satisfyPatientVo.getPatientPhone(),msgStatus,satisfyPlanVo.getSatisfyNum());
@@ -390,10 +390,15 @@ public class WorkJob {
 
             //3.接受返回来的数据
             String content = httpClient.getContent();//获取返回参数
+            log.info("获取access_token时返回的数据:{}",content);
             Map map = JSON.parseObject(content, Map.class);
-            access_token = (String) map.get("access_token");
+            Object access_token1 = map.get("access_token");
+            if (access_token1 != null){
+                access_token = (String) access_token1;
+            }
+
         } catch (Exception e) {
-            log.info("获取access_token异常");
+            log.info("获取access_token异常",e.getMessage());
         }
         return access_token;
 //        body
@@ -406,35 +411,61 @@ public class WorkJob {
 //        param.put("template_id",templeteId);
     }
 
-    public void sendWxMsg(){
+    public void sendWxMsg(PlanInfoDto planInfo, PlanPatientVo patientDto){
+
         String accessToken = getAccessToken();
+        if (accessToken == null){
+            return;
+        }
+
+        String param = "";
+        if (planInfo.getPlanType() == 1){//随访
+            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
+        }else{//宣教
+            param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
+        }
+
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
         Map data = new HashMap();
-        data.put("touser","openid");
-        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
-        data.put("url","www.baidu.com");
-        Map user =new HashMap();
+        Map user = new HashMap();
         Map first = new HashMap();
-        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
-        user.put("first",first);
-        Map keyword1 = new HashMap();
-        keyword1.put("value","9527");
-        user.put("keyword1",keyword1);
+        Map keyword1 =new HashMap();
         Map keyword2 = new HashMap();
-        keyword2.put("value","2019-3-14");
-        user.put("keyword2",keyword2);
         Map keyword3 = new HashMap();
-        keyword3.put("value","建德人民医院");
-        user.put("keyword3",keyword3);
-        Map remark = new HashMap();
-        remark.put("value","点击“详情”进行出院随访填写");
-        user.put("remark",remark);
-        data.put("data",user);
+        Map remark =new HashMap();
+        setParam
         String dataStr = JSON.toJSONString(data);
+
         String result = HttpClientUtil.doPostCarryJson(url, dataStr);
 
         Map map = JSON.parseObject(result, Map.class);
 
+    }
+
+    private Map setParam(Map data,Map user,Map first,Map keyword1,
+                         Map keyword2,Map keyword3,Map remark){
+//        Map data = new HashMap();
+        data.put("touser","openid");
+        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
+        data.put("url","www.baidu.com");
+//        Map user =new HashMap();
+//        Map first = new HashMap();
+        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
+        user.put("first",first);
+//        Map keyword1 = new HashMap();
+        keyword1.put("value","9527");
+        user.put("keyword1",keyword1);
+//        Map keyword2 = new HashMap();
+        keyword2.put("value","2019-3-14");
+        user.put("keyword2",keyword2);
+//        Map keyword3 = new HashMap();
+        keyword3.put("value","建德人民医院");
+        user.put("keyword3",keyword3);
+//        Map remark = new HashMap();
+        remark.put("value","点击“详情”进行出院随访填写");
+        user.put("remark",remark);
+        data.put("data",user);
+        return data;
     }
 
 }

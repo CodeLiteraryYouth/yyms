@@ -18,7 +18,6 @@ eureka:
     eviction-interval-timer-in-ms: 60000 #服务注册表清理间隔（单位毫秒，默认是60*1000）
   instance:
     hostname: eureka01
-
 ---
 spring:
   profiles: peer2 #指定profile=peer1
