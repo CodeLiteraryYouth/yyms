@@ -205,6 +205,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				}
 				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13675853622");
 			}
+			log.info("发送短信的内容:{}",msgInfo.getMsgText()+param);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				planPatient.setSendType(2); 		//发送成功
@@ -214,6 +215,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 //				planPatient.setSendType(3); //发送失败
 				return false;
 			}
+			log.info("发送短信后的患者信息:{}",JSON.toJSONString(planPatient));
 			planPatientMapper.updatePlanPatient(planPatient);
 			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
 					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),

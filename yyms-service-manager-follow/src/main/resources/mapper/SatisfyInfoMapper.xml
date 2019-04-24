@@ -56,7 +56,8 @@
   	<include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_satisfy_info where satisfy_status>=0
+    from leanin_satisfy_info
+    where satisfy_status = 0
     <if test="satisfyName != null">
         and satisfy_name like CONCAT('%',#{satisfyName},'%')
     </if>
@@ -72,7 +73,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_satisfy_info where satisfy_status>=0
+    from leanin_satisfy_info where satisfy_status >= 0
     and satisfy_num = #{satisfyNum,jdbcType=VARCHAR}
   </select>
   <select id="findSatisfyByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">

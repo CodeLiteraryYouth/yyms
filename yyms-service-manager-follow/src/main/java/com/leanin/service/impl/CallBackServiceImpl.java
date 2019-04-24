@@ -40,18 +40,21 @@ public class CallBackServiceImpl implements CallBackService {
     @Override
     public DataOutResponse findBackById(String backNum,int status) {
         log.info("单号为:"+backNum);
-        CallBackDto callBackDto=callBackMapper.findBackById(backNum,status);
-        log.info("查询的投诉表扬信息为:"+JSON.toJSONString(callBackDto));
-        return ReturnFomart.retParam(200, callBackDto);
+        CallBack callBack=callBackMapper.findBackById(backNum,status);
+        if (callBack == null){
+            return ReturnFomart.retParam(1,"信息不存在");
+        }
+        log.info("查询的投诉表扬信息为:"+JSON.toJSONString(callBack));
+        return ReturnFomart.retParam(200, callBack);
     }
 
     @Override
     @Transactional(rollbackFor=Exception.class)
     public DataOutResponse addCallBack(CallBack callBack) {
         log.info("添加的投诉表扬信息为:"+JSON.toJSONString(callBack));
-        String uuid = UUIDUtils.getUUID();
-        callBack.setCallBackNum(uuid);
-        CallBackDto callBackDto=callBackMapper.findBackById(callBack.getCallBackNum(),callBack.getStatus());
+//        String uuid = UUIDUtils.getUUID();
+//        callBack.setCallBackNum(uuid);
+        CallBack callBackDto=callBackMapper.findBackById(callBack.getCallBackNum(),callBack.getStatus());
         if(callBackDto != null) {
             return ReturnFomart.retParam(4000, callBackDto);
         }

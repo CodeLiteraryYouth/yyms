@@ -29,7 +29,7 @@ public interface CallBackMapper {
 	 * @param backNum
 	 * @return
 	 */
-	CallBackDto findBackById(@Param("backNum") String backNum, @Param("status") int status);
+	CallBack findBackById(@Param("backNum") String backNum, @Param("status") int status);
 	
 	/**
 	 * 发起投诉/表扬

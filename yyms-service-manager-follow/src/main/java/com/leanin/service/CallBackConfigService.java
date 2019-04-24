@@ -38,4 +38,6 @@ public interface CallBackConfigService {
 	DataOutResponse updateConfig(CallBackConfig record);
 
 	DataOutResponse findConfigList(Integer page, Integer size, Integer configType);
+
+	DataOutResponse findDealNameByType(Integer type,Integer status);
 }

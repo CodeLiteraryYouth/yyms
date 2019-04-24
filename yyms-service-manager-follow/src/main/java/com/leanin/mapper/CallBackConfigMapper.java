@@ -43,4 +43,5 @@ public interface CallBackConfigMapper {
      */
     int updateConfig(CallBackConfig record);
 
+	List<CallBackConfig> findDealNameByType(@Param("type") Integer type,@Param("status") Integer status);
 }

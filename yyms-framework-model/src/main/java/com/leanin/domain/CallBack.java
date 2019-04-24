@@ -56,7 +56,9 @@ public class CallBack {
 	
 	private Integer callBackType;	//投诉表扬处理类型（1：医疗技术 2：服务态度 3：不及时）
 	
-	private String assignName;	   //处理人姓名
+	private Long assignName;	   //处理人
+
+	private String name;		//处理人姓名
 
 	private Integer dealStatus;		//处理状态
 }

@@ -87,4 +87,10 @@ public class CallBackConfigServiceImpl implements CallBackConfigService {
 		return ReturnFomart.retParam(200, dataMap);
 	}
 
+	@Override
+	public DataOutResponse findDealNameByType(Integer type,Integer status) {
+		List<CallBackConfig> list = callBackConfigMapper.findDealNameByType(type,status);
+		return ReturnFomart.retParam(200,list);
+	}
+
 }

@@ -68,4 +68,6 @@ public interface FormInfoService {
 	DataOutResponse updateFormInfo(FormInfoVo record);
 
 	DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType);
+
+	DataOutResponse shareForm(String forNum, Integer status);
 }

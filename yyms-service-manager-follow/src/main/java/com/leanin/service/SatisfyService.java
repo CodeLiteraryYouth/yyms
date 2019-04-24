@@ -40,4 +40,6 @@ public interface SatisfyService {
 	DataOutResponse updateSatisfyInfo(SatisfyInfoVo record);
 
 	DataOutResponse findStyInfoByOpenId(String openId, Integer finishType);
+
+    DataOutResponse shareSatisfy(String satisfyNum, Integer status);
 }

@@ -98,10 +98,23 @@ public class FormInfoServiceImpl implements FormInfoService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse shareForm(String forNum, Integer status) {
+		FormInfoVo formInfo = formInfoMapper.findFormInfoById(forNum);
+		if (formInfo == null ){
+			return ReturnFomart.retParam(1,"信息不存在");
+		}
+		formInfo.setShareStatus(status);
+		formInfoMapper.updateFormInfo(formInfo);
+		return ReturnFomart.retParam(200,formInfo);
+	}
+
+	@Override
 	public DataOutResponse findCommonForm(Integer page,Integer pageSize,Integer formType, String formName,Integer shareStatus) {
 		log.info("表单的类型为:"+formType+"-"+"搜索的表单名为:"+formName);
 		PageHelper.startPage(page, pageSize);
-		List<CommonFormInfoDto> commonForm=formInfoMapper.findCommonForm(formType, formName,shareStatus);
+		List<FormInfoVo> commonForm=formInfoMapper.findCommonForm(formType, formName,shareStatus);
+//		formInfoMapper
 		PageInfo pageInfo=new PageInfo<>(commonForm);
 		return ReturnFomart.retParam(200, pageInfo);
 	}

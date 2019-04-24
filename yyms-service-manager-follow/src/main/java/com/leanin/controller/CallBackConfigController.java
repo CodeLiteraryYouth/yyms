@@ -66,7 +66,10 @@ public class CallBackConfigController extends BaseController {
 		return callBackConfigService.updateConfig(record);
 	}
 
-
+	@GetMapping("findDealNameByType")
+	public DataOutResponse findDealNameByType(@RequestParam("type") Integer type,@RequestParam("status")Integer status){
+		return callBackConfigService.findDealNameByType(type,status);
+	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();

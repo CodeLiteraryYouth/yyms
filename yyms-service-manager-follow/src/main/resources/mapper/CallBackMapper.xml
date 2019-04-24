@@ -37,6 +37,13 @@
 			<result column="assign_name"  property="assignName"/>
 			<result column="deal_status"  property="dealStatus"/>
 	</resultMap>
+
+	<resultMap extends="CallBackMap" id="NameResultMap" type="com.leanin.domain.CallBack">
+		<association property="name" column="assign_name" javaType="string"
+					 select="com.leanin.mapper.UserMapper.findUserName">
+		</association>
+	</resultMap>
+
 	<sql id="Base_Column_List">
 		c.call_back_num,c.call_back_ward,c.call_back_name,c.call_back_text,c.patient_id,c.call_back_phone,c.patient_source,c.call_back_date,
 		c.accu_parise_name,c.patient_realtion,c.accu_parise_source,c.call_back_target,c.push_ward,c.push_name,c.push_date,c.area_code,c.call_back_status,
@@ -52,7 +59,7 @@
 		c.accu_parise_type,c.assign_name,c.patient_name,d.deal_status
 	</sql>
 	
-	<select id="findBackList" resultMap="CallBackMap">
+	<select id="findBackList" resultMap="NameResultMap">
 		select 
 		<include refid="CallBack_Sql"></include>
 		from leanin_call_back c,leanin_call_back_deal d where
@@ -74,7 +81,7 @@
       	</if>
 	</select>
 	
-	<select id="findBackById" resultMap="CallBackMap">
+	<select id="findBackById" resultMap="NameResultMap">
 		select 
 		<include refid="CallBack_Sql"></include>
 		from leanin_call_back c,leanin_call_back_deal d where c.call_back_status=#{status}

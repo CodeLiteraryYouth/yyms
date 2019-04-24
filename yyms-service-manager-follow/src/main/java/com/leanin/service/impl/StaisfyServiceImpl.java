@@ -108,4 +108,16 @@ public class StaisfyServiceImpl implements SatisfyService {
 		return ReturnFomart.retParam(200, list);
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse shareSatisfy(String satisfyNum, Integer status) {
+		SatisfyInfoVo satisfy = satisfyInfoMapper.findSatisfyById(satisfyNum);
+		if (satisfy == null){
+			return ReturnFomart.retParam(1,"信息不存在");
+		}
+		satisfy.setShareStatus(status);
+		satisfyInfoMapper.updateSatisfyInfo(satisfy);
+		return ReturnFomart.retParam(200,satisfy);
+	}
+
 }

@@ -26,11 +26,15 @@ public class CallBackConfig {
 
     private String wardCode;	//操作人员科室编码
 
-    private String dealWithName;	//处理人（多人以逗号拼接）
+    private Long dealWithName;	//处理人（多人以逗号拼接）
+
+    private String dealName;    //处理人名称
 
     private String delaWithPhone;	//处理人联系电话
 
     private Long configCreater;	//创建人
+
+    private String createName;//创建人名称
 
     private Date configTime;	//创建时间
 

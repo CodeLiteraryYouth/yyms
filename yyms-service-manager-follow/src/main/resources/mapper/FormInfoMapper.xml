@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.FormInfoMapper">
+
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.FormInfoVo">
     <id column="form_num"  property="formNum" />
     <result column="form_creater"  property="formCreater" />
@@ -103,7 +104,21 @@
     	and form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
     </if>
   </select>
-  <select id="findCommonForm" resultMap="CommonResult">
+  <select id="findCommonForm" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>
+    from leanin_form_info
+    where form_status = 0
+    and form_type =#{formType}
+    <if test="formName !=null">
+      and form_name like CONCAT('%',#{formName},'%')
+    </if>
+    <if test="shareStatus != null">
+      and share_status = #{shareStatus}
+    </if>
+  </select>
+  <!--<select id="findCommonForm" resultMap="CommonResult">
   	select 
   	<include refid="Common_list" />
   	from leanin_ward_info w,leanin_form_info f
@@ -113,9 +128,9 @@
     	and f.form_name like CONCAT('%',#{formName,jdbcType=VARCHAR},'%')
     </if>
     <if test="shareStatus != null">
-      and share_status = #{shareStatus}
+      and f.share_status = #{shareStatus}
     </if>
-  </select>
+  </select>-->
 
   <select id="findFormListByTypeId" resultMap="ResultMapWithBLOBs">
     select

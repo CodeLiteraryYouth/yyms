@@ -63,7 +63,16 @@ public class MsgInfoController extends BaseController {
 		return msgInfoService.findMsgInfoById(msgId);
 	}
 
-	//手动发送短信
+	//
+
+	/**
+	 * 手动发送短信  重发表单
+	 * @param ids
+	 * @param type
+	 * @param formId
+	 * @param msgId
+	 * @return
+	 */
 	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
 	@GetMapping("sendMessage")
 	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,String formId,String msgId){

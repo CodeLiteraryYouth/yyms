@@ -1,10 +1,12 @@
 package com.leanin.controller;
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.FormInfoVo;
 import com.leanin.service.FormInfoService;
 import com.leanin.utils.LyOauth2Util;
 import com.leanin.web.BaseController;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,17 @@ public class FormController extends BaseController {
 
 	@Autowired
 	private FormInfoService formInfoService;
+
+	/**
+	 * 共享表单
+	 * @param forNum  表单主键
+	 * @param status  1不共享  2 共享
+	 * @return
+	 */
+	@GetMapping("shareForm")
+	public DataOutResponse shareForm(@RequestParam("forNum") String forNum,@RequestParam("status")Integer status){
+		return formInfoService.shareForm(forNum,status);
+	}
 	
 	@GetMapping("findCommonForm")
 	public DataOutResponse findCommonForm(@RequestParam Integer page, @RequestParam Integer pageSize,

@@ -2,17 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.CallBackConfigMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.CallBackConfig">
-    <id column="config_num" jdbcType="VARCHAR" property="configNum" />
-    <result column="config_status" jdbcType="INTEGER" property="configStatus" />
-    <result column="config_type" jdbcType="INTEGER" property="configType" />
-    <result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
-    <result column="deal_with_name" jdbcType="VARCHAR" property="dealWithName" />
-    <result column="dela_with_phone" jdbcType="VARCHAR" property="delaWithPhone" />
-    <result column="config_creater" jdbcType="VARCHAR" property="configCreater" />
-    <result column="config_time" jdbcType="TIMESTAMP" property="configTime" />
-    <result column="config_state" jdbcType="INTEGER" property="configState" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <id column="config_num"  property="configNum" />
+    <result column="config_status"  property="configStatus" />
+    <result column="config_type"  property="configType" />
+    <result column="ward_code"  property="wardCode" />
+    <result column="deal_with_name"  property="dealWithName" />
+    <result column="dela_with_phone"  property="delaWithPhone" />
+    <result column="config_creater"  property="configCreater" />
+    <result column="config_time"  property="configTime" />
+    <result column="config_state"  property="configState" />
+    <result column="area_code"  property="areaCode" />
   </resultMap>
+
+  <resultMap extends="BaseResultMap" id="NameResultMap" type="com.leanin.domain.CallBackConfig">
+    <association property="dealName" column="deal_with_name" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
+    <association property="createName" column="config_creater" javaType="string"
+                 select="com.leanin.mapper.UserMapper.findUserName">
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List">
     config_num, config_status, config_type, ward_code, deal_with_name, dela_with_phone, 
     config_creater, config_time, config_state, area_code
@@ -21,17 +31,27 @@
     select 
     <include refid="Base_Column_List" />
     from leanin_call_back_config where config_state>=0
-    and config_num = #{configNum,jdbcType=VARCHAR}
+    and config_num = #{configNum}
   </select>
-  <select id="findConfigList" resultMap="BaseResultMap">
+  <select id="findConfigList" resultMap="NameResultMap">
   	select 
     <include refid="Base_Column_List" />
     from leanin_call_back_config
-    where config_state>=0
+    where config_state >= 0
     <if test="configType !=null">
     	and config_type=#{configType}
     </if>
   </select>
+
+  <select id="findDealNameByType" resultMap="NameResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_call_back_config
+    where config_state >= 0
+    and config_type=#{type}
+    and config_status = #{status}
+  </select>
+
   <update id="updateConfigStatus">
     update leanin_call_back_config set config_state=#{status}
     where config_num = #{configNum}
@@ -72,34 +92,34 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="configNum != null">
-        #{configNum,jdbcType=VARCHAR},
+        #{configNum},
       </if>
       <if test="configStatus != null">
-        #{configStatus,jdbcType=INTEGER},
+        #{configStatus},
       </if>
       <if test="configType != null">
-        #{configType,jdbcType=INTEGER},
+        #{configType},
       </if>
       <if test="wardCode != null">
-        #{wardCode,jdbcType=VARCHAR},
+        #{wardCode},
       </if>
       <if test="dealWithName != null">
-        #{dealWithName,jdbcType=VARCHAR},
+        #{dealWithName},
       </if>
       <if test="delaWithPhone != null">
-        #{delaWithPhone,jdbcType=VARCHAR},
+        #{delaWithPhone},
       </if>
       <if test="configCreater != null">
-        #{configCreater,jdbcType=VARCHAR},
+        #{configCreater},
       </if>
       <if test="configTime != null">
-        #{configTime,jdbcType=TIMESTAMP},
+        #{configTime},
       </if>
       <if test="configState != null">
-        #{configState,jdbcType=INTEGER},
+        #{configState},
       </if>
       <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
+        #{areaCode},
       </if>
     </trim>
   </insert>
@@ -107,33 +127,33 @@
     update leanin_call_back_config
     <set>
       <if test="configStatus != null">
-        config_status = #{configStatus,jdbcType=INTEGER},
+        config_status = #{configStatus},
       </if>
       <if test="configType != null">
-        config_type = #{configType,jdbcType=INTEGER},
+        config_type = #{configType},
       </if>
       <if test="wardCode != null">
-        ward_code = #{wardCode,jdbcType=VARCHAR},
+        ward_code = #{wardCode},
       </if>
       <if test="dealWithName != null">
-        deal_with_name = #{dealWithName,jdbcType=VARCHAR},
+        deal_with_name = #{dealWithName},
       </if>
       <if test="delaWithPhone != null">
-        dela_with_phone = #{delaWithPhone,jdbcType=VARCHAR},
+        dela_with_phone = #{delaWithPhone},
       </if>
       <if test="configCreater != null">
         config_creater = #{configCreater},
       </if>
       <if test="configTime != null">
-        config_time = #{configTime,jdbcType=TIMESTAMP},
+        config_time = #{configTime},
       </if>
       <if test="configState != null">
-        config_state = #{configState,jdbcType=INTEGER},
+        config_state = #{configState},
       </if>
       <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
+        area_code = #{areaCode},
       </if>
     </set>
-    where config_num = #{configNum,jdbcType=VARCHAR}
+    where config_num = #{configNum}
   </update>
 </mapper>

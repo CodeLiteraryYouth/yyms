@@ -17,7 +17,11 @@ public interface FormInfoMapper {
 	 * @param formName
 	 * @return
 	 */
-	List<CommonFormInfoDto> findCommonForm(@Param("formType") Integer formType, @Param("formName") String formName,@Param("shareStatus")Integer shareStatus);
+//	List<CommonFormInfoDto> findCommonForm(@Param("formType") Integer formType, @Param("formName") String formName,@Param("shareStatus")Integer shareStatus);
+
+	List<FormInfoVo> findCommonForm(@Param("formType") Integer formType, @Param("formName") String formName,@Param("shareStatus")Integer shareStatus);
+
+
 
 	/**
 	 * 根绝分类ID查询表单信息

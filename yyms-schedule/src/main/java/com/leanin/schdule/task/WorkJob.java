@@ -26,6 +26,8 @@ public class WorkJob {
     @Value("wx.appSecret")
     private String appSecret;
 
+    private String accessToken;
+
     @Autowired
     PlanInfoMapper planInfoMapper;
 
@@ -52,32 +54,33 @@ public class WorkJob {
 
     @Autowired
     MessagePatientMapper messagePatientMapper;
+
     //13817165550
     //短信主题发送短信
     @Scheduled(cron = "0 0/3 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
-    public void messagePlan(){
+    public void messagePlan() {
         List<MessageTopicVo> messageTopicVos = messageTopicMapper.findMsgTopicList(null);
         for (MessageTopicVo messageTopicVo : messageTopicVos) {
             List<MessagePatientVo> messagePatientVos = messagePatientMapper.findList(null, 1);
-            if (messagePatientVos.size() == 0){
+            if (messagePatientVos.size() == 0) {
                 continue;
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
-                String content=messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
-                Map map = CSMSUtils.sendMessage(content,"13817165550"
+                String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
+                Map map = CSMSUtils.sendMessage(content, "13817165550"
                         /*messagePatientVo.getPatientPhone()*/);
                 String msgStatus = (String) map.get("msg");
-                log.info("发送的内容和号码：{}",content,messagePatientVo.getPatientPhone(),msgStatus);
-                if (msgStatus.equals("true")){
+                log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
+                if (msgStatus.equals("true")) {
                     messagePatientVo.setSendType(2);//发送成功
-                }else{
+                } else {
                     messagePatientVo.setSendType(3);//发送失败
                 }
                 messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
-                msgRecordMapper.addMsgRecord(new MessageRecord(null,0l,messageTopicVo.getMsgTopicCreaterWard(),
-                        new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),messageTopicVo.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),messagePatientVo.getPatientId()+"",
-                        messageTopicVo.getMsgTopicId(),messageTopicVo.getMsgTopicId()));
+                msgRecordMapper.addMsgRecord(new MessageRecord(null, 0l, messageTopicVo.getMsgTopicCreaterWard(),
+                        new Date(), messagePatientVo.getPatientPhone(), content, messagePatientVo.getSendType(), messageTopicVo.getMsgTopicTitle(), 4, messagePatientVo.getPatientMsgId(), messagePatientVo.getPatientId() + "",
+                        messageTopicVo.getMsgTopicId(), messageTopicVo.getMsgTopicId()));
             }
 
         }
@@ -91,8 +94,12 @@ public class WorkJob {
         //查询计划列表信息
         List<PlanInfoDto> planList = planInfoMapper.findAllPlan();
         log.info("计划信息列表为:" + JSON.toJSONString(planList));
+
+        //初始化参数
+
+
         for (PlanInfoDto planInfo : planList) {
-            log.info("随访/满意度计划信息:{}",JSON.toJSONString(planInfo));
+            log.info("随访/满意度计划信息:{}", JSON.toJSONString(planInfo));
             //根据病人的编号查询计划病人信息
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), 0, null);
             log.info("该计划的病人列表信息为:" + JSON.toJSONString(planPatientList));
@@ -109,9 +116,17 @@ public class WorkJob {
                             sendMessage(planInfo, patientDto);
                             break;
                         //微信公众号
-                        case 2:
-                            sendWxMsg(planInfo, patientDto);
-                            break;
+                        case 2: {
+                            if (accessToken == null){
+                                accessToken = getAccessToken();//获取accessToken
+                            }
+                            int i = sendWxMsg(planInfo, patientDto);
+                            if (i == 3){//accessToken失效 重新获取令牌
+                                accessToken = getAccessToken();//获取accessToken
+
+                            }
+                        }
+                        break;
                         case 3://短信
                             sendMessage(planInfo, patientDto);
                             break;
@@ -127,15 +142,15 @@ public class WorkJob {
         log.info("发送的短信内容为:" + msg);
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
         String param = "";
-        if (planInfo.getPlanType() == 1){//随访
-            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
-        }else{//宣教
-            param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
+        if (planInfo.getPlanType() == 1) {//随访
+            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=1&formNum=" + planInfo.getFollowFormNum();
+        } else {//宣教
+            param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
         }
-        Map map = CSMSUtils.sendMessage(msg+param, "13817165550");//patientDto.getPatientPhone()
+        Map map = CSMSUtils.sendMessage(msg + param, "13817165550");//patientDto.getPatientPhone()
         //设置病人发送状态
         String msgStatus = (String) map.get("msg");
-        log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}",msg+param,patientDto.getPatientPhone(),msgStatus);
+        log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}", msg + param, patientDto.getPatientPhone(), msgStatus);
         if (msgStatus.equals("true")) {
             patientDto.setSendType(2); //发送成功
             if (planInfo.getPlanType() == 1) { //随访计划
@@ -146,69 +161,69 @@ public class WorkJob {
         } else {
             patientDto.setSendType(3); //发送失败
         }
-        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l,planInfo.getPlanWardCode(),new Date(),
-                patientDto.getPatientPhone(),msg,patientDto.getSendType(),null,planInfo.getPlanType(),patientDto.getPatientPlanId(),
-                patientDto.getPatientId()+"",patientDto.getFormId(),patientDto.getPlanNum()));
+        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
+                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
+                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
         planPatientMapper.updatePlanPatient(patientDto);
     }
 
     //满意度计划
     @Scheduled(cron = "0 0/5 * * * ? ")//
     @Transactional(rollbackFor = Exception.class)
-    public void styPlan(){
+    public void styPlan() {
         //查询所有计划信息
         List<SatisfyPlanVo> planVos = satisfyPlanMapper.findList();
         for (SatisfyPlanVo planVo : planVos) {
-            log.info("满意度计划信息：{}",JSON.toJSONString(planVo));
+            log.info("满意度计划信息：{}", JSON.toJSONString(planVo));
             //获取计划对应的短消息 信息
             MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(planVo.getMsgId());
             //获取计划对应的患者信息
             List<SatisfyPatientVo> list = satisfyPatientMapper.findList(planVo.getPlanSatisfyNum(), null, null, null, null, null, 1);
-            if (list.size() == 0){
+            if (list.size() == 0) {
                 continue;
             }
             Map ruleMap = JSON.parseObject(planVo.getRulesText(), Map.class);
             int rangeDays = Integer.parseInt((String) ruleMap.get("rangeDays"));
 
             //判断患者信息是否处于 未发送的状态
-            switch (planVo.getDiscoverType()){
-                case 1 : //短信或者公众号
-                    sendMsg(planVo,list,msgInfo.getMsgText(),rangeDays);
+            switch (planVo.getDiscoverType()) {
+                case 1: //短信或者公众号
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays);
                     break;
-                case 2 : //公众号
+                case 2: //公众号
                     break;
-                case 3 : //短信
+                case 3: //短信
                     //执行相关发送操作
-                    sendMsg(planVo,list,msgInfo.getMsgText(),rangeDays);
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays);
                     break;
             }
         }
     }
 
     //发送短信操作  修改数据状态
-    private void sendMsg(SatisfyPlanVo satisfyPlanVo,List<SatisfyPatientVo> list,String msgText,Integer rangeDays){
+    private void sendMsg(SatisfyPlanVo satisfyPlanVo, List<SatisfyPatientVo> list, String msgText, Integer rangeDays) {
         //判断是否过期
         for (SatisfyPatientVo satisfyPatientVo : list) {
-            int days = (int) ((System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime()) / (1000*3600 * 24));
-            if (System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime() > 0){
-                if (days > rangeDays){//判断是否过期
-                    if (satisfyPatientVo.getFinishType() == 1 ){
+            int days = (int) ((System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime()) / (1000 * 3600 * 24));
+            if (System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime() > 0) {
+                if (days > rangeDays) {//判断是否过期
+                    if (satisfyPatientVo.getFinishType() == 1) {
                         satisfyPatientVo.setFinishType(3);//已过期
                     }
-                }else{
-                    if (satisfyPatientVo.getSendType() == 1){//未发送
-                        String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlanVo.getSatisfyNum();
-                        Map map = CSMSUtils.sendMessage(msgText+param, "13817165550"); //satisfyPatientVo.getPatientPhone()
+                } else {
+                    if (satisfyPatientVo.getSendType() == 1) {//未发送
+                        String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
+                        Map map = CSMSUtils.sendMessage(msgText + param, "13817165550"); //satisfyPatientVo.getPatientPhone()
                         String msgStatus = (String) map.get("msg");
-                        log.info("满意度短信：{}",msgText+param,satisfyPatientVo.getPatientPhone(),msgStatus,satisfyPlanVo.getSatisfyNum());
-                        if (msgStatus.equals("true")){
+                        log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
+                        if (msgStatus.equals("true")) {
                             satisfyPatientVo.setSendType(2); //已发送短信
-                        }else{
+                        } else {
                             satisfyPatientVo.setSendType(3); //发送失败
                         }
-                        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l,satisfyPlanVo.getSatisfyPlanWard(),new Date(),
-                                satisfyPatientVo.getPatientPhone(),msgText,satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
-                                satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPlanVo.getPlanSatisfyName()));
+                        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
+                                satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
+                                satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                     }
                 }
                 satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
@@ -273,24 +288,24 @@ public class WorkJob {
                         break;
                     case 2: //已完成随访
                         //判断是否过期
-                        if (days > validDays){
+                        if (days > validDays) {
                             updateRecord(2, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
                         break;
                     case 3: //已过期随访
-                            updateRecord(3, planPatientVo, rulesInfo, timeSelect,
-                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                        updateRecord(3, planPatientVo, rulesInfo, timeSelect,
+                                timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         break;
                     case 4: //随访异常
-                        if (days > validDays){
+                        if (days > validDays) {
                             updateRecord(4, planPatientVo, rulesInfo, timeSelect,
                                     timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         }
                         break;
                 }
             }
-            log.info("一次计划更新完成{}",planInfoDto.getPlanNum());
+            log.info("一次计划更新完成{}", planInfoDto.getPlanNum());
         }
 
     }
@@ -375,30 +390,30 @@ public class WorkJob {
     }
 
 
-    public String getAccessToken(){
-        Map<String,String> param=new HashMap<>();
-        String token_url="https://api.weixin.qq.com/cgi-bin/token?" +
+    public String getAccessToken() {
+        Map<String, String> param = new HashMap<>();
+        String token_url = "https://api.weixin.qq.com/cgi-bin/token?" +
                 "grant_type=client_credential&" +
-                "appid=" +appId+
-                "&secret="+appSecret;
+                "appid=" + appId +
+                "&secret=" + appSecret;
         //2.使用httpclient 发送请求
         String access_token = null;
         try {
-            HttpClient httpClient =new HttpClient(token_url);
+            HttpClient httpClient = new HttpClient(token_url);
             httpClient.setHttps(true);//设置https 访问协议
             httpClient.get();//设置https 请求方式
 
             //3.接受返回来的数据
             String content = httpClient.getContent();//获取返回参数
-            log.info("获取access_token时返回的数据:{}",content);
+            log.info("获取access_token时返回的数据:{}", content);
             Map map = JSON.parseObject(content, Map.class);
             Object access_token1 = map.get("access_token");
-            if (access_token1 != null){
+            if (access_token1 != null) {
                 access_token = (String) access_token1;
             }
 
         } catch (Exception e) {
-            log.info("获取access_token异常",e.getMessage());
+            log.info("获取access_token异常", e.getMessage());
         }
         return access_token;
 //        body
@@ -411,61 +426,91 @@ public class WorkJob {
 //        param.put("template_id",templeteId);
     }
 
-    public void sendWxMsg(PlanInfoDto planInfo, PlanPatientVo patientDto){
-
-        String accessToken = getAccessToken();
-        if (accessToken == null){
-            return;
+    public int sendWxMsg(PlanInfoDto planInfo, PlanPatientVo patientDto) {
+        log.info("患者是否绑定微信:{}",patientDto.getOpendId());
+        if (patientDto.getOpendId() == null && "".equals(patientDto.getOpendId()) ){
+            return 1;//openid 为空
         }
-
         String param = "";
-        if (planInfo.getPlanType() == 1){//随访
-            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+patientDto.getPatientPlanId()+"&palnType=1&formNum="+planInfo.getFollowFormNum();
-        }else{//宣教
-            param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+patientDto.getPatientPlanId()+"&palnType=2&formNum="+planInfo.getFollowFormNum();
-        }
-
-        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
         Map data = new HashMap();
-        Map user = new HashMap();
+        data.put("touser", patientDto.getOpendId());
+        data.put("template_id", "nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");
+//        data.put("url", "www.baidu.com");
+        Map user =new HashMap();
         Map first = new HashMap();
-        Map keyword1 =new HashMap();
+        first.put("value", "为了您的身体健康，请及时填写出院后的随访信息");
+        user.put("first", first);
+        Map keyword1 = new HashMap();
+        keyword1.put("value", "9527");
+        user.put("keyword1", keyword1);
         Map keyword2 = new HashMap();
+        keyword2.put("value", "2019-3-14");
+        user.put("keyword2", keyword2);
         Map keyword3 = new HashMap();
-        Map remark =new HashMap();
-        setParam
+        keyword3.put("value", "建德人民医院");
+        user.put("keyword3", keyword3);
+        Map remark = new HashMap();
+        remark.put("value", "点击“详情”进行出院随访填写");
+        user.put("remark", remark);
+        data.put("data", user);
+        if (planInfo.getPlanType() == 1) {//随访
+            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=1&formNum=" + planInfo.getFollowFormNum();
+            first.put("value", "您好！为了您的健康，请及时完成未提交的随访调查表单。");
+        } else {//宣教
+            param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
+            first.put("value", "您好！为了您的健康，请及时查看未读的宣教内容。");
+        }
+        user.put("first", first);
+        data.put("url", param);
+
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + accessToken;
+
+
         String dataStr = JSON.toJSONString(data);
 
         String result = HttpClientUtil.doPostCarryJson(url, dataStr);
-
+        log.info("推送模板消息是返回的信息:{}",result);
         Map map = JSON.parseObject(result, Map.class);
 
+        Integer errcode = (Integer) map.get("errcode");
+        switch (errcode){
+            case 0 ://发送成功
+
+                break;
+            case 42001 ://发送失败
+                return 3;//access_token 失效
+//                break;
+
+        }
+
+        return 2;//发送成功
+
     }
 
-    private Map setParam(Map data,Map user,Map first,Map keyword1,
-                         Map keyword2,Map keyword3,Map remark){
-//        Map data = new HashMap();
-        data.put("touser","openid");
-        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
-        data.put("url","www.baidu.com");
-//        Map user =new HashMap();
-//        Map first = new HashMap();
-        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
-        user.put("first",first);
-//        Map keyword1 = new HashMap();
-        keyword1.put("value","9527");
-        user.put("keyword1",keyword1);
-//        Map keyword2 = new HashMap();
-        keyword2.put("value","2019-3-14");
-        user.put("keyword2",keyword2);
-//        Map keyword3 = new HashMap();
-        keyword3.put("value","建德人民医院");
-        user.put("keyword3",keyword3);
-//        Map remark = new HashMap();
-        remark.put("value","点击“详情”进行出院随访填写");
-        user.put("remark",remark);
-        data.put("data",user);
+    /*private Map setParam(Map data, Map user, Map first, Map keyword1,
+                         Map keyword2, Map keyword3, Map remark) {
+        Map data = new HashMap();
+        data.put("touser", "openid");
+        data.put("template_id", "12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
+        data.put("url", "www.baidu.com");
+        Map user =new HashMap();
+        Map first = new HashMap();
+        first.put("value", "为了您的身体健康，请及时填写出院后的随访信息");
+        user.put("first", first);
+        Map keyword1 = new HashMap();
+        keyword1.put("value", "9527");
+        user.put("keyword1", keyword1);
+        Map keyword2 = new HashMap();
+        keyword2.put("value", "2019-3-14");
+        user.put("keyword2", keyword2);
+        Map keyword3 = new HashMap();
+        keyword3.put("value", "建德人民医院");
+        user.put("keyword3", keyword3);
+        Map remark = new HashMap();
+        remark.put("value", "点击“详情”进行出院随访填写");
+        user.put("remark", remark);
+        data.put("data", user);
         return data;
-    }
+    }*/
 
 }

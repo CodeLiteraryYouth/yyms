@@ -19,8 +19,7 @@ public class SatisfyController extends BaseController {
 	@Autowired
 	private SatisfyService satisfyService;
 
-
-	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
 	@GetMapping("findSatisfyList")
 	public DataOutResponse findSatisfyList(@RequestParam Integer page, @RequestParam Integer pageSize,
 										   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String satisfyName,
@@ -58,6 +57,17 @@ public class SatisfyController extends BaseController {
 	@GetMapping("/findStyInfoByOpenId")
 	public DataOutResponse findStyInfoByOpenId(@RequestParam String openId,@RequestParam Integer finishType){
 		return satisfyService.findStyInfoByOpenId(openId,finishType);
+	}
+
+	/**
+	 * 共享满意度表单
+	 * @param satisfyNum 满意度单号
+	 * @param status	1不共享  2 共享
+	 * @return
+	 */
+	@GetMapping("shareSatisfy")
+	public DataOutResponse shareSatisfy(@RequestParam("satisfyNum") String satisfyNum,@RequestParam("status")Integer status){
+		return satisfyService.shareSatisfy(satisfyNum,status);
 	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
