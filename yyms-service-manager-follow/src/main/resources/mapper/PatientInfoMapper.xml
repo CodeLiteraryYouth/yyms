@@ -216,7 +216,7 @@
         patient_info_phone = #{patientInfoPhone,jdbcType=VARCHAR},
       </if>
       <if test="patientInfoMarrStatus != null">
-        patient_info_marr_status = #{patientInfoMarrStatus,jdbcType=INTEGER},
+        patient_info_marr_status = #{patientInfoMarrStatus,jdbcType=VARCHAR},
       </if>
       <if test="patientInfoNational != null">
         patient_info_national = #{patientInfoNational,jdbcType=VARCHAR},

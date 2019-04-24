@@ -25,7 +25,7 @@ public class PatientInfoVo {
 
     private String patientInfoPhone;	//手机号
 
-    private Integer patientInfoMarrStatus;	//婚姻状态（1：未婚 2：已婚）
+    private String patientInfoMarrStatus;	//婚姻状态（1：未婚 2：已婚）
 
     private String patientInfoNational;	//民族
     
