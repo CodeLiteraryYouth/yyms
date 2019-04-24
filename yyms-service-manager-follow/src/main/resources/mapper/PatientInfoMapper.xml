@@ -151,7 +151,7 @@
         #{patientInfoSex,jdbcType=INTEGER},
       </if>
       <if test="patientInfoBirthday != null">
-        #{patientInfoBirthday,jdbcType=TIMESTAMP},
+        #{patientInfoBirthday,jdbcType=VARCHAR},
       </if>
       <if test="patientInfoIdcard != null">
         #{patientInfoIdcard,jdbcType=VARCHAR},
@@ -193,7 +193,7 @@
         #{adminCreater,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR}
+        #{createTime,jdbcType=TIMESTAMP}
       </if>
     </trim>
   </insert>

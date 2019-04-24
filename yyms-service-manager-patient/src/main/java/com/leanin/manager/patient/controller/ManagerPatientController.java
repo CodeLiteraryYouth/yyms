@@ -35,7 +35,9 @@ public class ManagerPatientController implements ManagerPatientApi {
     @Override
     @PostMapping("/findOutHosPatientByParam")
     public DataOutResponse findOutHosPatientByParam(@RequestBody Map paramMap) {
-        return managerPatientService.findOutHosPatientByParam(paramMap);
+/*        return managerPatientService.findOutHosPatientByParam(paramMap);
+*/        return managerPatientService.findListByParam(paramMap);
+
     }
     //给随访提供接口，出住院病人信息
     @Override

@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,13 +41,21 @@ public class PatientInfoServiceImpl implements PatientInfoService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse addPatientInfo(PatientInfoVo patientInfo) {
 		log.info("新增的病人信息为:"+ JSON.toJSONString(patientInfo));
-		String areaCode=stringRedisTemplate.opsForValue().get("areaCode");
-		log.info("院区编码为:"+areaCode);
-		PatientInfoVo patient=patientInfoMapper.findPatientById(patientInfo.getPatientInfoId(), areaCode);
-		if(CompareUtil.isNotEmpty(patient)) {
-			return ReturnFomart.retParam(4000, patient);
+		if(patientInfo.getPatientInfoId() == null){
+			return ReturnFomart.retParam(4000, "patientInfoId参数为空！");
 		}
+		/*String areaCode=stringRedisTemplate.opsForValue().get("areaCode");
+		log.info("院区编码为:"+areaCode);*/
+		PatientInfoVo patient=patientInfoMapper.findPatientById(patientInfo.getPatientInfoId(), null);
+		if(CompareUtil.isNotEmpty(patient)) {
+			//更新
+			patientInfoMapper.updatePatientInfo(patientInfo);
+		}else{
+			//插入
+		//插入创建时间
+		patientInfo.setCreateTime(new Date());
 		patientInfoMapper.addPatientInfo(patientInfo);
+		}
 		return ReturnFomart.retParam(200, patientInfo);
 	}
 

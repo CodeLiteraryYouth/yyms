@@ -19,7 +19,7 @@ public class PatientInfoVo {
 
     private Integer patientInfoSex;		//性别（1：男 2：女）
 
-    private Date patientInfoBirthday;	//出生年月
+    private String patientInfoBirthday;	//出生年月
 
     private String patientInfoIdcard;	//身份证号
 
@@ -47,6 +47,6 @@ public class PatientInfoVo {
 
     private String adminCreater;	//建党病人创建者
     
-    private String createTime;	//建档时间
+    private Date createTime;	//建档时间
 
 }
