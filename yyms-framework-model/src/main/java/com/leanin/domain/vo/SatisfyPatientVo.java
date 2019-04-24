@@ -63,4 +63,6 @@ public class SatisfyPatientVo implements Serializable {
 
     private String formId;  //满意度表单id
 
+    private String openId;
+
 }

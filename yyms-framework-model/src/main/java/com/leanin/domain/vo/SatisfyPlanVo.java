@@ -69,4 +69,5 @@ public class  SatisfyPlanVo {
     private String msgId; //短信id
 
     private Long msgType; //短信类型
+
 }

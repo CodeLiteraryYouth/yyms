@@ -195,33 +195,42 @@ public class TestController extends BaseController implements TestApi  {
 
         }
 
-        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
+        String paramstr = "";
         Map data = new HashMap();
-//        data.put("touser","oY_Qq6MwwsdJdI_vlD5I5bW1xSjM");
-        data.put("touser","oY_Qq6DSu1nCDqzhSywVfgpcYSxI");
-        data.put("template_id","12mvbkAmJmSPYM7op_Y5sDpbZfFWjmh3SPKxmYTrhmk");
-        String urlString = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=207&palnType=1&formNum=201904181457339548";
-        data.put("url",urlString);
+        data.put("touser", "oY_Qq6DSu1nCDqzhSywVfgpcYSxI");
+        data.put("template_id", "nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");
+//        data.put("url", "www.baidu.com");
         Map user =new HashMap();
         Map first = new HashMap();
-        first.put("value","为了您的身体健康，请及时填写出院后的随访信息");
-        user.put("first",first);
+//        first.put("value", "为了您的身体健康，请及时填写出院后的随访信息");
+//        user.put("first", first);
+//        if (planInfo.getPlanType() == 1) {//随访
+            paramstr = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=" + "207" + "&palnType=1&formNum=" + "201904181457339548";
+            first.put("value", "您好！为了您的健康，请及时完成未提交的随访调查表单。");
+//        } else {//宣教
+//            paramstr = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
+//            first.put("value", "您好！为了您的健康，请及时查看未读的宣教内容。");
+//        }
+        user.put("first", first);
+        data.put("url", paramstr);
         Map keyword1 = new HashMap();
-        keyword1.put("value","9527");
-        user.put("keyword1",keyword1);
+        keyword1.put("value", "建德人民医院");
+        user.put("keyword1", keyword1);
         Map keyword2 = new HashMap();
-        keyword2.put("value","2019-3-14");
-        user.put("keyword2",keyword2);
+        keyword2.put("value", "精神科");
+        user.put("keyword2", keyword2);
         Map keyword3 = new HashMap();
-        keyword3.put("value","建德人民医院");
-        user.put("keyword3",keyword3);
+        keyword3.put("value", "张无忌");
+        user.put("keyword3", keyword3);
         Map remark = new HashMap();
-        remark.put("value","点击“详情”进行出院随访填写");
-        user.put("remark",remark);
-        data.put("data",user);
-        String dataStr = JSON.toJSONString(data);
-        String result = HttpClientUtil.doPostCarryJson(url, dataStr);
+        remark.put("value", "点击“详情”进行出院随访填写");
+        user.put("remark", remark);
+        data.put("data", user);
 
+        String dataStr = JSON.toJSONString(data);
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + access_token;
+        String result = HttpClientUtil.doPostCarryJson(url, dataStr);
+//        log.info("推送模板消息是返回的信息:{}",result);
         Map map = JSON.parseObject(result, Map.class);
 
     }
