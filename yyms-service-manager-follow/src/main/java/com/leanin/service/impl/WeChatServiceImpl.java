@@ -36,31 +36,6 @@ public class WeChatServiceImpl implements WeChatService {
     @Autowired
     PatientWxMapper patientWxMapper;
 
-    @Override
-    public DataOutResponse login(String code) {
-        if (code == null ){
-            return ReturnFomart.retParam(300,"授权失败");
-        }
-        try {
-            String url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                    "appid=&" +appId+
-                    "secret=&" +appSecret+
-                    "code=&" +code+
-                    "grant_type=authorization_code";
-//            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=" + redirectUrl + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-            HttpClient httpClient = new HttpClient(url);
-            httpClient.setHttps(true);
-            httpClient.get();
-
-            String content = httpClient.getContent();
-            Map map = JSON.parseObject(content, Map.class);
-            return ReturnFomart.retParam(200,map);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ReturnFomart.retParam(300,"获取用户openid失败");
-        }
-
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -80,13 +55,7 @@ public class WeChatServiceImpl implements WeChatService {
                     "secret=" +appSecret+"&"+
                     "code=" +bindPat.getCode()+"&"+
                     "grant_type=authorization_code";
-//            Map<String, String> param = new HashMap<>();
-//            param.put("appid", appId);              //开发者设置中的appId
-//            param.put("secret", appSecret);         //开发者设置中的appSecret
-//            param.put("code", bindPat.getCode()); //小程序调用wx.login返回的code
-//            param.put("grant_type", "authorization_code");    //默认参数
             HttpClient client = new HttpClient(url);//"https://api.weixin.qq.com/sns/jscode2session"
-//            client.setParameter(param);
             client.setHttps(true);
             client.get();
 
@@ -102,7 +71,8 @@ public class WeChatServiceImpl implements WeChatService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("微信推送模板消息异常:{}",e.getMessage());
+//            e.printStackTrace();
         }
         bindPat.setOpenId(openid);
 

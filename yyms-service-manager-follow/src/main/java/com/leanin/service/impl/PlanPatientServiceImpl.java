@@ -368,7 +368,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     public DataOutResponse findPlanPatientById(Long patientId, Integer patientSource, String planNum, Integer planType, Integer type) {
         Map dataMap = new HashMap();
 //        Integer patientSource = planPatient.getPatientSource();
-        if (type == 1) {//查看档案
+        if (type == 1) {//患者管理查看档案
             //查询本地患者信息
             PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
             if (PatientInfoVo != null) {//
@@ -376,7 +376,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
             } else {//获取原数据患者信息 和记录
                 dataMap = getRecord(patientId + "", patientSource, dataMap);
             }
-        } else {//随访
+        } else {//查询随访/宣教计划患者信息
             dataMap = getRecord(patientId + "", patientSource, dataMap);
             PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(patientId);
 //            PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
@@ -388,6 +388,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
         }
 
+        //查询计划信息
         if (planNum != null && !"".equals(planNum)) {
             switch (planType) {
                 case 1://随访和宣教

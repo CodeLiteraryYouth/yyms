@@ -7,6 +7,6 @@ public interface WeChatService {
 
     DataOutResponse bindPatient(BindPat bindPat);
 
-    DataOutResponse login(String code);
+
 
 }

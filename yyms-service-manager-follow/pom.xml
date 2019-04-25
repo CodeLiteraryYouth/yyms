@@ -185,7 +185,6 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -216,7 +215,6 @@
             <systemPath>${project.basedir}/lib/com.jave-1.0.3.jar</systemPath>
         </dependency>
 
-     
 
     </dependencies>
     <repositories>
