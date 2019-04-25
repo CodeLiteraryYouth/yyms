@@ -62,7 +62,7 @@ public class WorkJob {
 
     //13817165550
     //短信主题发送短信
-    @Scheduled(cron = "0 0/3 * * * ? ")
+    @Scheduled(cron = "0 0/10 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void messagePlan() {
         List<MessageTopicVo> messageTopicVos = messageTopicMapper.findMsgTopicList(null);
@@ -73,8 +73,7 @@ public class WorkJob {
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
                 String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
-                Map map = CSMSUtils.sendMessage(content, "13817165550"
-                        /*messagePatientVo.getPatientPhone()*/);
+                Map map = CSMSUtils.sendMessage(content,messagePatientVo.getPatientPhone());
                 String msgStatus = (String) map.get("msg");
                 log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
                 if (msgStatus.equals("true")) {
@@ -91,7 +90,7 @@ public class WorkJob {
     }
 
     //随访 宣教 发送短信
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0/8 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void followPlan() {
         log.info("开始推送消息");
@@ -175,7 +174,7 @@ public class WorkJob {
         } else {//宣教
             param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
         }
-        Map map = CSMSUtils.sendMessage(msg + param, "13817165550");//patientDto.getPatientPhone()
+        Map map = CSMSUtils.sendMessage(msg + param, patientDto.getPatientPhone());//patientDto.getPatientPhone()
         //设置病人发送状态
         String msgStatus = (String) map.get("msg");
         log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}", msg + param, patientDto.getPatientPhone(), msgStatus);
@@ -197,7 +196,7 @@ public class WorkJob {
     }
 
     //满意度计划
-    @Scheduled(cron = "0 0/5 * * * ? ")//
+    @Scheduled(cron = "0 0/9 * * * ? ")//
     @Transactional(rollbackFor = Exception.class)
     public void styPlan() {
         //查询所有计划信息
@@ -250,7 +249,7 @@ public class WorkJob {
                         case 1:{//短信 公众号
                             //推送短信
                             String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
-                            Map map = CSMSUtils.sendMessage(msgText + param, "13817165550"); //satisfyPatientVo.getPatientPhone()
+                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
                             String msgStatus = (String) map.get("msg");
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
                             if (msgStatus.equals("true")) {
@@ -282,7 +281,7 @@ public class WorkJob {
                             break;
                         case 3: {//短信
                             String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
-                            Map map = CSMSUtils.sendMessage(msgText + param, "13817165550"); //satisfyPatientVo.getPatientPhone()
+                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
                             String msgStatus = (String) map.get("msg");
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
                             if (msgStatus.equals("true")) {

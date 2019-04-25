@@ -66,6 +66,7 @@ public class ReturnFomart {
         messageMap.put("3303","验证码已失效，请重新获取验证码");
         messageMap.put("3304","请输入正确的验证码");
         messageMap.put("3305","患者手机号码不存在");
+        messageMap.put("3306","患者手机号码不存在或者手机号码错误");
 
 
         messageMap.put("3401","绑定患者失败");

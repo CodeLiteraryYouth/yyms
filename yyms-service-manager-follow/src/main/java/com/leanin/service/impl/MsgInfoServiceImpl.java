@@ -112,26 +112,27 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataOutResponse sendMessage(String[] longs,Integer type,String formId,String msgId) {
+	public DataOutResponse sendMessage(String[] longs,Integer type,HttpServletRequest request/*,String formId,String msgId*/) {
 		boolean flag = true;
+		LyOauth2Util.UserJwt user = getUser(request);
 		switch (type){
 			case 1://随访
-				flag = followPlan(longs, formId);
+				flag = followPlan(longs,user/*, formId*/);
 				break;
 			case 2://宣教
-				flag = followPlan(longs,formId);
+				flag = followPlan(longs,user/*,formId*/);
 				break;
 			case 3:// 满意度
-				flag = styPlan(longs,formId);
+				flag = styPlan(longs,user/*,formId*/);
 				break;
 			case 4://短信主题
-				flag = msgPlan(longs,formId);
+				flag = msgPlan(longs,user/*,formId*/);
 				break;
 			default:
 				break;
 		}
 		if (!flag){
-			return ReturnFomart.retParam(3305,"短信发送失败");
+			return ReturnFomart.retParam(3306,"短信发送失败");
 		}
 		return ReturnFomart.retParam(200, "发送成功");
 	}
@@ -149,14 +150,16 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
 			String param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
 
-			Map map = CSMSUtils.sendMessage("18556531536"/*onlineEdu.getPhoneNum()*/, msgInfo.getMsgText() + param);
+			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText() + param,onlineEdu.getPhoneNum() );
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				onlineEdu.setSendStatus(2);//已发送短信
-				onlineEdu.setFormStatus(2);//已完成阅读状态
+				onlineEdu.setFormStatus(1);//已完成未阅读状态
 			}else{
-//				onlineEdu.setSendStatus(3);
-				return ReturnFomart.retParam(3305,"短信发送失败");
+				onlineEdu.setSendStatus(3);//发送失败
+				edu.setSendTime(new Date());
+				OnlineEdu save = onlineEduRepository.save(onlineEdu);
+				return ReturnFomart.retParam(3306,save);
 			}
 			edu.setSendTime(new Date());
 			OnlineEdu save = onlineEduRepository.save(onlineEdu);
@@ -185,7 +188,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		return ReturnFomart.retParam(200,"发送成功");
 	}
 
-	private boolean  followPlan(String[] longs,String formId){
+	private boolean  followPlan(String[] longs,LyOauth2Util.UserJwt user/*,String formId*/){
 		for (String Longstr : longs) {
 			long aLong = Long.parseLong(Longstr);
 			PlanPatientVo planPatient =planPatientMapper.findPlanPatientById(aLong);
@@ -196,15 +199,15 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			String param = "";
 			if (planInfoVo.getPlanType() == 1){//随访计划
 				param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
-				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "18556531536");
+//				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,planPatient.getPatientPhone() );
 			}else {//宣教
-				if (formId != null){
+//				if (formId != null){
 					param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
-				}else {
-					param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
-				}
-				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, "13675853622");
+//				}else {
+//					param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
+//				}
 			}
+			map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, planPatient.getPatientPhone());
 			log.info("发送短信的内容:{}",msgInfo.getMsgText()+param);
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
@@ -212,64 +215,75 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setFormStatus(1);		//设置成表单未完成状态
 				planPatient.setPlanPatsStatus(1); 	//修改成带随访状态
 			}else {
-//				planPatient.setSendType(3); //发送失败
+				planPatient.setSendType(3); //发送失败
+				planPatientMapper.updatePlanPatient(planPatient);
+				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*planInfoVo.getPlanDutyPer()*/,planInfoVo.getPlanWardCode(),new Date(),
+						planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
+						planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 				return false;
 			}
 			log.info("发送短信后的患者信息:{}",JSON.toJSONString(planPatient));
 			planPatientMapper.updatePlanPatient(planPatient);
-			msgRecordMapper.addMsgRecord(new MessageRecord(null,planInfoVo.getPlanDutyPer(),planInfoVo.getPlanWardCode(),new Date(),
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*planInfoVo.getPlanDutyPer()*/,planInfoVo.getPlanWardCode(),new Date(),
 					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
 					planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 		}
 		return true;
 	}
 
-	private boolean styPlan(String[] longs,String formId){
+	private boolean styPlan(String[] longs,LyOauth2Util.UserJwt user/*,String formId*/){
 		for (String LongStr : longs) {
 			long aLong = Long.parseLong(LongStr);
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
 			String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
-			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,"13675853622" /*satisfyPatientVo.getPatientPhone()*/);
+			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,satisfyPatientVo.getPatientPhone());
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				satisfyPatientVo.setSendType(2); //发送成功
 				satisfyPatientVo.setFormStatus(1);//表单未完成
 			}else {//发送失败
-//				satisfyPatientVo.setSendType(3); //发送失败
+				satisfyPatientVo.setSendType(3); //发送失败
+				satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*satisfyPlan.getDiscoverPerson()*/,satisfyPlan.getSatisfyPlanWard(),new Date(),
+						satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
+						satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 				return false;
 			}
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
-			msgRecordMapper.addMsgRecord(new MessageRecord(null,satisfyPlan.getDiscoverPerson(),satisfyPlan.getSatisfyPlanWard(),new Date(),
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*satisfyPlan.getDiscoverPerson()*/,satisfyPlan.getSatisfyPlanWard(),new Date(),
 					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
 					satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 		}
 		return true;
 	}
 
-	private boolean msgPlan(String[] longs,String formId){
+	private boolean msgPlan(String[] longs,LyOauth2Util.UserJwt user/*,String formId*/){
 		for (String LongStr : longs) {
 			long aLong = Long.parseLong(LongStr);
 			MessagePatientVo messagePatientVo=messagePatientMapper.findById(aLong);
-			MessageTopicVo msgTopic = new MessageTopicVo();
-			if (formId != null ){
+//			MessageTopicVo msgTopic = new MessageTopicVo();
+			/*if (formId != null ){
 				msgTopic = messageTopicMapper.findMsgTopicById(formId);
-			}else{
-				msgTopic = messageTopicMapper.findMsgTopicById(messagePatientVo.getMsgTopicId());
-			}
+			}else{*/
+			MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(messagePatientVo.getMsgTopicId());
+			/*}*/
 			String content =msgTopic.getMsgTopicHead()+msgTopic.getMsgContent();
-			Map map = CSMSUtils.sendMessage(content,"13675853622"
-					/*messagePatientVo.getPatientPhone()*/);
+			Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){
 				messagePatientVo.setSendType(2);//发送成功
 			}else{
+				messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
+				messagePatientVo.setSendType(3);//发送失败
+				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*msgTopic.getMsgTopicCreater()*/,msgTopic.getMsgTopicCreaterWard(),
+						new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
+						messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 				return false;
-//				messagePatientVo.setSendType(3);//发送失败
 			}
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
-			msgRecordMapper.addMsgRecord(new MessageRecord(null,msgTopic.getMsgTopicCreater(),msgTopic.getMsgTopicCreaterWard(),
+			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*msgTopic.getMsgTopicCreater()*/,msgTopic.getMsgTopicCreaterWard(),
 					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
 					messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 		}

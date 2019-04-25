@@ -17,10 +17,17 @@ public class FormTypeController {
 
 	@Autowired
 	private FormTypeService formTypeService;
-	
+
+	/**
+	 * 分页展示表单分类
+	 * @param page  当前页
+	 * @param pageSize 每页展示条数
+	 * @param type 类型
+	 * @return
+	 */
 	@GetMapping("findTypeList")
-	public DataOutResponse findTypeList(@RequestParam Integer type) {
-		return formTypeService.findTypeList(type);
+	public DataOutResponse findTypeList(@RequestParam("page")Integer page,@RequestParam("pageSize")Integer pageSize,@RequestParam("type") Integer type) {
+		return formTypeService.findTypeList(page,pageSize,type);
 	}
 	
 	

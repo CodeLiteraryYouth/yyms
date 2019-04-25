@@ -23,7 +23,8 @@ public class MsgRecordServiceImpl implements MsgRecordService {
     MsgRecordMapper msgRecordMapper;
 
     @Override
-    public DataOutResponse findMsgRecordList(Integer currentPage, Integer pageSize, Integer planType, String msgThem, Integer sendType) {
+    public DataOutResponse findMsgRecordList(Integer currentPage, Integer pageSize, Integer planType,
+                                             String msgThem, Integer sendType,String patientId) {
 
         if (currentPage == null || currentPage <= 0){
             currentPage = 1;
@@ -33,7 +34,7 @@ public class MsgRecordServiceImpl implements MsgRecordService {
         }
         Map dataMap =new HashMap();
         PageHelper.startPage(currentPage,pageSize);
-        Page<MessageRecord> page = (Page<MessageRecord>) msgRecordMapper.findMsgRecordList(planType,msgThem,sendType);
+        Page<MessageRecord> page = (Page<MessageRecord>) msgRecordMapper.findMsgRecordList(planType,msgThem,sendType,patientId);
         dataMap.put("totalCount",page.getTotal());
         dataMap.put("list",page.getResult());
         return ReturnFomart.retParam(200, dataMap);

@@ -66,21 +66,22 @@ public class MsgInfoController extends BaseController {
 	//
 
 	/**
-	 * 手动发送短信  重发表单
-	 * @param ids
-	 * @param type
-	 * @param formId
-	 * @param msgId
+	 * 计划患者重发表单
+	 * @param ids  计划患者主键
+	 * @param type 计划类型  1 随访 2 宣教 3 满意度 4 短信主题
+	 * @param
+	 * @param
 	 * @return
 	 */
 	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
 	@GetMapping("sendMessage")
-	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type,String formId,String msgId){
+	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type/*,String formId,String msgId*/){
 //		List<Long> longs = JSON.parseArray(ids, Long.class);
 		String[] idList = ids.split(",");
-		return msgInfoService.sendMessage(idList,type,formId,msgId);
+		return msgInfoService.sendMessage(idList,type,request/*,formId,msgId*/);
 	}
 
+	//发送普通短信
 	@PostMapping("sendCommonMsg")
 	public DataOutResponse sendCommonMsg(@RequestBody List<MessageRecord> messageRecord){
 		return msgInfoService.sendCommonMsg(messageRecord,request);

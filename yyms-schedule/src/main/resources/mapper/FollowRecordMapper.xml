@@ -166,8 +166,8 @@
             <if test="handleSugges !=null">
                 #{handleSugges},
             </if>
-            <if test="openId !=null">
-                #{openId},
+            <if test="opendId !=null">
+                #{opendId},
             </if>
             <if test="idCard !=null">
                 #{idCard},

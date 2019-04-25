@@ -63,6 +63,7 @@ public class PlanPatientVo implements Serializable {
 
     private String idCard;      //身份证号
     private String inhosNo;     //住院号
+
     private String opendId;     //openid
 
     private String formId;      //表单id

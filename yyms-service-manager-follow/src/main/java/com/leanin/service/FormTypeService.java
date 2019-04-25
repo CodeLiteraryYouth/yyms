@@ -10,7 +10,7 @@ public interface FormTypeService {
 	 * 查询表单列表
 	 * @return
 	 */
-	DataOutResponse findTypeList(Integer typeStatus);
+	DataOutResponse findTypeList(Integer page,Integer pageSize,Integer typeStatus);
 	/**
 	 * 增加表单类型
 	 * @param record

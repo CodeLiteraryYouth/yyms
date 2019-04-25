@@ -12,5 +12,6 @@ public interface MsgRecordMapper {
 
     void addMsgRecord(@Param("messageRecord") MessageRecord messageRecord);
 
-    List<MessageRecord> findMsgRecordList(@Param("planType") Integer planType,@Param("msgThem") String msgThem,@Param("sendType") Integer sendType);
+    List<MessageRecord> findMsgRecordList(@Param("planType") Integer planType,@Param("msgThem") String msgThem,
+                                          @Param("sendType") Integer sendType,@Param("patientId") String patientId);
 }

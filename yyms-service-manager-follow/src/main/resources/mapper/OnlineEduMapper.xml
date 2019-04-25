@@ -60,6 +60,5 @@
         <if test="sendName != null ">
             and lau.admin_name like CONCAT('%',#{sendName},'%')
         </if>
-
     </select>
 </mapper>

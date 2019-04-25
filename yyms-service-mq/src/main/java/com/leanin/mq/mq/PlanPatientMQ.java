@@ -76,7 +76,8 @@ public class PlanPatientMQ {
 //            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
             messagePatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
 //            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
-//            messagePatientVo.setPatientIdCard();//身份证号
+            messagePatientVo.setIdCard(map.get("idCard").toString());//身份证号
+            messagePatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
 //            messagePatientVo.setAreaCode();//设置院区编码
             log.info("短信计划患者信息:{}",JSON.toJSONString(messagePatientVo));
             messagePatientMapper.insertSelective(messagePatientVo);
@@ -92,6 +93,10 @@ public class PlanPatientMQ {
         log.info("添加满意度计划的主键是:{}",planSatisfyNum);
         //获取满意度计划信息
         SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planSatisfyNum);
+        if(satisfyPlan == null){
+            log.info("满意度计划不存在:{}",planSatisfyNum);
+            return;
+        }
         //获取缓存中的患者信息
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("satisfyPlan").get(planSatisfyNum);
         log.info("添加满意度计划患者信息是:{}",JSON.toJSONString(list));
@@ -130,6 +135,8 @@ public class PlanPatientMQ {
             satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
             satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
 //            satisfyPatientVo.setAreaCode();//设置院区编码
+            satisfyPatientVo.setIdCard(map.get("idCard").toString());
+            satisfyPatientVo.setInhosNo(map.get("inhosNo").toString());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(lastDate);
             calendar.add(Calendar.DATE, Integer.parseInt(timeNumStr));
@@ -222,10 +229,16 @@ public class PlanPatientMQ {
                 planPatientVo.setPatientType(planInfo.getPatientInfoSource());//设置病人来源   可能是集合
 //                String areaCode = (String) map.get("areaCode");
 //                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
-                planPatientVo.setPlanPatsStatus(0);//-1:收案 0：全部 1：待随访 2：已完成；3:已过期
+                if (planInfo.getPlanType() == 1){//随访
+                    planPatientVo.setPlanPatsStatus(0);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
+                }else{//宣教
+                    planPatientVo.setPlanPatsStatus(1);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
+                }
+//                planPatientVo.setPlanPatsStatus(0);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
                 planPatientVo.setPatientSource(planInfo.getPatientInfoSource());//设置患者来源
                 planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
-
+                planPatientVo.setIdCard(map.get("idCard").toString());//身份证号
+                planPatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
 //                if(rules.getRulesInfoType() ==1){
 //
 //                }else if (rules.getRulesInfoType() ==2){

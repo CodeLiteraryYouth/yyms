@@ -74,6 +74,12 @@
       <if test="sendType != null">
         send_type,
       </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="inhosNo != null">
+        inhos_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="patientMsgId != null">
@@ -108,6 +114,12 @@
       </if>
       <if test="sendType != null">
         #{sendType,jdbcType=INTEGER},
+      </if>
+      <if test="idCard != null">
+        #{idCard},
+      </if>
+      <if test="inhosNo != null">
+        #{inhosNo},
       </if>
     </trim>
   </insert>

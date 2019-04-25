@@ -47,7 +47,7 @@ public interface MsgInfoService {
 	DataOutResponse updateMsgInfo(MsgInfoVo record);
 
 	//手动发送短信
-    DataOutResponse sendMessage(String[] longs,Integer type,String formId,String msgId);
+    DataOutResponse sendMessage(String[] longs,Integer type,HttpServletRequest request/*,String formId,String msgId*/);
 
     DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus);
 

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,6 +72,7 @@ public class StaisfyServiceImpl implements SatisfyService {
 		if(CompareUtil.isNotEmpty(satisfyInfo)) {
 			return ReturnFomart.retParam(4000, satisfyInfo);
 		}
+		record.setSatisfyDate(new Date());
 		satisfyInfoMapper.addSatisfyInfo(record);
 		return ReturnFomart.retParam(200, record);
 	}

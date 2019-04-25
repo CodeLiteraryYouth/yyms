@@ -1,6 +1,8 @@
 package com.leanin.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.FormTypeVo;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -23,10 +27,15 @@ public class FormTypeServiceImpl implements FormTypeService {
 	
 	
 	@Override
-	public DataOutResponse findTypeList(Integer typeStatus) {
+	public DataOutResponse findTypeList(Integer page,Integer pageSize,Integer typeStatus) {
 		log.info("表单的类型为:"+typeStatus);
-		List<FormTypeVo> formType=formTypeMapper.findTypeList(typeStatus);
-		return ReturnFomart.retParam(200, formType);
+		PageHelper.startPage(page,pageSize);
+		Page<FormTypeVo> pageList= (Page<FormTypeVo>) formTypeMapper.findTypeList(typeStatus);
+
+		Map dataMap =new HashMap();
+		dataMap.put("total",pageList.getTotal());
+		dataMap.put("list",pageList.getResult());
+		return ReturnFomart.retParam(200, dataMap);
 	}
 
 	@Override

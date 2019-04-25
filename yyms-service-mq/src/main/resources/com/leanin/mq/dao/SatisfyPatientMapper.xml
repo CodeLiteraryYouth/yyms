@@ -133,6 +133,12 @@
             <if test="formStatus != null">
                 form_status,
             </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="inhosNo != null">
+                inhos_no,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientSatisfyId != null">
@@ -188,6 +194,12 @@
             </if>
             <if test="formStatus != null">
                 #{formStatus},
+            </if>
+            <if test="idCard != null">
+                #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                #{inhosNo},
             </if>
         </trim>
     </insert>

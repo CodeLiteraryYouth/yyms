@@ -18,8 +18,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status
-        plan_patient_id,patient_id,form_id,plan_num,msg_them
+        msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status,
+        plan_patient_id,patient_id,form_id,plan_num,msg_them,plan_type
     </sql>
 
     <insert id="addMsgRecord">
@@ -115,6 +115,9 @@
         </if>
         <if test="sendType != null ">
             AND msg_send_status = #{sendType}
+        </if>
+        <if test="patientId != null">
+            AND patient_id = #{patientId}
         </if>
     </select>
 

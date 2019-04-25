@@ -15,7 +15,7 @@ public class MessageRecord {
 
     private Long msgSendId;         //主键
     private Long msgSendName;       //发送人
-    private String msgSendWard;     //发送科室
+    private String msgSendWard;     //发送人科室
     private Date msgSendDate;       //发送时间
     private String msgSendNum;      //被发送人手机号
     private String msgText;         //短信内容

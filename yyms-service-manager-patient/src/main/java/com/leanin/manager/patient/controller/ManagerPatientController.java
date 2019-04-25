@@ -18,6 +18,16 @@ public class ManagerPatientController implements ManagerPatientApi {
 
     /**
      * 分页查询出住院患者信息
+     * patientName  患者名称
+     * inhosNo 1在院 2出院
+     * dept 科室名称  模糊查询
+     * dist 病区 模糊查询
+     * startDate 开始时间
+     * endDate 结束时间
+     * sex 1 男 2 女
+     * startAge 开始年龄
+     * endAge  结束年龄
+     * noContact 是否有联系方式  true 无联系方式  false 有联系方式
      * @param paramMap
      * @return
      */

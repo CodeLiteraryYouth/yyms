@@ -16,13 +16,15 @@ public class MsgRecordController {
     @Autowired
     MsgRecordService msgRecordService;
 
-    @PreAuthorize("hasAnyAuthority('root','findMsgRecord')")
+//    @PreAuthorize("hasAnyAuthority('root','findMsgRecord')")
     @GetMapping("/findMsgRecordList")
-    public DataOutResponse findMsgRecordList(@RequestParam Integer currentPage,@RequestParam Integer pageSize,
-                                             Integer planType,String msgThem,Integer sendType){
-        return msgRecordService.findMsgRecordList(currentPage,pageSize,planType,msgThem,sendType);
+    public DataOutResponse findMsgRecordList(@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") Integer pageSize,
+                                             Integer planType,String msgThem,Integer sendType,String patientId){
+        return msgRecordService.findMsgRecordList(currentPage,pageSize,planType,msgThem,sendType,patientId);
 
     }
+
+
 
 
 }

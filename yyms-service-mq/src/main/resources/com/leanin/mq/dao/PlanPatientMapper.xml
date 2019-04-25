@@ -175,6 +175,12 @@
             <if test="formId !=null">
                 form_id,
             </if>
+            <if test="idCard !=null">
+                id_card,
+            </if>
+            <if test="inhosNo !=null">
+                inhos_no,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -233,6 +239,12 @@
             </if>
             <if test="formId !=null">
                 #{formId},
+            </if>
+            <if test="idCard !=null">
+                #{idCard},
+            </if>
+            <if test="inhosNo !=null">
+                #{inhosNo},
             </if>
         </trim>
     </insert>

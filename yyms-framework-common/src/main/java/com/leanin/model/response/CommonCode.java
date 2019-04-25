@@ -17,7 +17,7 @@ public enum CommonCode implements ResultCode{
     UNAUTHENTICATED(false,1000,"此操作需要登陆系统！"),
     UNAUTHORISE(false,403,"权限不足，无权操作！"),
     SERVER_ERROR(false,9999,"抱歉，系统繁忙，请稍后重试！"),
-    FEIGN_ERROR(false,501,"服务器异常请联系管理员");
+    FEIGN_ERROR(false,501,"调取患者信息异常");
 //    private static ImmutableMap<Integer, CommonCode> codes ;
     //操作是否成功
     boolean success;

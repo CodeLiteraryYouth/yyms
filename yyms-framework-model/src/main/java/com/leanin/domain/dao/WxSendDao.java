@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Data
 @ToString
+@Entity
 @Table(name = "leanin_wx_send")
 public class WxSendDao {
 

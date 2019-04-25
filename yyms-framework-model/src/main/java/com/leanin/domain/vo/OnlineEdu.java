@@ -57,7 +57,7 @@ public class OnlineEdu implements Serializable {
     private String msgId;     //短信主键
 
     @Column(name = "phone_num")
-    private String phoneNum;     //短信主键
+    private String phoneNum;     //手机号
 
 
 
