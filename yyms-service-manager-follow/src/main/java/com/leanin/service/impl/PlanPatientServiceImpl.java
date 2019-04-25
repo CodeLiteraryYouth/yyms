@@ -491,5 +491,20 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         return ReturnFomart.retParam(200,planPatient);
     }
 
+	@Override
+	public DataOutResponse findPlanHisPatientById(Long patientId, Integer patientSource)
+			 {
+		if(null == patientId){
+			ReturnFomart.retParam(404, "patientId参数为空");
+		}
+		if(null == patientSource){
+			ReturnFomart.retParam(404, "patientSource参数为空");	
+		}
+		   Map dataMap = new HashMap();
+		   dataMap = getRecord(patientId + "", patientSource, dataMap);
+
+	        return ReturnFomart.retParam(200, dataMap);
+	}
+
 
 }

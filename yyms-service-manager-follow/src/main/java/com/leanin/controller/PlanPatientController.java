@@ -86,7 +86,16 @@ public class PlanPatientController extends BaseController {
         return planPatientService.findPlanPatientById(patientId,patientSource,planNum,planType,type);
     }
 
-
+    /**
+     * 根据患者id查询患者His信息 和病史
+     * @param patientId
+     * @return
+     */
+    @GetMapping("findHisPlanPatientById")
+    public DataOutResponse findHisPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource){
+        return planPatientService.findPlanHisPatientById(patientId,patientSource);
+    }
+    
     @PostMapping("updatePatById")
     public DataOutResponse updatePlanPatient(@RequestParam Long patientPlanId, Integer followType, String handleSugges,@RequestBody FormRecordVo formRecordVo){
         return planPatientService.updatePlanPatient(patientPlanId,followType,handleSugges,formRecordVo);

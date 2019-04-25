@@ -59,4 +59,14 @@ public interface PlanPatientService {
     DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges, FormRecordVo formRecordVo);
 
     DataOutResponse updateStatus(Long planPatientId, Integer status);
+    /**
+     * 查询his患者信息
+     * @param patientId
+     * @param patientSource
+     * @param planNum
+     * @param planType
+     * @param type
+     * @return
+     */
+	DataOutResponse findPlanHisPatientById(Long patientId, Integer patientSource);
 }
