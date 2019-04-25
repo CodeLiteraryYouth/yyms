@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.LeaninMedicalHistoryDaoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.LeaninMedicalHistoryDao">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="medical_history_id" jdbcType="BIGINT" property="medicalHistoryId" />
+    <result column="patient_info_id" jdbcType="VARCHAR" property="patientInfoId" />
+    <result column="medical_type" jdbcType="INTEGER" property="medicalType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="medical_description" jdbcType="VARCHAR" property="medicalDescription" />
+    <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    medical_history_id, patient_info_id, medical_type, create_time, creator_id, medical_description, 
+    is_delete
+  </sql>
+  <select id="listByPatientId" resultMap="BaseResultMap">
+  	select 
+  	* 
+  	from leanin_medical_history 
+  	where 
+  	is_delete = 'N' 
+  	and patient_info_id = #{patientId}
+  	ORDER BY 
+  create_time desc
+  </select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.LeaninPatientRelaDaoMapper">
+  <resultMap id="BaseResultMap" type="com.leanin.domain.LeaninPatientRelaDao">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="patient_rela_id" jdbcType="BIGINT" property="patientRelaId" />
+    <result column="patient_rela_name" jdbcType="VARCHAR" property="patientRelaName" />
+    <result column="patient_rela" jdbcType="VARCHAR" property="patientRela" />
+    <result column="patient_rela_phone" jdbcType="VARCHAR" property="patientRelaPhone" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    patient_rela_id, patient_rela_name, patient_rela, patient_rela_phone, patient_id, 
+    is_delete, create_time, creator_id
+  </sql>
+  <select id="listPage" resultMap="BaseResultMap"> 
+  select 
+  * 
+  from 
+  leanin_patient_rela 
+  where 
+  is_delete = "N" 
+  and patient_id =#{patientId}  
+  ORDER BY 
+  create_time desc
+  </select>
+</mapper>
