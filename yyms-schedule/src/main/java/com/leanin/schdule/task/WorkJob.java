@@ -308,6 +308,9 @@ public class WorkJob {
         log.info("更新下次随访时间");
         List<PlanInfoDto> planInfoDtos = planInfoMapper.findAllPlan();
         for (PlanInfoDto planInfoDto : planInfoDtos) {
+            if (planInfoDto.getPlanType() == 2){
+                continue;
+            }
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
             String rulesInfoText = rulesInfo.getRulesInfoText();

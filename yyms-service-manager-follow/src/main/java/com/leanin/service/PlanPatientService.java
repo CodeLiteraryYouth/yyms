@@ -70,4 +70,7 @@ public interface PlanPatientService {
      * @return
      */
 	DataOutResponse findPlanHisPatientById(Long patientId, Integer patientSource);
+
+    DataOutResponse updateFormStatus(Long planPatientId,Integer formStatus);
+
 }

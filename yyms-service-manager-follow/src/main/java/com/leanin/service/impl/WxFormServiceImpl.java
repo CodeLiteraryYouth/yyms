@@ -53,7 +53,7 @@ public class WxFormServiceImpl implements WxFormService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public DataOutResponse addFollowForm(FormRecordVo formRecordVo) {
+    public DataOutResponse addFollowForm(FormRecordVo formRecordVo) {//随访
         PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(formRecordVo.getPatientPlanId());
         if (planPatient == null){
             return ReturnFomart.retParam(300,"患者信息不存在");

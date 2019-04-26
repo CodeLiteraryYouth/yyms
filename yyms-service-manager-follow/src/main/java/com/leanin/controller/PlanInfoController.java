@@ -43,15 +43,15 @@ public class PlanInfoController extends BaseController {
 		return planInfoService.updatePlanStatus(planNum, status);
 	}
 
-//	@PreAuthorize("hasAnyAuthority('root','addFlwPlan')")
+	@PreAuthorize("hasAnyAuthority('root','addFlwPlan')")
 	@PostMapping("addPlanInfo")
 	public ResponseResult addPlanInfo(@RequestBody PlanInfoVo planInfo) {
-//		LyOauth2Util.UserJwt user = getUser(request);
+		LyOauth2Util.UserJwt user = getUser(request);
 		planInfo.setCreateDate(new Date());
-//		planInfo.setPlanCreater(user.getId());
-//		if (planInfo.getPlanType() == 2){//宣教计划负责人为自己
-//			planInfo.setPlanDutyPer(user.getId());
-//		}
+		planInfo.setPlanCreater(user.getId());
+		if (planInfo.getPlanType() == 2){//宣教计划负责人为自己
+			planInfo.setPlanDutyPer(user.getId());
+		}
 		return planInfoService.addPlanInfo(planInfo);
 	}
 

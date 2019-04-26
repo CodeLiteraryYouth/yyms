@@ -30,6 +30,7 @@ public class WxFormController {
 
     @PostMapping("/addStyForm")
     public DataOutResponse addStyForm(@RequestBody StyInfoRecordVo styInfoRecordVo){
+        styInfoRecordVo.setCreateTime(new Date());
         return wxFormService.addStyForm(styInfoRecordVo);
     }
 }

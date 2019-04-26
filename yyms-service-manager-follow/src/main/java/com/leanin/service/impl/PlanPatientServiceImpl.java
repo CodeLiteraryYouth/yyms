@@ -496,8 +496,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     }
 
 	@Override
-	public DataOutResponse findPlanHisPatientById(Long patientId, Integer patientSource)
-			 {
+	public DataOutResponse findPlanHisPatientById(Long patientId, Integer patientSource){
 		if(null == patientId){
 			ReturnFomart.retParam(404, "patientId参数为空");
 		}
@@ -509,6 +508,18 @@ public class PlanPatientServiceImpl implements PlanPatientService {
 
 	        return ReturnFomart.retParam(200, dataMap);
 	}
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updateFormStatus(Long planPatientId,Integer formStatus) {
+        PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(planPatientId);
+        if (planPatient == null ){
+            return ReturnFomart.retParam(1,"信息不存在");
+        }
+        planPatient.setFormStatus(formStatus);
+        planPatientMapper.updatePlanPatient(planPatient);
+        return ReturnFomart.retParam(200,planPatient);
+    }
 
 
 }

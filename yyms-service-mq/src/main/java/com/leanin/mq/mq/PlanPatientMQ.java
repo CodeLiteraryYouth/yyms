@@ -106,7 +106,7 @@ public class PlanPatientMQ {
 
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
         String timeNumStr = (String) rulesMap.get("timeNum");
-        int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        int timeChoosed = (int)rulesMap.get("timeChoosed"); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
         String rangeDays = (String) rulesMap.get("rangeDays");//范围天数
 
@@ -145,6 +145,7 @@ public class PlanPatientMQ {
             calendar.set(Calendar.SECOND, 0);
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
+            satisfyPatientVo.setFormStatus(1);
             satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
             satisfyPatientMapper.insertSelective(satisfyPatientVo);

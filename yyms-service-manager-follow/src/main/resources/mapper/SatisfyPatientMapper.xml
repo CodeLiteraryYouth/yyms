@@ -93,9 +93,20 @@
         <if test="endDate != null ">
             AND patient_date_time &lt; #{endDate}
         </if>
-        <if test="finishType != null ">
-            AND finish_type = #{finishType}
-        </if>
+        <choose>
+            <when test="finishType == -2 ">
+                AND finish_type between 3 and 11
+            </when>
+            <when test="finishType != null and finishType != -2">
+                AND finish_type = #{finishType}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="finishType != null ">-->
+<!--            AND finish_type = #{finishType}-->
+<!--        </if>-->
         <if test="patientSource != null ">
             AND patient_type = #{patientSource}
         </if>
@@ -362,9 +373,20 @@
         <if test="myFollowReq.endDate != null ">
             AND patient_date_time &lt;= #{myFollowReq.startDate}
         </if>
-        <if test="myFollowReq.folStatus != null">
-            AND finish_type = #{myFollowReq.folStatus}
-        </if>
+        <choose>
+            <when test="myFollowReq.folStatus == -2 ">
+                AND finish_type between 3 and 11
+            </when>
+            <when test="myFollowReq.folStatus != null and myFollowReq.folStatus != -2">
+                AND finish_type = #{myFollowReq.folStatus}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="myFollowReq.folStatus != null">-->
+<!--            AND finish_type = #{myFollowReq.folStatus}-->
+<!--        </if>-->
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>

@@ -84,9 +84,20 @@
         <if test="planNum != null">
             and plan_num=#{planNum}
         </if>
-        <if test="status != null">
-            and plan_pats_status=#{status}
-        </if>
+        <choose>
+            <when test="status == -2">
+                and plan_pats_status between 3 and 11
+            </when>
+            <when test="status != null and status != -2">
+                and plan_pats_status=#{status}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="status != null">-->
+<!--            and plan_pats_status=#{status}-->
+<!--        </if>-->
         <if test="patientName != null ">
             and patient_name like CONCAT('%',#{patientName},'%')
         </if>
@@ -196,9 +207,6 @@
             </if>
             <if test="planPatientVo.inhosNo != null">
                 inhos_no = #{planPatientVo.inhosNo},
-            </if>
-            <if test="planPatientVo.opendId != null">
-                opend_id = #{planPatientVo.opendId},
             </if>
         </set>
         where patient_plan_id = #{planPatientVo.patientPlanId}
@@ -364,9 +372,20 @@
         <if test="myFollowReq.endDate != null ">
             AND next_date &lt;= #{myFollowReq.startDate}
         </if>
-        <if test="myFollowReq.folStatus != null">
-            AND plan_pats_status =#{myFollowReq.folStatus}
-        </if>
+<!--        <if test="myFollowReq.folStatus != null">-->
+<!--            AND plan_pats_status =#{myFollowReq.folStatus}-->
+<!--        </if>-->
+        <choose>
+            <when test="myFollowReq.folStatus == -2">
+                and plan_pats_status between 3 and 11
+            </when>
+            <when test="myFollowReq.folStatus != null and myFollowReq.folStatus != -2">
+                and plan_pats_status=#{myFollowReq.folStatus}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
