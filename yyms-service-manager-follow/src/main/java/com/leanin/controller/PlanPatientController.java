@@ -95,10 +95,20 @@ public class PlanPatientController extends BaseController {
     public DataOutResponse findHisPlanPatientById(@RequestParam Long patientId,@RequestParam Integer patientSource){
         return planPatientService.findPlanHisPatientById(patientId,patientSource);
     }
-    
+
+    /**
+     * 处理表单信息以及随访状态 表单状态  处理意见的 接口
+     * @param patientPlanId  计划患者主键
+     * @param followType  随访状态 -1:收案 0：未发送表单或者短信前的状态 1：待随访 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
+     * @param handleSugges 处理意见
+     * @param formStatus  表单状态  1 未完成 2 已完成
+     * @param formRecordVo 表单填写记录
+     * @return
+     */
     @PostMapping("updatePatById")
-    public DataOutResponse updatePlanPatient(@RequestParam Long patientPlanId, Integer followType, String handleSugges,@RequestBody FormRecordVo formRecordVo){
-        return planPatientService.updatePlanPatient(patientPlanId,followType,handleSugges,formRecordVo);
+    public DataOutResponse updatePlanPatient(@RequestParam Long patientPlanId, Integer followType, String handleSugges,Integer formStatus,
+                                             @RequestBody(required = false) FormRecordVo formRecordVo){
+        return planPatientService.updatePlanPatient(patientPlanId,followType,handleSugges,formRecordVo,formStatus);
     }
 
     /**

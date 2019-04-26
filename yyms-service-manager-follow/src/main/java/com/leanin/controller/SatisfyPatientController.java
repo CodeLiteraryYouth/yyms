@@ -53,16 +53,18 @@ public class SatisfyPatientController extends BaseController {
 
     /**
      * 修改满意度状态
-     * @param patientSatisfyId
-     * @param finishType
-     * @param
+     * @param patientSatisfyId  满意度计划患者主键
+     * @param finishType 满意度患者状态 -1:收案 1：未完成 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
+     * @param suggess 处理意见
+     * @param styInfoRecordVo 满意度表单填写记录
+     * @param formStatus 表单完成状态  1 未完成 2 已完成
      * @return
      */
     @PostMapping("/updateByPid")
-    public DataOutResponse updateByPid(@RequestParam Long patientSatisfyId, @RequestParam Integer finishType,
-                                       @RequestParam String suggess,@RequestBody StyInfoRecordVo styInfoRecordVo){
-        LyOauth2Util.UserJwt user = getUser(request);
-        styInfoRecordVo.setOperatingId(user.getId());
+    public DataOutResponse updateByPid(@RequestParam Long patientSatisfyId, Integer finishType, String suggess,
+                                       @RequestBody(required = false) StyInfoRecordVo styInfoRecordVo,Integer formStatus){
+//        LyOauth2Util.UserJwt user = getUser(request);
+//        styInfoRecordVo.setOperatingId(user.getId());
         return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo);
     }
 

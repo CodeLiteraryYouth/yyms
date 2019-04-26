@@ -459,14 +459,18 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     }
 
     @Override
-    public DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges, FormRecordVo formRecordVo) {
+    public DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges,
+                                             FormRecordVo formRecordVo,Integer formStatus) {
         PlanPatientVo patient = planPatientMapper.findPlanPatientById(patientPlanId);
         if (patient == null) {
             return ReturnFomart.retParam(300, "信息不存在");
         }
-        if (patient.getFormStatus() == 1) {//表单完成状态
+        if (patient.getFormStatus() != null){
+            patient.setFormStatus(formStatus);//修改表单状态
+        }
+        if (formRecordVo != null) {//表单处理记录
+            formRecordVo.setCreateTime(new Date());
             formRecordMapper.addFormRecord(formRecordVo);//添加表单记录
-            patient.setFormStatus(2);//改成已添加
         }
 
         if (followType != null) {

@@ -84,6 +84,7 @@ public class FollowCheckServiceImpl implements FollowCheckService {
             PlanPatientVo planPatientVo = list.get(i1);
             planPatientVo.setPlanNum(checkVo.getCheckNum());
             checkPatientMapper.add(planPatientVo);
+            list.remove(i1);
         }
         return ReturnFomart.retParam(200, "添加成功");
     }

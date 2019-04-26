@@ -1,6 +1,7 @@
 package com.leanin.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.leanin.domain.dao.PatientWxDao;
 import com.leanin.domain.request.BindPat;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
@@ -43,7 +44,7 @@ public class WeChatServiceImpl implements WeChatService {
         if (bindPat.getCode() == null) {
             return ReturnFomart.retParam(300, "授权码为空");
         }
-        BindPat pat = patientWxMapper.findByIdCard(bindPat.getIdCard());
+        PatientWxDao pat = patientWxMapper.findByIdCard(bindPat.getIdCard());
         if (pat != null) {
             return ReturnFomart.retParam(200, pat.getOpenId());
         }

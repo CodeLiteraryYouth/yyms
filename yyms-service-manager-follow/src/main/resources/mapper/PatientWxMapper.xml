@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.PatientWxMapper">
 
-    <resultMap id="BaseResultMap" type="com.leanin.domain.request.BindPat">
-        <id column="id_card" property="idCard"></id>
+    <resultMap id="BaseResultMap" type="com.leanin.domain.dao.PatientWxDao">
+        <id column="id" property="id"></id>
+        <result column="id_card" property="idCard"></result>
         <result column="open_id" property="openId"></result>
         <result column="phone_num" property="phoneNum"></result>
         <result column="patient_name" property="patientName"></result>
+        <result column="inhos_no" property="inhosNo"></result>
+        <result column="patient_id" property="patientId"></result>
+        <result column="ex5" property="ex5"></result>
     </resultMap>
 
     <sql id="BaseSql">

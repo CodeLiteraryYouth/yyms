@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.schdule.mapper.SatisfyPatientMapper">
+
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.SatisfyPatientVo">
         <id column="patient_satisfy_id" jdbcType="BIGINT" property="patientSatisfyId"/>
         <result column="satisfy_plan_num" jdbcType="VARCHAR" property="satisfyPlanNum"/>
@@ -25,6 +26,12 @@
         <result column="form_id" property="formId"/>
     </resultMap>
 
+    <resultMap extends="BaseResultMap" id="OpenIdResultMap" type="com.leanin.domain.vo.SatisfyPatientVo">
+        <association property="openId" column="id_card" javaType="string"
+                     select="com.leanin.schdule.mapper.PatientWxMapper.findOpenIdByIdCard">
+        </association>
+    </resultMap>
+
     <sql id="Base_Column_List">
         patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
         patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
@@ -38,11 +45,11 @@
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
     </select>-->
 
-    <select id="findList" resultMap="BaseResultMap">
+    <select id="findList" resultMap="OpenIdResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
-        WHERE patient_status=0
+        WHERE patient_status = 0
         <if test="satisfyPlanNum != null ">
             AND satisfy_plan_num = #{satisfyPlanNum}
         </if>

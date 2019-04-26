@@ -1,5 +1,6 @@
 package com.leanin.mapper;
 
+import com.leanin.domain.dao.PatientWxDao;
 import com.leanin.domain.request.BindPat;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,5 +12,5 @@ public interface PatientWxMapper {
 
     void addPatientWx(@Param("bindPat") BindPat bindPat);
 
-    BindPat findByIdCard(@Param("idCard") String idCard);
+    PatientWxDao findByIdCard(@Param("idCard") String idCard);
 }

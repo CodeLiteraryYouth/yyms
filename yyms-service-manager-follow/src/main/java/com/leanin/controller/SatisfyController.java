@@ -19,7 +19,7 @@ public class SatisfyController extends BaseController {
 	@Autowired
 	private SatisfyService satisfyService;
 
-//	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
+	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
 	@GetMapping("findSatisfyList")
 	public DataOutResponse findSatisfyList(@RequestParam Integer page, @RequestParam Integer pageSize,
 										   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String satisfyName,

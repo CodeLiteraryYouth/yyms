@@ -56,7 +56,8 @@ public interface PlanPatientService {
     DataOutResponse findListByPlanId(String planNum);
 
     //修改随访状态
-    DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges, FormRecordVo formRecordVo);
+    DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges,
+                                      FormRecordVo formRecordVo,Integer formStatus);
 
     DataOutResponse updateStatus(Long planPatientId, Integer status);
     /**

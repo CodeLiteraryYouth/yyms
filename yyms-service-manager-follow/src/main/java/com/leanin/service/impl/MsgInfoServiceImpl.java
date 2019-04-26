@@ -136,7 +136,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		}
 		return ReturnFomart.retParam(200, "发送成功");
 	}
-
+	//短信链接后的 palnType 注释  1 随访  2 宣教  3 满意度 4 在院宣教
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public DataOutResponse sendEduMessage(List<OnlineEdu> onlineEdus) {
