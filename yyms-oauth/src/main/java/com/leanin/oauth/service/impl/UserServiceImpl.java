@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
         //修改用户角色
         List<Long> roleIds = adminUserVo.getRoleIds();
         List<RoleInfoVo> roleList = user.getRoleList();
-//        LyOauth2Util.UserJwt userJwt = getUser(request);
+        LyOauth2Util.UserJwt userJwt = getUser(request);
         if (roleIds.size() > 0) {//判断是否有角色
             for (Long roleId : roleIds) {
                 UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(adminUserVo.getAdminId(), roleId);
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
                     userRoleVo.setUserId(adminUserVo.getAdminId());
                     userRoleVo.setRoleId(roleId);
                     userRoleVo.setCreateTime(new Date());
-//                    userRoleVo.setCreator(userJwt.getId());
+                    userRoleVo.setCreator(userJwt.getId());
                     userRoleMapper.addUserRole(userRoleVo);
                 }
 //                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
                 userWardDao.setUserId(user.getAdminId());
                 userWardDao.setWardId(wardId);
                 userWardDao.setCreateTime(new Date());
-//                userWardDao.setCreate(userJwt.getId());
+                userWardDao.setCreate(userJwt.getId());
                 userWardRepostitory.save(userWardDao);
             }
 

@@ -40,14 +40,14 @@ public class UserController extends BaseController implements UserControllerApi{
     }
 
     @Override
-//    @PreAuthorize("hasAnyAuthority('root','updateUser')")
+    @PreAuthorize("hasAnyAuthority('root','updateUser')")
     @PutMapping("/updateUser")
     public DataOutResponse updateUser(@RequestBody AdminUserVo adminUserVo) {
         return userService.updateUser(adminUserVo,request);
     }
 
     @Override
-//    @PreAuthorize("hasAnyAuthority('root','findUser')")
+    @PreAuthorize("hasAnyAuthority('root','findUser')")
     @GetMapping("/findUserById")
     public DataOutResponse findUserById(@RequestParam Long adminId) {
         return userService.findUserById(adminId);
