@@ -3,7 +3,9 @@ package com.leanin.testmodel.controller;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.oss.OSSClient;
 import com.leanin.api.test.TestApi;
+import com.leanin.domain.dao.UserWardDao;
 import com.leanin.domain.vo.DiseaseInfoVo;
+import com.leanin.testmodel.dao.UserWardRepository;
 import com.leanin.testmodel.service.DiseaseInfoService;
 import com.leanin.testmodel.task.MyScheduler;
 import com.leanin.utils.HttpClient;
@@ -24,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +36,9 @@ public class TestController extends BaseController implements TestApi  {
 
     @Autowired
     DiseaseInfoService diseaseInfoService;
+
+    @Autowired
+    UserWardRepository userWardRepository;
 
     private String accessKey = "LTAI9hPxQGlo79NT";
     private String accessSecret = "y10wZmbmV0U1RzWjcpPpMQWGcM5dgq";
@@ -233,5 +239,18 @@ public class TestController extends BaseController implements TestApi  {
 //        log.info("推送模板消息是返回的信息:{}",result);
         Map map = JSON.parseObject(result, Map.class);
 
+    }
+
+    @Test
+    public void testRepository(){
+
+        UserWardDao userWardDao =new UserWardDao();
+        userWardDao.setId(null);
+        userWardDao.setWardId(1l);
+        userWardDao.setUserId(1l);
+        userWardDao.setCreate(1l);
+        userWardDao.setCreateTime(new Date());
+        UserWardDao save = userWardRepository.save(userWardDao);
+        System.out.println(save);
     }
 }

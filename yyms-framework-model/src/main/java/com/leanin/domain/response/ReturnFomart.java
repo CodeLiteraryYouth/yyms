@@ -15,6 +15,7 @@ public class ReturnFomart {
         messageMap.put("0", "系统异常，请联系管理员");
 
         messageMap.put("1", "信息不存在");
+        messageMap.put("2", "参数不存在或者错误");
 
         messageMap.put("200", "Success");
         messageMap.put("400", "Bad Request!");
@@ -80,6 +81,15 @@ public class ReturnFomart {
         messageMap.put("3601","满意度表单已被使用不能删除或者禁用");
 
         messageMap.put("3701","随访规则已被使用不能删除或者禁用");
+
+        messageMap.put("3801","随访表单已被使用不能删除或者禁用");
+
+        messageMap.put("3901","分类下有随访表单不能删除或者禁用");
+        messageMap.put("3902","分类下有宣教表单不能删除或者禁用");
+        messageMap.put("3903","分类下有随访规则不能删除或者禁用");
+        messageMap.put("3904","分类下有宣教规则不能删除或者禁用");
+        messageMap.put("3905","分类下有满意度表单不能删除或者禁用");
+        messageMap.put("3906","分类下有短信模板不能删除或者禁用");
 
 
 

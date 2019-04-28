@@ -2,6 +2,7 @@ package com.leanin.domain.dto;
 
 import com.leanin.domain.vo.MenuPermissionVo;
 import com.leanin.domain.vo.RoleInfoVo;
+import com.leanin.domain.vo.WardInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -63,6 +64,8 @@ public class AdminUserDto implements Serializable {
 	private List<RoleInfoVo> roleList;	//该用户的角色信息
 
 	private List<MenuPermissionVo> menuPermissionVoList; //权限集合
+
+	private List<WardInfoVo> wardCodeList;			//用户科室编码
 
 
 

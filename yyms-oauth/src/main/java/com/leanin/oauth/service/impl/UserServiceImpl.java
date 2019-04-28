@@ -3,15 +3,15 @@ package com.leanin.oauth.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.leanin.domain.dao.UserDao;
+import com.leanin.domain.dao.UserWardDao;
 import com.leanin.domain.dto.AdminUserDto;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.AdminUserVo;
-import com.leanin.domain.vo.LoginRequestVo;
-import com.leanin.domain.vo.RoleInfoVo;
-import com.leanin.domain.vo.UserRoleVo;
+import com.leanin.domain.vo.*;
 import com.leanin.oauth.mapper.UserMapper;
 import com.leanin.oauth.mapper.UserRoleMapper;
+import com.leanin.oauth.repository.UserWardRepostitory;
 import com.leanin.oauth.service.UserService;
 import com.leanin.utils.LyOauth2Util;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +60,9 @@ public class UserServiceImpl implements UserService {
     UserRoleMapper userRoleMapper;
 
     @Autowired
+    UserWardRepostitory userWardRepostitory;
+
+    @Autowired
     StringRedisTemplate stringRedisTemplate;
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest request) {
@@ -71,6 +74,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public DataOutResponse addUser(AdminUserVo adminUserVo, HttpServletRequest request) {
+        log.info("添加的用户信息:{}",JSON.toJSONString(adminUserVo));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         AdminUserDto user = userMapper.findUserByWorkNum(adminUserVo.getWorkNum());
         if (user != null) {
@@ -80,9 +84,9 @@ public class UserServiceImpl implements UserService {
         userMapper.addUser(adminUserVo);
         AdminUserDto userByWorkNum = userMapper.findUserByWorkNum(adminUserVo.getWorkNum());
         List<Long> roleIds = adminUserVo.getRoleIds();
-
+        List<Long> wardIds = adminUserVo.getWardIds();
         LyOauth2Util.UserJwt userJwt = getUser(request);
-        if (roleIds.size() > 0) {
+        if (roleIds.size() > 0) {//角色绑定
             UserRoleVo userRoleVo = new UserRoleVo();
             for (Long roleId : roleIds) {
 //                UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(userByWorkNum.getAdminId(), roleId);
@@ -99,6 +103,18 @@ public class UserServiceImpl implements UserService {
 //                }
 
             }
+        }
+        UserWardDao userWardDao = new UserWardDao();
+        if (wardIds.size() > 0){//科室绑定
+            for (Long wardId : wardIds) {
+                userWardDao.setId(null);
+                userWardDao.setUserId(userByWorkNum.getAdminId());
+                userWardDao.setWardId(wardId);
+                userWardDao.setCreateTime(new Date());
+                userWardDao.setCreate(userJwt.getId());
+                userWardRepostitory.save(userWardDao);
+            }
+
         }
         return ReturnFomart.retParam(200, "用户添加成功");
     }
@@ -122,9 +138,11 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return ReturnFomart.retParam(1010, "用户不存在");
         }
+
+        //修改用户角色
         List<Long> roleIds = adminUserVo.getRoleIds();
         List<RoleInfoVo> roleList = user.getRoleList();
-        LyOauth2Util.UserJwt userJwt = getUser(request);
+//        LyOauth2Util.UserJwt userJwt = getUser(request);
         if (roleIds.size() > 0) {//判断是否有角色
             for (Long roleId : roleIds) {
                 UserRoleVo userRoleVo = userRoleMapper.findByUidAndRid(adminUserVo.getAdminId(), roleId);
@@ -134,7 +152,7 @@ public class UserServiceImpl implements UserService {
                     userRoleVo.setUserId(adminUserVo.getAdminId());
                     userRoleVo.setRoleId(roleId);
                     userRoleVo.setCreateTime(new Date());
-                    userRoleVo.setCreator(userJwt.getId());
+//                    userRoleVo.setCreator(userJwt.getId());
                     userRoleMapper.addUserRole(userRoleVo);
                 }
 //                    ExceptionCast.cast(AuthCode.ROLE_REPETITION);
@@ -146,14 +164,36 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        //修改用户科室
+        List<Long> wardIds = adminUserVo.getWardIds();
+        List<WardInfoVo> wardCodeList = user.getWardCodeList();
+        for (Long wardId : wardIds) {//遍历新科室集合
+            UserWardDao userWardDao = userWardRepostitory.findByWardIdAndUserId(wardId, user.getAdminId());
+            if (userWardDao == null){
+                userWardDao = new UserWardDao();
+                userWardDao.setId(null);
+                userWardDao.setUserId(user.getAdminId());
+                userWardDao.setWardId(wardId);
+                userWardDao.setCreateTime(new Date());
+//                userWardDao.setCreate(userJwt.getId());
+                userWardRepostitory.save(userWardDao);
+            }
+
+        }
+        for (WardInfoVo wardInfoVo : wardCodeList) {
+            //删除没有的科室
+            if (!wardIds.contains(wardInfoVo.getWardId())){//原科室id 被删除
+                userWardRepostitory.deleteByWardIdAndUserId(wardInfoVo.getWardId(),user.getAdminId());
+            }
+        }
         userMapper.updateUser(adminUserVo);
         return ReturnFomart.retParam(200, "用户修改成功");
     }
 
     @Override
     public DataOutResponse findUserById(Long adminId) {
-        AdminUserVo adminUserVo = userMapper.findUserId(adminId);
-        return ReturnFomart.retParam(200, adminUserVo);
+        AdminUserDto userDto = userMapper.findUserDtoId(adminId);
+        return ReturnFomart.retParam(200, userDto);
     }
 
     @Override
@@ -165,7 +205,7 @@ public class UserServiceImpl implements UserService {
             pageSize = 10;
         }
         PageHelper.startPage(currentPage, pageSize);
-        Page<AdminUserVo> page = (Page<AdminUserVo>) userMapper.findUserPage(userName, workNum);
+        Page<AdminUserDto> page = (Page<AdminUserDto>) userMapper.findUserPage(userName, workNum);
 
         Map dataMap = new HashMap();
         dataMap.put("totalCount", page.getTotal());

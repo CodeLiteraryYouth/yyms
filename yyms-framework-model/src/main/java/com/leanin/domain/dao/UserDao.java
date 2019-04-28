@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Data
 @ToString
+@Entity
 @Table(name = "leanin_admin_user")
 public class UserDao {
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.oauth.mapper.WarCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.WardInfoVo">
+        <id property="wardId" column="ward_id"></id>
+        <result property="wardName" column="ward_name"></result>
+        <result property="wardCode" column="ward_code"></result>
+        <result property="preWardName" column="pre_ward_name"></result>
+        <result property="preWardCode" column="pre_ward_code"></result>
+        <result property="pinyinCode" column="pinyin_code"></result>
+        <result property="wardPhone" column="ward_phone"></result>
+        <result property="orderCode" column="order_code"></result>
+        <result property="areaCode" column="area_code"></result>
+        <result property="wardStatus" column="ward_status"></result>
+    </resultMap>
+
+    <sql id="BaseSql">
+        lwi.ward_id,lwi.ward_name,lwi.ward_code,lwi.pre_ward_name,lwi.pre_ward_code,lwi.pinyin_code,
+        lwi.ward_phone,lwi.order_code,lwi.area_code,ward_status
+    </sql>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+          lwi.*
+        FROM
+          `leanin_ward_info` lwi
+        WHERE lwi.`ward_status` = 0
+          AND lwi.`ward_id` IN
+          (SELECT
+            luw.`ward_id`
+          FROM
+            `leanin_user_ward` luw
+          WHERE luw.`user_id` = #{userId}
+          )
+    </select>
+</mapper>

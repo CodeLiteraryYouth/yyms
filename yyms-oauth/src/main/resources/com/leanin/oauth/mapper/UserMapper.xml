@@ -46,6 +46,9 @@
         <collection property="menuPermissionVoList" column="admin_id" ofType="com.leanin.domain.vo.MenuPermissionVo"
                     select="com.leanin.oauth.mapper.MenuMapper.findMenuListByUserId">
         </collection>
+        <collection property="wardCodeList" column="admin_id" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.oauth.mapper.WarCodeMapper.findByUserId">
+        </collection>
     </resultMap>
     <resultMap id="VO_Result_Map" type="com.leanin.domain.vo.AdminUserVo">
         <id property="adminId" column="admin_id"></id>

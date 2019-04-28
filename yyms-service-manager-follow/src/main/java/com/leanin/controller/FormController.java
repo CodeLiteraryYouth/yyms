@@ -43,7 +43,13 @@ public class FormController extends BaseController {
 										Integer formFormId, Integer shareStatus) {
 		return formInfoService.findFormList(page, pageSize, formName, formType,formFormId,shareStatus);
 	}
-	
+
+	/**
+	 * 修改表单状态
+	 * @param formNum  表单主键
+	 * @param formStatus 状态 -1：已删除 0：正在使用 ：2:已禁用
+	 * @return
+	 */
 	@GetMapping("updateFormStatus")
 	public DataOutResponse updateFormStatus(@RequestParam String formNum, @RequestParam Integer formStatus) {
 		return formInfoService.updateFormStatus(formNum, formStatus);

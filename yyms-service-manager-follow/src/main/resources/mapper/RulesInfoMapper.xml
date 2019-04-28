@@ -67,8 +67,11 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_rules_info r where r.rules_info_status>=0
-    and rules_info_type=#{type}
+    from leanin_rules_info r
+    where r.rules_info_status>=0
+    <if test="type != null">
+        and rules_info_type=#{type}
+    </if>
     <if test="rulesName !=null">
     	and r.rules_info_name like CONCAT('%',#{rulesName,jdbcType=VARCHAR},'%')
     </if>

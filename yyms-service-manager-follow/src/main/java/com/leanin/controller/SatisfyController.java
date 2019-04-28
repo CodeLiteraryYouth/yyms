@@ -39,11 +39,11 @@ public class SatisfyController extends BaseController {
 		return satisfyService.logoutSatisfyInfo(satisfyNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','addSatisfy')")
 	@PostMapping("addSatisfyInfo")
 	public DataOutResponse addSatisfyInfo(@RequestBody SatisfyInfoVo record) {
-		LyOauth2Util.UserJwt user = getUser(request);
-		record.setCreater(user.getId());
+//		LyOauth2Util.UserJwt user = getUser(request);
+//		record.setCreater(user.getId());
 		return satisfyService.addSatisfyInfo(record);
 	}
 

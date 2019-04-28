@@ -8,10 +8,13 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.FormInfoExt;
 import com.leanin.domain.vo.FormInfoVo;
+import com.leanin.domain.vo.PlanInfoVo;
 import com.leanin.mapper.FollowRecordMapper;
 import com.leanin.mapper.FormInfoMapper;
+import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.service.FormInfoService;
 import com.leanin.utils.CompareUtil;
+import com.rabbitmq.client.Return;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ public class FormInfoServiceImpl implements FormInfoService {
 
 	@Autowired
 	private FormInfoMapper formInfoMapper;
+
+	@Autowired
+	PlanInfoMapper planInfoMapper;
 
 	
 	@Override
@@ -44,6 +50,10 @@ public class FormInfoServiceImpl implements FormInfoService {
 		FormInfoVo formInfo=formInfoMapper.findFormInfoById(formNum);
 		if (formInfo == null){
 			return ReturnFomart.retParam(300,"数据不存在");
+		}
+		PlanInfoVo planInfoVo = planInfoMapper.findByParamId(null, formNum, null);
+		if (planInfoVo != null){
+			return ReturnFomart.retParam(3801,"随访表单已被使用不能删除或者禁用");
 		}
 		log.info("修改表单状态的信息为:"+ JSON.toJSONString(formInfo));
 		//修改表单状态
