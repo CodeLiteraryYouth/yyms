@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -72,5 +73,9 @@ public class PlanInfoVo implements Serializable {
     private String msgId;//短信id
 
     private Long msgType;//短信类型
+
+    private String rulesText;   //规则字符串
+
+
 
 }

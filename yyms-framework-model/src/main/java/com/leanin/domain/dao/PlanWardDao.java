@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @Data
 @ToString
+@Entity
 @Table(name = "leanin_plan_ward")
 public class PlanWardDao {
 

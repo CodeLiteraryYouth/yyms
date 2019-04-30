@@ -19,6 +19,7 @@
         <result property="adminState" column="admin_state"/>
         <result property="hospitalName" column="hospital_name"/>
         <result property="userType" column="user_type"/>
+        <result property="menu" column="menu"></result>
     </resultMap>
 
     <!--关联查询   关联角色 和 权限-->
@@ -40,6 +41,7 @@
         <result property="state" column="admin_state"></result>
         <result property="hospitalName" column="hospital_name"></result>
         <result property="userType" column="user_type"></result>
+        <result property="menu" column="menu"></result>
         <collection property="roleList" column="admin_id" ofType="com.leanin.domain.vo.RoleInfoVo"
                     select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
         </collection>
@@ -68,12 +70,28 @@
         <result property="adminState" column="admin_state"></result>
         <result property="hospitalName" column="hospital_name"></result>
         <result property="userType" column="user_type"></result>
+        <result property="menu" column="menu"></result>
     </resultMap>
+    
+    <resultMap id="MenuResultMap" type="com.leanin.domain.vo.AdminUserVo">
+        <result property="menu" column="com.leanin.domain.dao.UserDao"/>
+    </resultMap>
+    
     <sql id="Base_Sql">
         admin_id,admin_name,admin_work_num,admin_password,admin_ward_code,
         admin_job_title,admin_desc,admin_phone,area_code,admin_id_card,
-        admin_sex,admin_birthday,organ_attri,remark,admin_state,hospital_name,user_type
+        admin_sex,admin_birthday,organ_attri,remark,admin_state,hospital_name,user_type,menu
     </sql>
+    <sql id="Lau_Sql">
+        lau.admin_id,lau.admin_name,lau.admin_work_num,lau.admin_password,lau.admin_ward_code,
+        lau.admin_job_title,lau.admin_desc,lau.admin_phone,lau.area_code,lau.admin_id_card,
+        lau.admin_sex,lau.admin_birthday,lau.organ_attri,lau.remark,lau.admin_state,
+        lau.hospital_name,lau.user_type
+    </sql>
+    <sql id="Menu_Sql">
+        lau.menu
+    </sql>
+
     <!--添加用户-->
     <insert id="addUser">
         INSERT INTO leanin_admin_user
@@ -126,6 +144,9 @@
             <if test="adminUserVo.userType != null">
                 user_type,
             </if>
+            <if test="adminUserVo.menu != null">
+                menu,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="adminUserVo.adminName != null">
@@ -175,6 +196,9 @@
             </if>
             <if test="adminUserVo.userType != null">
                 #{adminUserVo.userType},
+            </if>
+            <if test="adminUserVo.menu != null">
+                #{adminUserVo.menu},
             </if>
         </trim>
     </insert>
@@ -228,6 +252,9 @@
             <if test="adminUserVo.hospitalName != null">
                 user_type = #{adminUserVo.userType},
             </if>
+            <if test="adminUserVo.menu != null">
+                menu = #{adminUserVo.menu},
+            </if>
         </set>
         WHERE admin_id = #{adminUserVo.adminId}
     </update>
@@ -248,6 +275,7 @@
         FROM leanin_admin_user
         WHERE admin_work_num =#{workNum} and admin_state = 1
     </select>
+
     <select id="findUserId" resultMap="VO_Result_Map">
         SELECT
         <include refid="Base_Sql"/>
@@ -285,5 +313,19 @@
         <include refid="Base_Sql"/>
         FROM leanin_admin_user
         WHERE admin_id = #{adminUserId} and admin_state != 2
+    </select>
+    
+    <select id="findByWard" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Lau_Sql"/>
+        FROM
+          `leanin_admin_user` lau
+        WHERE lau.`admin_state` = 1
+          AND lau.`admin_id` IN
+          (SELECT
+            luw.`user_id`
+          FROM
+            `leanin_user_ward` luw
+          WHERE luw.`ward_id` = #{wardId})
     </select>
 </mapper>

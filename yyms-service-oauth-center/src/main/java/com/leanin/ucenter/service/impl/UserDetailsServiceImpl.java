@@ -81,6 +81,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userDetails.setName(adminUserDto.getAdminName());       //用户名称
         userDetails.setWardCode(adminUserDto.getWardCode());
         userDetails.setHospitalName(adminUserDto.getHospitalName());
+//        userDetails.setMenu(adminUserDto.getMenu());
         return userDetails;
     }
 }

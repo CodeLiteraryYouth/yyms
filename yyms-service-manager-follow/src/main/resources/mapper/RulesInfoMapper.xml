@@ -111,7 +111,10 @@
     update leanin_rules_info r set r.rules_info_status=#{status}
     where r.rules_info_id = #{rulesInfoId,jdbcType=BIGINT}
   </update>
-  <insert id="addRulesInfo" parameterType="com.leanin.domain.vo.RulesInfoVo">
+  <insert id="addRulesInfo" parameterType="com.leanin.domain.vo.RulesInfoVo" keyProperty="rulesInfoId" useGeneratedKeys="true">
+<!--    <selectKey resultType="java.lang.Long" keyProperty="rules_info_id" order="AFTER">-->
+--       select Last_Insert_Id()
+<!--    </selectKey>-->
     insert into leanin_rules_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="rulesInfoId != null">

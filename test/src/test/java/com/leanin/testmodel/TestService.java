@@ -11,14 +11,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.Optional;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 public class TestService {
 
-    @Autowired
-    UserWardRepository userWardRepository;
+//    @Autowired
+//    UserWardRepository userWardRepository;
 
-    @Test
+    /*@Test
     public void test(){
         UserWardDao userWardDao =new UserWardDao();
         userWardDao.setId(null);
@@ -30,5 +30,5 @@ public class TestService {
 //        UserWardDao userWardDao1 = byId.get();
         UserWardDao save = userWardRepository.save(userWardDao);
         System.out.println(save);
-    }
+    }*/
 }

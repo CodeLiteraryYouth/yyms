@@ -276,7 +276,18 @@ public class WorkJob {
                         }
                             break;
                         case 2:{//公众号
-
+                            if (accessToken == null) {
+                                accessToken = getAccessToken();//获取accessToken
+                            }
+                            int flag = sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+                            if (flag == 3) {//accessToken失效 重新获取令牌
+                                accessToken = getAccessToken();//获取accessToken
+                                flag =sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+                            }
+                            if(flag == 2 && satisfyPatientVo.getSendType() == 3){
+                                //公众号推送成功 但是短信推送失败
+                                satisfyPatientVo.setSendType(2); //推送微信消息成功
+                            }
                         }
                             break;
                         case 3: {//短信

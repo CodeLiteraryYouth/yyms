@@ -61,6 +61,8 @@ public class AdminUserDto implements Serializable {
 
 	private Integer userType;			//用户类型
 
+	private String menu;				//权限字符串
+
 	private List<RoleInfoVo> roleList;	//该用户的角色信息
 
 	private List<MenuPermissionVo> menuPermissionVoList; //权限集合

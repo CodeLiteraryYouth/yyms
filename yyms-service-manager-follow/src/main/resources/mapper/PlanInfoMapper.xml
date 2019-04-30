@@ -81,11 +81,11 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>-->
-        <association property="formInfo" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo"
+        <!--<association property="formInfo" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo"
                         select="com.leanin.mapper.FormTypeMapper.findByFId">
-            <!--<id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
-            <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>-->
-        </association>
+            <id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
+            <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>
+        </association>-->
         <association property="formInfo" column="follow_form_num" javaType="com.leanin.domain.vo.FormInfoVo"
                         select="com.leanin.mapper.FormInfoMapper.findFormInfoById">
             <!--<id column="form_num" jdbcType="VARCHAR" property="formNum"/>

@@ -29,4 +29,6 @@ public interface UserMapper /*extends BaseMapper<UserDao>*/ {
     List<AdminUserVo> findAllUser();
 
     void updateUserPassword(@Param("password") String newPassword,@Param("userId") Long userId);
+
+    List<UserDao> findByWard(@Param("wardId") Long wardId);
 }

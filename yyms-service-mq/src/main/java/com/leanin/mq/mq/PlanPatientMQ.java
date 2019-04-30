@@ -108,7 +108,7 @@ public class PlanPatientMQ {
         String timeNumStr = (String) rulesMap.get("timeNum");
         int timeChoosed = (int)rulesMap.get("timeChoosed"); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
-        String rangeDays = (String) rulesMap.get("rangeDays");//范围天数
+
 
         SatisfyPatientVo satisfyPatientVo=new SatisfyPatientVo();
         for (Map map : list) {
@@ -145,6 +145,10 @@ public class PlanPatientMQ {
             calendar.set(Calendar.SECOND, 0);
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
+            Integer rangeDays =Integer.parseInt((String) rulesMap.get("rangeDays")) ;//范围天数
+            if(((time.getTime()- new Date().getTime())/(1*60*60*24)) > rangeDays){//判断是否过期
+                satisfyPatientVo.setFinishType(3);
+            }
             satisfyPatientVo.setFormStatus(1);
             satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
@@ -206,6 +210,7 @@ public class PlanPatientMQ {
             if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
+
 //            log.info("规则信息:{}", rulesMap);
             PlanPatientVo planPatientVo = new PlanPatientVo();
             for (Map map : list) {
@@ -240,6 +245,8 @@ public class PlanPatientMQ {
                 planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
                 planPatientVo.setIdCard(map.get("idCard").toString());//身份证号
                 planPatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
+                planPatientVo.setRulesInfoId(planInfo.getRulesInfoNum());//规则号
+
 //                if(rules.getRulesInfoType() ==1){
 //
 //                }else if (rules.getRulesInfoType() ==2){
@@ -289,6 +296,10 @@ public class PlanPatientMQ {
                     break;*/
                 }
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
+                Integer validDays = Integer.parseInt((String)rulesMap.get("validDays"));
+                if ((nextDate.getTime() - new Date().getTime())/(1*60*60*24) > validDays){//判断导入患者的时候是否过期
+                    planPatientVo.setPlanPatsStatus(3);
+                }
                 log.info("随访/宣教患者信息:{}",JSON.toJSONString(planPatientVo));
                 planPatientMapper.addPlanPatient(planPatientVo);//将数据存到数据中
 
