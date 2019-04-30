@@ -67,18 +67,21 @@ public class WorkJob {
     public void messagePlan() {
         List<MessageTopicVo> messageTopicVos = messageTopicMapper.findMsgTopicList(null);
         for (MessageTopicVo messageTopicVo : messageTopicVos) {
+            log.info("正在推送的短信主题:{}",JSON.toJSONString(messageTopicVo));
             List<MessagePatientVo> messagePatientVos = messagePatientMapper.findList(null, 1);
             if (messagePatientVos.size() == 0) {
                 continue;
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
+                log.info("短信主题内的患者信息:{}",JSON.toJSONString(messagePatientVo));
                 String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
                 Map map = CSMSUtils.sendMessage(content,messagePatientVo.getPatientPhone());
                 String msgStatus = (String) map.get("msg");
-                log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
                 if (msgStatus.equals("true")) {
+                    log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
                     messagePatientVo.setSendType(2);//发送成功
                 } else {
+                    log.info("短信主题发送的短信失败");
                     messagePatientVo.setSendType(3);//发送失败
                 }
                 messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
@@ -96,13 +99,13 @@ public class WorkJob {
         log.info("开始推送消息");
         //查询计划列表信息
         List<PlanInfoDto> planList = planInfoMapper.findAllPlan();
-        log.info("计划信息列表为:" + JSON.toJSONString(planList));
+        log.info("随访/宣教计划信息列表为:" + JSON.toJSONString(planList));
 
         //初始化参数
         WxSendDao wxSendDao = new WxSendDao();
 
         for (PlanInfoDto planInfo : planList) {
-            log.info("随访/满意度计划信息:{}", JSON.toJSONString(planInfo));
+            log.info("随访/宣教计划信息:{}", JSON.toJSONString(planInfo));
             //根据病人的编号查询计划病人信息
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), 0, null);
             log.info("该计划的病人列表信息为:" + JSON.toJSONString(planPatientList));
@@ -113,8 +116,10 @@ public class WorkJob {
                 //如果当前时间大于病人随访时间，进行发送消息
                 if (System.currentTimeMillis() > patientDto.getNextDate().getTime()
                         && patientDto.getSendType() == 1 && patientDto.getPlanPatsStatus() == 0) {
+
                     switch (planInfo.getPlanSendType()) {
                         case 1: {//短信和公众号
+                            log.info("短信和公众号推送:{}");
                             patientDto = sendMessage(planInfo, patientDto);
                             if (accessToken == null) {
                                 accessToken = getAccessToken();//获取accessToken
@@ -126,6 +131,7 @@ public class WorkJob {
                                 i = sendWxMsg(planInfo, patientDto, wxSendDao,null,null,1);
                             }
                             if (patientDto.getSendType() == 3 && i == 2) {
+                                log.info("公众号推送成功");
                                 //短信发送失败  公众号推送成功
                                 patientDto.setSendType(2); //发送成功
                                 patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
@@ -135,6 +141,7 @@ public class WorkJob {
                         break;
 
                         case 2: {//微信公众号
+                            log.info("微信公众号推送:{}");
                             if (accessToken == null) {
                                 accessToken = getAccessToken();//获取accessToken
                             }
@@ -155,6 +162,7 @@ public class WorkJob {
                         }
                         break;
                         case 3://短信
+                            log.info("短信推送:{}");
                             sendMessage(planInfo, patientDto);
                             break;
                     }
@@ -216,13 +224,16 @@ public class WorkJob {
             //判断患者信息是否处于 未发送的状态
             switch (planVo.getDiscoverType()) {
                 case 1: //短信或者公众号
+                    log.info("短信或者公众号推送方式");
                     sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 1);
                     break;
                 case 2: //公众号
+                    log.info("公众号推送方式");
                     sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 2);
                     break;
                 case 3: //短信
                     //执行相关发送操作
+                    log.info("短信推送方式");
                     sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 3);
                     break;
             }
@@ -313,13 +324,14 @@ public class WorkJob {
         }
     }
 
+
     @Scheduled(cron = "0 0/5 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void updateNextTime() {
         log.info("更新下次随访时间");
         List<PlanInfoDto> planInfoDtos = planInfoMapper.findAllPlan();
         for (PlanInfoDto planInfoDto : planInfoDtos) {
-            if (planInfoDto.getPlanType() == 2){
+            if (planInfoDto.getPlanType() == 2){//只更新随访
                 continue;
             }
             //读取规则 解析规则
@@ -327,7 +339,7 @@ public class WorkJob {
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            int validDays = Integer.parseInt((String) rulesMap.get("validDays"));
+            int validDays = Integer.parseInt(rulesMap.get("validDays")+"");
 
             int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
             String timeSelect = (String) rulesMap.get("timeSelect");

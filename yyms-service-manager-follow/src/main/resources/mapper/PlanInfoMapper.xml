@@ -34,6 +34,9 @@
         <association property="createrName" column="plan_creater" javaType="string"
                      select="com.leanin.mapper.UserMapper.findUserName">
         </association>
+        <association property="rulesInfoVo" column="rules_info_num" javaType="com.leanin.domain.vo.RulesInfoVo"
+                        select="com.leanin.mapper.RulesInfoMapper.findRulesById">
+        </association>
     </resultMap>
     <resultMap id="BlobResultMap" type="com.leanin.domain.dto.PlanInfoDto">
         <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>

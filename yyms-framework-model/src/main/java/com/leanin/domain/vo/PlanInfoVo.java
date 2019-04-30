@@ -76,6 +76,8 @@ public class PlanInfoVo implements Serializable {
 
     private String rulesText;   //规则字符串
 
+    private RulesInfoVo rulesInfoVo;//规则信息
+
 
 
 }
