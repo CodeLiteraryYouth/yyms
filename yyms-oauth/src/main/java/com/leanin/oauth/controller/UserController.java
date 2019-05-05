@@ -106,6 +106,16 @@ public class UserController extends BaseController implements UserControllerApi{
         return userService.findByWard(wardId);
     }
 
+    /**
+     * 更改最近一次登录时间
+     * @param userId 用户主键
+     * @return
+     */
+    @GetMapping("/updateLastLoginTime")
+    public DataOutResponse updateLastLoginTime(@RequestParam("userId")Long userId){
+        return userService.updateLastLoginTime(userId);
+    }
+
 
     /**
      * 前端做权限控制的 添加用户

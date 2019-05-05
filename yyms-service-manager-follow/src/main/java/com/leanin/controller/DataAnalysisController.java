@@ -47,4 +47,7 @@ public class DataAnalysisController {
         return dataAnalysisService.userFollowAnalysis(userId,time,planType);
     }
 
+
+
+
 }

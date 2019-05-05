@@ -20,6 +20,7 @@
         <result property="hospitalName" column="hospital_name"/>
         <result property="userType" column="user_type"/>
         <result property="menu" column="menu"></result>
+        <result property="lastLoginTime" column="last_login_time"></result>
     </resultMap>
 
     <!--关联查询   关联角色 和 权限-->
@@ -42,6 +43,7 @@
         <result property="hospitalName" column="hospital_name"></result>
         <result property="userType" column="user_type"></result>
         <result property="menu" column="menu"></result>
+        <result property="lastLoginTime" column="last_login_time"></result>
         <collection property="roleList" column="admin_id" ofType="com.leanin.domain.vo.RoleInfoVo"
                     select="com.leanin.oauth.mapper.RoleMapper.findRoleListByUserId">
         </collection>
@@ -71,6 +73,7 @@
         <result property="hospitalName" column="hospital_name"></result>
         <result property="userType" column="user_type"></result>
         <result property="menu" column="menu"></result>
+        <result property="lastLoginTime" column="last_login_time"></result>
     </resultMap>
     
     <resultMap id="MenuResultMap" type="com.leanin.domain.vo.AdminUserVo">
@@ -80,13 +83,13 @@
     <sql id="Base_Sql">
         admin_id,admin_name,admin_work_num,admin_password,admin_ward_code,
         admin_job_title,admin_desc,admin_phone,area_code,admin_id_card,
-        admin_sex,admin_birthday,organ_attri,remark,admin_state,hospital_name,user_type,menu
+        admin_sex,admin_birthday,organ_attri,remark,admin_state,hospital_name,user_type,menu,last_login_time
     </sql>
     <sql id="Lau_Sql">
         lau.admin_id,lau.admin_name,lau.admin_work_num,lau.admin_password,lau.admin_ward_code,
         lau.admin_job_title,lau.admin_desc,lau.admin_phone,lau.area_code,lau.admin_id_card,
         lau.admin_sex,lau.admin_birthday,lau.organ_attri,lau.remark,lau.admin_state,
-        lau.hospital_name,lau.user_type
+        lau.hospital_name,lau.user_type,lau.last_login_time
     </sql>
     <sql id="Menu_Sql">
         lau.menu

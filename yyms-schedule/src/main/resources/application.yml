@@ -5,7 +5,7 @@ spring:
     name: yyms-schedule
   datasource: #数据源
     druid:
-      url: jdbc:mysql://221.12.12.58:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://221.12.12.58:3306/leanin_follow?characterEncoding=utf-8&serverTimezone=UTC
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver

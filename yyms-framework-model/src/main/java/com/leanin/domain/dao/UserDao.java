@@ -69,4 +69,7 @@ public class UserDao implements Serializable {
 
     @Column(name = "menu")
     private String menu;            //权限字符串
+
+    @Column(name = "last_login_time")
+    private Date lastLoginTime;     //上次登录时间
 }

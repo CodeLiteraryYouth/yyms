@@ -355,6 +355,19 @@ public class UserServiceImpl implements UserService {
         return ReturnFomart.retParam(200,save);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DataOutResponse updateLastLoginTime(Long userId) {
+        Optional<UserDao> optional = userRepository.findById(userId);
+        if (!optional.isPresent()){//用户不存在
+            return ReturnFomart.retParam(1010,"用户未注册");
+        }
+        UserDao userDao = optional.get();
+        userDao.setLastLoginTime(new Date());
+        UserDao save = userRepository.save(userDao);
+        return ReturnFomart.retParam(200,save);
+    }
+
 
     private boolean sendmsg(String content, String mobile) {
         try {

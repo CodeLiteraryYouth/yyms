@@ -41,4 +41,5 @@ public interface UserService {
 
     DataOutResponse updateUserQ(UserDao userDao);
 
+    DataOutResponse updateLastLoginTime(Long userId);
 }

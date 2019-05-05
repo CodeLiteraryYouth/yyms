@@ -21,7 +21,7 @@ spring:
     virtual-host: /
   datasource: #数据源
     druid:
-      url: jdbc:mysql://221.12.12.58:3306/leanin_follow?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+      url: jdbc:mysql://221.12.12.58:3306/leanin_follow?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=UTC
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver

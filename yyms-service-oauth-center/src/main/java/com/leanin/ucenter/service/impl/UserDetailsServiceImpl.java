@@ -55,10 +55,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //根据数据库查询用户信息
 //        AdminUserDto adminUserDto = userMapper.findUserByWorkNum(username);
         AdminUserDto adminUserDto = userClient.findUserByWorkNum(username);
+
         if (adminUserDto == null) {
             //返回空给spring security表示用户不存在
             return null;
         }
+        //更改登录时间
+        userClient.updateLastLoginTime(adminUserDto.getAdminId());
         //根据用户id 获取用户权限
         List<MenuPermissionVo> menuPermissionDtos = userClient.findMenuListByUserId(adminUserDto.getAdminId());
         adminUserDto.setMenuPermissionVoList(menuPermissionDtos);//权限暂时用静态的
