@@ -36,17 +36,34 @@ public class WxFormServiceImpl implements WxFormService {
 
     @Override
     public DataOutResponse getWxForm(Integer planType, String formNum,Long planPatientId) {
-        // 1随访  2宣教  3满意度  4 在线宣教
-        if (planType == 3 ){
-            SatisfyInfoVo SatisfyInfoVo = satisfyInfoMapper.findSatisfyByIdAndStatus(formNum,1,planPatientId);
-            if (SatisfyInfoVo != null){
-                return ReturnFomart.retParam(200,SatisfyInfoVo);
-            }
-        }else {
-            FormInfoVo FormInfoVo = formInfoMapper.findFormInfoByIdAndStatus(formNum,1,planPatientId);
-            if (FormInfoVo != null){
-                return ReturnFomart.retParam(200,FormInfoVo);
-            }
+        // 1随访  2宣教  4 在线宣教
+        switch (planType){
+            case 1:{//随访
+                FormInfoVo FormInfoVo = formInfoMapper.findFormInfoByIdAndStatus(formNum,1,planPatientId);
+                if (FormInfoVo != null){
+                    return ReturnFomart.retParam(200,FormInfoVo);
+                }
+            }break;
+            case 2:{//宣教
+                FormInfoVo FormInfoVo = formInfoMapper.findFormInfoByIdAndStatus(formNum,1,planPatientId);
+                if (FormInfoVo != null){
+                    return ReturnFomart.retParam(200,FormInfoVo);
+                }
+            }break;
+            case 3:{//3满意度
+                SatisfyInfoVo SatisfyInfoVo = satisfyInfoMapper.findSatisfyByIdAndStatus(formNum,1,planPatientId);
+                if (SatisfyInfoVo != null){
+                    return ReturnFomart.retParam(200,SatisfyInfoVo);
+                }
+                }break;
+            case 4:{//在院宣教
+                FormInfoVo formInfoVo = formInfoMapper.findFormInfoById(formNum);
+                if (formInfoVo != null){
+                    return ReturnFomart.retParam(200,formInfoVo);
+                }
+            }break;
+            default:
+                break;
         }
         return ReturnFomart.retParam(300,"数据不存在或者表单已经提交");
     }

@@ -174,7 +174,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from leanin_form_info where form_status>=0
+    from leanin_form_info where form_status >= 0
     and form_num = #{formNum,jdbcType=VARCHAR}
   </select>
   <select id="findFormInfoByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">

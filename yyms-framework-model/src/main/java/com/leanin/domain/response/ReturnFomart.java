@@ -92,6 +92,11 @@ public class ReturnFomart {
         messageMap.put("3906","分类下有短信模板不能删除或者禁用");
 
 
+        messageMap.put("4001","科室码重复请勿添加相同的科室");
+
+
+
+
 
 
 

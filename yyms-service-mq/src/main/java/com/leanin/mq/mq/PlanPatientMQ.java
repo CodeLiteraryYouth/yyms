@@ -107,7 +107,7 @@ public class PlanPatientMQ {
 
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
         String timeNumStr = (String) rulesMap.get("timeNum");
-        int timeChoosed = (int)rulesMap.get("timeChoosed"); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        Integer timeChoosed = Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
 
 
@@ -148,7 +148,7 @@ public class PlanPatientMQ {
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
             Integer rangeDays =Integer.parseInt((String) rulesMap.get("rangeDays")) ;//范围天数
-            if(((time.getTime()- new Date().getTime())/(1*60*60*24)) > rangeDays){//判断是否过期
+            if(((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
                 satisfyPatientVo.setFinishType(3);
             }
             satisfyPatientVo.setFormStatus(1);
@@ -301,7 +301,7 @@ public class PlanPatientMQ {
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
                 if (planInfo.getPlanType() == 1){//随访计划存在过期  宣教不存在过期
                     Integer validDays = Integer.parseInt(rulesMap.get("validDays")+"");
-                    if ((nextDate.getTime() - new Date().getTime())/(1*60*60*24) > validDays){//判断导入患者的时候是否过期
+                    if ((nextDate.getTime() - new Date().getTime())/(1*60*60*1000*24) > validDays){//判断导入患者的时候是否过期
                         planPatientVo.setPlanPatsStatus(3);
                     }
                 }
