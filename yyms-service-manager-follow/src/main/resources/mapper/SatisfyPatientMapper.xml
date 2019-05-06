@@ -409,7 +409,7 @@
         and patient_name = #{patientName}
     </select>
 
-    <select id="findByStyPatId" resultMap="BASE_MAP">
+    <select id="findByStyPatId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
