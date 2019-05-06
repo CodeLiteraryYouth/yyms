@@ -7,6 +7,7 @@ import com.leanin.mapper.FollowRecordMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.SatisfyPatientMapper;
 import com.leanin.service.DataAnalysisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Autowired
@@ -30,7 +32,8 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
     SatisfyPatientMapper satisfyPatientMapper;
 
     @Override
-    public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType) {
+    public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId) {
+        log.info("传递的参数:{}","患者来源:"+patientSource,"计划主键:"+planNum,"患者科室"+dept,"开始日期"+startDateStr,"结束日期"+endDateStr,"计划类型"+planType,"表单状态"+formStatus,"用户主键"+userId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null;
         Date endDate = null;
@@ -52,7 +55,10 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         Map<Integer,Integer> dataMap = new HashMap();
         switch (planType){
             case 1 ://随访数据分析
-                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate);
+                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
+                break;
+            case 2://宣教数据分析
+                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
                 break;
             case 3://满意度数据分析
                 dataMap = satisfy(dataMap,patientSource,planNum,dept,startDate,endDate);
@@ -64,26 +70,31 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         return ReturnFomart.retParam(200, dataMap);
     }
 
-    private Map<Integer,Integer> follow(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate){
-        List<AnalysisVo> list = followRecordMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate);
-        List<AnalysisVo> list1 = planPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate);
+    private Map<Integer,Integer> follow(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Integer planType,Integer formStatus,Long userId){
+        List<AnalysisVo> list = followRecordMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,planType,formStatus,userId);
+        List<AnalysisVo> list1 = planPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,planType,formStatus,userId);
         for (int i = -1; i < 12; i++) {
             int count =0;
-            for (AnalysisVo analysisVo : list) {
+            if (list.size() >0){
+                for (AnalysisVo analysisVo : list) {
 //                dataMap.put(analysisVo.getStatus(),dataMap.get(analysisVo.getStatus())+analysisVo.getCount());
-                if (analysisVo.getStatus() == i){
-                    count = count +analysisVo.getCount();
+                    if (analysisVo.getStatus() == i){
+                        count = count +analysisVo.getCount();
+                    }
                 }
             }
-            for (AnalysisVo analysisVo : list1) {
+
+            if (list1.size() > 0){
+                for (AnalysisVo analysisVo : list1) {
 //                dataMap.put(analysisVo.getStatus(),dataMap.get(analysisVo.getStatus())+analysisVo.getCount());
-                if (analysisVo.getStatus() == i) {
-                    count = count + analysisVo.getCount();
+                    if (analysisVo.getStatus() == i) {
+                        count = count + analysisVo.getCount();
+                    }
                 }
             }
+
             dataMap.put(i, count);
         }
-
         return dataMap;
     }
 

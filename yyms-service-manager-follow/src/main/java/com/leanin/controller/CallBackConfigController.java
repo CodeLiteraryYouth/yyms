@@ -26,32 +26,32 @@ public class CallBackConfigController extends BaseController {
 	@Autowired
 	private CallBackConfigService callBackConfigService;
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigListByType")
 	public DataOutResponse findConfigListByType(Integer configType) {
 		return callBackConfigService.findConfigListByType(configType);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigList")
 	public DataOutResponse findConfigList(@RequestParam Integer page, @RequestParam Integer pageSize,Integer configType){
 		return callBackConfigService.findConfigList(page,pageSize,configType);
 	}
 
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigById")
 	public DataOutResponse findConfigById(@RequestParam String configNum) {
 		return callBackConfigService.findConfigById(configNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','delConfig')")
 	@GetMapping("updateConfigStatus")
 	public DataOutResponse updateConfigStatus(@RequestParam String configNum,@RequestParam int status) {
 		return callBackConfigService.updateConfigStatus(configNum, status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','addConfig')")
 	@PostMapping("addConfig")
 	public DataOutResponse addConfig(@RequestBody CallBackConfig record) {
 		LyOauth2Util.UserJwt user = getUser(request);
@@ -60,7 +60,7 @@ public class CallBackConfigController extends BaseController {
 		return callBackConfigService.addConfig(record);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','updateConfig')")
 	@PostMapping("updateConfig")
 	public DataOutResponse updateConfig(@RequestBody CallBackConfig record) {
 		return callBackConfigService.updateConfig(record);

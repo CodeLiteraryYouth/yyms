@@ -22,7 +22,7 @@ public interface FollowRecordMapper {
     //修改患者状态
     void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
 
-    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") Integer status*/);
+    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") Integer status*/,@Param("planType") Integer planType,@Param("formStatus") Integer formStatus,@Param("userId") Long userId);
 
     List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
 }

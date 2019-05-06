@@ -101,6 +101,9 @@
         <if test="patientName != null ">
             and patient_name like CONCAT('%',#{patientName},'%')
         </if>
+        <if test="status == 1">
+            and send_type = 2
+        </if>
 
     </select>
     <select id="findPlanPatientByPatientId" resultMap="BASE_MAP">
@@ -389,6 +392,9 @@
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
+        <if test="myFollowReq.folStatus == 1">
+            AND send_type = 2
+        </if>
     </select>
     <select id="bindPatient" resultMap="BASE_MAP">
         select
@@ -427,10 +433,18 @@
         where lpp.patient_status = 1
         and lpp.plan_num = lpi.plan_num
         and lpi.plan_status =0
-        and lpi.plan_type =1
+        <if test="planType != null">
+            and lpi.plan_type =#{planType}
+        </if>
         <!--<if test="status != null">
             and plan_pats_status = #{status}
         </if>-->
+        <if test="userId != null">
+            and lpi.plan_duty_per = #{userId}
+        </if>
+        <if test="formStatus != null">
+            and lpp.form_status =#{formStatus}
+        </if>
         <if test="planNum != null">
             and lpp.plan_num = #{planNum}
         </if>

@@ -252,6 +252,7 @@ public class WorkJob {
                 if (days > rangeDays) {//判断是否过期
 //                    if (satisfyPatientVo.getFinishType() == 1) {
                     satisfyPatientVo.setFinishType(3);//已过期
+                    satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
                     continue;//跳出本次循环
 //                    }
                 } /*else {*/
@@ -586,6 +587,7 @@ public class WorkJob {
             wxSendDao.setErrorCode(errcode);
             String errmsg = (String) map.get("errmsg");
             wxSendDao.setErrmsg(errmsg);
+            wxSendDao.setCreateTime(new Date());
             switch (errcode) {
                 case 0: {//发送成功
                     wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));
@@ -655,6 +657,7 @@ public class WorkJob {
             wxSendDao.setErrorCode(errcode);
             String errmsg = (String) map.get("errmsg");
             wxSendDao.setErrmsg(errmsg);
+            wxSendDao.setCreateTime(new Date());
             switch (errcode) {
                 case 0: {//发送成功
                     wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));

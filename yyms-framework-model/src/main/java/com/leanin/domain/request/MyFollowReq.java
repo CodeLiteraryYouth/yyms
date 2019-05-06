@@ -21,6 +21,7 @@ public class MyFollowReq implements Serializable {
     private String planId;            //计划id
     private Integer folStatus;      //随访状态  1 未完成 2已完成 3 随访异常
     private String patName;         //患者姓名
+    private Integer sendStatus;     //发送状态  1 未发送 2已发送 3 发送失败
     private Integer currentPage;    //当前页
     private Integer pageSize;       //每页展示数据条数
 

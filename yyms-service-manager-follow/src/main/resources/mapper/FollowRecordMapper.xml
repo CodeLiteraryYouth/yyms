@@ -180,10 +180,18 @@
         where lfr.patient_status = 1
         and lfr.plan_num = lpi.plan_num
         and lpi.plan_status = 0
-        and lpi.plan_type = 1
+        <if test="planType != null">
+            and lpi.plan_type = #{planType}
+        </if>
  <!--       <if test="status != null">
             and lfr.plan_pats_status = #{status}
         </if>-->
+        <if test="userId != null">
+            and lpi.plan_duty_per = #{userId}
+        </if>
+        <if test="formStatus != null">
+            and lfr.form_status = #{formStatus}
+        </if>
         <if test="planNum != null">
             and lfr.plan_num = #{planNum}
         </if>

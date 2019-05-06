@@ -24,8 +24,13 @@ public class StyInfoRecordController extends BaseController {
         return styInfoRecordService.addStyInfoRecord(styInfoRecordVo);
     }
 
+    /**
+     * 满意度表单记录
+     * @param planPatientId  满意度计划患者主键
+     * @return
+     */
     @GetMapping("/findStyInfoRecordByPid")
-    public DataOutResponse findStyInfoRecordByPid(@RequestParam Long planPatientId){
+    public DataOutResponse findStyInfoRecordByPid(@RequestParam("planPatientId") Long planPatientId){
         return styInfoRecordService.findStyInfoRecordByPid(planPatientId);
     }
 

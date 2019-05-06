@@ -28,10 +28,10 @@ public class DataAnalysisController {
      * @param planType      计划类型  1随访  3满意度
      * @return
      */
-    @PreAuthorize("hasAnyAuthority('root','dataAly')")
+//    @PreAuthorize("hasAnyAuthority('root','dataAly')")
     @GetMapping("followAnalysis")
-    public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam Integer planType){
-        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType);
+    public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam("planType") Integer planType,Integer formStatus,Long userId){
+        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
     }
 
 
@@ -41,11 +41,16 @@ public class DataAnalysisController {
      * @param planType      计划类型  1随访  3满意度
      * @return
      */
-    @PreAuthorize("hasAnyAuthority('root','userDataAly')")
+//    @PreAuthorize("hasAnyAuthority('root','userDataAly')")
     @GetMapping("userFollowAnalysis")
     public DataOutResponse userFollowAnalysis(@RequestParam("userId") Long userId,@RequestParam("time") String time,@RequestParam("planType") Integer planType){
         return dataAnalysisService.userFollowAnalysis(userId,time,planType);
     }
+
+
+
+
+
 
 
 

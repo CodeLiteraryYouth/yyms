@@ -86,23 +86,29 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
 
     @Override
     @Transactional
-    public DataOutResponse updateByPid( Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo) {
+    public DataOutResponse updateByPid( Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo,Integer formStatus) {
         SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.findByStyPatId(patientSatisfyId);
         if (satisfyPatientVo == null){
             return ReturnFomart.retParam(300,"信息不存在");
         }
-        String uuid = UUIDUtils.getUUID();
-        styInfoRecordVo.setSatisfyId(uuid);
-        styInfoRecordVo.setFormStatus(satisfyPatientVo.getFormStatus());
-        styInfoRecordVo.setCreateTime(new Date());
-        styInfoRecordVo.setIdCard(satisfyPatientVo.getIdCard());
-        styInfoRecordVo.setInhosNo(satisfyPatientVo.getInhosNo());
-        styInfoRecordVo.setPatientId(satisfyPatientVo.getPatientId());
-        styInfoRecordMapper.addRecord(styInfoRecordVo);
-        if (finishType != null){
+        if (styInfoRecordVo != null){//添加满意度表单填写信息
+            String uuid = UUIDUtils.getUUID();
+            styInfoRecordVo.setSatisfyId(uuid);
+            styInfoRecordVo.setFormStatus(formStatus);
+            styInfoRecordVo.setCreateTime(new Date());
+            styInfoRecordVo.setIdCard(satisfyPatientVo.getIdCard());
+            styInfoRecordVo.setInhosNo(satisfyPatientVo.getInhosNo());
+            styInfoRecordVo.setPatientId(satisfyPatientVo.getPatientId());
+            styInfoRecordMapper.addRecord(styInfoRecordVo);
+        }
+
+        if (finishType != null){//满意度完成状态
             satisfyPatientVo.setFinishType(finishType);
         }
-        if (suggess != null){
+        if (formStatus != null){//满意度表单完成状态
+            satisfyPatientVo.setFormStatus(formStatus);
+        }
+        if (suggess != null){//处理意见
             satisfyPatientVo.setSuggess(suggess);
         }
         satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
@@ -110,7 +116,7 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DataOutResponse addPatentList(List<SatisfyPatientVo> satisfyPatientVos) {
         for (SatisfyPatientVo satisfyPatientVo : satisfyPatientVos) {
             SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
@@ -139,6 +145,15 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
         satisfyPatient.setFinishType(status);
         satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatient);
         return ReturnFomart.retParam(200,satisfyPatient);
+    }
+
+    @Override
+    public DataOutResponse findById(Long planPatientId) {
+        SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.findByStyPatId(planPatientId);
+        if (satisfyPatientVo == null ){
+            return ReturnFomart.retParam(1,"信息不存在");
+        }
+        return ReturnFomart.retParam(200,satisfyPatientVo);
     }
 
     private Date setDate(SatisfyPlanVo satisfyPlan,Date lastDate){

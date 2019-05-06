@@ -23,7 +23,7 @@ public class MWorkBenchController extends BaseController {
 
     //我的随访和我的宣教
     //获取患者信息
-    @PreAuthorize("hasAnyAuthority('root','myFollow')")
+//    @PreAuthorize("hasAnyAuthority('root','myFollow')")
     @PostMapping("/findPats")
     public DataOutResponse findPats(@RequestBody MyFollowReq myFollowReq){
         LyOauth2Util.UserJwt user = getUser(request);
@@ -31,7 +31,7 @@ public class MWorkBenchController extends BaseController {
         return mWorkBenchService.findPats(myFollowReq);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','mySatisfy')")
+//    @PreAuthorize("hasAnyAuthority('root','mySatisfy')")
     //我的满意度
     @PostMapping("/findStyPats")
     public DataOutResponse findStyPats(@RequestBody MyFollowReq myFollowReq){

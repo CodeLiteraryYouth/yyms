@@ -12,7 +12,7 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class StyInfoRecordVo {
+public class StyInfoRecordVo  {
 
     private String  satisfyId;      //主键
     private String  satisfyNum;     //满意度表单号
@@ -20,7 +20,7 @@ public class StyInfoRecordVo {
     private Date    createTime;     //创建时间
     private Long    formCreater;    //表单创建者
     private String  satisfyText;    //满意度正文
-    private String  satisfyTypeId;  //满意度分类主键
+    private Long  satisfyTypeId;  //满意度分类主键
     private String  satisfyTitle;   //表单头
     private String  satisfyBottom;  //表单尾
     private String  areaCode;       //院区编码
@@ -31,7 +31,6 @@ public class StyInfoRecordVo {
     private Integer  formStatus;    //微信唯一标识
     private String  idCard;         //身份证号
     private String  inhosNo;        //住院号
-    private String  ex4;
     private String  ex5;
 
 
