@@ -23,4 +23,6 @@ public class AdminUserVo extends UserDao {
 
 
 	private List<Long> roleIds; 	//角色id集合
+
+	private List<Long> wardIds;		//用户科室集合
 }

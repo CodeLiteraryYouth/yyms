@@ -21,7 +21,7 @@ spring:
     virtual-host: /
   datasource:
     druid:
-      url: jdbc:mysql://39.108.217.158:3306/leanin_follow?characterEncoding=utf-8
+      url: jdbc:mysql://221.12.12.58:3306/leanin_follow?characterEncoding=utf-8
       username: root
       password: root
       driverClassName: com.mysql.jdbc.Driver

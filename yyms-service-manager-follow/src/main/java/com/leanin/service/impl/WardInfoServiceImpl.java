@@ -53,9 +53,12 @@ public class WardInfoServiceImpl implements WardInfoService {
 		log.info("新增的科室信息为:"+ JSON.toJSONString(record));
 		WardInfoVo wardInfo=wardInfoMapper.selectByCode(record.getWardCode());
 		//如果不为空,代表数据库中村财相同的数据,防止重复添加
-		if(CompareUtil.isNotEmpty(wardInfo)) {
-			return ReturnFomart.retParam(4000, null);
+		if(wardInfo != null){
+			return ReturnFomart.retParam(4001,"科室码重复请勿添加相同的科室");
 		}
+//		if(CompareUtil.isNotEmpty(wardInfo)) {
+//			return ReturnFomart.retParam(4000, null);
+//		}
 		wardInfoMapper.insertWardInfo(record);
 		return ReturnFomart.retParam(200, record);
 	}

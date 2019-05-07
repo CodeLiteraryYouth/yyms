@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @ToString
@@ -64,8 +65,8 @@ public class WxSendDao {
     @Column(name = "form_url")
     private String formUrl;     //表单url
 
-    @Column(name = "ex6")
-    private String ex6;
+    @Column(name = "create_time")
+    private Date createTime;
 
     @Column(name = "ex7")
     private String ex7;

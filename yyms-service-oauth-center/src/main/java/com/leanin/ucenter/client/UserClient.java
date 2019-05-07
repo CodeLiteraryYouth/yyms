@@ -2,6 +2,7 @@ package com.leanin.ucenter.client;
 
 
 import com.leanin.domain.dto.AdminUserDto;
+import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MenuPermissionVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,4 +18,7 @@ public interface UserClient {
 
     @GetMapping("/menu/findMenuListByUserId")
     public List<MenuPermissionVo> findMenuListByUserId(@RequestParam("userId") Long userId);
+
+    @GetMapping("/user/updateLastLoginTime")
+    public DataOutResponse updateLastLoginTime(@RequestParam("userId")Long userId);
 }

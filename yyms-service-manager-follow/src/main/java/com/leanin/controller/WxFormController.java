@@ -17,7 +17,7 @@ public class WxFormController {
     WxFormService wxFormService;
 
     @GetMapping("/getWxForm")
-    public DataOutResponse getWxForm(@RequestParam Integer planType, @RequestParam String formNum,@RequestParam Long planPatientId){
+    public DataOutResponse getWxForm(@RequestParam("planType") Integer planType, @RequestParam("formNum") String formNum,@RequestParam("planPatientId") Long planPatientId){
         return wxFormService.getWxForm(planType,formNum,planPatientId);
 
     }
@@ -30,6 +30,7 @@ public class WxFormController {
 
     @PostMapping("/addStyForm")
     public DataOutResponse addStyForm(@RequestBody StyInfoRecordVo styInfoRecordVo){
+        styInfoRecordVo.setCreateTime(new Date());
         return wxFormService.addStyForm(styInfoRecordVo);
     }
 }

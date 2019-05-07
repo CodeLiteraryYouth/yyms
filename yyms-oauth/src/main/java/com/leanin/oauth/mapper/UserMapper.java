@@ -22,11 +22,13 @@ public interface UserMapper /*extends BaseMapper<UserDao>*/ {
 
     void updateUser(@Param("adminUserVo") AdminUserVo adminUserVo);
 
-    List<AdminUserVo> findUserPage(@Param("userName") String userName,@Param("workNum") String workNum);
+    List<AdminUserDto> findUserPage(@Param("userName") String userName,@Param("workNum") String workNum);
 
     String findUserName(@Param("adminId") Long adminId);
 
     List<AdminUserVo> findAllUser();
 
     void updateUserPassword(@Param("password") String newPassword,@Param("userId") Long userId);
+
+    List<UserDao> findByWard(@Param("wardId") Long wardId);
 }

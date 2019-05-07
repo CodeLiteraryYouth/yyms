@@ -20,7 +20,10 @@
         <result column="rules_info_id"  property="rulesInfoId"></result>
         <result column="next_date"  property="nextDate"></result>
         <result column="patient_source"  property="patientSource"></result>
+        <result column="handle_sugges"  property="handleSugges"></result>
         <result column="id_card"  property="idCard"></result>
+        <result column="inhos_no"  property="inhosNo"></result>
+        <result column="form_id"  property="formId"></result>
     </resultMap>
     <resultMap extends="BaseResultMap" id="OpenIdResultMap" type="com.leanin.domain.vo.PlanPatientVo">
         <association property="opendId" column="id_card" javaType="string"
@@ -62,7 +65,8 @@
     <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
     patient_age, patient_phone,patient_ward,form_status, patient_status, patient_condition,
-    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source
+    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,
+    handle_sugges,id_card,inhos_no,form_id,opend_id
   </sql>
     <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

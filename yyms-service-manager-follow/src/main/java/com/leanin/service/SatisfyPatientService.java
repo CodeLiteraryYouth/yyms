@@ -17,9 +17,12 @@ public interface SatisfyPatientService {
     //批量删除
     DataOutResponse delPatientList(List<Long> longs1);
 
-    DataOutResponse updateByPid(Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo);
+    DataOutResponse updateByPid(Long patientSatisfyId, Integer finishType,String suggess, StyInfoRecordVo styInfoRecordVo,Integer formStatus);
 
     DataOutResponse addPatentList(List<SatisfyPatientVo> satisfyPatientVos);
 
     DataOutResponse updateStatus(Long planPatientId, Integer status);
+
+    DataOutResponse findById(Long planPatientId);
+
 }

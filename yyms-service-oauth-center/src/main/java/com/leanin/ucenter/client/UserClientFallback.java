@@ -1,6 +1,7 @@
 package com.leanin.ucenter.client;
 
 import com.leanin.domain.dto.AdminUserDto;
+import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.MenuPermissionVo;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,11 @@ public class UserClientFallback implements UserClient {
 
     @Override
     public List<MenuPermissionVo> findMenuListByUserId(Long userId) {
+        return null;
+    }
+
+    @Override
+    public DataOutResponse updateLastLoginTime(Long userId) {
         return null;
     }
 }

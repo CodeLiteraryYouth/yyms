@@ -14,14 +14,14 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name = "leanin_online_edu")
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+//@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class OnlineEdu implements Serializable {
 
     @Id
     @Column(name = "edu_id")
-    @GeneratedValue(generator = "jpa-uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @GenericGenerator(name = "system-identity",strategy = "identity")
-    private String eduId;            //主键
+    private Long eduId;            //主键
 
     @Column(name = "patient_id")
     private String patientId;      //患者主键

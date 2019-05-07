@@ -55,7 +55,8 @@ public class PlanPatientMQ {
         MessagePatientVo messagePatientVo =new MessagePatientVo();
         for (Map map : list) {
             messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());//设置短信主题计划id
-            Long patientId = Long.parseLong(map.get("patientId").toString());
+//            Long patientId = Long.parseLong(map.get("patientId").toString());
+            Long patientId = Long.parseLong(map.get("patientId")+"");
             messagePatientVo.setPatientId(patientId);//患者id
             String patientName = (String) map.get("patientName");
             messagePatientVo.setPatientName(patientName);//患者姓名
@@ -106,14 +107,15 @@ public class PlanPatientMQ {
 
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
         String timeNumStr = (String) rulesMap.get("timeNum");
-        int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        Integer timeChoosed = Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
-        String rangeDays = (String) rulesMap.get("rangeDays");//范围天数
+
 
         SatisfyPatientVo satisfyPatientVo=new SatisfyPatientVo();
         for (Map map : list) {
             satisfyPatientVo.setSatisfyPlanNum(satisfyPlan.getPlanSatisfyNum());//设置满意度计划id
-            Long patientId = Long.parseLong(map.get("patientId").toString());
+//            Long patientId = Long.parseLong(map.get("patientId").toString());
+            Long patientId = Long.parseLong(map.get("patientId")+"");
             satisfyPatientVo.setPatientId(patientId);//患者id
             String patientName = (String) map.get("patientName");
             satisfyPatientVo.setPatientName(patientName);//患者姓名
@@ -145,6 +147,11 @@ public class PlanPatientMQ {
             calendar.set(Calendar.SECOND, 0);
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
+            Integer rangeDays =Integer.parseInt((String) rulesMap.get("rangeDays")) ;//范围天数
+            if(((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
+                satisfyPatientVo.setFinishType(3);
+            }
+            satisfyPatientVo.setFormStatus(1);
             satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
             satisfyPatientMapper.insertSelective(satisfyPatientVo);
@@ -190,7 +197,7 @@ public class PlanPatientMQ {
                     e.printStackTrace();
                 }
             }
-            String weeks1 = (String) rulesMap.get("weeks");
+            String weeks1 =(String) rulesMap.get("weeks");
             int weeks = 0;
             if (!"".equals(weeks1) && weeks1 != null) {
                 weeks = Integer.parseInt(weeks1);
@@ -205,11 +212,13 @@ public class PlanPatientMQ {
             if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
+
 //            log.info("规则信息:{}", rulesMap);
             PlanPatientVo planPatientVo = new PlanPatientVo();
             for (Map map : list) {
                 planPatientVo.setPlanNum(planInfo.getPlanNum());//设置计划编号
-                Long patientId = Long.parseLong(map.get("patientId").toString());
+//                Long patientId = Long.parseLong(map.get("patientId").toString());
+                Long patientId = Long.parseLong(map.get("patientId")+"");
                 planPatientVo.setPatientId(patientId);//设置病人id
                 planPatientVo.setSendType(1);//发送状态  1未发送  2已发送 3发送异常
                 String patientName = (String) map.get("patientName");
@@ -239,6 +248,8 @@ public class PlanPatientMQ {
                 planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
                 planPatientVo.setIdCard(map.get("idCard").toString());//身份证号
                 planPatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
+                planPatientVo.setRulesInfoId(planInfo.getRulesInfoNum());//规则号
+
 //                if(rules.getRulesInfoType() ==1){
 //
 //                }else if (rules.getRulesInfoType() ==2){
@@ -288,6 +299,13 @@ public class PlanPatientMQ {
                     break;*/
                 }
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
+                if (planInfo.getPlanType() == 1){//随访计划存在过期  宣教不存在过期
+                    Integer validDays = Integer.parseInt(rulesMap.get("validDays")+"");
+                    if ((nextDate.getTime() - new Date().getTime())/(1*60*60*1000*24) > validDays){//判断导入患者的时候是否过期
+                        planPatientVo.setPlanPatsStatus(3);
+                    }
+                }
+
                 log.info("随访/宣教患者信息:{}",JSON.toJSONString(planPatientVo));
                 planPatientMapper.addPlanPatient(planPatientVo);//将数据存到数据中
 

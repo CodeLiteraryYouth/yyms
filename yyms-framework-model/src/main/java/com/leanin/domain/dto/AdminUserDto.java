@@ -2,6 +2,7 @@ package com.leanin.domain.dto;
 
 import com.leanin.domain.vo.MenuPermissionVo;
 import com.leanin.domain.vo.RoleInfoVo;
+import com.leanin.domain.vo.WardInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,9 +62,15 @@ public class AdminUserDto implements Serializable {
 
 	private Integer userType;			//用户类型
 
+	private String menu;				//权限字符串
+
+	private Date lastLoginTime;			//上次登录时间
+
 	private List<RoleInfoVo> roleList;	//该用户的角色信息
 
 	private List<MenuPermissionVo> menuPermissionVoList; //权限集合
+
+	private List<WardInfoVo> wardCodeList;			//用户科室编码
 
 
 

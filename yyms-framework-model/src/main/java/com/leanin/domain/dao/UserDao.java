@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @ToString
+@Entity
 @Table(name = "leanin_admin_user")
-public class UserDao {
+public class UserDao implements Serializable {
 
     @Id
     @Column(name = "admin_id")
@@ -64,4 +66,10 @@ public class UserDao {
 
     @Column(name = "user_type")
     private Integer userType;		//用户类型
+
+    @Column(name = "menu")
+    private String menu;            //权限字符串
+
+    @Column(name = "last_login_time")
+    private Date lastLoginTime;     //上次登录时间
 }

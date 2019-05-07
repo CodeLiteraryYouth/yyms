@@ -84,20 +84,35 @@
         <if test="patientWard != null ">
             AND patient_ward like CONCAT('%',#{patientWard},'%')
         </if>
-        <if test="sendType != null ">
-            AND send_type =#{sendType}
-        </if>
+<!--        <if test="sendType == 1 ">-->
+<!--            AND send_type =#{sendType}-->
+<!--            AND send_type > 1-->
+<!--        </if>-->
         <if test="startDate != null ">
             AND patient_date_time &gt; #{startDate}
         </if>
         <if test="endDate != null ">
             AND patient_date_time &lt; #{endDate}
         </if>
-        <if test="finishType != null ">
-            AND finish_type = #{finishType}
-        </if>
+        <choose>
+            <when test="finishType == -2 ">
+                AND finish_type between 3 and 11
+            </when>
+            <when test="finishType != null and finishType != -2">
+                AND finish_type = #{finishType}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="finishType != null ">-->
+<!--            AND finish_type = #{finishType}-->
+<!--        </if>-->
         <if test="patientSource != null ">
             AND patient_type = #{patientSource}
+        </if>
+        <if test="finishType == 1">
+            AND send_type = 2
         </if>
     </select>
 
@@ -349,12 +364,12 @@
         FROM leanin_satisfy_patient
         WHERE patient_status = 0
         AND satisfy_plan_num IN (
-        SELECT sp.plan_satisfy_num
-        FROM leanin_satisfy_plan sp
-        WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
-        <if test="myFollowReq.planId != null">
-            AND sp.plan_satisfy_num = #{myFollowReq.planId}
-        </if>
+            SELECT sp.plan_satisfy_num
+            FROM leanin_satisfy_plan sp
+            WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
+            <if test="myFollowReq.planId != null">
+                AND sp.plan_satisfy_num = #{myFollowReq.planId}
+            </if>
         )
         <if test="myFollowReq.startDate != null">
             AND patient_date_time &gt;= #{myFollowReq.startDate}
@@ -362,11 +377,25 @@
         <if test="myFollowReq.endDate != null ">
             AND patient_date_time &lt;= #{myFollowReq.startDate}
         </if>
-        <if test="myFollowReq.folStatus != null">
-            AND finish_type = #{myFollowReq.folStatus}
-        </if>
+        <choose>
+            <when test="myFollowReq.folStatus == -2 ">
+                AND finish_type between 3 and 11
+            </when>
+            <when test="myFollowReq.folStatus != null and myFollowReq.folStatus != -2">
+                AND finish_type = #{myFollowReq.folStatus}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="myFollowReq.folStatus != null">-->
+<!--            AND finish_type = #{myFollowReq.folStatus}-->
+<!--        </if>-->
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
+        </if>
+        <if test="myFollowReq.folStatus == 1">
+            AND send_type = 2
         </if>
     </select>
 
@@ -380,11 +409,12 @@
         and patient_name = #{patientName}
     </select>
 
-    <select id="findByStyPatId" resultMap="BASE_MAP">
+    <select id="findByStyPatId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
-        where patient_satisfy_id = #{patientSatisfyId}
+        where patient_status = 0
+        and patient_satisfy_id = #{patientSatisfyId}
     </select>
 
     <select id="findByPnumAndPid" resultMap="BASE_MAP">

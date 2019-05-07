@@ -3,6 +3,7 @@ package com.leanin.service;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.domain.vo.RulesInfoVo;
 import com.leanin.model.response.ResponseResult;
 
 public interface PlanInfoService {
@@ -25,7 +26,7 @@ public interface PlanInfoService {
      * @param record
      * @return
      */
-	ResponseResult addPlanInfo(PlanInfoVo record);
+	ResponseResult addPlanInfo(PlanInfoVo record, RulesInfoVo rulesInfoVo);
 
     /**
      * 查询单个计划信息

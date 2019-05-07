@@ -37,6 +37,7 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
         response.put("id", userJwt.getId());
         response.put("wardCode",userJwt.getWardCode());
         response.put("hosName",userJwt.getHospitalName());
+//        response.put("menu",userJwt.getMenu());
         if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
             response.put("authorities", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
         }

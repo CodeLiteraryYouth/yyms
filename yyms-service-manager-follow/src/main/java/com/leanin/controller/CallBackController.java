@@ -26,7 +26,7 @@ public class CallBackController extends BaseController {
 	private CallBackService callBackService;
 
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackList")
 	public DataOutResponse findBackList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String beginDate,
 										@RequestParam(required=false) String endDate, @RequestParam(required=false) Integer dealStatus,
@@ -34,26 +34,26 @@ public class CallBackController extends BaseController {
 		return callBackService.findBackList(page, pageSize, beginDate, endDate, dealStatus, accuseWard, backNum,status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackById")
 	public DataOutResponse findBackById(@RequestParam String backNum,@RequestParam int status) {
 		return callBackService.findBackById(backNum,status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','addConfig')")
 	@PostMapping("addCallBack")
 	public DataOutResponse addCallBack(@RequestBody CallBack callBack) {
 //		LyOauth2Util.UserJwt user = getUser(request);
 		return callBackService.addCallBack(callBack);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','addConfig')")
 	@PostMapping("addCallBackDeal")
 	public DataOutResponse addCallBackDeal(@RequestBody CallBackDeal callBackDeal) {
 		return callBackService.updateCallBackDeal(callBackDeal);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findConfig')")
+//	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackDealByBackNum")
 	public DataOutResponse findBackDealByBackNum(@RequestParam String backNum){
 		return callBackService.findBackDealByBackNum(backNum);

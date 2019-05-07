@@ -17,10 +17,7 @@ public class UserJwt extends User implements Serializable {
     private String name;            //用户名称
     private String wardCode;        //用户科室
     private String hospitalName;    //医院名称
-//    private String userpic;
-//    private String utype;
-//    private String companyId;
-
+    private String menu;            //权限字符串
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }

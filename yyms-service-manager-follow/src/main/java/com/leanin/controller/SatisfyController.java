@@ -19,7 +19,7 @@ public class SatisfyController extends BaseController {
 	@Autowired
 	private SatisfyService satisfyService;
 
-	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
 	@GetMapping("findSatisfyList")
 	public DataOutResponse findSatisfyList(@RequestParam Integer page, @RequestParam Integer pageSize,
 										   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String satisfyName,
@@ -27,7 +27,7 @@ public class SatisfyController extends BaseController {
 		return satisfyService.findSatisfyList(page, pageSize, typeId, satisfyName,shareStatus);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','findSatisfy')")
 	@GetMapping("findSatisfyById")
 	public DataOutResponse findSatisfyById(@RequestParam String satisfyNum) {
 		return satisfyService.findSatisfyById(satisfyNum);
@@ -39,15 +39,15 @@ public class SatisfyController extends BaseController {
 		return satisfyService.logoutSatisfyInfo(satisfyNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','addSatisfy')")
 	@PostMapping("addSatisfyInfo")
 	public DataOutResponse addSatisfyInfo(@RequestBody SatisfyInfoVo record) {
-		LyOauth2Util.UserJwt user = getUser(request);
-		record.setCreater(user.getId());
+//		LyOauth2Util.UserJwt user = getUser(request);
+//		record.setCreater(user.getId());
 		return satisfyService.addSatisfyInfo(record);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','updateSatisfy')")
 	@PostMapping("updateSatisfyInfo")
 	public DataOutResponse updateSatisfyInfo(@RequestBody SatisfyInfoVo record) {
 		return satisfyService.updateSatisfyInfo(record);

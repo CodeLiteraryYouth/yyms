@@ -84,11 +84,25 @@
         <if test="planNum != null">
             and plan_num=#{planNum}
         </if>
-        <if test="status != null">
-            and plan_pats_status=#{status}
-        </if>
+        <choose>
+            <when test="status == -2">
+                and plan_pats_status between 3 and 11
+            </when>
+            <when test="status != null and status != -2">
+                and plan_pats_status=#{status}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+<!--        <if test="status != null">-->
+<!--            and plan_pats_status=#{status}-->
+<!--        </if>-->
         <if test="patientName != null ">
             and patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+        <if test="status == 1">
+            and send_type = 2
         </if>
 
     </select>
@@ -196,9 +210,6 @@
             </if>
             <if test="planPatientVo.inhosNo != null">
                 inhos_no = #{planPatientVo.inhosNo},
-            </if>
-            <if test="planPatientVo.opendId != null">
-                opend_id = #{planPatientVo.opendId},
             </if>
         </set>
         where patient_plan_id = #{planPatientVo.patientPlanId}
@@ -364,11 +375,25 @@
         <if test="myFollowReq.endDate != null ">
             AND next_date &lt;= #{myFollowReq.startDate}
         </if>
-        <if test="myFollowReq.folStatus != null">
-            AND plan_pats_status =#{myFollowReq.folStatus}
-        </if>
+<!--        <if test="myFollowReq.folStatus != null">-->
+<!--            AND plan_pats_status =#{myFollowReq.folStatus}-->
+<!--        </if>-->
+        <choose>
+            <when test="myFollowReq.folStatus == -2">
+                and plan_pats_status between 3 and 11
+            </when>
+            <when test="myFollowReq.folStatus != null and myFollowReq.folStatus != -2">
+                and plan_pats_status=#{myFollowReq.folStatus}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
+        </if>
+        <if test="myFollowReq.folStatus == 1">
+            AND send_type = 2
         </if>
     </select>
     <select id="bindPatient" resultMap="BASE_MAP">
@@ -408,10 +433,18 @@
         where lpp.patient_status = 1
         and lpp.plan_num = lpi.plan_num
         and lpi.plan_status =0
-        and lpi.plan_type =1
+        <if test="planType != null">
+            and lpi.plan_type =#{planType}
+        </if>
         <!--<if test="status != null">
             and plan_pats_status = #{status}
         </if>-->
+        <if test="userId != null">
+            and lpi.plan_duty_per = #{userId}
+        </if>
+        <if test="formStatus != null">
+            and lpp.form_status =#{formStatus}
+        </if>
         <if test="planNum != null">
             and lpp.plan_num = #{planNum}
         </if>

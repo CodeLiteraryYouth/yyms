@@ -122,6 +122,17 @@ public class PlanPatientController extends BaseController {
         return planPatientService.updateStatus(planPatientId,status);
     }
 
+    /**
+     * 修改宣教计划患者的表单完成状态    随访也可以用
+     * @param planPatientId 计划患者主键
+     * @param formStatus 表单完成状态  1 未完成  2 已完成
+     * @return
+     */
+    @GetMapping("updateFormStatus")
+    public DataOutResponse updateFormStatus(@RequestParam("planPatientId") Long planPatientId,@RequestParam("formStatus")Integer formStatus){
+        return planPatientService.updateFormStatus(planPatientId,formStatus);
+    }
+
 
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

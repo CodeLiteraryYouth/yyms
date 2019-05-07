@@ -11,6 +11,7 @@ import com.leanin.domain.plan.response.PlanResponseCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.domain.vo.RulesInfoVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.mapper.PatientInfoMapper;
 import com.leanin.mapper.PlanInfoMapper;
@@ -27,10 +28,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -62,6 +60,12 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     @Override
     public DataOutResponse findPlanList(int page, int pageSize, String planName, int planType) {
         log.info("搜索的计划名称为:" + planName);
+        if (page < 1){
+            page = 1;
+        }
+        if (pageSize <1){
+            pageSize = 10;
+        }
         PageHelper.startPage(page, pageSize);
         List<PlanInfoDto> planList = planInfoMapper.findPlanList(planName, planType);
         PageInfo pageInfo = new PageInfo<>(planList);
@@ -85,7 +89,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     //增加计划
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult addPlanInfo(PlanInfoVo record) {
+    public ResponseResult addPlanInfo(PlanInfoVo record, RulesInfoVo rulesInfoVo) {
         log.info("增加的计划信息为:" + JSON.toJSONString(record));
         record.setImportData(2);//默认设置未导入数据库
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoByName(record.getPlanName());
@@ -96,8 +100,12 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         }
         //添加到计划表单中
 //        String patsWardCode = record.getPatsWardCode();//患者科室
-
+        rulesInfoVo.setRulesCreateTime(new Date());
+        rulesInfoMapper.addRulesInfo(rulesInfoVo);
+        log.info("添加的规则信息:{}",JSON.toJSONString(rulesInfoVo));
+        record.setRulesInfoNum(rulesInfoVo.getRulesInfoId());
         planInfoMapper.addPlanInfo(record);
+        log.info("增加的计划信息为:" + JSON.toJSONString(record));
         PlanInfoVo planResult = planInfoMapper.findPlanInfoByName(record.getPlanName());
         Map resMap = new HashMap();
         // 封装参数

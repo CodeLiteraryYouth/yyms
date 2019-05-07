@@ -184,58 +184,58 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
-                #{planNum,jdbcType=VARCHAR},
+                #{planNum},
             </if>
             <if test="patientId != null">
-                #{patientId,jdbcType=BIGINT},
+                #{patientId},
             </if>
             <if test="sendType != null">
-                #{sendType,jdbcType=INTEGER},
+                #{sendType},
             </if>
             <if test="patientName != null">
-                #{patientName,jdbcType=VARCHAR},
+                #{patientName},
             </if>
             <if test="patientSex != null">
-                #{patientSex,jdbcType=INTEGER},
+                #{patientSex},
             </if>
             <if test="patientAge != null">
-                #{patientAge,jdbcType=INTEGER},
+                #{patientAge},
             </if>
             <if test="patientPhone != null">
-                #{patientPhone,jdbcType=VARCHAR},
+                #{patientPhone},
             </if>
             <if test="patientWard != null">
-                #{patientWard,jdbcType=VARCHAR},
+                #{patientWard},
             </if>
             <if test="formStatus != null">
-                #{formStatus,jdbcType=INTEGER},
+                #{formStatus},
             </if>
             <if test="patientStatus != null">
-                #{patientStatus,jdbcType=INTEGER},
+                #{patientStatus},
             </if>
             <if test="patientCondition != null">
-                #{patientCondition,jdbcType=VARCHAR},
+                #{patientCondition},
             </if>
             <if test="patientDiagous != null">
-                #{patientDiagous,jdbcType=VARCHAR},
+                #{patientDiagous},
             </if>
             <if test="patientType != null">
-                #{patientType,jdbcType=INTEGER},
+                #{patientType},
             </if>
             <if test="areaCode != null">
-                #{areaCode,jdbcType=VARCHAR},
+                #{areaCode},
             </if>
             <if test="planPatsStatus !=null">
-                #{planPatsStatus,jdbcType=INTEGER},
+                #{planPatsStatus},
             </if>
             <if test="rulesInfoId !=null">
-                #{rulesInfoId,jdbcType=LONG},
+                #{rulesInfoId},
             </if>
             <if test="nextDate !=null">
-                #{nextDate,jdbcType=TIMESTAMP},
+                #{nextDate},
             </if>
             <if test="patientSource !=null">
-                #{patientSource,jdbcType=INTEGER},
+                #{patientSource},
             </if>
             <if test="formId !=null">
                 #{formId},

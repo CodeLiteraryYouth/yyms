@@ -35,7 +35,12 @@ public class FormTypeController {
 	public DataOutResponse addFormType(@RequestBody FormTypeVo formType) {
 		return formTypeService.addFormType(formType);
 	}
-	
+
+	/**
+	 * 删除分类
+	 * @param typeId 分类主键
+	 * @return
+	 */
 	@GetMapping("logoutFormType")
 	public DataOutResponse logoutFormType(@RequestParam Long typeId) {
 		return formTypeService.updateTypeStatus(typeId);

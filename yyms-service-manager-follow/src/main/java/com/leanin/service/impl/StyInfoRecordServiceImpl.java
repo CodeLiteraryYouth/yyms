@@ -30,6 +30,7 @@ public class StyInfoRecordServiceImpl implements StyInfoRecordService {
     @Override
     public DataOutResponse addStyInfoRecord(StyInfoRecordVo styInfoRecordVo) {
         styInfoRecordVo.setSatisfyId(UUIDUtils.getUUID());//主键
+        styInfoRecordVo.setFormStatus(2);
         styInfoRecordVo.setCreateTime(new Date());//时间
         styInfoRecordMapper.addRecord(styInfoRecordVo);
         return ReturnFomart.retParam(200,"添加成功");

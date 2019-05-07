@@ -61,11 +61,11 @@ public class SatisfyPatientController extends BaseController {
      * @return
      */
     @PostMapping("/updateByPid")
-    public DataOutResponse updateByPid(@RequestParam Long patientSatisfyId, Integer finishType, String suggess,
+    public DataOutResponse updateByPid(@RequestParam("patientSatisfyId") Long patientSatisfyId, Integer finishType, String suggess,
                                        @RequestBody(required = false) StyInfoRecordVo styInfoRecordVo,Integer formStatus){
 //        LyOauth2Util.UserJwt user = getUser(request);
 //        styInfoRecordVo.setOperatingId(user.getId());
-        return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo);
+        return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo,formStatus);
     }
 
     /**
@@ -94,6 +94,17 @@ public class SatisfyPatientController extends BaseController {
     @PostMapping("/addPatentList")
     public DataOutResponse addPatentList(@RequestBody List<SatisfyPatientVo> satisfyPatientVos){
         return satisfyPatientService.addPatentList(satisfyPatientVos);
+    }
+
+
+    /**
+     * 根据计划患者主键查询满意度患者信息
+     * @param planPatientId
+     * @return
+     */
+    @GetMapping("/findById")
+    public DataOutResponse findById(@RequestParam("planPatientId")Long planPatientId){
+        return satisfyPatientService.findById(planPatientId);
     }
 
 

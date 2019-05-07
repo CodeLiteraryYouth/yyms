@@ -21,7 +21,7 @@
     select 
     <include refid="Base_Column_List" />
     from leanin_ward_info where ward_status>=0
-    and ward_id = #{wardId,jdbcType=BIGINT}
+    and ward_id = #{wardId}
   </select>
   <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select 
@@ -37,7 +37,7 @@
         and ward_name like CONCAT('%',#{wardName},'%') 
     </if>
   </select>
-  <update id="deleteById" parameterType="java.lang.Long">
+  <update id="deleteById" >
     update leanin_ward_info w set w.ward_status=#{status} 
     where w.ward_id = #{wardId,jdbcType=BIGINT}
   </update>

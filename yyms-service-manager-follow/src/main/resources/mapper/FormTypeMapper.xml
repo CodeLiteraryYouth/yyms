@@ -23,7 +23,7 @@
     and t.form_type_name = #{typeName,jdbcType=VARCHAR}
   </select>
 
-  <select id="findByFId" resultType="com.leanin.domain.vo.FormTypeVo">
+  <select id="findByFId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from leanin_form_type t where t.form_type_status>=0
