@@ -204,4 +204,61 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
             return null;
         }
     }
+
+    @Override
+    public DataOutResponse findRegList(Map paramMap) {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
+
+        List<Map> listMap=null;
+        String jsonString = JSON.toJSONString(paramMap);
+        try {
+            Object[] objects = client.invoke("findRegList", jsonString);
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+            return ReturnFomart.retParam(200,listMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public DataOutResponse updateRegNum(Map paramMap) {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
+
+        Map dataMap=new HashMap();
+        String jsonString = JSON.toJSONString(paramMap);
+        try {
+            Object[] objects = client.invoke("updateRegNum", jsonString);
+            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+            if (Integer.parseInt(dataMap.get("data").toString())>0) {
+                return ReturnFomart.retParam(200,dataMap);
+            }
+            return ReturnFomart.retParam(0,dataMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public DataOutResponse findDoctorDept() {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        List<Map> listMap=null;
+        try {
+            Object[] objects = client.invoke("findDoctorDept", "");
+            listMap = JSON.parseArray(objects[0].toString(), Map.class);
+            return ReturnFomart.retParam(200,listMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

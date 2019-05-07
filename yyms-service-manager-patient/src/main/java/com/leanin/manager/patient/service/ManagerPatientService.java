@@ -37,4 +37,24 @@ public interface ManagerPatientService {
     Map findInHosPatientById(String patientId);
 
     Map findOutHosPatientById(String patientId);
+
+    /**
+     * 查询预约列表
+     * @param paramMap
+     * @return
+     */
+    DataOutResponse findRegList(Map paramMap);
+
+    /**
+     * 增加已预约的人数
+     * @param paramMap
+     * @return
+     */
+    DataOutResponse updateRegNum(Map paramMap);
+
+    /**
+     * 查询医生的科室列表
+     * @return
+     */
+    DataOutResponse findDoctorDept();
 }

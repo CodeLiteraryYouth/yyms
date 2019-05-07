@@ -91,5 +91,22 @@ public class ManagerPatientController implements ManagerPatientApi {
         return managerPatientService.findOutHosRecordById(patientId);
     }
 
+    @Override
+    @PostMapping("findRegList")
+    public DataOutResponse findRegList(@RequestBody Map parmMap) {
+        return managerPatientService.findRegList(parmMap);
+    }
+
+    @Override
+    @PostMapping("updateRegnum")
+    public DataOutResponse updateRegnum(@RequestBody Map paramMap) {
+        return managerPatientService.updateRegNum(paramMap);
+    }
+
+    @Override
+    @GetMapping("findDoctorDept")
+    public DataOutResponse findDoctorDept() {
+        return managerPatientService.findDoctorDept();
+    }
 
 }
