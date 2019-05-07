@@ -42,4 +42,12 @@ public interface ManagerPatientApi {
     public List<Map> findOutHosRecordById(String patientId);
 
 
+    @ApiOperation("查询预约医生列表")
+    public DataOutResponse findRegList(Map parmMap);
+
+    @ApiOperation("增加已预约人数")
+    public DataOutResponse updateRegnum(Map paramMap);
+
+    @ApiOperation("查询医生的科室列表")
+    public DataOutResponse findDoctorDept();
 }
