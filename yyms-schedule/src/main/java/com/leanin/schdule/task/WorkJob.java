@@ -22,13 +22,13 @@ import java.util.*;
 @Slf4j
 public class WorkJob {
 
-    @Value("wx.appId")
+    @Value("${wx.appId}")
     private String appId;
 
-    @Value("wx.appSecret")
+    @Value("${wx.appSecret}")
     private String appSecret;
 
-    private String accessToken;
+//    private String accessToken;
 
     @Autowired
     PlanInfoMapper planInfoMapper;
@@ -67,15 +67,15 @@ public class WorkJob {
     public void messagePlan() {
         List<MessageTopicVo> messageTopicVos = messageTopicMapper.findMsgTopicList(null);
         for (MessageTopicVo messageTopicVo : messageTopicVos) {
-            log.info("正在推送的短信主题:{}",JSON.toJSONString(messageTopicVo));
+            log.info("正在推送的短信主题:{}", JSON.toJSONString(messageTopicVo));
             List<MessagePatientVo> messagePatientVos = messagePatientMapper.findList(null, 1);
             if (messagePatientVos.size() == 0) {
                 continue;
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
-                log.info("短信主题内的患者信息:{}",JSON.toJSONString(messagePatientVo));
+                log.info("短信主题内的患者信息:{}", JSON.toJSONString(messagePatientVo));
                 String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
-                Map map = CSMSUtils.sendMessage(content,messagePatientVo.getPatientPhone());
+                Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
                 String msgStatus = (String) map.get("msg");
                 if (msgStatus.equals("true")) {
                     log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
@@ -100,35 +100,38 @@ public class WorkJob {
         //查询计划列表信息
         List<PlanInfoDto> planList = planInfoMapper.findAllPlan();
         log.info("随访/宣教计划信息列表为:" + JSON.toJSONString(planList));
+        if (planList.size() < 1){
+            return;
+        }
 
         //初始化参数
         WxSendDao wxSendDao = new WxSendDao();
 
+        //获取accessToken
+        String accessToken = getAccessToken();//获取accessToken
+
         for (PlanInfoDto planInfo : planList) {
             log.info("随访/宣教计划信息:{}", JSON.toJSONString(planInfo));
             //根据病人的编号查询计划病人信息
-            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), 0, null);
-            log.info("该计划的病人列表信息为:" + JSON.toJSONString(planPatientList));
+            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), null,1, null);
+            log.info("未发送表单的病人列表信息为:" + JSON.toJSONString(planPatientList));
             if (planPatientList.size() == 0) {//患者信息长度为0的话  跳过循环
                 continue;
             }
             for (PlanPatientVo patientDto : planPatientList) {
                 //如果当前时间大于病人随访时间，进行发送消息
                 if (System.currentTimeMillis() > patientDto.getNextDate().getTime()
-                        && patientDto.getSendType() == 1 && patientDto.getPlanPatsStatus() == 0) {
+                        && patientDto.getSendType() == 1 && (patientDto.getPlanPatsStatus() == 0 || patientDto.getPlanPatsStatus() == 1)) {
 
                     switch (planInfo.getPlanSendType()) {
                         case 1: {//短信和公众号
                             log.info("短信和公众号推送:{}");
                             patientDto = sendMessage(planInfo, patientDto);
-                            if (accessToken == null) {
-                                accessToken = getAccessToken();//获取accessToken
-                            }
-                            int i = sendWxMsg(planInfo, patientDto, wxSendDao,null,null,1);
+                            int i = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1,accessToken);
 
                             if (i == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
-                                i = sendWxMsg(planInfo, patientDto, wxSendDao,null,null,1);
+                                i = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1,accessToken);
                             }
                             if (patientDto.getSendType() == 3 && i == 2) {
                                 log.info("公众号推送成功");
@@ -142,19 +145,19 @@ public class WorkJob {
 
                         case 2: {//微信公众号
                             log.info("微信公众号推送:{}");
-                            if (accessToken == null) {
-                                accessToken = getAccessToken();//获取accessToken
-                            }
-                            int flag = sendWxMsg(planInfo, patientDto, wxSendDao,null,null,1);
+//                            if (accessToken == null) {
+//                            String accessToken = getAccessToken();//获取accessToken
+//                            }
+                            int flag = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
-                                sendWxMsg(planInfo, patientDto, wxSendDao,null,null,1);
+                                sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1,accessToken);
                             }
                             if (flag == 2) {
                                 //短信发送失败  公众号推送成功
                                 patientDto.setSendType(2); //发送成功
                                 patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
-                            }else{
+                            } else {
                                 patientDto.setSendType(3); //发送失败
                                 patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                             }
@@ -209,6 +212,11 @@ public class WorkJob {
     public void styPlan() {
         //查询所有计划信息
         List<SatisfyPlanVo> planVos = satisfyPlanMapper.findList();
+        if (planVos.size() < 1){
+            return;
+        }
+        //获取accesstoken
+        String accessToken = getAccessToken();//获取accessToken
         for (SatisfyPlanVo planVo : planVos) {
             log.info("满意度计划信息：{}", JSON.toJSONString(planVo));
             //获取计划对应的短消息 信息
@@ -225,16 +233,16 @@ public class WorkJob {
             switch (planVo.getDiscoverType()) {
                 case 1: //短信或者公众号
                     log.info("短信或者公众号推送方式");
-                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 1);
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 1,accessToken);
                     break;
                 case 2: //公众号
                     log.info("公众号推送方式");
-                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 2);
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 2,accessToken);
                     break;
                 case 3: //短信
                     //执行相关发送操作
                     log.info("短信推送方式");
-                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 3);
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 3,accessToken);
                     break;
             }
         }
@@ -242,7 +250,7 @@ public class WorkJob {
 
     //发送短信操作  修改数据状态
     private void sendMsg(SatisfyPlanVo satisfyPlanVo, List<SatisfyPatientVo> list, String msgText,
-                         Integer rangeDays, Integer type) {
+                         Integer rangeDays, Integer type,String accessToken) {
         WxSendDao wxSendDao = new WxSendDao();
         //判断是否过期
         for (SatisfyPatientVo satisfyPatientVo : list) {
@@ -258,7 +266,7 @@ public class WorkJob {
                 } /*else {*/
                 if (satisfyPatientVo.getSendType() == 1) {//未发送
                     switch (type) {
-                        case 1:{//短信 公众号
+                        case 1: {//短信 公众号
                             //推送短信
                             String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
                             Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
@@ -273,35 +281,35 @@ public class WorkJob {
                                     satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
                                     satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                             //推送公众号
-                            if (accessToken == null) {
-                                accessToken = getAccessToken();//获取accessToken
-                            }
-                            int flag = sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+//                            if (accessToken == null) {
+//                            String accessToken = getAccessToken();//获取accessToken
+//                            }
+                            int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
-                                flag =sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+                                flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             }
-                            if(flag == 2 && satisfyPatientVo.getSendType() == 3){
+                            if (flag == 2 && satisfyPatientVo.getSendType() == 3) {
                                 //公众号推送成功 但是短信推送失败
                                 satisfyPatientVo.setSendType(2); //推送微信消息成功
                             }
                         }
-                            break;
-                        case 2:{//公众号
-                            if (accessToken == null) {
-                                accessToken = getAccessToken();//获取accessToken
-                            }
-                            int flag = sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+                        break;
+                        case 2: {//公众号
+//                            if (accessToken == null) {
+//                            String accessToken = getAccessToken();//获取accessToken
+//                            }
+                            int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
-                                flag =sendWxMsg(null, null, wxSendDao,satisfyPlanVo,satisfyPatientVo,2);
+                                flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             }
-                            if(flag == 2 && satisfyPatientVo.getSendType() == 3){
+                            if (flag == 2 && satisfyPatientVo.getSendType() == 3) {
                                 //公众号推送成功 但是短信推送失败
                                 satisfyPatientVo.setSendType(2); //推送微信消息成功
                             }
                         }
-                            break;
+                        break;
                         case 3: {//短信
                             String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
                             Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
@@ -332,7 +340,7 @@ public class WorkJob {
         log.info("更新下次随访时间");
         List<PlanInfoDto> planInfoDtos = planInfoMapper.findAllPlan();
         for (PlanInfoDto planInfoDto : planInfoDtos) {
-            if (planInfoDto.getPlanType() == 2){//只更新随访
+            if (planInfoDto.getPlanType() == 2) {//只更新随访
                 continue;
             }
             //读取规则 解析规则
@@ -340,7 +348,7 @@ public class WorkJob {
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            int validDays = Integer.parseInt(rulesMap.get("validDays")+"");
+            int validDays = Integer.parseInt(rulesMap.get("validDays") + "");
 
             int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
             String timeSelect = (String) rulesMap.get("timeSelect");
@@ -359,7 +367,7 @@ public class WorkJob {
             if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
-            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null, null);
+            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null,null, null);
             if (planPatientList.size() == 0) {
                 continue;
             }
@@ -525,15 +533,15 @@ public class WorkJob {
     }
 
     public int sendWxMsg(PlanInfoDto planInfo, PlanPatientVo patientDto, WxSendDao wxSendDao,
-                         SatisfyPlanVo satisfyPlanVo, SatisfyPatientVo satisfyPatientVo, Integer type) {
+                         SatisfyPlanVo satisfyPlanVo, SatisfyPatientVo satisfyPatientVo, Integer type,String accessToken) {
         log.info("微信推送模板消息的患者信息:{}", JSON.toJSONString(patientDto));
-
+        wxSendDao =new WxSendDao();
         if (type == 1) {//随访  宣教
             if (patientDto.getOpendId() == null && "".equals(patientDto.getOpendId())) {
                 log.info("患者openid 为空");
                 return 1;//openid 为空
             }
-            wxSendDao.setMsgId(null);
+            wxSendDao.setId(null);
             String param = "";
             Map data = new HashMap();
             data.put("template_id", "nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");
@@ -610,7 +618,7 @@ public class WorkJob {
                 log.info("患者openid 为空");
                 return 1;//openid 为空
             }
-            wxSendDao.setMsgId(null);
+            wxSendDao.setId(null);
             String param = "";
             Map data = new HashMap();
             data.put("template_id", "nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");

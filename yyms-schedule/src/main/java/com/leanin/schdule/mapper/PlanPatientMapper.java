@@ -49,7 +49,7 @@ public interface PlanPatientMapper {
      * @param status
      * @return
      */
-    List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum, @Param("status") Integer status, @Param("patientName") String patientName);
+    List<PlanPatientVo> findPlanPatientList(@Param("planNum") String planNum, @Param("status") Integer status,@Param("sendType")Integer sendType, @Param("patientName") String patientName);
 
 //    void updatePatientStatusById(@Param("patientPlanId") Long patientPlanId);
 

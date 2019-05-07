@@ -30,8 +30,8 @@ public class DataAnalysisController {
      */
 //    @PreAuthorize("hasAnyAuthority('root','dataAly')")
     @GetMapping("followAnalysis")
-    public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam("planType") Integer planType,Integer formStatus,Long userId){
-        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
+    public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam("planType") Integer planType,Integer formStatus,Long userId,Integer isAll){
+        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
     }
 
 

@@ -45,7 +45,7 @@ public class PlanJobTask implements Job {
         log.info("计划信息列表为:" + JSON.toJSONString(planList));
         for (PlanInfoDto planInfo : planList) {
             //根据病人的编号查询计划病人信息
-            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), 0, null);
+            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), null,1, null);
             log.info("该计划的病人列表信息为:" + JSON.toJSONString(planPatientList));
             if (planPatientList.size() == 0) {//患者信息长度为0的话  跳过循环
                 continue;

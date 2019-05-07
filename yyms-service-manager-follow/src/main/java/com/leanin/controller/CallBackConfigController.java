@@ -26,6 +26,11 @@ public class CallBackConfigController extends BaseController {
 	@Autowired
 	private CallBackConfigService callBackConfigService;
 
+	/**
+	 *
+	 * @param configType
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findConfigListByType")
 	public DataOutResponse findConfigListByType(Integer configType) {

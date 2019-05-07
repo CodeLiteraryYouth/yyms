@@ -63,7 +63,7 @@ public class UpdateNextTask implements Job {
             if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
-            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null, null);
+            List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null,null, null);
             if (planPatientList.size() == 0){
                 continue;
             }

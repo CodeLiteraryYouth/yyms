@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -32,7 +29,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
     SatisfyPatientMapper satisfyPatientMapper;
 
     @Override
-    public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId) {
+    public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId,Integer isAll) {
         log.info("传递的参数:{}","患者来源:"+patientSource,"计划主键:"+planNum,"患者科室"+dept,"开始日期"+startDateStr,"结束日期"+endDateStr,"计划类型"+planType,"表单状态"+formStatus,"用户主键"+userId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null;
@@ -55,13 +52,13 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         Map<Integer,Integer> dataMap = new HashMap();
         switch (planType){
             case 1 ://随访数据分析
-                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
+                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
                 break;
             case 2://宣教数据分析
-                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId);
+                dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
                 break;
             case 3://满意度数据分析
-                dataMap = satisfy(dataMap,patientSource,planNum,dept,startDate,endDate);
+                dataMap = satisfy(dataMap,patientSource,planNum,dept,startDate,endDate,isAll);
                 break;
             default:
                 return ReturnFomart.retParam(2010,"数据不存在");
@@ -70,8 +67,13 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         return ReturnFomart.retParam(200, dataMap);
     }
 
-    private Map<Integer,Integer> follow(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Integer planType,Integer formStatus,Long userId){
-        List<AnalysisVo> list = followRecordMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,planType,formStatus,userId);
+    private Map<Integer,Integer> follow(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Integer planType,Integer formStatus,Long userId,Integer isAll){
+        List<AnalysisVo> list =new ArrayList<>();
+        if (isAll != null){//不包含已经随访的记录
+//            List<AnalysisVo> list = new ArrayList<>();
+        }else{//包含已经随访的记录
+            list = followRecordMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,planType,formStatus,userId);
+        }
         List<AnalysisVo> list1 = planPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,planType,formStatus,userId);
         for (int i = -1; i < 12; i++) {
             int count =0;
@@ -98,7 +100,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         return dataMap;
     }
 
-    private Map<Integer,Integer> satisfy(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate){
+    private Map<Integer,Integer> satisfy(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Integer isAll){
         List<AnalysisVo> list = satisfyPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate);
         for (int i = -1; i < 12; i++) {
             int count =0;

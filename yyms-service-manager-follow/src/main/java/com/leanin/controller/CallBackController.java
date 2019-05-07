@@ -26,6 +26,18 @@ public class CallBackController extends BaseController {
 	private CallBackService callBackService;
 
 
+	/**
+	 * 分页条件查询
+	 * @param page  当前页
+	 * @param pageSize	每页条数
+	 * @param beginDate	开始时间
+	 * @param endDate	结束时间
+	 * @param dealStatus 处理状态（0：待处理 1：处理中 2：未处理）
+	 * @param accuseWard 科室编码
+	 * @param backNum 单号  模糊查询
+	 * @param status  类型  （1：投诉 2：表扬）
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackList")
 	public DataOutResponse findBackList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String beginDate,
@@ -34,12 +46,23 @@ public class CallBackController extends BaseController {
 		return callBackService.findBackList(page, pageSize, beginDate, endDate, dealStatus, accuseWard, backNum,status);
 	}
 
+	/**
+	 * 根据单号查询投诉表扬信息
+	 * @param backNum  单号
+	 * @param status 类型  （1：投诉 2：表扬）
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackById")
 	public DataOutResponse findBackById(@RequestParam String backNum,@RequestParam int status) {
 		return callBackService.findBackById(backNum,status);
 	}
 
+	/**
+	 * 添加投诉表扬信息
+	 * @param callBack
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','addConfig')")
 	@PostMapping("addCallBack")
 	public DataOutResponse addCallBack(@RequestBody CallBack callBack) {
@@ -47,12 +70,22 @@ public class CallBackController extends BaseController {
 		return callBackService.addCallBack(callBack);
 	}
 
+	/**
+	 *	修改投诉表扬处理信息
+	 * @param callBackDeal
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','addConfig')")
-	@PostMapping("addCallBackDeal")
+	@PostMapping("updateCallBackDeal")
 	public DataOutResponse addCallBackDeal(@RequestBody CallBackDeal callBackDeal) {
 		return callBackService.updateCallBackDeal(callBackDeal);
 	}
 
+	/**
+	 * 根据单号查询投诉表扬处理信息
+	 * @param backNum
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findConfig')")
 	@GetMapping("findBackDealByBackNum")
 	public DataOutResponse findBackDealByBackNum(@RequestParam String backNum){

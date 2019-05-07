@@ -88,6 +88,9 @@
         <if test="status != null">
             and plan_pats_status=#{status}
         </if>
+        <if test="sendType != null">
+            and send_type = #{sendType}
+        </if>
         <if test="patientName != null ">
             and patient_name like CONCAT('%',#{patientName},'%')
         </if>

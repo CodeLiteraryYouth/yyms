@@ -22,12 +22,22 @@ public class WxFormController {
 
     }
 
+    /**
+     * 手机端提交随访表单接口
+     * @param formRecordVo
+     * @return
+     */
     @PostMapping("/addFollowForm")
     public DataOutResponse addFollowForm(@RequestBody FormRecordVo formRecordVo){
         formRecordVo.setCreateTime(new Date());
         return wxFormService.addFollowForm(formRecordVo);
     }
 
+    /**
+     * 手机端提交满意度表单
+     * @param styInfoRecordVo
+     * @return
+     */
     @PostMapping("/addStyForm")
     public DataOutResponse addStyForm(@RequestBody StyInfoRecordVo styInfoRecordVo){
         styInfoRecordVo.setCreateTime(new Date());
