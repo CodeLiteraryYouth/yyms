@@ -108,9 +108,10 @@ public class UserServiceImpl implements UserService {
 
             }
         }*/
-        UserWardDao userWardDao = new UserWardDao();
+
         if (wardIds.size() > 0){//科室绑定
             for (Long wardId : wardIds) {
+                UserWardDao userWardDao = new UserWardDao();
                 userWardDao.setId(null);
                 userWardDao.setUserId(userByWorkNum.getAdminId());
                 userWardDao.setWardId(wardId);

@@ -181,9 +181,9 @@ public class WorkJob {
         //将病人的手机号码以逗号隔开进行发送 planPatientList.stream().map(PlanPatientDto::getPatientPhone).collect(Collectors.joining(","))
         String param = "";
         if (planInfo.getPlanType() == 1) {//随访
-            param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=1&formNum=" + planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&planType=1&formNum=" + planInfo.getFollowFormNum();
         } else {//宣教
-            param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
+            param = "http://sf-system.leanin.com.cn/education?planPatientId=" + patientDto.getPatientPlanId() + "&planType=2&formNum=" + planInfo.getFollowFormNum();
         }
         Map map = CSMSUtils.sendMessage(msg + param, patientDto.getPatientPhone());//patientDto.getPatientPhone()
         //设置病人发送状态
@@ -268,7 +268,7 @@ public class WorkJob {
                     switch (type) {
                         case 1: {//短信 公众号
                             //推送短信
-                            String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
+                            String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&planType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
                             Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
                             String msgStatus = (String) map.get("msg");
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
@@ -311,7 +311,7 @@ public class WorkJob {
                         }
                         break;
                         case 3: {//短信
-                            String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
+                            String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&planType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
                             Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
                             String msgStatus = (String) map.get("msg");
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
@@ -554,12 +554,12 @@ public class WorkJob {
             wxSendDao.setPatientId(patientDto.getPatientId() + "");
             wxSendDao.setFormId(planInfo.getFollowFormNum());
             if (planInfo.getPlanType() == 1) {//随访
-                param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=1&formNum=" + planInfo.getFollowFormNum();
+                param = "http://sf-system.leanin.com.cn/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&planType=1&formNum=" + planInfo.getFollowFormNum();
                 first.put("value", "您好！为了您的健康，请及时完成未提交的随访调查表单。");
                 wxSendDao.setMsgTitle("您好！为了您的健康，请及时完成未提交的随访调查表单。");
                 wxSendDao.setPlanType(1);//随访
             } else {//宣教
-                param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + patientDto.getPatientPlanId() + "&palnType=2&formNum=" + planInfo.getFollowFormNum();
+                param = "http://sf-system.leanin.com.cn/education?planPatientId=" + patientDto.getPatientPlanId() + "&planType=2&formNum=" + planInfo.getFollowFormNum();
                 first.put("value", "您好！为了您的健康，请及时查看未读的宣教内容。");
                 wxSendDao.setMsgTitle("您好！为了您的健康，请及时查看未读的宣教内容。");
                 wxSendDao.setPlanType(2);//宣教
@@ -630,7 +630,7 @@ public class WorkJob {
             wxSendDao.setPlanPatientId(satisfyPatientVo.getPatientSatisfyId());
             wxSendDao.setPatientId(satisfyPatientVo.getPatientId() + "");
             wxSendDao.setFormId(satisfyPatientVo.getFormId());
-            param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&palnType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
+            param = "http://sf-system.leanin.com.cn/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&planType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
             first.put("value", "您好！为了更好地为您服务，请及时完成未提交的满意度调查表单。");
             wxSendDao.setMsgTitle("您好！为了更好地为您服务，请及时完成未提交的满意度调查表单。");
             wxSendDao.setPlanType(3);//满意度

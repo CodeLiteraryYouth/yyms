@@ -17,7 +17,7 @@ public class FollowRecordController {
     FollowRecordService followRecordService;
 
     //条件查询 失访和已完成随访的记录
-    @PreAuthorize("hasAnyAuthority('root','findFollwRecord')")
+//    @PreAuthorize("hasAnyAuthority('root','findFollwRecord')")
     @GetMapping("/findList")
     public DataOutResponse findList(@RequestParam Integer currentPage,@RequestParam Integer pageSize,
                                     String patientName,Integer planPatsStatus){

@@ -148,7 +148,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			edu.setEduId(null);
 //			edu.setSendStatus(1);
 			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
-			String param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + onlineEdu.getEduId() + "&palnType=4&formNum=" + onlineEdu.getFormId();
+			String param = "http://sf-system.leanin.com.cn/education?planPatientId=" + onlineEdu.getEduId() + "&planType=4&formNum=" + onlineEdu.getFormId();
 
 			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText() + param,onlineEdu.getPhoneNum() );
 			String msgStatus = (String) map.get("msg");
@@ -198,11 +198,11 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			Map map = new HashMap();
 			String param = "";
 			if (planInfoVo.getPlanType() == 1){//随访计划
-				param = "http://sf-system.leanin.com.cn/#/postlist?planPatientId="+planPatient.getPatientPlanId()+"&palnType=1&formNum="+planInfoVo.getFollowFormNum();
+				param = "http://sf-system.leanin.com.cn/postlist?planPatientId="+planPatient.getPatientPlanId()+"&planType=1&formNum="+planInfoVo.getFollowFormNum();
 //				map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,planPatient.getPatientPhone() );
 			}else {//宣教
 //				if (formId != null){
-					param = "http://sf-system.leanin.com.cn/#/education?planPatientId="+planPatient.getPatientPlanId()+"&palnType=2&formNum="+planInfoVo.getFollowFormNum();
+					param = "http://sf-system.leanin.com.cn/education?planPatientId="+planPatient.getPatientPlanId()+"&planType=2&formNum="+planInfoVo.getFollowFormNum();
 //				}else {
 //					param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
 //				}
@@ -237,7 +237,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.selectByPrimaryKey(aLong);
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
-			String param = "http://sf-system.leanin.com.cn/#/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&palnType=3&formNum="+satisfyPlan.getSatisfyNum();
+			String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&planType=3&formNum="+satisfyPlan.getSatisfyNum();
 			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,satisfyPatientVo.getPatientPhone());
 			String msgStatus = (String) map.get("msg");
 			if (msgStatus.equals("true")){

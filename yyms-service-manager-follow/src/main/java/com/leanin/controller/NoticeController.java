@@ -17,31 +17,31 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-    @PreAuthorize("hasAnyAuthority('root','findNotice')")
+//    @PreAuthorize("hasAnyAuthority('root','findNotice')")
     @GetMapping("findNoticeList")
     public DataOutResponse findNoticeList(@RequestParam int page,@RequestParam int pageSize,@RequestParam(required = false) String noticeName) {
         return noticeService.findNoticeList(page, pageSize, noticeName);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','delNotice')")
+//    @PreAuthorize("hasAnyAuthority('root','delNotice')")
     @GetMapping("updateNoticeStatus")
     public DataOutResponse updateNoticeStatus(@RequestParam Long noticeId,@RequestParam int status) {
         return noticeService.updateNoticeStatus(noticeId, status);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','addNotice')")
+//    @PreAuthorize("hasAnyAuthority('root','addNotice')")
     @PostMapping("addNoticeInfo")
     public DataOutResponse addNoticeInfo(@RequestBody NoticeInfoVo noticeInfoVo) {
         return noticeService.addNoticeInfo(noticeInfoVo);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','findNotice')")
+//    @PreAuthorize("hasAnyAuthority('root','findNotice')")
     @GetMapping("findNoticeById")
     public DataOutResponse findNoticeById(@RequestParam Long noticeId) {
         return noticeService.findNoticeById(noticeId);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','updateNotice')")
+//    @PreAuthorize("hasAnyAuthority('root','updateNotice')")
     @PostMapping("updateNoticeInfo")
     public DataOutResponse updateNoticeInfo(@RequestBody NoticeInfoVo noticeInfoVo) {
         return noticeService.updateNoticeInfo(noticeInfoVo);

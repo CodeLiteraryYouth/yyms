@@ -16,21 +16,21 @@ public class CheckPatientController {
     @Autowired
     CheckPatientService checkPatientService;
 
-    @PreAuthorize("hasAnyAuthority('root','findCheckPat')")
+//    @PreAuthorize("hasAnyAuthority('root','findCheckPat')")
     @GetMapping("/findList")
     public DataOutResponse findList(@RequestParam Integer currentPage,@RequestParam Integer pageSize,
                                     @RequestParam String checkNUm, String patientName, Integer finishStatus){
         return checkPatientService.findList(currentPage,pageSize,patientName,finishStatus,checkNUm);
     }
 
-    @PreAuthorize("hasAnyAuthority('root','findCheckPat')")
+//    @PreAuthorize("hasAnyAuthority('root','findCheckPat')")
     @GetMapping("/findById")
     public DataOutResponse findById(@RequestParam Long checkPatientId){
         return checkPatientService.findById(checkPatientId);
     }
 
     //批量删除
-    @PreAuthorize("hasAnyAuthority('root','delCheckPat')")
+//    @PreAuthorize("hasAnyAuthority('root','delCheckPat')")
     @GetMapping("delByIds")
     public DataOutResponse delByIds(@RequestParam String ids){
         return checkPatientService.delByIds(ids);

@@ -27,14 +27,14 @@ public class FocusPatientController extends BaseController {
 	@Autowired
 	private FocusPatientService focusPatientService;
 
-	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
+//	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("findPatientList")
 	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,Integer page,Integer pageSize) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addFocusPat')")
+//	@PreAuthorize("hasAnyAuthority('root','addFocusPat')")
 	@PostMapping("addFocusPatient")
 	public DataOutResponse addFocusPatient(@RequestBody FocusPatientVo focusPatient) {
 		LyOauth2Util.UserJwt user = getUser(request);
@@ -42,14 +42,14 @@ public class FocusPatientController extends BaseController {
 		return focusPatientService.insertFocusPatient(focusPatient);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delFocusPat')")
+//	@PreAuthorize("hasAnyAuthority('root','delFocusPat')")
 	@GetMapping("updatePatientStatus")
 	public DataOutResponse updatePatientStatus(@RequestParam String focusId, @RequestParam Integer status) {
         String[] longs = focusId.split(",");
 		return focusPatientService.updatePatientStatus(longs, status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
+//	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("selectFocusPatientById")
 	public DataOutResponse selectFocusPatientById(@RequestParam String patientId) {
 		LyOauth2Util.UserJwt user = getUser(request);

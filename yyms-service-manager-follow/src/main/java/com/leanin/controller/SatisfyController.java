@@ -33,7 +33,7 @@ public class SatisfyController extends BaseController {
 		return satisfyService.findSatisfyById(satisfyNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delSatisfy')")
+//	@PreAuthorize("hasAnyAuthority('root','delSatisfy')")
 	@GetMapping("logoutSatisfyInfo")
 	public DataOutResponse logoutSatisfyInfo(@RequestParam String satisfyNum) {
 		return satisfyService.logoutSatisfyInfo(satisfyNum);

@@ -16,7 +16,7 @@ public class DataDictoryController {
 	@Autowired
 	private DataDictoryService dataDictoryService;
 
-	@PreAuthorize("hasAnyAuthority('root','findDisease')")
+//	@PreAuthorize("hasAnyAuthority('root','findDisease')")
 	@GetMapping("findDiseaseList")
 	public DataOutResponse findDiseaseList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String diseaseName) {
 		return dataDictoryService.findDiseaseList(page, pageSize, diseaseName);

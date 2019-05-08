@@ -20,19 +20,19 @@ public class FollowCheckController extends BaseController {
 	@Autowired
 	private FollowCheckService followCheckService;
 
-	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
 	@GetMapping("findCheckList")
 	public DataOutResponse findCheckList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String checkName) {
 		return followCheckService.findCheckList(page, pageSize, checkName);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delCheckPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','delCheckPlan')")
 	@GetMapping("updateCheckStatus")
 	public DataOutResponse updateCheckStatus(@RequestParam String checkNum, @RequestParam int status) {
 		return followCheckService.updateCheckStatus(checkNum, status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addCheckPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','addCheckPlan')")
 	@PostMapping("addCheckInfo")
 	public DataOutResponse addCheckInfo(@RequestBody FollowCheckVo followCheck) {
 		String uuid = UUIDUtils.getUUID();
@@ -43,13 +43,13 @@ public class FollowCheckController extends BaseController {
 		return followCheckService.addCheckInfo(followCheck);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findCheckPlan')")
 	@GetMapping("findCheckById")
 	public DataOutResponse findCheckById(@RequestParam String checkNum) {
 		return followCheckService.findCheckById(checkNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateCheckPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','updateCheckPlan')")
 	@PostMapping("updateCheckInfo")
 	public DataOutResponse updateCheckInfo(@RequestBody FollowCheckVo followCheck) {
 		return followCheckService.updateCheckInfo(followCheck);

@@ -18,28 +18,28 @@ public class MenuController implements MenuControllerApi{
     MenuService menuService;
 
     @Override
-    @PreAuthorize("hasAnyAuthority('root','addMenu')")
+//    @PreAuthorize("hasAnyAuthority('root','addMenu')")
     @PostMapping("/addMenu")
     public DataOutResponse addMenu(@RequestBody MenuPermissionVo menu) {
         return menuService.addMenu(menu);
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('root','delMenu')")
+//    @PreAuthorize("hasAnyAuthority('root','delMenu')")
     @GetMapping("/delMenu")
     public DataOutResponse delMenu(@RequestParam("ids") String ids) {
         return menuService.delMenu(ids);
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('root','updateMenu')")
+//    @PreAuthorize("hasAnyAuthority('root','updateMenu')")
     @PutMapping("/updateMenu")
     public DataOutResponse updateMenu(@RequestBody MenuPermissionVo menu) {
         return menuService.updateMenu(menu);
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('root','findMenu')")
+//    @PreAuthorize("hasAnyAuthority('root','findMenu')")
     @GetMapping("findByPid")
     public DataOutResponse findByPid(@RequestParam("pid") Integer pid) {
         return menuService.findByPid(pid);

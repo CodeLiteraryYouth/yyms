@@ -28,19 +28,19 @@ public class SatisfyPlanController extends BaseController {
 	@Autowired
 	private SatisfyPlanService satisfyPlanService;
 
-	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
 	@GetMapping("findSatisfyPlanList")
 	public DataOutResponse findSatisfyPlanList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String satisfyPlanName) {
 		return satisfyPlanService.findSatisfyPlanList(page, pageSize, satisfyPlanName);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','delStyPlan')")
 	@GetMapping("updateSatisfyStatus")
 	public DataOutResponse updateSatisfyStatus(@RequestParam String planSatisfyNum,@RequestParam int status) {
 		return satisfyPlanService.updateSatisfyStatus(planSatisfyNum, status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','addStyPlan')")
 	@PostMapping("addSatisfyPlan")
 	public DataOutResponse addSatisfyPlan(@RequestBody SatisfyPlanVo satisfyPlan) {
 		LyOauth2Util.UserJwt user = getUser(request);
@@ -49,27 +49,27 @@ public class SatisfyPlanController extends BaseController {
 		return satisfyPlanService.addSatisfyPlan(satisfyPlan);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
 	@GetMapping("findSatisfyPlanById")
 	public DataOutResponse findSatisfyPlanById(@RequestParam String planSatisfyNum) {
 		return satisfyPlanService.findSatisfyPlanById(planSatisfyNum);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','updateStyPlan')")
 	@PostMapping("updateSatisfyPlan")
 	public DataOutResponse updateSatisfyPlan(@RequestBody SatisfyPlanVo satisfyPlan) {
 		return satisfyPlanService.updateSatisfyPlan(satisfyPlan);
 	}
 
 	//查询所有满意度计划
-	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
 	@GetMapping("/findAll")
 	public DataOutResponse findAll(){
 		LyOauth2Util.UserJwt user = getUser(request);
 		return satisfyPlanService.findAll(user.getId());
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
 	@GetMapping("findByWard")
 	public DataOutResponse findByWard(@RequestParam String patientWard){
 		return satisfyPlanService.findByWard(patientWard);

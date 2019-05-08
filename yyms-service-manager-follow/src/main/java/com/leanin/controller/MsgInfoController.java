@@ -28,20 +28,20 @@ public class MsgInfoController extends BaseController {
 	@Autowired
 	private MsgInfoService msgInfoService;
 
-	@PreAuthorize("hasAnyAuthority('root','findMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','findMsg')")
 	@GetMapping("findMsgListByTypeId")
 	public DataOutResponse findMsgListByTypeId(@RequestParam Integer page, @RequestParam Integer pageSize,
 											   @RequestParam(required=false) Long typeId, @RequestParam(required=false) String msgName) {
 		return msgInfoService.findMsgListByTypeId(page, pageSize, typeId, msgName);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','delMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','delMsg')")
 	@GetMapping("logoutMsg")
 	public DataOutResponse logoutMsg(@RequestParam String msgId, @RequestParam int status) {
 		return msgInfoService.updateMsgStatus(msgId, status);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','addMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','addMsg')")
 	@PostMapping("addMsgInfo")
 	public DataOutResponse addMsgInfo(@RequestBody MsgInfoVo msgInfo) {
 		LyOauth2Util.UserJwt user = getUser(request);
@@ -51,13 +51,13 @@ public class MsgInfoController extends BaseController {
 		return msgInfoService.addMsgInfo(msgInfo);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','updateMsg')")
 	@PostMapping("updateMsgInfo")
 	public DataOutResponse updateMsgInfo(@RequestBody MsgInfoVo msgInfo) {
 		return msgInfoService.updateMsgInfo(msgInfo);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','findMsg')")
 	@GetMapping("findMsgInfoById")
 	public DataOutResponse findMsgInfoById(@RequestParam String msgId) {
 		return msgInfoService.findMsgInfoById(msgId);
@@ -73,7 +73,7 @@ public class MsgInfoController extends BaseController {
 	 * @param
 	 * @return
 	 */
-	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
 	@GetMapping("sendMessage")
 	public DataOutResponse sendMessage(@RequestParam("ids") String ids,@RequestParam("plantype") Integer type/*,String formId,String msgId*/){
 //		List<Long> longs = JSON.parseArray(ids, Long.class);
@@ -88,7 +88,7 @@ public class MsgInfoController extends BaseController {
 	}
 
 	//在线宣教
-	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
+//	@PreAuthorize("hasAnyAuthority('root','sendMsg')")
 	@PostMapping("sendEduMessage")
 	public DataOutResponse sendEduMessage(@RequestBody List<OnlineEdu> onlineEdus){
 		LyOauth2Util.UserJwt user = getUser(request);

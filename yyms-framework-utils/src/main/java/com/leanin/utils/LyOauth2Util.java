@@ -18,10 +18,20 @@ public class LyOauth2Util {
             return null;
         }
         UserJwt userJwt = new UserJwt();
-        userJwt.setId(Long.parseLong(jwtClaims.get("id").toString()));
-        userJwt.setName(jwtClaims.get("name").toString());
-        userJwt.setWardCode(jwtClaims.get("wardCode").toString());
-        userJwt.setHosName(jwtClaims.get("hosName").toString());
+        userJwt.setId(Long.parseLong(id));
+        Object name = jwtClaims.get("name");
+        if (name != null){
+            userJwt.setName((String)name);
+        }
+        Object wardCode = jwtClaims.get("wardCode");
+        if (wardCode != null){
+            userJwt.setWardCode((String)wardCode);
+        }
+        Object hosName = jwtClaims.get("hosName");
+        if (hosName != null){
+            userJwt.setHosName((String) hosName);
+        }
+
         return userJwt;
     }
 

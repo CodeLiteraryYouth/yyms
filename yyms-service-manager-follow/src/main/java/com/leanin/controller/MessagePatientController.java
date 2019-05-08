@@ -16,7 +16,7 @@ public class MessagePatientController {
     @Autowired
     MessagePatientService messagePatientService;
 
-    @PreAuthorize("hasAnyAuthority('root','findMsgPat')")
+//    @PreAuthorize("hasAnyAuthority('root','findMsgPat')")
     @GetMapping("/findList")
     public DataOutResponse findList(@RequestParam Integer currentPage, @RequestParam Integer pageSize,
                                     String patientName,Integer sendType){

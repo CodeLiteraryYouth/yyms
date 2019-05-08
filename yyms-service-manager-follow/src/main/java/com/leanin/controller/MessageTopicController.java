@@ -23,7 +23,7 @@ public class MessageTopicController extends BaseController {
 	@Autowired
 	private MessageTopicService messageTopicService;
 
-	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
 	@GetMapping("findMsgTopicList")
 	public DataOutResponse findMsgTopicList(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, @RequestParam(value="msgTopicName",required=false) String msgTopicName) {
 		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName);
@@ -34,7 +34,7 @@ public class MessageTopicController extends BaseController {
 //		return messageTopicService.updateTopicStatus(msgTopicId, status);
 //	}
 
-	@PreAuthorize("hasAnyAuthority('root','addMsgPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','addMsgPlan')")
 	@PostMapping("addMsgTopic")
 	public DataOutResponse addMsgTopic(@RequestBody MessageTopicVo messageTopic) {
 		LyOauth2Util.UserJwt userJwt = getUser(request);
@@ -43,13 +43,13 @@ public class MessageTopicController extends BaseController {
 		return messageTopicService.addMsgTopic(messageTopic);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
 	@GetMapping("findMsgTopicById")
 	public DataOutResponse findMsgTopicById(@RequestParam("msgTopicId") String msgTopicId) {
 		return messageTopicService.findMsgTopicById(msgTopicId);
 	}
 
-	@PreAuthorize("hasAnyAuthority('root','updateMsgPlan')")
+//	@PreAuthorize("hasAnyAuthority('root','updateMsgPlan')")
 	@PostMapping("updateMsgTopic")
 	public DataOutResponse updateMsgTopic(@RequestBody MessageTopicVo messageTopic) {
 		return messageTopicService.updateMsgTopic(messageTopic);
