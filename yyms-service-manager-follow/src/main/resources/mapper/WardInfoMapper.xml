@@ -44,9 +44,9 @@
   <insert id="insertWardInfo" parameterType="com.leanin.domain.vo.WardInfoVo">
     insert into leanin_ward_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="wardId != null">
+      <!--<if test="wardId != null">
         ward_id,
-      </if>
+      </if>-->
       <if test="wardName != null">
         ward_name,
       </if>
@@ -76,9 +76,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="wardId != null">
+      <!--<if test="wardId != null">
         #{wardId,jdbcType=BIGINT},
-      </if>
+      </if>-->
       <if test="wardName != null">
         #{wardName,jdbcType=VARCHAR},
       </if>

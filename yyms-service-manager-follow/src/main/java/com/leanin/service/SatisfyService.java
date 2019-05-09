@@ -39,7 +39,7 @@ public interface SatisfyService {
      */
 	DataOutResponse updateSatisfyInfo(SatisfyInfoVo record);
 
-	DataOutResponse findStyInfoByOpenId(String openId, Integer finishType);
+	DataOutResponse findStyInfoByOpenId(String openId, Integer finishType,Integer formStatus);
 
     DataOutResponse shareSatisfy(String satisfyNum, Integer status);
 }

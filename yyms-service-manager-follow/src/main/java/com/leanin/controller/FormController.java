@@ -87,8 +87,8 @@ public class FormController extends BaseController {
 
 	@GetMapping("/findFormListByOpenid")
 	public DataOutResponse findFormListByOpenid(@RequestParam String openid, @RequestParam Integer followStatus,
-												@RequestParam Integer planType){
-		return formInfoService.findFormListByOpenid(openid,followStatus,planType);
+												@RequestParam Integer planType,Integer formStatus){
+		return formInfoService.findFormListByOpenid(openid,followStatus,planType,formStatus);
 	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

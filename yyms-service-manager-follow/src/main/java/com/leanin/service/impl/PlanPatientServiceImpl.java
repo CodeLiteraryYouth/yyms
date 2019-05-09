@@ -490,6 +490,10 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if (planPatient == null){
             return ReturnFomart.retParam(2011,"数据不存在");
         }
+        PlanInfoVo planInfoVo = planPatient.getPlanInfoVo();
+        if (planInfoVo.getPlanType() == 2 && status == 2){//宣教状态
+            planPatient.setFormStatus(2);
+        }
         planPatient.setPlanPatsStatus(status);
         planPatientMapper.updatePlanPatient(planPatient);
         return ReturnFomart.retParam(200,planPatient);

@@ -75,7 +75,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 		log.info("新增的关注病人信息为:"+ JSON.toJSONString(record));
 		FocusPatientVo patient=focusPatientMapper.selectFocusPatientById(record.getPatientId(),record.getUserId());
 		if(CompareUtil.isNotEmpty(patient)) {
-			return ReturnFomart.retParam(4000, "已经关注请勿重新添加");
+			return ReturnFomart.retParam(5000, "病人已关注，不需要再次关注");
 		}
 		focusPatientMapper.insertFocusPatient(record);
 		return ReturnFomart.retParam(200, record);

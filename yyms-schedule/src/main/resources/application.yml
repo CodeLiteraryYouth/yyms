@@ -38,8 +38,8 @@ ribbon:
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.leanin.domain  # 注意：对应实体类的路径
-  configuration:                                    #打印sql到控制台
-       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:                                    #打印sql到控制台
+#       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 wx:
   appId:  wx1f020aa42d92b635
   appSecret: b8511f28b20390602cf63ce8c376f6fd

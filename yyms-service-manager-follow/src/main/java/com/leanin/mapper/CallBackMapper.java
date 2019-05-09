@@ -53,4 +53,6 @@ public interface CallBackMapper {
 	int updateCallBackDeal(CallBackDeal callBackDeal);
 
 	CallBackDeal findBackDetail(@Param("callBackNum") String callBackNum);
+
+    Integer callBackAnalysis(@Param("type") Integer type,@Param("dealStatus") Integer dealStatus);
 }

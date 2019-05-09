@@ -76,7 +76,7 @@ public class CallBackController extends BaseController {
 	 * @return
 	 */
 //	@PreAuthorize("hasAnyAuthority('root','addConfig')")
-	@PostMapping("updateCallBackDeal")
+	@PostMapping("addCallBackDeal")
 	public DataOutResponse addCallBackDeal(@RequestBody CallBackDeal callBackDeal) {
 		return callBackService.updateCallBackDeal(callBackDeal);
 	}

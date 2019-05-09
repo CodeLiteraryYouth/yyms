@@ -101,10 +101,10 @@ public class StaisfyServiceImpl implements SatisfyService {
 	}
 
 	@Override
-	public DataOutResponse findStyInfoByOpenId(String openId, Integer finishType) {
-		List<SatisfyInfoExt> list = satisfyInfoMapper.findStyInfoByOpenId(openId,finishType);
+	public DataOutResponse findStyInfoByOpenId(String openId, Integer finishType,Integer formStatus) {
+		List<SatisfyInfoExt> list = satisfyInfoMapper.findStyInfoByOpenId(openId,finishType,formStatus);
 		if ( finishType != 1){//1 未完成  2 //已完成  //3过期  //4随访异常
-			List<SatisfyInfoExt> satisfyInfoExts =satisfyInfoMapper.findStyInfoByOpenIdExt(openId,finishType);
+			List<SatisfyInfoExt> satisfyInfoExts =satisfyInfoMapper.findStyInfoByOpenIdExt(openId,finishType,formStatus);
 			list.addAll(satisfyInfoExts);
 		}
 		return ReturnFomart.retParam(200, list);

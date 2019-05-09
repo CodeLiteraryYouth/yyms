@@ -55,8 +55,8 @@ public class SatisfyController extends BaseController {
 
 
 	@GetMapping("/findStyInfoByOpenId")
-	public DataOutResponse findStyInfoByOpenId(@RequestParam String openId,@RequestParam Integer finishType){
-		return satisfyService.findStyInfoByOpenId(openId,finishType);
+	public DataOutResponse findStyInfoByOpenId(@RequestParam String openId,@RequestParam Integer finishType,Integer formStatus){
+		return satisfyService.findStyInfoByOpenId(openId,finishType,formStatus);
 	}
 
 	/**

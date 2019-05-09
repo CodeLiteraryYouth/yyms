@@ -95,7 +95,22 @@
 		where call_back_num = #{callBackNum}
 	</select>
 
-	<insert id="addCallBack" parameterType="com.leanin.domain.CallBack">
+    <select id="callBackAnalysis" resultType="java.lang.Integer">
+		SELECT
+		  COUNT(lcb.`call_back_num`)
+		FROM
+		  `leanin_call_back` lcb,
+		  `leanin_call_back_deal` lcbd
+		WHERE lcb.`call_back_num` = lcbd.`call_back_num`
+			<if test="type != null">
+				AND lcb.`call_back_status` = #{type}
+			</if>
+			<if test="dealStatus != null">
+				AND lcbd.`deal_status` = #{dealStatus}
+			</if>
+	</select>
+
+    <insert id="addCallBack" parameterType="com.leanin.domain.CallBack">
 		 insert into leanin_call_back
     	 <trim prefix="(" suffix=")" suffixOverrides=",">
     	 	<if test="callBackNum !=null">

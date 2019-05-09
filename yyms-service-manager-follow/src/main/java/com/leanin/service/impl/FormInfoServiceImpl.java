@@ -94,13 +94,13 @@ public class FormInfoServiceImpl implements FormInfoService {
 	}
 
 	@Override
-	public DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType) {
+	public DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType,Integer formStatus) {
 		if (openid == null){
 			return ReturnFomart.retParam(300,"请登录后在进行查询");
 		}
-		List<FormInfoExt> list = formInfoMapper.findFormListByOpenid(openid,followStatus,planType);
+		List<FormInfoExt> list = formInfoMapper.findFormListByOpenid(openid,followStatus,planType,formStatus);
 		if (followStatus != 1){//未完成
-			List<FormInfoExt> formInfoExts =formInfoMapper.findFormListByOpenidExt(openid,followStatus,planType);
+			List<FormInfoExt> formInfoExts =formInfoMapper.findFormListByOpenidExt(openid,followStatus,planType,formStatus);
 			list.addAll(formInfoExts);
 		}
 

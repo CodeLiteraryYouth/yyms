@@ -47,6 +47,17 @@ public class DataAnalysisController {
         return dataAnalysisService.userFollowAnalysis(userId,time,planType);
     }
 
+    /**
+     * 投诉表扬统计
+     * @param type  类型 1 投诉  2 表扬
+     * @param dealStatus 处理状态 0 未处理  1 已处理
+     * @return
+     */
+    @GetMapping("callBackAnalysis")
+    public DataOutResponse callBackAnalysis(Integer type,Integer dealStatus){
+        return dataAnalysisService.callBackAnalysis(type,dealStatus);
+    }
+
 
 
 

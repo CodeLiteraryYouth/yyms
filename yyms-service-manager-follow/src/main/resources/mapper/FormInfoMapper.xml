@@ -193,12 +193,23 @@
     where lfi.form_status >=0
     and lpp.patient_status = 1
     and lpi.plan_status = 0
-    and lpp.patient_id = lpw.patient_id
+    and lpp.id_card = lpw.id_card
     and lfi.form_num = lpp.form_id
     and lpp.plan_num = lpi.plan_num
-    and lpi.plan_type =#{planType}
-    and lpw.open_id =#{openid}
-    and lpp.plan_pats_status = #{followStatus}
+    and lpp.send_type = 2
+    <if test="formStatus != null">
+      and lpp.form_status = #{formStatus}
+    </if>
+    <if test="planType != null">
+      and lpi.plan_type =#{planType}
+    </if>
+    <if test="openid != null">
+      and lpw.open_id =#{openid}
+    </if>
+    <if test="followStatus != null">
+      and lpp.plan_pats_status = #{followStatus}
+    </if>
+
   </select>
 
   <select id="findFormListByOpenidExt" resultMap="BaseResultMap1">
@@ -208,11 +219,21 @@
     where lfi.form_status >=0
     and lpi.plan_status = 0
     and lfi.form_num = lfr.form_id
-    and lfr.patient_id = lpw.patient_id
+    and lfr.id_card = lpw.id_card
     and lfr.plan_num = lpi.plan_num
-    and lpi.plan_type =#{planType}
-    and lpw.open_id =#{openid}
-    and lfr.plan_pats_status = #{followStatus}
+    and lfr.send_type = 2
+    <if test="planType != null">
+      and lpi.plan_type =#{planType}
+    </if>
+    <if test="openid != null">
+      and lpw.open_id =#{openid}
+    </if>
+    <if test="followStatus != null">
+      and lfr.plan_pats_status = #{followStatus}
+    </if>
+    <if test="formStatus != null">
+      and lfr.form_status = #{formStatus}
+    </if>
   </select>
 
     <select id="findFormInfoByIdAndStatus" resultMap="ResultMapWithBLOBs">

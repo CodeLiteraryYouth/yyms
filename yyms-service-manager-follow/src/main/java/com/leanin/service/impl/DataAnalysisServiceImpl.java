@@ -3,6 +3,7 @@ package com.leanin.service.impl;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.mapper.CallBackMapper;
 import com.leanin.mapper.FollowRecordMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.SatisfyPatientMapper;
@@ -27,6 +28,9 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Autowired
     SatisfyPatientMapper satisfyPatientMapper;
+
+    @Autowired
+    CallBackMapper callBackMapper;
 
     @Override
     public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId,Integer isAll) {
@@ -131,6 +135,12 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
 
         return ReturnFomart.retParam(200,dataMap);
+    }
+
+    @Override
+    public DataOutResponse callBackAnalysis(Integer type, Integer dealStatus) {
+        Integer count = callBackMapper.callBackAnalysis(type,dealStatus);
+        return ReturnFomart.retParam(200,count);
     }
 
     private Map<Integer,Double> userFollow(Map<Integer,Double> dataMap,Long userId,String time){

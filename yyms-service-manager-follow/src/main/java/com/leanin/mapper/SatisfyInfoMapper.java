@@ -48,9 +48,9 @@ public interface SatisfyInfoMapper {
      */
     int updateSatisfyInfo(SatisfyInfoVo record);
 
-	List<SatisfyInfoExt> findStyInfoByOpenId(@Param("openId") String openId,@Param("finishType") Integer finishType);
+	List<SatisfyInfoExt> findStyInfoByOpenId(@Param("openId") String openId,@Param("finishType") Integer finishType,@Param("formStatus") Integer formStatus);
 
-	List<SatisfyInfoExt> findStyInfoByOpenIdExt(@Param("openId")String openId,@Param("finishType") Integer finishType);
+	List<SatisfyInfoExt> findStyInfoByOpenIdExt(@Param("openId")String openId,@Param("finishType") Integer finishType,@Param("formStatus") Integer formStatus);
 
 	SatisfyInfoVo findSatisfyByIdAndStatus(@Param("formNum") String formNum,@Param("formStatus") Integer formStatus,@Param("planPatientId")Long planPatientId);
 
