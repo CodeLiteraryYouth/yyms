@@ -13,7 +13,7 @@ public class BookPatientDao {
     /**
      * 病人唯一标识
      */
-    private String patienId;
+    private String patientId;
     /**
      * 病人姓名
      */

@@ -12,7 +12,7 @@
   <insert id="addBookPatient">
      insert into leanin_book_patient
      <trim prefix="(" suffix=")" suffixOverrides=",">
-       <if test="patienId != null">
+       <if test="patientId != null">
        patient_id,
        </if>
        <if test="patientName != null">
@@ -58,11 +58,11 @@
          book_money,
        </if>
        <if test="medicalCard!=null">
-         medical_card
+         medical_card,
        </if>
      </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="patienId != null">
+      <if test="patientId != null">
         #{patientId},
       </if>
       <if test="patientName != null">
@@ -105,10 +105,10 @@
         #{adviceType},
       </if>
       <if test="bookMoney!=null">
-        #{bookMoney}
+        #{bookMoney},
       </if>
       <if test="medicalCard!=null">
-        #{medicalCard}
+        #{medicalCard},
       </if>
     </trim>
   </insert>

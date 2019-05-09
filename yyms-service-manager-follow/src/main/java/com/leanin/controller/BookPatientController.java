@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
  * @author zd
  * @description 预约管理信息
  */
-@RestController(value="book")
+@RestController
+@RequestMapping(value="book")
 public class BookPatientController extends BaseController {
 
     @Autowired

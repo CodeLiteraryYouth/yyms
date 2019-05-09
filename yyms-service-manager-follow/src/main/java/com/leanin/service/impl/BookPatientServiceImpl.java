@@ -53,7 +53,7 @@ public class BookPatientServiceImpl implements BookPatientService {
         log.info("保存预约病人信息为:"+ JSON.toJSONString(bookPatientDao));
         //增加预约列表的传输信息
         Map orderMap=new HashMap();
-        orderMap.put("patientId",bookPatientDao.getPatienId());
+        orderMap.put("patientId",bookPatientDao.getPatientId());
         Map regMap=new HashMap();
         regMap.put("doctorId",bookPatientDao.getDoctorId());
         regMap.put("regDate",bookPatientDao.getSeeDocDate());
@@ -79,7 +79,7 @@ public class BookPatientServiceImpl implements BookPatientService {
             msgRecord.setMsgSendDate(new Date());
             msgRecord.setMsgSendWard(bookPatientDao.getDeptName());
             msgRecord.setMsgText(builder.toString());
-            msgRecord.setPatientId(bookPatientDao.getPatienId());
+            msgRecord.setPatientId(bookPatientDao.getPatientId());
             msgRecord.setMsgSendNum(bookPatientDao.getPhone());
             msgRecord.setMsgSendStatus("true".equals(map.get("msg").toString()) ? 2:3);
             log.info("短信记录信息为:"+JSON.toJSONString(msgRecord));
