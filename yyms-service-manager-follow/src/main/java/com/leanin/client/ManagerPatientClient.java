@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +41,29 @@ public interface ManagerPatientClient {
 
     /*@GetMapping("/user/findUserName")
     public String findUserName(@RequestParam Long adminId);*/
+
+    /**
+     * 增加预约次数
+     * @param paramMap
+     * @return
+     */
+    @PostMapping("/managerPatient/updateRegnum")
+    public DataOutResponse updateRegnum(@RequestBody Map paramMap);
+
+    /**
+     * 增加预约列表信息
+     * @param paramMap
+     * @return
+     */
+    @PostMapping("/managerPatient/updateOrderList")
+    public DataOutResponse updateOrderList(@RequestBody Map paramMap);
+
+    /**
+     * 取消预约
+     * @param paramMap
+     * @return
+     */
+    @PostMapping("/managerPatient/cancelOrder")
+    public DataOutResponse cancelOrder(@RequestBody Map paramMap);
 
 }

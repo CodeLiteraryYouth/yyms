@@ -53,6 +53,20 @@ public interface ManagerPatientService {
     DataOutResponse updateRegNum(Map paramMap);
 
     /**
+     * 新增预约病人列表信息
+     * @param paramMap
+     * @return
+     */
+    DataOutResponse updateOrderInfo(Map paramMap);
+
+    /**
+     * 取消预约
+     * @param paramMap
+     * @return
+     */
+    DataOutResponse cancelOrder(Map paramMap);
+
+    /**
      * 查询医生的科室列表
      * @return
      */

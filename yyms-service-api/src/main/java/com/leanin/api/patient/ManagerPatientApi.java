@@ -45,9 +45,15 @@ public interface ManagerPatientApi {
     @ApiOperation("查询预约医生列表")
     public DataOutResponse findRegList(Map parmMap);
 
-    @ApiOperation("增加已预约人数")
+    @ApiOperation("增加医生列表已预约人数")
     public DataOutResponse updateRegnum(Map paramMap);
+
+    @ApiOperation("增加预约列表信息")
+    public DataOutResponse updateOrderList(Map paramMap);
 
     @ApiOperation("查询医生的科室列表")
     public DataOutResponse findDoctorDept();
+
+    @ApiOperation("取消预约")
+    public DataOutResponse cancelOrder(Map paramMap);
 }

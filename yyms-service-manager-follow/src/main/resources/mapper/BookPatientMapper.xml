@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.BookPatientMapper">
+
+  <sql id="BaseSql">
+    b.patient_id as patientId,b.patient_name as patientName,b.patient_sex as sex,b.id_card as idCard,
+    a.admin_name as adminName,b.dept_id as deptId,b.registration_dept as deptName,b.book_doc as doctorName,
+    b.book_time as createTime,b.see_doc_time as bookDate,b.book_source as bookSource,b.patient_type as patientType,
+    b.phone_num as phone
+  </sql>
+
+  <insert id="addBookPatient">
+     insert into leanin_book_patient
+     <trim prefix="(" suffix=")" suffixOverrides=",">
+       <if test="patienId != null">
+       patient_id,
+       </if>
+       <if test="patientName != null">
+         patient_name,
+       </if>
+       <if test="idCard != null">
+         id_card,
+       </if>
+       <if test="sex != null">
+         patient_sex,
+       </if>
+       <if test="phone != null">
+         phone_num,
+       </if>
+       <if test="patientType != null">
+         patient_type,
+       </if>
+       <if test="adminId != null">
+         registration_doc_id,
+       </if>
+       <if test="deptId != null">
+         dept_id,
+       </if>
+       <if test="deptName != null">
+         registration_dept,
+       </if>
+       <if test="bookDate != null">
+         book_time,
+       </if>
+       <if test="seeDocDate != null">
+         see_doc_time,
+       </if>
+       <if test="bookResource != null">
+         book_source,
+       </if>
+       <if test="doctorName != null">
+         book_doc,
+       </if>
+       <if test="adviceType != null">
+         advice_type,
+       </if>
+       <if test="bookMoney!=null">
+         book_money,
+       </if>
+       <if test="medicalCard!=null">
+         medical_card
+       </if>
+     </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patienId != null">
+        #{patientId},
+      </if>
+      <if test="patientName != null">
+        #{patientName},
+      </if>
+      <if test="idCard != null">
+        #{idCard},
+      </if>
+      <if test="sex != null">
+        #{sex},
+      </if>
+      <if test="phone != null">
+        #{phone},
+      </if>
+      <if test="patientType != null">
+        #{patientType},
+      </if>
+      <if test="adminId != null">
+        #{adminId},
+      </if>
+      <if test="deptId != null">
+        #{deptId},
+      </if>
+      <if test="deptName != null">
+        #{deptName},
+      </if>
+      <if test="bookDate != null">
+        #{bookDate},
+      </if>
+      <if test="seeDocDate != null">
+        #{seeDocDate},
+      </if>
+      <if test="bookResource != null">
+        #{bookResource},
+      </if>
+      <if test="doctorName != null">
+        #{doctorName},
+      </if>
+      <if test="adviceType != null">
+        #{adviceType},
+      </if>
+      <if test="bookMoney!=null">
+        #{bookMoney}
+      </if>
+      <if test="medicalCard!=null">
+        #{medicalCard}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateBookStatus">
+    update leanin_book_patient set book_status=-1
+    where patient_id=#{patientId} and book_doc=#{doctorName}
+    and see_doc_time=#{bookDate}
+  </update>
+
+  <select id="findBookPatientList" resultType="java.util.Map">
+    SELECT
+    <include refid="BaseSql"/>
+    from leanin_book_patient b
+    left join leanin_admin_user a
+    on b.registration_doc_id=a.admin_id
+    where b.book_status=0
+    <if test="patientName!=null">
+      and b.patient_name like CONCAT('%',#{patientName},'%')
+    </if>
+    <if test="deptId!=null">
+      and b.dept_id=#{deptId}
+    </if>
+    <if test="startDate!=null">
+      and b.see_doc_time<![CDATA[>=]]>#{startDate}
+    </if>
+    <if test="endDate!=null">
+      and b.see_doc_time<![CDATA[<=]]>#{endDate}
+    </if>
+  </select>
+</mapper>

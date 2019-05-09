@@ -52,31 +52,33 @@ public class CallLogInfoServiceImpl implements CallLogInfoService {
     private PlanInfoMapper planInfoMapper;
     @Autowired
     private LeaninAudioUpDaoMapper leaninAudioUpDaoMapper;
-        @Override
-        public DataOutResponse findList(QueryCallLogInfoDto queryCallLogInfoDto) {
-                          Map dataMap =new HashMap();
-                          try{//进行分页查询
-                                  PageHelper.startPage(queryCallLogInfoDto.getCurrentPage(),queryCallLogInfoDto.getPageSize());
-                                  List<CallLoginfoVo> resultList =  leaninCallLogInfoDaoMapper.findList(queryCallLogInfoDto);
-                                  dataMap.put("totalCount",((Page)resultList).getTotal());
-                                  dataMap.put("list",resultList);
-                          }catch (Exception e){
-                                throw new CustomException(e.getMessage());
-                          }
-                        return ReturnFomart.retParam(200,dataMap);
-        }
 
-        @Override
-        public DataOutResponse detail(Long callLogInfoId) {
-            if(callLogInfoId == null){
-                return ReturnFomart.retParam(404,"参数为空");
-            }
-          CallLogInfoDto dto = leaninCallLogInfoDaoMapper.findCallLogInfoById(callLogInfoId);
-            if(null == dto){
-                return ReturnFomart.retParam(404,"参数"+callLogInfoId+"，查出的对象不存在或者状态发生了变化");
-            }
-                return ReturnFomart.retParam(200,dto);
+    @Override
+    public DataOutResponse findList(QueryCallLogInfoDto queryCallLogInfoDto) {
+          Map dataMap =new HashMap();
+          try{
+              //进行分页查询
+              PageHelper.startPage(queryCallLogInfoDto.getCurrentPage(),queryCallLogInfoDto.getPageSize());
+              List<CallLoginfoVo> resultList =  leaninCallLogInfoDaoMapper.findList(queryCallLogInfoDto);
+              dataMap.put("totalCount",((Page)resultList).getTotal());
+              dataMap.put("list",resultList);
+          }catch (Exception e){
+                throw new CustomException(e.getMessage());
+          }
+        return ReturnFomart.retParam(200,dataMap);
+    }
+
+    @Override
+    public DataOutResponse detail(Long callLogInfoId) {
+        if(callLogInfoId == null){
+            return ReturnFomart.retParam(404,"参数为空");
         }
+      CallLogInfoDto dto = leaninCallLogInfoDaoMapper.findCallLogInfoById(callLogInfoId);
+        if(null == dto){
+            return ReturnFomart.retParam(404,"参数"+callLogInfoId+"，查出的对象不存在或者状态发生了变化");
+        }
+            return ReturnFomart.retParam(200,dto);
+    }
 
     @Override
     @Transactional

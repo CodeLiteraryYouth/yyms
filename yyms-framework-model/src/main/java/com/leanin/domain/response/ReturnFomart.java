@@ -95,6 +95,8 @@ public class ReturnFomart {
         messageMap.put("4001","科室码重复请勿添加相同的科室");
         messageMap.put("5000","病人已关注，不需要再次关注");
 
+        messageMap.put("5001","预约失败，请稍后再试");
+
 
 
 

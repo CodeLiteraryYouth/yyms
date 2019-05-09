@@ -247,6 +247,16 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     }
 
     @Override
+    public DataOutResponse updateOrderInfo(Map paramMap) {
+        return ReturnFomart.retParam(200,paramMap);
+    }
+
+    @Override
+    public DataOutResponse cancelOrder(Map paramMap) {
+        return ReturnFomart.retParam(200,paramMap);
+    }
+
+    @Override
     public DataOutResponse findDoctorDept() {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();

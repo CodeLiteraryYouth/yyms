@@ -5,6 +5,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+/**
+ * @author Administrator
+ */
 @Data
 @ToString
 @Entity

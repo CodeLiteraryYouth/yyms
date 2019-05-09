@@ -104,9 +104,21 @@ public class ManagerPatientController implements ManagerPatientApi {
     }
 
     @Override
+    @PostMapping("updateOrderList")
+    public DataOutResponse updateOrderList(Map paramMap) {
+        return managerPatientService.updateOrderInfo(paramMap);
+    }
+
+    @Override
     @GetMapping("findDoctorDept")
     public DataOutResponse findDoctorDept() {
         return managerPatientService.findDoctorDept();
+    }
+
+    @Override
+    @PostMapping("cancelOrder")
+    public DataOutResponse cancelOrder(Map paramMap) {
+        return managerPatientService.cancelOrder(paramMap);
     }
 
 }

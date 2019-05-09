@@ -45,6 +45,21 @@ public class FeignClientFallback implements ManagerPatientClient {
         return null;
     }
 
+    @Override
+    public DataOutResponse updateRegnum(Map paramMap) {
+        return null;
+    }
+
+    @Override
+    public DataOutResponse updateOrderList(Map paramMap) {
+        return null;
+    }
+
+    @Override
+    public DataOutResponse cancelOrder(Map paramMap) {
+        return null;
+    }
+
     /*@Override
     public String findUserName(Long adminId) {
         return null;
