@@ -214,6 +214,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setSendType(2); 		//发送成功
 				planPatient.setFormStatus(1);		//设置成表单未完成状态
 				planPatient.setPlanPatsStatus(1); 	//修改成带随访状态
+				planPatient.setHandleSugges("");
 			}else {
 				planPatient.setSendType(3); //发送失败
 				planPatientMapper.updatePlanPatient(planPatient);
@@ -243,6 +244,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			if (msgStatus.equals("true")){
 				satisfyPatientVo.setSendType(2); //发送成功
 				satisfyPatientVo.setFormStatus(1);//表单未完成
+				satisfyPatientVo.setSuggess("");
 			}else {//发送失败
 				satisfyPatientVo.setSendType(3); //发送失败
 				satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
