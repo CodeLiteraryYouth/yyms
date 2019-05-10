@@ -6,7 +6,7 @@
     b.patient_id as patientId,b.patient_name as patientName,b.patient_sex as sex,b.id_card as idCard,
     a.admin_name as adminName,b.dept_id as deptId,b.registration_dept as deptName,b.book_doc as doctorName,
     b.book_time as createTime,b.see_doc_time as bookDate,b.book_source as bookSource,b.patient_type as patientType,
-    b.phone_num as phone,b.book_type as bookType
+    b.phone_num as phone,b.book_type as bookType,b.advice_type as adviceType
   </sql>
 
   <insert id="addBookPatient">
