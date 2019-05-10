@@ -6,7 +6,7 @@
     b.patient_id as patientId,b.patient_name as patientName,b.patient_sex as sex,b.id_card as idCard,
     a.admin_name as adminName,b.dept_id as deptId,b.registration_dept as deptName,b.book_doc as doctorName,
     b.book_time as createTime,b.see_doc_time as bookDate,b.book_source as bookSource,b.patient_type as patientType,
-    b.phone_num as phone
+    b.phone_num as phone,b.book_type as bookType
   </sql>
 
   <insert id="addBookPatient">
@@ -60,6 +60,9 @@
        <if test="medicalCard!=null">
          medical_card,
        </if>
+       <if test="bookType!=null">
+         book_type,
+       </if>
      </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="patientId != null">
@@ -110,6 +113,9 @@
       <if test="medicalCard!=null">
         #{medicalCard},
       </if>
+      <if test="bookType!=null">
+        #{bookType},
+      </if>
     </trim>
   </insert>
   <update id="updateBookStatus">
@@ -137,5 +143,30 @@
     <if test="endDate!=null">
       and b.see_doc_time<![CDATA[<=]]>#{endDate}
     </if>
+  </select>
+  <select id="findBookPatient" resultType="java.util.Map">
+    SELECT
+    <include refid="BaseSql"/>
+    from leanin_book_patient b
+    left join leanin_admin_user a
+    on b.registration_doc_id=a.admin_id
+    where b.book_status=0
+    <if test="bookDate!=null">
+      and b.book_time=#{bookDate}
+    </if>
+    <if test="bookType!=null">
+      and b.book_type=#{bookType}
+    </if>
+    <if test="doctorName!=null">
+      and b.book_doc=#{doctorName}
+    </if>
+    <if test="patientId!=null">
+      and b.patient_id=#{patientId}
+    </if>
+  </select>
+
+  <select id="findcountOrder" resultType="java.lang.Integer">
+    select count(b.book_id) from leanin_book_patient b
+    where b.patient_id=#{patientId} and b.see_doc_time=#{bookDate}
   </select>
 </mapper>

@@ -19,6 +19,24 @@ public interface BookPatientMapper {
     @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     /**
+     * 查询是否已经预约
+     * @param doctorName
+     * @param bookDate
+     * @param patientId
+     * @param bookType
+     * @return
+     */
+    Map findBookPatient(@Param("doctorName") String doctorName,@Param("bookDate") String bookDate,
+                        @Param("patientId") String patientId,@Param("bookType") int bookType);
+
+    /**
+     * 查询病人预约就诊日期的记录条数
+     * @param bookDate
+     * @param patientId
+     * @return
+     */
+    int findcountOrder(@Param("bookDate") String bookDate,@Param("patientId") String patientId);
+    /**
      * 增加预约信息列表
      * @param bookPatientDao
      * @return

@@ -12,6 +12,7 @@ import com.leanin.mapper.BookPatientMapper;
 import com.leanin.mapper.MsgRecordMapper;
 import com.leanin.service.BookPatientService;
 import com.leanin.utils.CSMSUtils;
+import com.leanin.utils.CompareUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,13 @@ public class BookPatientServiceImpl implements BookPatientService {
     @Transactional
     public DataOutResponse addOrderPatient(BookPatientDao bookPatientDao) {
         log.info("保存预约病人信息为:"+ JSON.toJSONString(bookPatientDao));
+        Map orderPatient=bookPatientMapper.findBookPatient(bookPatientDao.getDoctorName(),bookPatientDao.getSeeDocDate(),
+                                                           bookPatientDao.getPatientId(),bookPatientDao.getBookType());
+        int orderCount=bookPatientMapper.findcountOrder(bookPatientDao.getSeeDocDate(),bookPatientDao.getPatientId());
+        //查询预约列表中是否已存在预约的信息或者当日已预约请勿重复预约
+        if (CompareUtil.isNotEmpty(orderPatient) || orderCount>1) {
+           return ReturnFomart.retParam(5002,orderPatient);
+        }
         //增加预约列表的传输信息
         Map orderMap=new HashMap();
         orderMap.put("patientId",bookPatientDao.getPatientId());
@@ -66,10 +74,10 @@ public class BookPatientServiceImpl implements BookPatientService {
         //判断feign服务没出现服务异常和增加数据成功则存储进入记录表
         if(orderData!=null && regData!=null && orderData.getStatus()==200 && regData.getStatus()==200) {
             StringBuilder builder=new StringBuilder();
-            builder.append("已帮您预约xxxxx医院/r/n");
-            builder.append("时间:"+bookPatientDao.getSeeDocDate()+(bookPatientDao.getBookType()==1?"上午":"下午"));
-            builder.append("科室:"+bookPatientDao.getDeptName()+"/r/n");
-            builder.append("医生:"+bookPatientDao.getDoctorName()+"/r/n");
+            builder.append("已帮您预约永康妇保医院").append("\r\n");
+            builder.append("时间:"+bookPatientDao.getSeeDocDate()+(bookPatientDao.getBookType()==1?"上午":"下午")).append("\r\n");
+            builder.append("科室:"+bookPatientDao.getDeptName()).append("\r\n");
+            builder.append("医生:"+bookPatientDao.getDoctorName());
             builder.append("请及时前往就诊");
             //预约成功以后发送短信给病人
             Map map=CSMSUtils.sendMessage(builder.toString(),bookPatientDao.getPhone());
@@ -99,7 +107,8 @@ public class BookPatientServiceImpl implements BookPatientService {
         DataOutResponse cancelData=managerClient.cancelOrder(map);
         if(cancelData!=null && cancelData.getStatus()==200) {
             bookPatientMapper.updateBookStatus(patientId,doctorName,bookDate);
+            return ReturnFomart.retParam(200,patientId);
         }
-        return ReturnFomart.retParam(200,patientId);
+        return ReturnFomart.retParam(5003,patientId);
     }
 }
