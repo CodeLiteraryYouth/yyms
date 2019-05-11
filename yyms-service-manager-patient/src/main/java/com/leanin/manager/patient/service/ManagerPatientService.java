@@ -71,4 +71,6 @@ public interface ManagerPatientService {
      * @return
      */
     DataOutResponse findDoctorDept();
+
+    DataOutResponse findByIdCard(String idCard);
 }
