@@ -227,23 +227,24 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse updateRegNum(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
-//        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
-        Map dataMap=new HashMap();
-        String jsonString = JSON.toJSONString(paramMap);
-        try {
-            Object[] objects = client.invoke("updateRegNum", jsonString);
-            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
-            if (Integer.parseInt(dataMap.get("data").toString())>0) {
-                return ReturnFomart.retParam(200,dataMap);
-            }
-            return ReturnFomart.retParam(0,dataMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+////        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
+//
+//        Map dataMap=new HashMap();
+//        String jsonString = JSON.toJSONString(paramMap);
+//        try {
+//            Object[] objects = client.invoke("updateRegNum", jsonString);
+//            dataMap = JSON.parseObject(objects[0].toString(), Map.class);
+//            if (Integer.parseInt(dataMap.get("data").toString())>0) {
+//                return ReturnFomart.retParam(200,dataMap);
+//            }
+//            return ReturnFomart.retParam(0,dataMap);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+        return ReturnFomart.retParam(200,paramMap);
     }
 
     @Override

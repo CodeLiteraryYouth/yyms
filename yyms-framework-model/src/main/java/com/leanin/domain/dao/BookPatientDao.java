@@ -8,7 +8,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class BookPatientDao {
+public class BookPatientDao  {
 
     /**
      * 病人唯一标识

@@ -57,11 +57,12 @@ public class BookPatientServiceImpl implements BookPatientService {
         int orderCount=bookPatientMapper.findcountOrder(bookPatientDao.getSeeDocDate(),bookPatientDao.getPatientId());
         //查询预约列表中是否已存在预约的信息或者当日已预约请勿重复预约
         if (CompareUtil.isNotEmpty(orderPatient) || orderCount>1) {
-           return ReturnFomart.retParam(5002,orderPatient);
+           return ReturnFomart.retParam(5002,orderCount);
         }
-        //增加预约列表的传输信息
+        //传输到HIS的预约列表的传输信息
         Map orderMap=new HashMap();
         orderMap.put("patientId",bookPatientDao.getPatientId());
+        //传输到预约医生表的数据
         Map regMap=new HashMap();
         regMap.put("doctorId",bookPatientDao.getDoctorId());
         regMap.put("regDate",bookPatientDao.getSeeDocDate());
