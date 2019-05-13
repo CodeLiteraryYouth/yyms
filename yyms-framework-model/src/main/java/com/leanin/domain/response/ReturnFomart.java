@@ -99,9 +99,7 @@ public class ReturnFomart {
         messageMap.put("5002","您已预约，请勿重复预约");
         messageMap.put("5003","取消预约失败，请稍后再试");
         messageMap.put("5004","医院暂无此身份信息，请重新输入");
-
-
-
+        messageMap.put("5005","当前无医生号源，请重新选择");
 
 
     }

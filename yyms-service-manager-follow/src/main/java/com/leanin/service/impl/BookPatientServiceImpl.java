@@ -13,6 +13,7 @@ import com.leanin.mapper.MsgRecordMapper;
 import com.leanin.service.BookPatientService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
+import com.leanin.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,16 @@ public class BookPatientServiceImpl implements BookPatientService {
     @Transactional
     public DataOutResponse addOrderPatient(BookPatientDao bookPatientDao) {
         log.info("保存预约病人信息为:"+ JSON.toJSONString(bookPatientDao));
+        Map regInfoMap=new HashMap();
+        regInfoMap.put("startDate",bookPatientDao.getSeeDocDate());
+        regInfoMap.put("endDate",bookPatientDao.getSeeDocDate());
+        regInfoMap.put("deptId",bookPatientDao.getDeptId());
+        //查询预约医生列表信息
+        DataOutResponse regInfoData=managerClient.findRegList(regInfoMap);
+        //是否有当前医生排班信息
+        if(regInfoData==null || JsonUtil.json2List(regInfoData.getData().toString()).size()<0) {
+            return ReturnFomart.retParam(5005,bookPatientDao);
+        }
         Map orderPatient=bookPatientMapper.findBookPatient(bookPatientDao.getDoctorName(),bookPatientDao.getSeeDocDate(),
                                                            bookPatientDao.getPatientId(),bookPatientDao.getBookType());
         int orderCount=bookPatientMapper.findcountOrder(bookPatientDao.getSeeDocDate(),bookPatientDao.getPatientId());

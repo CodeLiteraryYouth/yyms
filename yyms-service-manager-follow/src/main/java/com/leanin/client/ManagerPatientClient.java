@@ -51,6 +51,14 @@ public interface ManagerPatientClient {
     public DataOutResponse updateRegnum(@RequestBody Map paramMap);
 
     /**
+     * 查询预约医生列表
+     * @param paramMap
+     * @return
+     */
+    @PostMapping("/managerPatient/findRegList")
+    public DataOutResponse findRegList(@RequestBody Map paramMap);
+
+    /**
      * 增加预约列表信息
      * @param paramMap
      * @return
