@@ -95,21 +95,23 @@ public class BookPatientServiceImpl implements BookPatientService {
             msgRecordMapper.addMsgRecord(msgRecord);
             bookPatientMapper.addBookPatient(bookPatientDao);
             return ReturnFomart.retParam(200,bookPatientDao);
+        } else {
+            return ReturnFomart.retParam(5001, bookPatientDao);
         }
-        return ReturnFomart.retParam(5001,bookPatientDao);
     }
 
     @Override
     @Transactional
     public DataOutResponse cancelOrderPatient(String patientId, String doctorName, String bookDate) {
         Map map=new HashMap();
-        //
+        //将取消预约的信息传输给HIS
         //查询HIS中是否取消成功或者出现异常
         DataOutResponse cancelData=managerClient.cancelOrder(map);
         if(cancelData!=null && cancelData.getStatus()==200) {
             bookPatientMapper.updateBookStatus(patientId,doctorName,bookDate);
             return ReturnFomart.retParam(200,patientId);
+        } else {
+            return ReturnFomart.retParam(5003, patientId);
         }
-        return ReturnFomart.retParam(5003,patientId);
     }
 }
