@@ -66,4 +66,8 @@ public interface ManagerPatientClient {
     @PostMapping("/managerPatient/cancelOrder")
     public DataOutResponse cancelOrder(@RequestBody Map paramMap);
 
+
+    @GetMapping("/managerPatient/findByIdCard")
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard);
+
 }

@@ -60,6 +60,11 @@ public class FeignClientFallback implements ManagerPatientClient {
         return null;
     }
 
+    @Override
+    public DataOutResponse findByIdCard(String idCard) {
+        return null;
+    }
+
     /*@Override
     public String findUserName(Long adminId) {
         return null;

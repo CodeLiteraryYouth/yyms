@@ -272,4 +272,23 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
             return null;
         }
     }
+
+    @Override
+    public DataOutResponse findByIdCard(String idCard) {
+        // 创建动态客户端
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        List<Map> listMap=null;
+        try {
+            Object[] objects = client.invoke("findByIdCard", idCard);
+            if (objects[0] == null){
+                return ReturnFomart.retParam(1,"信息不存在");
+            }
+//            Map map = JSON.parseObject(objects[0].toString(), Map.class);
+            return ReturnFomart.retParam(200,objects[0].toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

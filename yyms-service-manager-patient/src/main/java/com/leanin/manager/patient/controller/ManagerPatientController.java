@@ -121,4 +121,11 @@ public class ManagerPatientController implements ManagerPatientApi {
         return managerPatientService.cancelOrder(paramMap);
     }
 
+    @Override
+    @GetMapping("findByIdCard")
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard) {
+        return managerPatientService.findByIdCard(idCard);
+    }
+
+
 }

@@ -56,4 +56,8 @@ public interface ManagerPatientApi {
 
     @ApiOperation("取消预约")
     public DataOutResponse cancelOrder(Map paramMap);
+
+    @ApiOperation("根据身份证号查询患者信息")
+    public DataOutResponse findByIdCard(String idCard);
+
 }
