@@ -74,6 +74,8 @@ public class BookPatientServiceImpl implements BookPatientService {
         log.info("HIS预约列表信息:"+JSON.toJSONString(orderData)+"医生预约HIS信息为:"+JSON.toJSONString(regData));
         //判断feign服务没出现服务异常和增加数据成功则存储进入记录表
         if(orderData!=null && regData!=null && orderData.getStatus()==200 && regData.getStatus()==200) {
+            //存储进入预约记录表
+            bookPatientMapper.addBookPatient(bookPatientDao);
             StringBuilder builder=new StringBuilder();
             builder.append("已帮您预约永康妇保医院").append("\r\n");
             builder.append("时间:"+bookPatientDao.getSeeDocDate()+(bookPatientDao.getBookType()==1?"上午":"下午")).append("\r\n");
@@ -93,7 +95,6 @@ public class BookPatientServiceImpl implements BookPatientService {
             msgRecord.setMsgSendStatus("true".equals(map.get("msg").toString()) ? 2:3);
             log.info("短信记录信息为:"+JSON.toJSONString(msgRecord));
             msgRecordMapper.addMsgRecord(msgRecord);
-            bookPatientMapper.addBookPatient(bookPatientDao);
             return ReturnFomart.retParam(200,bookPatientDao);
         } else {
             return ReturnFomart.retParam(5001, bookPatientDao);
