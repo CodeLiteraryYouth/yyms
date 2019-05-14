@@ -16,7 +16,7 @@ public interface BookPatientMapper {
      * @return
      */
     List<Map> findBookPatientList(@Param("patientName") String patientName, @Param("deptId") String deptId,
-    @Param("startDate") String startDate, @Param("endDate") String endDate);
+                                  @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     /**
      * 查询是否已经预约

@@ -152,7 +152,7 @@
     on b.registration_doc_id=a.admin_id
     where b.book_status=0
     <if test="bookDate!=null">
-      and b.book_time=#{bookDate}
+      and b.see_doc_time=#{bookDate}
     </if>
     <if test="bookType!=null">
       and b.book_type=#{bookType}

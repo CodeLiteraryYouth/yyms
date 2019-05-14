@@ -50,24 +50,14 @@ public class BookPatientServiceImpl implements BookPatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DataOutResponse addOrderPatient(BookPatientDao bookPatientDao) {
         log.info("保存预约病人信息为:"+ JSON.toJSONString(bookPatientDao));
-        Map regInfoMap=new HashMap();
-        regInfoMap.put("startDate",bookPatientDao.getSeeDocDate());
-        regInfoMap.put("endDate",bookPatientDao.getSeeDocDate());
-        regInfoMap.put("deptId",bookPatientDao.getDeptId());
-        //查询预约医生列表信息
-        DataOutResponse regInfoData=managerClient.findRegList(regInfoMap);
-        //是否有当前医生排班信息
-        if(regInfoData==null || JsonUtil.json2List(regInfoData.getData().toString()).size()<0) {
-            return ReturnFomart.retParam(5005,bookPatientDao);
-        }
         Map orderPatient=bookPatientMapper.findBookPatient(bookPatientDao.getDoctorName(),bookPatientDao.getSeeDocDate(),
                                                            bookPatientDao.getPatientId(),bookPatientDao.getBookType());
         int orderCount=bookPatientMapper.findcountOrder(bookPatientDao.getSeeDocDate(),bookPatientDao.getPatientId());
         //查询预约列表中是否已存在预约的信息或者当日已预约请勿重复预约
-        if (CompareUtil.isNotEmpty(orderPatient) || orderCount>1) {
+        if (CompareUtil.isNotEmpty(orderPatient) || orderCount>0) {
            return ReturnFomart.retParam(5002,orderCount);
         }
         //传输到HIS的预约列表的传输信息
@@ -91,7 +81,7 @@ public class BookPatientServiceImpl implements BookPatientService {
             builder.append("已帮您预约永康妇保医院").append("\r\n");
             builder.append("时间:"+bookPatientDao.getSeeDocDate()+(bookPatientDao.getBookType()==1?"上午":"下午")).append("\r\n");
             builder.append("科室:"+bookPatientDao.getDeptName()).append("\r\n");
-            builder.append("医生:"+bookPatientDao.getDoctorName());
+            builder.append("医生:"+bookPatientDao.getDoctorName()).append("\r\n");
             builder.append("请及时前往就诊");
             //预约成功以后发送短信给病人
             Map map=CSMSUtils.sendMessage(builder.toString(),bookPatientDao.getPhone());
