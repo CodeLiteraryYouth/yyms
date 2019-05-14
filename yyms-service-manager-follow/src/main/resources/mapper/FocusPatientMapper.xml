@@ -45,6 +45,40 @@
       where focus_id =#{focusId} and focus_status > 0
     </select>
 
+    <select id="exportExcel" resultType="com.leanin.domain.excel.FocusPatientExcel">
+        SELECT
+          patient_name as patientName,
+          patient_ward as dept,
+          inhos_no as inHosNo,
+         CASE
+            patient_sex
+            WHEN 1 THEN '男'
+            WHEN 2 THEN '女'
+            ELSE '其他'
+          END AS sex,
+          patient_birthday as birthday,
+          patient_phone as phoneNum,
+          patient_id_card as idCard,
+         CASE
+            patient_source
+            WHEN 1 THEN '出院'
+            WHEN 2 THEN '门诊'
+            WHEN 3 THEN '在院'
+            WHEN 4 THEN '体检'
+            WHEN 5 THEN '建档'
+            WHEN 6 THEN '签约'
+            WHEN 7 THEN '转入'
+            WHEN 8 THEN '转出'
+            WHEN 9 THEN '患者管理'
+            ELSE '其他' END AS patientSource
+        FROM
+          `leanin_focus_patient`
+        WHERE focus_status = 1
+        <if test="patientName != null">
+            AND patient_name LIKE CONCAT('%',#{patientName},'%')
+        </if>
+    </select>
+
     <update id="updatePatientStatus" >
     update leanin_focus_patient set focus_status=#{status}
     where focus_id = #{focusId}

@@ -1,6 +1,9 @@
 package com.leanin.mapper;
 
 import com.leanin.domain.dao.BookPatientDao;
+import com.leanin.domain.excel.BookPatientExcel;
+import com.leanin.domain.excel.FocusPatientExcel;
+import com.leanin.domain.excel.SeeDocExcle;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -51,4 +54,10 @@ public interface BookPatientMapper {
      * @return
      */
     int updateBookStatus(@Param("patientId") String patientId,@Param("doctorName") String doctorName,@Param("bookDate") String bookDate);
+
+    List<BookPatientExcel> exportBookExcel(@Param("patientName") String patientName, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    List<SeeDocExcle> exportSeeDocExcel(@Param("patientName") String patientName,@Param("deptId") String deptId,@Param("startDate") String startDate,@Param("endDate") String endDate);
+
+
 }

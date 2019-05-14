@@ -58,6 +58,6 @@ public interface ManagerPatientApi {
     public DataOutResponse cancelOrder(Map paramMap);
 
     @ApiOperation("根据身份证号查询患者信息")
-    public DataOutResponse findByIdCard(String idCard);
+    public DataOutResponse findByIdCard(String idCard,String patientName);
 
 }

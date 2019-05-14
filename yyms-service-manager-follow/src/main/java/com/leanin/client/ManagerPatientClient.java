@@ -76,6 +76,6 @@ public interface ManagerPatientClient {
 
 
     @GetMapping("/managerPatient/findByIdCard")
-    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard);
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,@RequestParam("patientName")String patientName);
 
 }

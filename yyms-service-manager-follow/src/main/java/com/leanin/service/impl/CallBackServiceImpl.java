@@ -1,5 +1,6 @@
 package com.leanin.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import com.leanin.domain.CallBack;
 import com.leanin.domain.CallBackDeal;
@@ -58,6 +59,7 @@ public class CallBackServiceImpl implements CallBackService {
         if(callBackDto != null) {
             return ReturnFomart.retParam(4000, callBackDto);
         }
+        callBack.setPushDate(new Date());
         callBackMapper.addCallBack(callBack);
         //同时保存一份单号进入处理表单意见
         CallBackDeal callBackDeal=new CallBackDeal();

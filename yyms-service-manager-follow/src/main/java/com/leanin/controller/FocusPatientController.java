@@ -27,6 +27,13 @@ public class FocusPatientController extends BaseController {
 	@Autowired
 	private FocusPatientService focusPatientService;
 
+	/**
+	 * 查看用户添加的关注患者信息
+	 * @param patientName
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("findPatientList")
 	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,Integer page,Integer pageSize) {
@@ -54,6 +61,16 @@ public class FocusPatientController extends BaseController {
 	public DataOutResponse selectFocusPatientById(@RequestParam String patientId) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		return focusPatientService.selectFocusPatientById(patientId,user.getId());
+	}
+
+	/**
+	 * 关注患者excel 表格导入
+	 * @param patientName 患者名称
+	 * @return
+	 */
+	@GetMapping("exportExcel")
+	public void exportExcel(String patientName){
+		focusPatientService.exportExcel(patientName,request,response);
 	}
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

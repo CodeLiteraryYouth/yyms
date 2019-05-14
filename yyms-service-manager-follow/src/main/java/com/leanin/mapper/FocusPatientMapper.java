@@ -1,10 +1,13 @@
 package com.leanin.mapper;
 
+import com.leanin.domain.excel.FocusPatientExcel;
 import com.leanin.domain.vo.FocusPatientVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface FocusPatientMapper {
 	
 	/**
@@ -37,4 +40,6 @@ public interface FocusPatientMapper {
 	FocusPatientVo selectFocusPatientById(@Param("patientId") String patientId,@Param("userId")Long userId);
 
     FocusPatientVo findPatientByFocusId(@Param("focusId") Long focusId);
+
+    List<FocusPatientExcel> exportExcel(@Param("patientName") String patientName);
 }

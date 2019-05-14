@@ -3,6 +3,9 @@ package com.leanin.service;
 import com.leanin.domain.dao.BookPatientDao;
 import com.leanin.domain.response.DataOutResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author zd
  * @Date 2019/5/9 14:24
@@ -36,4 +39,8 @@ public interface BookPatientService {
      * @return
      */
     DataOutResponse cancelOrderPatient(String patientId,String doctorName,String bookDate);
+
+    void exportBookExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response);
+
+    void exportSeeDocExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response);
 }
