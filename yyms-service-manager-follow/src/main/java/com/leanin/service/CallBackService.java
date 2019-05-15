@@ -3,6 +3,9 @@ import com.leanin.domain.CallBack;
 import com.leanin.domain.CallBackDeal;
 import com.leanin.domain.response.DataOutResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public interface CallBackService {
 
 	/**
@@ -38,4 +41,8 @@ public interface CallBackService {
 	DataOutResponse updateCallBackDeal(CallBackDeal callBackDeal);
 
 	DataOutResponse findBackDealByBackNum(String backNum);
+
+	void exportCallBackExcel(String beginDate, String endDate, Integer dealStatus, String accuseWard, String backNum, int status
+							, HttpServletRequest request, HttpServletResponse response);
+
 }

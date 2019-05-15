@@ -100,4 +100,14 @@ public class CallLogInfoController extends BaseController {
     }
 
 
+    /**
+     * 导出
+     * @param queryCallLogInfoDto
+     */
+    @RequestMapping(value = "exportCallLogExcel")
+    public void exportCallLogExcel(@ModelAttribute QueryCallLogInfoDto queryCallLogInfoDto){
+        callLogInfoService.exportCallLogExcel(queryCallLogInfoDto,request,response);
+    }
+
+
 }

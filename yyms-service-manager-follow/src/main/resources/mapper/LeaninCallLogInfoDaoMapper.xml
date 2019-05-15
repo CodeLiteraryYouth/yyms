@@ -26,6 +26,7 @@
      <result column="call_start_time" jdbcType="TIMESTAMP" property="callStartTime" />
     <result column="call_end_time" jdbcType="TIMESTAMP" property="callEndTime" />
     <result column="holding_time" jdbcType="VARCHAR" property="holdingTime" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
   </resultMap>
 
   <resultMap id="ResultVoMap" type="com.leanin.vo.CallLoginfoVo" extends="BaseResultMap">
@@ -52,49 +53,45 @@
 
   <select id="findList" resultMap="ResultVoMap" parameterType="com.leanin.dto.query.QueryCallLogInfoDto">
         select
-  c.autio_up_id,
-  c.call_creater_name,
-  c.call_creater_number,
-  c.call_log_info_id,
-  c.customer_id,
-  c.customer_name,
-  c.customer_number as phoneNumber,
-  c.follow_plan_name,
-  c.follow_plan_id,
-  c.call_start_time,
-  c.call_end_time,
-  c.section_id,
-  c.call_uuid,
-  c.section_name,
-  c.remark,
-  c.holding_time,
-  DATE_FORMAT(c.call_start_time ,'%Y-%m-%d %H:%i:%s') as phoneTime
+          c.autio_up_id,
+          c.call_creater_name,
+          c.call_creater_number,
+          c.call_log_info_id,
+          c.customer_id,
+          c.customer_name,
+          c.customer_number as phoneNumber,
+          c.follow_plan_name,
+          c.follow_plan_id,
+          c.call_start_time,
+          c.call_end_time,
+          c.section_id,
+          c.call_uuid,
+          c.section_name,
+          c.remark,
+          c.holding_time,
+          DATE_FORMAT(c.call_start_time ,'%Y-%m-%d %H:%i:%s') as phoneTime
+          from leanin_call_log_info c
+          LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
+            where c.is_delete = "N"
+            <if test="data.startTime !=null and data.startTime != '' ">
+              and c.call_start_time &gt;= str_to_date(#{data.startTime}, '%Y-%m-%d')
+            </if>
+            <if test="data.endTime != null and  data.endTime != ''">
+              and c.call_start_time &lt; date_sub(str_to_date(#{data.endTime}, '%Y-%m-%d'),interval -1 day)
+            </if>
+            <if test="data.followPlanId !=null and data.followPlanId !=''">
+              and c.follow_plan_id = #{data.followPlanId}
+            </if>
+            <if test="data.sectionId !=null and data.sectionId !=''">
+              and c.section_id = #{data.sectionId}
+            </if>
 
-  from leanin_call_log_info c
-  LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
-
-    <if test="startTime !=null and startTime !='' ">
-      and c.call_start_time &gt;=#{startTime}
-    </if>
-    <if test="endTime !=null and  endTime !=''">
-      and c.call_start_time &lt;date_sub(#{endTime},interval -1 day)
-    </if>
-  where c.is_delete = "N"
-
-    <if test="followPlanId !=null and followPlanId !=''">
-      c.follow_plan_id = #{followPlanId}
-    </if>
-
-    <if test="sectionId !=null and sectionId !=''">
-      c.section_id = #{sectionId}
-    </if>
-
-    <if test="customerName !=null and customerName !=''">
-      c.customer_name like concat('%', #{customerName}, '%')
-    </if>
-    ORDER BY
-    c.create_time
-    desc
+            <if test="data.customerName !=null and data.customerName !=''">
+              and c.customer_name like CONCAT('%', #{data.customerName}, '%')
+            </if>
+            ORDER BY
+            c.create_time
+            desc
   </select>
 
   <select id="findCallLogInfoById" resultMap="ResultDtoMap">
@@ -122,5 +119,48 @@
     LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
     where c.is_delete = "N"
     and c.call_log_info_id = #{callLogInfoId}
+  </select>
+
+  <select id="exportCallLogExcel" resultMap="BaseResultMap">
+    select
+    c.autio_up_id,
+    c.call_creater_name,
+    c.call_creater_number,
+    c.call_log_info_id,
+    c.customer_id,
+    c.customer_name,
+    c.follow_plan_name,
+    c.follow_plan_id,
+    c.call_start_time,
+    c.call_end_time,
+    c.section_id,
+    c.call_uuid,
+    c.section_name,
+    c.remark,
+    c.holding_time,
+    c.customer_number,
+    DATE_FORMAT(c.call_start_time, '%Y-%m-%d %H:%I:%S') AS start_time
+    from leanin_call_log_info c
+    LEFT JOIN leanin_audio_up  a on a.call_uuid = c.call_uuid
+    where c.is_delete = "N"
+    <if test="startTime !=null and startTime !='' ">
+      and c.call_start_time &gt;=#{startTime}
+    </if>
+    <if test="endTime !=null and  endTime !=''">
+      and c.call_start_time &lt;date_sub(#{endTime},interval -1 day)
+    </if>
+    <if test="followPlanId !=null and followPlanId !=''">
+      and c.follow_plan_id = #{followPlanId}
+    </if>
+
+    <if test="sectionId !=null and sectionId !=''">
+      and c.section_id = #{sectionId}
+    </if>
+    <if test="customerName !=null and customerName !=''">
+      and c.customer_name like concat('%', #{customerName}, '%')
+    </if>
+    ORDER BY
+    c.create_time
+    desc
   </select>
 </mapper>

@@ -5,6 +5,9 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.dto.CallLogInfoDto;
 import com.leanin.dto.query.QueryCallLogInfoDto;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @ClassName CallLogInfoService
  * @Description 通话记录接口
@@ -47,4 +50,6 @@ public interface CallLogInfoService{
      * @return
      */
 	DataOutResponse insertCallLog(CallLogInfoDto callLogInfoDto);
+
+    void exportCallLogExcel(QueryCallLogInfoDto queryCallLogInfoDto, HttpServletRequest request, HttpServletResponse response);
 }
