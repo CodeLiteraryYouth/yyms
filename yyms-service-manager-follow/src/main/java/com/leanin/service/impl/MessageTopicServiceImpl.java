@@ -3,6 +3,7 @@ package com.leanin.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.config.RabbitMQConfig;
@@ -13,6 +14,7 @@ import com.leanin.domain.vo.MessageTopicVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.model.response.CommonCode;
 import com.leanin.utils.CompareUtil;
+import com.leanin.utils.UUIDUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -63,7 +65,8 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse addMsgTopic(MessageTopicVo record) {
 		log.info("增加的短信主题信息为:"+JSON.toJSONString(record));
-		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicByName(record.getMsgTopicTitle());
+		record.setMsgTopicId(UUIDUtils.getUUID());
+		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(record.getMsgTopicId());
 		if(CompareUtil.isNotEmpty(messageTopic)) {
 			ExceptionCast.cast(PlanPatCode.DATA_ERROR);
 		}
@@ -80,7 +83,7 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 //		List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
 		//疾病集合
 		String diseaseCode = messageTopicVo.getDiseaseName();
-		if (diseaseCode != null){
+		if (diseaseCode != null && !"[]".equals(diseaseCode)){
 			List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
 			paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
 		}

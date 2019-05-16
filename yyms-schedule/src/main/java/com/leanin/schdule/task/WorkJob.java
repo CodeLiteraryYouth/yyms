@@ -340,11 +340,12 @@ public class WorkJob {
         log.info("更新下次随访时间");
         List<PlanInfoDto> planInfoDtos = planInfoMapper.findAllPlan();
         for (PlanInfoDto planInfoDto : planInfoDtos) {
-            if (planInfoDto.getPlanType() == 2) {//只更新随访
-                continue;
-            }
+
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
+            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新随访
+                continue;
+            }
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
@@ -375,6 +376,10 @@ public class WorkJob {
             for (PlanPatientVo planPatientVo : planPatientList) {
                 Date nextDate = planPatientVo.getNextDate();//随访时间
                 int days = (int) (System.currentTimeMillis() - nextDate.getTime()) / (1000 * 3600 * 24);//两个时间相差的天数
+                if (days > validDays) {
+                    updateRecord(planPatientVo.getPlanPatsStatus(), planPatientVo, rulesInfo, timeSelect,
+                            timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                }
                 switch (planPatientVo.getPlanPatsStatus()) {
                     case -1: // -1 收案
                         break;
@@ -403,12 +408,10 @@ public class WorkJob {
                         updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                 timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         break;
-                    case 4: //随访异常
-                        if (days > validDays) {
-                            updateRecord(4, planPatientVo, rulesInfo, timeSelect,
-                                    timeChoosed, weeks, sendTimeDays, sendTimeMonths);
-                        }
+                    default: //随访异常
+
                         break;
+
                 }
             }
             log.info("一次计划更新完成{}", planInfoDto.getPlanNum());

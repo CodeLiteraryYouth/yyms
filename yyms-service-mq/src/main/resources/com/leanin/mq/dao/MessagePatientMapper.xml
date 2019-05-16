@@ -41,9 +41,6 @@
   <insert id="insertSelective" parameterType="com.leanin.domain.vo.MessagePatientVo">
     insert into leanin_msg_patient
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="patientMsgId != null">
-        patient_msg_id,
-      </if>
       <if test="msgTopicId != null">
         msg_topic_id,
       </if>
@@ -82,9 +79,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="patientMsgId != null">
-        #{patientMsgId,jdbcType=BIGINT},
-      </if>
       <if test="msgTopicId != null">
         #{msgTopicId,jdbcType=VARCHAR},
       </if>

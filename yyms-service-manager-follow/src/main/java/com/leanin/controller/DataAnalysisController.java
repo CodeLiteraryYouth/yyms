@@ -25,7 +25,7 @@ public class DataAnalysisController {
      * @param dept          科室
      * @param startDate     开始时间
      * @param endDate       结束时间
-     * @param planType      计划类型  1随访  3满意度
+     * @param planType      计划类型  1随访  2 宣教  3满意度
      * @return
      */
 //    @PreAuthorize("hasAnyAuthority('root','dataAly')")
@@ -33,6 +33,21 @@ public class DataAnalysisController {
     public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam("planType") Integer planType,Integer formStatus,Long userId,Integer isAll){
         return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
     }
+
+    /**
+     * 随访统计
+     * @param patientSource 患者来源
+     * @param planNum     计划号
+     * @param dept       科室
+     * @param startDate  开始时间
+     * @param endDate    结束时间
+     * @return
+     */
+    @GetMapping("deptFollowAnalysis")
+    public DataOutResponse deptFollowAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate){
+        return dataAnalysisService.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+    }
+
 
 
     /**

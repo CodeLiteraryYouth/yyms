@@ -66,7 +66,7 @@ public class PlanPatientMQ {
             messagePatientVo.setPatientAge(patientAge);//设置病人年龄
             String patientPhone = (String) map.get("patientPhone");
             messagePatientVo.setPatientPhone(patientPhone);//设置病人手机号码
-//            satisfyPatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
+//            messagePatientVo.set(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
 //            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
@@ -77,9 +77,9 @@ public class PlanPatientMQ {
 //            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
             messagePatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
 //            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
-            messagePatientVo.setIdCard(map.get("idCard").toString());//身份证号
+            messagePatientVo.setIdCard((String) map.get("idCard"));//身份证号
             messagePatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
-//            messagePatientVo.setAreaCode();//设置院区编码
+            messagePatientVo.setAreaCode((String) map.get("DIST"));//设置院区编码
             log.info("短信计划患者信息:{}",JSON.toJSONString(messagePatientVo));
             messagePatientMapper.insertSelective(messagePatientVo);
         }
@@ -125,14 +125,16 @@ public class PlanPatientMQ {
             satisfyPatientVo.setPatientAge(patientAge);//设置病人年龄
             String patientPhone = (String) map.get("patientPhone");
             satisfyPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
-            satisfyPatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
+            String dept = (String) map.get("DEPT");
+            satisfyPatientVo.setPatientWard(dept);//设置病人科室  可能是集合
             Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
-            satisfyPatientVo.setPatientDiagous(satisfyPlan.getDiseaseName());//设置病人诊断  可能是集合
+            String diagous = (String) map.get("DIAGNOSIS_NAME");
+            satisfyPatientVo.setPatientDiagous(diagous);//设置病人诊断
             satisfyPatientVo.setPatientType(satisfyPlan.getPatientType());//设置病人来源   可能是集合
-//                String areaCode = (String) map.get("areaCode");
-//                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
+            String areaCode = (String) map.get("DIST");
+            satisfyPatientVo.setAreaCode(areaCode);//设置病区编码   可能是集合
             satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
             satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
             satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
@@ -229,15 +231,17 @@ public class PlanPatientMQ {
                 planPatientVo.setPatientAge(patientAge);//设置病人年龄
                 String patientPhone = (String) map.get("patientPhone");
                 planPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
-                planPatientVo.setPatientWard(planInfo.getPatsWardCode());//设置病人科室  可能是集合
+                String dept = (String) map.get("DEPT");
+                planPatientVo.setPatientWard(dept);//设置病人科室  可能是集合
                 planPatientVo.setFormStatus(1);//设置随访状态 1 未完成  2 已完成
                 planPatientVo.setPatientStatus(1);//设置 状态  1：未删除  2 已删除
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
-                planPatientVo.setPatientDiagous(planInfo.getDiseaseCode());//设置病人诊断  可能是集合
+                String disease = (String) map.get("DIAGNOSIS_NAME");
+                planPatientVo.setPatientDiagous(disease);//设置病人诊断  可能是集合
                 planPatientVo.setPatientType(planInfo.getPatientInfoSource());//设置病人来源   可能是集合
-//                String areaCode = (String) map.get("areaCode");
-//                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
+                String areaCode = (String) map.get("DIST");
+                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
                 if (planInfo.getPlanType() == 1){//随访
                     planPatientVo.setPlanPatsStatus(0);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
                 }else{//宣教

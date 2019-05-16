@@ -9,4 +9,7 @@ public interface DataAnalysisService {
     DataOutResponse userFollowAnalysis(Long userId,String time,Integer planType);
 
     DataOutResponse callBackAnalysis(Integer type, Integer dealStatus);
+
+    DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate);
+
 }
