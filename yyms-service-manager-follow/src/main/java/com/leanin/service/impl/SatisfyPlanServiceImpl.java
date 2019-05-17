@@ -14,6 +14,7 @@ import com.leanin.domain.vo.SatisfyPlanVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.model.response.CommonCode;
 import com.leanin.utils.CompareUtil;
+import com.leanin.utils.UUIDUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -72,15 +73,19 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse addSatisfyPlan(SatisfyPlanVo record) {
         log.info("增加的满意度计划信息为:" + JSON.toJSONString(record));
-        SatisfyPlanVo satisfyPlanPlanVo = satisfyPlanMapper.findSatisfyPlanByName(record.getPlanSatisfyName());
+        record.setPlanSatisfyNum(UUIDUtils.getUUID());
+//        SatisfyPlanVo satisfyPlanPlanVo = satisfyPlanMapper.findSatisfyPlanByName(record.getPlanSatisfyName());
+        SatisfyPlanVo satisfyPlanPlanVo = satisfyPlanMapper.findSatisfyPlanById(record.getPlanSatisfyNum());
         if (CompareUtil.isNotEmpty(satisfyPlanPlanVo)) {
             //如果已经存在该信息,请勿重复添加
             ExceptionCast.cast(PlanResponseCode.INVALID_PARAM);
         }
+
         satisfyPlanMapper.addSatisfyPlan(record);
         //添加到计划表单中
 //        String patsWardCode = record.getPatsWardCode();//患者科室
-        SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanByName(record.getPlanSatisfyName());
+//        SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanByName(record.getPlanSatisfyName());
+        SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(record.getPlanSatisfyNum());
         if (satisfyPlan == null) {
             ExceptionCast.cast(PlanResponseCode.FEIGN_ERROR);
         }
@@ -94,7 +99,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
         }
         //疾病集合
         String diseaseCode = satisfyPlan.getDiseaseName();
-        if (diseaseCode != null){
+        if (diseaseCode != null && !"[]".equals(diseaseCode)){
             List<String> diseaseCodeList =JSON.parseArray(diseaseCode, String.class);
             paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
         }

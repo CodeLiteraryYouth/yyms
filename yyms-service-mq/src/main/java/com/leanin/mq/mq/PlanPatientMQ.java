@@ -107,7 +107,7 @@ public class PlanPatientMQ {
 
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
         String timeNumStr = (String) rulesMap.get("timeNum");
-        Integer timeChoosed = Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        Integer timeChoosed =(Integer) rulesMap.get("timeChoosed"); //Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
 
 
@@ -139,8 +139,8 @@ public class PlanPatientMQ {
             satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
             satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
 //            satisfyPatientVo.setAreaCode();//设置院区编码
-            satisfyPatientVo.setIdCard(map.get("idCard").toString());
-            satisfyPatientVo.setInhosNo(map.get("inhosNo").toString());
+            satisfyPatientVo.setIdCard((String) map.get("idCard"));
+            satisfyPatientVo.setInhosNo((String) map.get("inhosNo"));
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(lastDate);
             calendar.add(Calendar.DATE, Integer.parseInt(timeNumStr));
@@ -417,7 +417,7 @@ public class PlanPatientMQ {
     private Date setNextDate(Date timePick, Integer timeChoosed) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(timePick);
-        calendar.set(Calendar.HOUR_OF_DAY, timeChoosed + 5);
+        calendar.set(Calendar.HOUR_OF_DAY, timeChoosed + 5+8);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         Date nextDate = calendar.getTime();

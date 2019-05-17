@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /api
 spring:
+  jackson:
+    time-zone: GMT+8
   application:
     name: yyms-gateway
 #  redis:

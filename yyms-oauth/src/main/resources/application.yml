@@ -3,6 +3,8 @@ server:
 #  servlet:
 #    context-path: /auth
 spring:
+  jackson:
+    time-zone: GMT+8
   application:
     name: yyms-oauth
   redis:

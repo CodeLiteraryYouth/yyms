@@ -228,6 +228,38 @@
         ORDER BY MONTH(lfr.next_date) ASC
     </select>
 
+    <select id="deptFollowAnalysis" resultType="com.leanin.domain.analysis.DeptAnalysis">
+        SELECT
+          COUNT(*) AS hitCount,
+          lfr.plan_pats_status as state,
+          lwi.`ward_name` as deptName
+        FROM
+          leanin_follow_record lfr,
+          leanin_plan_info lpi,
+          `leanin_ward_info` lwi
+        WHERE lfr.patient_status = 1
+          AND lfr.plan_num = lpi.plan_num
+          AND lpi.plan_status = 0
+          AND lfr.`patient_ward` = lwi.`ward_name`
+        <if test="planNum != null">
+            and lfr.plan_num = #{planNum}
+        </if>
+        <if test="patientSource != null">
+            and lfr.patient_source = #{patientSource}
+        </if>
+        <if test="dept != null">
+            and lfr.patient_ward =#{dept}
+        </if>
+        <if test="startDate != null">
+            and lfr.next_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and lfr.next_date &lt;= #{endDate}
+        </if>
+        GROUP BY lwi.`ward_name`, lfr.plan_pats_status
+        ORDER BY lfr.plan_pats_status
+    </select>
+
     <update id="updatePatientStatusById">
         UPDATE leanin_follow_record
         SET patient_status = 2

@@ -1,6 +1,8 @@
 server:
   port: 9001
 spring:
+  jackson:
+    time-zone: GMT+8
   application:
     name: yyms-service-mq
   rabbitmq:

@@ -147,6 +147,8 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
     @Override
     public DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate) {
         List<DeptAnalysis> list = planPatientMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        List<DeptAnalysis> records = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+
         return null;
     }
 

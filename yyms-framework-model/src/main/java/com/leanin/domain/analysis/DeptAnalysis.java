@@ -14,7 +14,7 @@ public class DeptAnalysis {
 
     private Integer state;    //状态
 
-    private Integer count;    //个数
+    private Integer hitCount;    //个数
 
 
 }

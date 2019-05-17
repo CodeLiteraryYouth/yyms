@@ -1,15 +1,38 @@
-###服务端口号
+spring:
+  application:
+    name: yyms-eureka-server #指定服务名
+---
+spring:
+  profiles: peer1 #指定profile=peer1
 server:
-  port: 50101
-###eureka 基本信息配置
+  port: 50101 #服务端口
 eureka:
-  instance:
-    ###注册到eurekaip地址
-    hostname: 127.0.0.1
   client:
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-    ###因为自己是为注册中心，不需要自己注册自己
-    register-with-eureka: false
-    ###因为自己是为注册中心，不需要检索服务
-    fetch-registry: false
+    registerWithEureka: true #服务注册，是否将自己注册到Eureka服务中
+    fetchRegistry: true #服务发现，是否从Eureka中获取注册信息
+    serviceUrl: #Eureka客户端与Eureka服务端的交互地址，高可用状态配置对方的地址，单机状态配置自己（如果不配置则默认本机8761端口）
+#      defaultZone: http://172.16.21.115:50102/eureka/  #阿里云
+        defaultZone: http://221.12.12.58:50102/eureka/  #浪潮服务器
+  server:
+    enable-self-preservation: false #是否开启自我保护模式31
+    eviction-interval-timer-in-ms: 60000 #服务注册表清理间隔（单位毫秒，默认是60*1000）
+  instance:
+    hostname: eureka01
+
+---
+spring:
+  profiles: peer2 #指定profile=peer1
+server:
+  port: 50102 #服务端口
+eureka:
+  client:
+    registerWithEureka: true #服务注册，是否将自己注册到Eureka服务中
+    fetchRegistry: true #服务发现，是否从Eureka中获取注册信息
+    serviceUrl: #Eureka客户端与Eureka服务端的交互地址，高可用状态配置对方的地址，单机状态配置自己（如果不配置则默认本机8761端口）
+#      defaultZone: http://172.16.21.115:50101/eureka/  #阿里云
+        defaultZone: http://221.12.12.58:50101/eureka/
+  server:
+    enable-self-preservation: false #是否开启自我保护模式31
+    eviction-interval-timer-in-ms: 60000 #服务注册表清理间隔（单位毫秒，默认是60*1000）
+  instance:
+    hostname: eureka02

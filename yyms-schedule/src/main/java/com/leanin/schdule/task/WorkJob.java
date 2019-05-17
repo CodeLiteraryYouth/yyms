@@ -219,31 +219,36 @@ public class WorkJob {
         String accessToken = getAccessToken();//获取accessToken
         for (SatisfyPlanVo planVo : planVos) {
             log.info("满意度计划信息：{}", JSON.toJSONString(planVo));
-            //获取计划对应的短消息 信息
-            MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(planVo.getMsgId());
+
             //获取计划对应的患者信息
             List<SatisfyPatientVo> list = satisfyPatientMapper.findList(planVo.getPlanSatisfyNum(), null, null, null, null, null, 1);
             if (list.size() == 0) {
                 continue;
             }
+            MsgInfoVo msgInfo = null;
+            if(planVo.getDiscoverType() != 2){
+                msgInfo = msgInfoMapper.findMsgInfoById(planVo.getMsgId());
+            }
             Map ruleMap = JSON.parseObject(planVo.getRulesText(), Map.class);
             int rangeDays = Integer.parseInt((String) ruleMap.get("rangeDays"));
+
 
             //判断患者信息是否处于 未发送的状态
             switch (planVo.getDiscoverType()) {
                 case 1: //短信或者公众号
                     log.info("短信或者公众号推送方式");
+                    //获取计划对应的短消息 信息
                     sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 1,accessToken);
                     break;
                 case 2: //公众号
                     log.info("公众号推送方式");
-                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 2,accessToken);
+                    sendMsg(planVo, list, null, rangeDays, 2,accessToken);
                     break;
                 case 3: //短信
                     //执行相关发送操作
                     log.info("短信推送方式");
-                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 3,accessToken);
-                    break;
+                    sendMsg(planVo, list, msgInfo.getMsgText(), rangeDays, 3, accessToken);
+                break;
             }
         }
     }
