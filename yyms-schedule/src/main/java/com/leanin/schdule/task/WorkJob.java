@@ -5,6 +5,7 @@ import com.leanin.domain.dao.WxSendDao;
 import com.leanin.domain.dto.PlanInfoDto;
 import com.leanin.domain.vo.*;
 import com.leanin.schdule.mapper.*;
+import com.leanin.schdule.repository.MessageRecordRepository;
 import com.leanin.schdule.repository.WxSendRepository;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.HttpClient;
@@ -60,6 +61,9 @@ public class WorkJob {
     @Autowired
     WxSendRepository wxSendRepository;
 
+    @Autowired
+    MessageRecordRepository messageRecordRepository;
+
     //13817165550
     //短信主题发送短信
     @Scheduled(cron = "0 0/10 * * * ? ")
@@ -85,9 +89,28 @@ public class WorkJob {
                     messagePatientVo.setSendType(3);//发送失败
                 }
                 messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
-                msgRecordMapper.addMsgRecord(new MessageRecord(null, 0l, messageTopicVo.getMsgTopicCreaterWard(),
-                        new Date(), messagePatientVo.getPatientPhone(), content, messagePatientVo.getSendType(), messageTopicVo.getMsgTopicTitle(), 4, messagePatientVo.getPatientMsgId(), messagePatientVo.getPatientId() + "",
-                        messageTopicVo.getMsgTopicId(), messageTopicVo.getMsgTopicId()));
+                MessageRecord messageRecord =new MessageRecord();
+                messageRecord.setMsgSendId(null);//主键自增
+                messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+                messageRecord.setMsgSendWard(messageTopicVo.getMsgTopicCreaterWard());//计划负责科室
+                messageRecord.setMsgSendDate(new Date());
+                messageRecord.setMsgSendNum(messagePatientVo.getPatientPhone());//发送手机号
+                messageRecord.setMsgText(content);//发送内容
+                messageRecord.setMsgSendStatus(messagePatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
+                messageRecord.setMsgThem(messageTopicVo.getMsgTopicTitle());//短信主题
+                messageRecord.setPlanType(4);//计划类型  1 随访 2 宣教 3 满意度 4 短信主题  5 自定义短信
+                messageRecord.setPlanPatientId(messagePatientVo.getPatientId());//计划患者主键
+                messageRecord.setPatientId(messagePatientVo.getPatientId()+"");//his 患者主键
+                messageRecord.setPlanNum(messageTopicVo.getMsgTopicId());//短信主题 主键
+                messageRecord.setFormId(null);//表单主键
+                messageRecord.setPatientWard(null); //患者科室
+                messageRecord.setPatientSource(messagePatientVo.getPatientType());  //患者来源
+                messageRecord.setNextDate(messageTopicVo.getMsgSendDate());//计划患者发送时间
+//                msgRecordMapper.addMsgRecord(new MessageRecord(null, 0l, messageTopicVo.getMsgTopicCreaterWard(),
+//                        new Date(), messagePatientVo.getPatientPhone(), content, messagePatientVo.getSendType(), messageTopicVo.getMsgTopicTitle(), 4, messagePatientVo.getPatientMsgId(), messagePatientVo.getPatientId() + "",
+//                        messageTopicVo.getMsgTopicId(), messageTopicVo.getMsgTopicId()));
+                MessageRecord save = messageRecordRepository.save(messageRecord);
+                log.info("添加的短信主题发送记录为:{}",JSON.toJSONString(messageRecord));
             }
         }
     }
@@ -191,18 +214,37 @@ public class WorkJob {
         log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}", msg + param, patientDto.getPatientPhone(), msgStatus);
         if (msgStatus.equals("true")) {
             patientDto.setSendType(2); //发送成功
-//            if (planInfo.getPlanType() == 1) { //随访计划
+            if (planInfo.getPlanType() == 1) { //随访计划
             patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
-//            } else {//宣教计划
-//                patientDto.setPlanPatsStatus(2); //修改成已完成状态
-//            }
+            } else {//宣教计划
+                patientDto.setPlanPatsStatus(2); //修改成已完成状态
+            }
         } else {
             patientDto.setSendType(3); //发送失败
         }
-        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
-                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
-                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
-        planPatientMapper.updatePlanPatient(patientDto);
+        MessageRecord messageRecord =new MessageRecord();
+        messageRecord.setMsgSendId(null);//主键自增
+        messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+        messageRecord.setMsgSendWard(planInfo.getPlanWardCode());//计划负责科室
+        messageRecord.setMsgSendDate(new Date());
+        messageRecord.setMsgSendNum(patientDto.getPatientPhone());//发送手机号
+        messageRecord.setMsgText(msg + param);//发送内容
+        messageRecord.setMsgSendStatus(patientDto.getSendType());//发送状态  2 发送成功  3 发送失败
+        messageRecord.setMsgThem(null);//短信主题
+        messageRecord.setPlanType(planInfo.getPlanType());//计划类型  1 随访 2 宣教 3 满意度 4 短信主题  5 自定义短信
+        messageRecord.setPlanPatientId(patientDto.getPatientPlanId());//计划患者主键
+        messageRecord.setPatientId(patientDto.getPatientId()+"");//his 患者主键
+        messageRecord.setPlanNum(planInfo.getPlanNum());//短信主题 主键
+        messageRecord.setFormId(patientDto.getFormId());//表单主键
+        messageRecord.setPatientWard(patientDto.getPatientWard()); //患者科室
+        messageRecord.setPatientSource(patientDto.getPatientSource());  //患者来源
+        messageRecord.setNextDate(patientDto.getNextDate());//计划患者发送时间
+//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
+//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
+//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
+//        planPatientMapper.updatePlanPatient(patientDto);
+        MessageRecord save = messageRecordRepository.save(messageRecord);
+        log.info("发送随访/宣教短信信息",JSON.toJSONString(save));
         return patientDto;
     }
 
@@ -282,9 +324,10 @@ public class WorkJob {
                             } else {
                                 satisfyPatientVo.setSendType(3); //发送失败
                             }
-                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
-                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
-                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
+                            addMsgRecord(satisfyPatientVo,msgText + param,satisfyPlanVo);
+//                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
+//                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
+//                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                             //推送公众号
 //                            if (accessToken == null) {
 //                            String accessToken = getAccessToken();//获取accessToken
@@ -325,9 +368,10 @@ public class WorkJob {
                             } else {
                                 satisfyPatientVo.setSendType(3); //发送失败
                             }
-                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
-                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
-                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
+                            addMsgRecord(satisfyPatientVo,msgText + param,satisfyPlanVo);
+//                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
+//                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
+//                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                         }
                         break;
                     }
@@ -549,23 +593,23 @@ public class WorkJob {
                 log.info("患者openid 为空");
                 return 1;//openid 为空
             }
-            wxSendDao.setId(null);
+            wxSendDao.setId(null);//公众号发送记录主键
             String param = "";
             Map data = new HashMap();
             data.put("template_id", "nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");
-            wxSendDao.setTemplateId("nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");
+            wxSendDao.setTemplateId("nSZehuEC3QZpMWnBLn--IP85E7Z6lyIGAhSqfMFbTEc");     //公众号发送模板号
             data.put("touser", patientDto.getOpendId());
-            wxSendDao.setOpenId(patientDto.getOpendId());
+            wxSendDao.setOpenId(patientDto.getOpendId());   //公众号发送openid
             Map user = new HashMap();
             Map first = new HashMap();
-            wxSendDao.setPlanPatientId(patientDto.getPatientPlanId());
-            wxSendDao.setPatientId(patientDto.getPatientId() + "");
-            wxSendDao.setFormId(planInfo.getFollowFormNum());
+            wxSendDao.setPlanPatientId(patientDto.getPatientPlanId()); //公众号发送计划患者主键
+            wxSendDao.setPatientId(patientDto.getPatientId() + "");    //his患者主键
+            wxSendDao.setFormId(planInfo.getFollowFormNum());          //发送表单id
             if (planInfo.getPlanType() == 1) {//随访
                 param = "http://sf-system.leanin.com.cn/postlist?planPatientId=" + patientDto.getPatientPlanId() + "&planType=1&formNum=" + planInfo.getFollowFormNum();
                 first.put("value", "您好！为了您的健康，请及时完成未提交的随访调查表单。");
-                wxSendDao.setMsgTitle("您好！为了您的健康，请及时完成未提交的随访调查表单。");
-                wxSendDao.setPlanType(1);//随访
+                wxSendDao.setMsgTitle("您好！为了您的健康，请及时完成未提交的随访调查表单。"); //微信模板消息头
+                wxSendDao.setPlanType(1);//发送计划类型 1 随访 2 宣教  3 满意度
             } else {//宣教
                 param = "http://sf-system.leanin.com.cn/education?planPatientId=" + patientDto.getPatientPlanId() + "&planType=2&formNum=" + planInfo.getFollowFormNum();
                 first.put("value", "您好！为了您的健康，请及时查看未读的宣教内容。");
@@ -574,23 +618,23 @@ public class WorkJob {
             }
             user.put("first", first);
             data.put("url", param);
-            wxSendDao.setFormUrl(param);
+            wxSendDao.setFormUrl(param);    //发送表单的链接
             Map keyword1 = new HashMap();
             keyword1.put("value", "建德第一人民医院");
             user.put("keyword1", keyword1);
-            wxSendDao.setAreaCode("建德第一人民医院");
+            wxSendDao.setAreaCode("建德第一人民医院");   //医院名称
             Map keyword2 = new HashMap();
             keyword2.put("value", planInfo.getPlanWardCode());
             user.put("keyword2", keyword2);
-            wxSendDao.setWardCode(planInfo.getPlanWardCode());
+            wxSendDao.setWardCode(planInfo.getPlanWardCode());//计划科室
             Map keyword3 = new HashMap();
             keyword3.put("value", patientDto.getPatientName());
             user.put("keyword3", keyword3);
-            wxSendDao.setPatientName(patientDto.getPatientName());
+            wxSendDao.setPatientName(patientDto.getPatientName()); //患者姓名
             Map remark = new HashMap();
             remark.put("value", "点击“详情”进行出院随访填写");
             user.put("remark", remark);
-            wxSendDao.setMsgRemark("点击“详情”进行出院随访填写");
+            wxSendDao.setMsgRemark("点击“详情”进行出院随访填写");  //模板结尾
             data.put("data", user);
 
             String dataStr = JSON.toJSONString(data);
@@ -600,13 +644,17 @@ public class WorkJob {
             Map map = JSON.parseObject(result, Map.class);
 
             Integer errcode = (Integer) map.get("errcode");
-            wxSendDao.setErrorCode(errcode);
+            wxSendDao.setErrorCode(errcode);   //错误代码
             String errmsg = (String) map.get("errmsg");
-            wxSendDao.setErrmsg(errmsg);
-            wxSendDao.setCreateTime(new Date());
+            wxSendDao.setErrmsg(errmsg);       //错误描述
+            wxSendDao.setCreateTime(new Date());  // 发送时间
+            wxSendDao.setPatientSource(patientDto.getPatientSource()); //患者来源
+            wxSendDao.setPlanNum(planInfo.getPlanNum());        //计划主键
+            wxSendDao.setNextDate(patientDto.getNextDate());    //计划发送时间
+            wxSendDao.setPatientWard(patientDto.getPatientWard());//患者科室
             switch (errcode) {
                 case 0: {//发送成功
-                    wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));
+                    wxSendDao.setMsgId(Long.parseLong((String) map.get("msgid")));  //微信公众号发送成功的id
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息成功:{}", JSON.toJSONString(save));
                 }
@@ -674,6 +722,10 @@ public class WorkJob {
             String errmsg = (String) map.get("errmsg");
             wxSendDao.setErrmsg(errmsg);
             wxSendDao.setCreateTime(new Date());
+            wxSendDao.setPatientSource(satisfyPatientVo.getPatientType()); //患者来源
+            wxSendDao.setPlanNum(satisfyPlanVo.getPlanSatisfyNum());        //计划主键
+            wxSendDao.setNextDate(satisfyPatientVo.getPatientDateTime());    //计划发送时间
+            wxSendDao.setPatientWard(satisfyPatientVo.getPatientWard());//患者科室
             switch (errcode) {
                 case 0: {//发送成功
                     wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));
@@ -692,8 +744,32 @@ public class WorkJob {
 
             }
         }
-
-
+    }
+    //满意度发送短信
+    private void addMsgRecord(SatisfyPatientVo satisfyPatientVo,String msgContent,SatisfyPlanVo satisfyPlanVo){
+        MessageRecord messageRecord =new MessageRecord();
+        messageRecord.setMsgSendId(null);//主键自增
+        messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+        messageRecord.setMsgSendWard(satisfyPlanVo.getSatisfyPlanWard());//计划负责科室
+        messageRecord.setMsgSendDate(new Date());
+        messageRecord.setMsgSendNum(satisfyPatientVo.getPatientPhone());//发送手机号
+        messageRecord.setMsgText(msgContent);//发送内容
+        messageRecord.setMsgSendStatus(satisfyPatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
+        messageRecord.setMsgThem(null);//短信主题
+        messageRecord.setPlanType(3);//计划类型  1 随访 2 宣教 3 满意度 4 短信主题  5 自定义短信
+        messageRecord.setPlanPatientId(satisfyPatientVo.getPatientSatisfyId());//计划患者主键
+        messageRecord.setPatientId(satisfyPatientVo.getPatientId() + "");//his 患者主键
+        messageRecord.setPlanNum(satisfyPatientVo.getSatisfyPlanNum());//短信主题 主键
+        messageRecord.setFormId(satisfyPatientVo.getFormId());//表单主键
+        messageRecord.setPatientWard(satisfyPatientVo.getPatientWard()); //患者科室
+        messageRecord.setPatientSource(satisfyPatientVo.getPatientType());  //患者来源
+        messageRecord.setNextDate(satisfyPatientVo.getPatientDateTime());//计划患者发送时间
+//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
+//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
+//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
+//        planPatientMapper.updatePlanPatient(patientDto);
+        MessageRecord save = messageRecordRepository.save(messageRecord);
+        log.info("满意度计划发送短信:{}",JSON.toJSONString(messageRecord));
     }
 
     /*private Map setParam(Map data, Map user, Map first, Map keyword1,

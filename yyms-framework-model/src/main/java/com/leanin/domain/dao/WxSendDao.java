@@ -66,13 +66,19 @@ public class WxSendDao {
     private String formUrl;     //表单url
 
     @Column(name = "create_time")
-    private Date createTime;
+    private Date createTime;    //创建时间
 
-    @Column(name = "ex7")
-    private String ex7;
+    @Column(name = "patient_source")
+    private Integer patientSource;  //患者来源
 
-    @Column(name = "ex8")
-    private String ex8;
+    @Column(name = "plan_num")
+    private String planNum;         //计划主键
+
+    @Column(name = "next_date")
+    private Date nextDate;         //计划发送时间
+
+    @Column(name = "patient_ward")
+    private String patientWard;         //患者科室
 
 
 

@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class MessageTopicVo {
 	
-    private String msgTopicId;	//短信单号
+    private String msgTopicId;	//短信主题单号
 
     private String msgTopicTitle;	//短信主题
 
