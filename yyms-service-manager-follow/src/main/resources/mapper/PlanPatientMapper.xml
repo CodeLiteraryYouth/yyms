@@ -2,25 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.PlanPatientMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
-        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
-        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
-        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
-        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
-        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
-        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
-        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
-        <result column="form_status" jdbcType="INTEGER" property="formStatus"/>
-        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
-        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
-        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
-        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
-        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="patient_ward" jdbcType="VARCHAR" property="patientWard"/>
-        <result column="plan_pats_status" jdbcType="INTEGER" property="planPatsStatus"/>
-        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
-        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
-        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <id column="patient_plan_id"  property="patientPlanId"/>
+        <result column="plan_num"  property="planNum"/>
+        <result column="patient_id"  property="patientId"/>
+        <result column="send_type"  property="sendType"></result>
+        <result column="patient_name"  property="patientName"/>
+        <result column="patient_sex"  property="patientSex"/>
+        <result column="patient_age"  property="patientAge"/>
+        <result column="patient_phone" property="patientPhone"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="patient_status" property="patientStatus"/>
+        <result column="patient_condition" property="patientCondition"/>
+        <result column="patient_diagous" property="patientDiagous"/>
+        <result column="patient_type" property="patientType"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="patient_ward" property="patientWard"/>
+        <result column="plan_pats_status" property="planPatsStatus"/>
+        <result column="rules_info_id" property="rulesInfoId"></result>
+        <result column="next_date" property="nextDate"></result>
+        <result column="patient_source" property="patientSource"></result>
         <result column="handle_sugges" property="handleSugges"></result>
         <result column="id_card" property="idCard"></result>
         <result column="inhos_no" property="inhosNo"></result>
@@ -31,26 +31,26 @@
         </association>
     </resultMap>
     <resultMap id="BASE_MAP" type="com.leanin.domain.vo.PlanPatientVo">
-        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
-        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
-        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
-        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
-        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
-        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
-        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
-        <result column="form_status" jdbcType="INTEGER" property="formStatus"/>
-        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
-        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
-        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
-        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
-        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="plan_pats_status" jdbcType="INTEGER" property="planPatsStatus"/>
-        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
-        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
-        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
+        <id column="patient_plan_id" property="patientPlanId"/>
+        <result column="plan_num" property="planNum"/>
+        <result column="patient_id" property="patientId"/>
+        <result column="send_type" property="sendType"></result>
+        <result column="patient_name" property="patientName"/>
+        <result column="patient_sex" property="patientSex"/>
+        <result column="patient_age" property="patientAge"/>
+        <result column="patient_phone" property="patientPhone"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="patient_status" property="patientStatus"/>
+        <result column="patient_condition" property="patientCondition"/>
+        <result column="patient_diagous"  property="patientDiagous"/>
+        <result column="patient_type" property="patientType"/>
+        <result column="area_code"  property="areaCode"/>
+        <result column="plan_pats_status"  property="planPatsStatus"/>
+        <result column="rules_info_id"  property="rulesInfoId"></result>
+        <result column="next_date"  property="nextDate"></result>
+        <result column="patient_source"  property="patientSource"></result>
         <result column="handle_sugges" property="handleSugges"></result>
-        <result column="patient_ward" jdbcType="VARCHAR" property="patientWard"/>
+        <result column="patient_ward"  property="patientWard"/>
         <result column="id_card" property="idCard"></result>
         <result column="inhos_no" property="inhosNo"></result>
         <result column="opend_id" property="opendId"></result>
@@ -212,6 +212,9 @@
             </if>
             <if test="planPatientVo.inhosNo != null">
                 inhos_no = #{planPatientVo.inhosNo},
+            </if>
+            <if test="planPatientVo.formId != null">
+                form_id = #{planPatientVo.formId},
             </if>
         </set>
         where patient_plan_id = #{planPatientVo.patientPlanId}

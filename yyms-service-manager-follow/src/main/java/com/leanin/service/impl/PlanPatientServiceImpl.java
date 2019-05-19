@@ -411,11 +411,12 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     private Map getRecord(String patientId, Integer patientSource, Map dataMap) {
         Map paraMap = new HashMap();
         paraMap.put("patientId", patientId);
-        paraMap.put("inOut", patientSource);
+
 
         Map patientMap = new HashMap();
         switch (patientSource) {
-            case 2: {//出院
+            case 1: {//出院
+                paraMap.put("inOut", 2);
 //                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
                 patientMap = managerPatientClient.findInHosPatientById(patientId + "");
 //                }
@@ -431,7 +432,8 @@ public class PlanPatientServiceImpl implements PlanPatientService {
                 dataMap.put("record", outHosRecord);
             }
             break;
-            case 1: {//在院
+            case 2: {//在院
+                paraMap.put("inOut", 1);
 //                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
                 patientMap = managerPatientClient.findInHosPatientById(patientId + "");
 //                }
@@ -490,10 +492,10 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if (planPatient == null){
             return ReturnFomart.retParam(2011,"数据不存在");
         }
-        PlanInfoVo planInfoVo = planPatient.getPlanInfoVo();
-        if (planInfoVo.getPlanType() == 2 && status == 2){//宣教状态
-            planPatient.setFormStatus(2);
-        }
+//        PlanInfoVo planInfoVo = planPatient.getPlanInfoVo();
+//        if (planInfoVo.getPlanType() == 2 && status == 2){//宣教状态
+//            planPatient.setFormStatus(2);
+//        }
         planPatient.setPlanPatsStatus(status);
         planPatientMapper.updatePlanPatient(planPatient);
         return ReturnFomart.retParam(200,planPatient);

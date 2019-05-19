@@ -133,7 +133,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
                 Map datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) && error != null) {
+                if ((!"".equals(error) && error != null) || datamap == null) {
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }
 //                Object o = datamap.get("list");
@@ -164,7 +164,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
                 datamap = managerPatientClient.findOutHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error != null) {
+                if ((!"".equals(error) && error != null) || datamap == null) {
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }
                 //将查询出来的数据 存到缓存中
@@ -197,7 +197,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
                 datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error != null) {
+                if ((!"".equals(error) && error != null)|| datamap == null) {
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }
                 if (datamap != null) {

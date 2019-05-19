@@ -150,7 +150,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 Map datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) && error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                 }
@@ -169,7 +169,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 datamap = managerPatientClient.findOutHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }
@@ -187,7 +187,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }

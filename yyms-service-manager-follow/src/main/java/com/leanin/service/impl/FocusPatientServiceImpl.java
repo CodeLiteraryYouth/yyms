@@ -54,7 +54,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 			pageSize = 10;
 		}
 		PageHelper.startPage(page,pageSize);
-		Page<FocusPatientVo> pageVo= (Page<FocusPatientVo>) focusPatientMapper.findPatientList(patientName);
+		Page<FocusPatientVo> pageVo= (Page<FocusPatientVo>) focusPatientMapper.findPatientList(patientName,userId);
 			log.info("查询的关注病人列表信息为:"+ JSON.toJSONString(pageVo.getResult()));
 //			redisTemplate.opsForValue().set("patient_"+patientName, JSON.toJSONString(patientList));
 //		} else {

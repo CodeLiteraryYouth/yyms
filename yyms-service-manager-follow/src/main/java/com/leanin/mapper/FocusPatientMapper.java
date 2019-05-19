@@ -15,7 +15,7 @@ public interface FocusPatientMapper {
 	 * @param patientName
 	 * @return
 	 */
-	List<FocusPatientVo> findPatientList(@Param("patientName") String patientName);
+	List<FocusPatientVo> findPatientList(@Param("patientName") String patientName,@Param("userId") Long userId);
 	
 	/**
 	 * 修改病人的状态信息

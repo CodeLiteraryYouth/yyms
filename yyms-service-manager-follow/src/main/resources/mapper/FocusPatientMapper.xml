@@ -26,6 +26,7 @@
     <include refid="Base_Column_List" />
     from leanin_focus_patient
     where focus_status > 0
+    and user_id = #{userId}
     <if test="patientName != null">
        and patient_name like CONCAT('%',#{patientName},'%')
     </if>
