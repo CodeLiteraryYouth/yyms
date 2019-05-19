@@ -1,6 +1,7 @@
 package com.leanin.mapper;
 
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.PlanPatientVo;
@@ -96,4 +97,7 @@ public interface PlanPatientMapper {
     List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") int status*/,@Param("planType") Integer planType,@Param("formStatus") Integer formStatus,@Param("userId")Long userId);
 
     List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
+
+    List<DeptAnalysis> deptFollowAnalysis(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") String startDate,@Param("endDate") String endDate);
+
 }

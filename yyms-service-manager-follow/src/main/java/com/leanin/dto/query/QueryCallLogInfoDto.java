@@ -25,15 +25,15 @@ public class QueryCallLogInfoDto extends QueryPage {
         /**
          * 开始时间
          */
-        private Date startTime;
+        private String startTime;
         /**
          * 结束时间
          */
-        private Date endTime;
+        private String endTime;
         /**
          * 随访计划id
          */
-        private Long followPlanId;
+        private String followPlanId;
 
         /**
          * 科室id

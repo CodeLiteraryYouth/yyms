@@ -32,7 +32,7 @@ public class CallBackController extends BaseController {
 	 * @param pageSize	每页条数
 	 * @param beginDate	开始时间
 	 * @param endDate	结束时间
-	 * @param dealStatus 处理状态（0：待处理 1：处理中 2：未处理）
+	 * @param dealStatus 处理状态（0：未处理 1: 已处理）
 	 * @param accuseWard 科室编码
 	 * @param backNum 单号  模糊查询
 	 * @param status  类型  （1：投诉 2：表扬）
@@ -91,6 +91,21 @@ public class CallBackController extends BaseController {
 	public DataOutResponse findBackDealByBackNum(@RequestParam String backNum){
 		return callBackService.findBackDealByBackNum(backNum);
 	}
+
+	/**
+	 * 导出投诉表扬excel表格
+	 * @param beginDate 开始时间
+	 * @param endDate  结束时间
+	 * @param dealStatus 处理状态（0：未处理 1: 已处理）
+	 * @param accuseWard 科室编码
+	 * @param backNum  单号  模糊查询
+	 * @param status 类型  （1：投诉 2：表扬）
+	 */
+	@GetMapping("exportCallBackExcel")
+	public void exportCallBackExcel(String beginDate,String endDate,Integer dealStatus, String accuseWard,String backNum,@RequestParam("status") int status){
+		callBackService.exportCallBackExcel(beginDate,endDate,dealStatus,accuseWard,backNum,status,request,response);
+	}
+
 
 //	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 //		LyOauth2Util lyOauth2Util = new LyOauth2Util();

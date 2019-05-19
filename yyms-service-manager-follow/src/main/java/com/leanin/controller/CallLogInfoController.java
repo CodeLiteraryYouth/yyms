@@ -98,4 +98,16 @@ public class CallLogInfoController extends BaseController {
             return ReturnFomart.retParam(404,e.getMessage());
         }
     }
+
+
+    /**
+     * 导出
+     * @param queryCallLogInfoDto
+     */
+    @RequestMapping(value = "exportCallLogExcel")
+    public void exportCallLogExcel(@ModelAttribute QueryCallLogInfoDto queryCallLogInfoDto){
+        callLogInfoService.exportCallLogExcel(queryCallLogInfoDto,request,response);
+    }
+
+
 }

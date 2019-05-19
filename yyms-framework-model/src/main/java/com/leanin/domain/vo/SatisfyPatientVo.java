@@ -35,7 +35,7 @@ public class SatisfyPatientVo implements Serializable {
 
     private String patientPhone;	//病人手机号码
 
-    private String patientWard;	//病人院区
+    private String patientWard;	//患者科室
 
     private Date patientDateTime;	//病人时间
 

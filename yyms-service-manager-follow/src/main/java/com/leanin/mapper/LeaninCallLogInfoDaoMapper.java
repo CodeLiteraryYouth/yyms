@@ -20,7 +20,7 @@ public interface LeaninCallLogInfoDaoMapper extends BaseMapper<LeaninCallLogInfo
      * @param queryCallLogInfoDto
      * @return
      */
-    List<CallLoginfoVo> findList(QueryCallLogInfoDto queryCallLogInfoDto);
+    List<CallLoginfoVo> findList(@Param("data") QueryCallLogInfoDto queryCallLogInfoDto);
 
     /**
      * 查看
@@ -28,4 +28,6 @@ public interface LeaninCallLogInfoDaoMapper extends BaseMapper<LeaninCallLogInfo
      * @return
      */
     CallLogInfoDto findCallLogInfoById( @Param("callLogInfoId") Long callLogInfoId);
+
+    List<LeaninCallLogInfoDao> exportCallLogExcel(QueryCallLogInfoDto queryCallLogInfoDto);
 }

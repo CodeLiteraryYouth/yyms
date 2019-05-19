@@ -1,9 +1,13 @@
 package com.leanin.service.impl;
 
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leanin.domain.LeaninAudioUpDao;
 import com.leanin.domain.LeaninCallLogInfoDao;
+import com.leanin.domain.excel.BookPatientExcel;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.AdminUserVo;
@@ -19,6 +23,7 @@ import com.leanin.mapper.PlanInfoMapper;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.mapper.UserMapper;
 import com.leanin.service.CallLogInfoService;
+import com.leanin.utils.UUIDUtils;
 import com.leanin.vo.CallLoginfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +69,9 @@ public class CallLogInfoServiceImpl implements CallLogInfoService {
           try{
               //进行分页查询
               PageHelper.startPage(queryCallLogInfoDto.getCurrentPage(),queryCallLogInfoDto.getPageSize());
-              List<CallLoginfoVo> resultList =  leaninCallLogInfoDaoMapper.findList(queryCallLogInfoDto);
-              dataMap.put("totalCount",((Page)resultList).getTotal());
-              dataMap.put("list",resultList);
+              Page<CallLoginfoVo> resultList = (Page<CallLoginfoVo>) leaninCallLogInfoDaoMapper.findList(queryCallLogInfoDto);
+              dataMap.put("totalCount",resultList.getTotal());
+              dataMap.put("list",resultList.getResult());
           }catch (Exception e){
                 throw new CustomException(e.getMessage());
           }
@@ -210,7 +220,30 @@ public class CallLogInfoServiceImpl implements CallLogInfoService {
           }
 		return ReturnFomart.retParam(200,leaninCallLogInfoDao);
 	}
-	 /**
+
+    @Override
+    public void exportCallLogExcel(QueryCallLogInfoDto queryCallLogInfoDto, HttpServletRequest request, HttpServletResponse response) {
+        List<LeaninCallLogInfoDao> list =leaninCallLogInfoDaoMapper.exportCallLogExcel(queryCallLogInfoDto);
+        try {
+            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
+                    .getBytes(), "UTF-8");
+            ServletOutputStream out = response.getOutputStream();
+            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
+
+            Sheet sheet1 = new Sheet(1, 0, LeaninCallLogInfoDao.class);
+            sheet1.setSheetName("第一个sheet");
+            writer.write(list, sheet1);
+            writer.finish();
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-disposition", "attachment;filename="+fileName+".xls");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 获取时间差
      * @param startTime
      * @param endTime

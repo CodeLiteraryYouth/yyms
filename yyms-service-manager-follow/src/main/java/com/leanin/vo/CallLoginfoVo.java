@@ -30,4 +30,4 @@ public class CallLoginfoVo extends LeaninCallLogInfoDao {
      * 拨打时间
      */
     private String phoneTime;
-        }
+}

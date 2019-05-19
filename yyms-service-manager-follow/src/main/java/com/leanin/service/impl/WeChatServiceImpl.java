@@ -48,21 +48,24 @@ public class WeChatServiceImpl implements WeChatService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse bindPatient(BindPat bindPat) {
+        log.info("微信绑定患者信息:{}",JSON.toJSONString(bindPat));
         if (bindPat.getCode() == null) {
             return ReturnFomart.retParam(300, "授权码为空");
         }
-        DataOutResponse dataOutResponse = managerPatientClient.findByIdCard(bindPat.getIdCard());
+        DataOutResponse dataOutResponse = managerPatientClient.findByIdCard(bindPat.getIdCard(),bindPat.getPatientName());
         int status = dataOutResponse.getStatus();
         String data = (String) dataOutResponse.getData();
         //判断his中是否存在患者信息
         if (status != 200 || "信息不存在".equals(data)){//his中不存在患者信息
+            log.info("患者信息不存在");
             return ReturnFomart.retParam(5004,"信息不存在");
         }
-        Map dataMap = JSON.parseObject(data, Map.class);
+//        Map dataMap = JSON.parseObject(data, Map.class);
         //获取openid
 
         String openId = getOpenId(bindPat.getCode());
         if (openId ==null){
+            log.info("获取openid失败");
             return ReturnFomart.retParam(3401,"绑定患者失败");
         }
 
@@ -73,32 +76,41 @@ public class WeChatServiceImpl implements WeChatService {
         }
         patientWxDao.setIdCard(bindPat.getIdCard());
         patientWxDao.setOpenId(openId);
+        patientWxDao.setPatientName(bindPat.getPatientName());
         patientWxDao.setPhoneNum(bindPat.getPhoneNum());
 
         PatientWxDao save = patientWxRepository.save(patientWxDao);
+        log.info("绑定患者信息为:{}",JSON.toJSONString(save));
 //        patientWxMapper.addPatientWx(bindPat);
 
-        return ReturnFomart.retParam(200, openId);
+        return ReturnFomart.retParam(200, save);
     }
 
     @Override
     public DataOutResponse updatePatientWx(PatientWxDao patientWxDao) {
-        DataOutResponse dataOutResponse = managerPatientClient.findByIdCard(patientWxDao.getIdCard());
+        log.info("修改微信绑定患者信息:{}",JSON.toJSONString(patientWxDao));
+        DataOutResponse dataOutResponse = managerPatientClient.findByIdCard(patientWxDao.getIdCard(),patientWxDao.getPatientName());
         int status = dataOutResponse.getStatus();
         String data = (String) dataOutResponse.getData();
         //判断his中是否存在患者信息
         if (status != 200 || "信息不存在".equals(data)){//his中不存在患者信息
+            log.info("his数据中不存在患者信息");
             return ReturnFomart.retParam(5004,"信息不存在");
         }
         PatientWxDao patient = patientWxRepository.findByIdCard(patientWxDao.getIdCard());
         if (patient == null){//根据微信唯一标识查询
+            log.info("新添加微信绑定患者信息");
             patient =new PatientWxDao();
+        }else {
+            log.info("身份证号已被其他用户绑定，修改openid");
         }
         patient.setIdCard(patientWxDao.getIdCard());
         patient.setOpenId(patientWxDao.getOpenId());
+        patientWxDao.setPatientName(patientWxDao.getPatientName());
         patient.setPhoneNum(patientWxDao.getPhoneNum());
 
         PatientWxDao save = patientWxRepository.save(patient);
+        log.info("修改后的微信绑定患者信息:{}",JSON.toJSONString(save));
         return ReturnFomart.retParam(200,save);
     }
 

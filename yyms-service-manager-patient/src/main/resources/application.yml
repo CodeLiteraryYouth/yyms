@@ -3,6 +3,8 @@ server:
 #  servlet:
 #    context-path: /manager
 spring:
+  jackson:
+    time-zone: GMT+8
   application:
     name: yyms-service-manager-patient
 eureka:

@@ -4,6 +4,8 @@ package com.leanin.service;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.vo.FocusPatientVo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface FocusPatientService {
@@ -36,4 +38,6 @@ public interface FocusPatientService {
      * @return
      */
 	DataOutResponse selectFocusPatientById(String patientId,Long userId);
+
+    void exportExcel(String patientName, HttpServletRequest request, HttpServletResponse response);
 }

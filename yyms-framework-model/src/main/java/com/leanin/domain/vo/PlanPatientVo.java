@@ -37,7 +37,7 @@ public class PlanPatientVo implements Serializable {
 
     private String patientPhone;    //病人手机号
 
-    private String patientWard;  //出院科室
+    private String patientWard;  //患者科室
 
     private Integer formStatus;    //表单填写状态 1 未填写  2 已填写
 

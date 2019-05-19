@@ -169,4 +169,89 @@
     select count(b.book_id) from leanin_book_patient b
     where b.patient_id=#{patientId} and b.see_doc_time=#{bookDate}
   </select>
+
+
+    <select id="exportBookExcel" resultType="com.leanin.domain.excel.BookPatientExcel">
+        SELECT
+          patient_name as patientName,
+          CASE
+            patient_sex
+            WHEN 1
+            THEN '男'
+            WHEN 2
+            THEN '女'
+            ELSE '其他'
+          END AS sex,
+          id_card as idCard,
+          phone_num as phoneNum,
+          book_doc as bookDoc,
+          registration_dept as bookDept,
+          see_doc_time as seeDocTime,
+          book_time as bookTime,
+          CASE
+            book_source
+            WHEN 1
+            THEN 'pc'
+            WHEN 2
+            THEN '公众号'
+            ELSE '其他'
+          END AS bookSource
+        FROM
+          `leanin_book_patient`
+        WHERE book_status = 0
+        <if test="patientName != null">
+          and patient_name like CONCAT('%',#{patientName},'%')
+        </if>
+        <if test="deptId != null">
+          and dept_id =#{deptId}
+        </if>
+        <if test="startDate!=null">
+          and see_doc_time<![CDATA[>=]]>#{startDate}
+        </if>
+        <if test="endDate!=null">
+          and see_doc_time<![CDATA[<=]]>#{endDate}
+        </if>
+    </select>
+  <select id="exportSeeDocExcel" resultType="com.leanin.domain.excel.SeeDocExcle">
+      SELECT
+        lbp.patient_name as patientName,
+      CASE
+        lbp.patient_sex
+      WHEN 1
+      THEN '男'
+      WHEN 2
+      THEN '女'
+      ELSE '其他'
+      END AS sex,
+        lbp.id_card as idCard,
+        lbp.phone_num as phoneNum,
+        lbp.book_doc as bookDoc,
+        lbp.registration_dept as dept,
+        lbp.book_time as bookTime,
+        lau.admin_name as registrationDoc,
+      CASE
+      lbp.advice_type
+      WHEN '0'
+      THEN '未就诊'
+      WHEN '1'
+      THEN '已就诊'
+      ELSE '其他'
+      END AS status
+      FROM
+      `leanin_book_patient` lbp,`leanin_admin_user` lau
+      WHERE lbp.book_status = 0
+      and lbp.registration_doc_id = lau.admin_id
+      <if test="patientName != null">
+        and lbp.patient_name like CONCAT('%',#{patientName},'%')
+      </if>
+      <if test="deptId != null">
+        and lbp.dept_id =#{deptId}
+      </if>
+      <if test="startDate!=null">
+        and lbp.see_doc_time<![CDATA[>=]]>#{startDate}
+      </if>
+      <if test="endDate!=null">
+        and lbp.see_doc_time<![CDATA[<=]]>#{endDate}
+      </if>
+  </select>
 </mapper>

@@ -397,7 +397,7 @@ public class CommonServiceImpl implements CommonService {
     private Date setNextDate(Date timePick, Integer timeChoosed) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(timePick);
-        calendar.set(Calendar.HOUR_OF_DAY, timeChoosed + 5);
+        calendar.add(Calendar.HOUR_OF_DAY, timeChoosed + 5+8);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         Date nextDate = calendar.getTime();

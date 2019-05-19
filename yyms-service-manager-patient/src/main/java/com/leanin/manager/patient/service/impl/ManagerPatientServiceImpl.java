@@ -274,13 +274,16 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     }
 
     @Override
-    public DataOutResponse findByIdCard(String idCard) {
+    public DataOutResponse findByIdCard(String idCard,String patientName) {
         // 创建动态客户端
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        List<Map> listMap=null;
+        Map<String,String> param =new HashMap<>();
+        param.put("idCard",idCard);
+        param.put("patientName",patientName);
         try {
-            Object[] objects = client.invoke("findByIdCard", idCard);
+            Object[] objects = client.invoke("findByIdCard", JSON.toJSONString(param));
             if (objects[0] == null){
                 return ReturnFomart.retParam(1,"信息不存在");
             }

@@ -110,7 +110,92 @@
 			</if>
 	</select>
 
-    <insert id="addCallBack" parameterType="com.leanin.domain.CallBack">
+    <select id="exportComplainExcel" resultType="com.leanin.domain.excel.ComplainExcel">
+		SELECT
+		c.`call_back_num` as callBackNum,
+		c.call_back_ward as dept,
+		c.call_back_name as complainedName,
+		c.call_back_target as target,
+		c.push_date as createTime,
+		CASE d.deal_status
+		WHEN 0 THEN '未处理'
+		WHEN 1 THEN '已处理'
+		ELSE '其他' END as dealState,
+		CASE c.accu_parise_source
+		WHEN '1' THEN 'PC端'
+		WHEN '2' THEN '公众号'
+		ELSE '其他' END as source,
+		CASE
+		c.`accu_parise_type`
+		WHEN 1 THEN '医疗技术'
+		WHEN 2 THEN '服务态度'
+		WHEN 3 THEN '不及时'
+		ELSE '其他' END as callBackType
+		FROM
+		leanin_call_back c,leanin_call_back_deal d,`leanin_admin_user` lau
+		WHERE c.call_back_num = d.call_back_num
+		AND lau.`admin_id` = c.`assign_name`
+		AND c.call_back_status = #{status}
+		<if test="beginDate !=null">
+			<![CDATA[and c.call_back_date >= #{beginDate,jdbcType=DATE}]]>
+		</if>
+		<if test="endDate !=null">
+			<![CDATA[and c.call_back_date <= #{endDate,jdbcType=DATE}]]>
+		</if>
+		<if test="dealStatus !=null">
+			and d.deal_status=#{dealStatus,jdbcType=INTEGER}
+		</if>
+		<if test="accuseWard !=null">
+			and c.call_back_ward=#{accuseWard,jdbcType=VARCHAR}
+		</if>
+		<if test="backNum !=null">
+			and c.call_back_num like CONCAT('%',#{backNum,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	<select id="exportPraiseExcel" resultType="com.leanin.domain.excel.PraiseExcel">
+		SELECT
+		c.`call_back_num` as callBackNum,
+		c.call_back_ward as dept,
+		c.call_back_name as praiseedName,
+		c.call_back_target as target,
+		c.push_date as createTime,
+		CASE d.deal_status
+		WHEN 0 THEN '未处理'
+		WHEN 1 THEN '已处理'
+		ELSE '其他' END as dealState,
+		CASE c.accu_parise_source
+		WHEN '1' THEN 'PC端'
+		WHEN '2' THEN '公众号'
+		ELSE '其他' END as source,
+		CASE
+		c.`accu_parise_type`
+		WHEN 1 THEN '医疗技术'
+		WHEN 2 THEN '服务态度'
+		WHEN 3 THEN '不及时'
+		ELSE '其他' END as callBackType
+		FROM
+		leanin_call_back c,leanin_call_back_deal d,`leanin_admin_user` lau
+		WHERE c.call_back_num = d.call_back_num
+		AND lau.`admin_id` = c.`assign_name`
+		AND c.call_back_status = #{status}
+		<if test="beginDate !=null">
+			<![CDATA[and c.call_back_date >= #{beginDate,jdbcType=DATE}]]>
+		</if>
+		<if test="endDate !=null">
+			<![CDATA[and c.call_back_date <= #{endDate,jdbcType=DATE}]]>
+		</if>
+		<if test="dealStatus !=null">
+			and d.deal_status=#{dealStatus,jdbcType=INTEGER}
+		</if>
+		<if test="accuseWard !=null">
+			and c.call_back_ward=#{accuseWard,jdbcType=VARCHAR}
+		</if>
+		<if test="backNum !=null">
+			and c.call_back_num like CONCAT('%',#{backNum,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+
+	<insert id="addCallBack" parameterType="com.leanin.domain.CallBack">
 		 insert into leanin_call_back
     	 <trim prefix="(" suffix=")" suffixOverrides=",">
     	 	<if test="callBackNum !=null">

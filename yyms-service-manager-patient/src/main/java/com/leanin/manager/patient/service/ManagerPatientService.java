@@ -72,5 +72,5 @@ public interface ManagerPatientService {
      */
     DataOutResponse findDoctorDept();
 
-    DataOutResponse findByIdCard(String idCard);
+    DataOutResponse findByIdCard(String idCard,String patientName);
 }

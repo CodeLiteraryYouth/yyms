@@ -1,10 +1,13 @@
 package com.leanin.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "leanin_call_log_info")
-public class LeaninCallLogInfoDao {
+public class LeaninCallLogInfoDao extends BaseRowModel {
 
     @Id
     @Column(name = "call_log_info_id")
@@ -37,12 +40,14 @@ public class LeaninCallLogInfoDao {
      * 随访计划名称
      */
     @Column(name = "follow_plan_name")
+    @ExcelProperty(value = "计划",index = 0)
     private String followPlanName;
 
     /**
      * 科室名称
      */
     @Column(name = "section_name")
+    @ExcelProperty(value = "科室",index = 1)
     private String sectionName;
 
     /**
@@ -61,6 +66,7 @@ public class LeaninCallLogInfoDao {
      * 呼叫人员姓名
      */
     @Column(name = "call_creater_name")
+    @ExcelProperty(value = "医务工作人员",index = 2)
     private String callCreaterName;
 
     /**
@@ -73,6 +79,7 @@ public class LeaninCallLogInfoDao {
      * 客户姓名
      */
     @Column(name = "customer_name")
+    @ExcelProperty(value = "患者",index = 3)
     private String customerName;
 
     /**
@@ -84,6 +91,7 @@ public class LeaninCallLogInfoDao {
     /**
      * 客户号码
      */
+    @ExcelProperty(value = "通话号码",index = 4)
     @Column(name = "customer_number")
     private String customerNumber;
     /**
@@ -101,11 +109,13 @@ public class LeaninCallLogInfoDao {
     /**
      * 通话时长
      */
+    @ExcelProperty(value = "通话时长",index = 6)
     @Column(name = "holding_time")
     private String holdingTime;
     /**
      * 备注
      */
+    @ExcelProperty(value = "备注",index = 7)
     private String remark;
 
     /**
@@ -125,6 +135,9 @@ public class LeaninCallLogInfoDao {
      */
     @Column(name = "is_delete")
     private String isDelete;
+
+    @ExcelProperty(value = "拨打时间",index = 5)
+    private String startTime;
 
     /**
      * @return call_log_info_id
@@ -458,6 +471,14 @@ public class LeaninCallLogInfoDao {
      */
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     @Override

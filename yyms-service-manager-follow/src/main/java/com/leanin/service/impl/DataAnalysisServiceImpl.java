@@ -1,5 +1,6 @@
 package com.leanin.service.impl;
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
@@ -141,6 +142,14 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
     public DataOutResponse callBackAnalysis(Integer type, Integer dealStatus) {
         Integer count = callBackMapper.callBackAnalysis(type,dealStatus);
         return ReturnFomart.retParam(200,count);
+    }
+
+    @Override
+    public DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate) {
+        List<DeptAnalysis> list = planPatientMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        List<DeptAnalysis> records = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+
+        return null;
     }
 
     private Map<Integer,Double> userFollow(Map<Integer,Double> dataMap,Long userId,String time){

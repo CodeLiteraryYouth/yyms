@@ -10,6 +10,7 @@
         <result column="patient_sex"  property="patientSex"/>
         <result column="patient_age"  property="patientAge"/>
         <result column="patient_phone"  property="patientPhone"/>
+        <result column="patient_ward"  property="patientWard"/>
         <result column="form_status"  property="formStatus"/>
         <result column="patient_status"  property="patientStatus"/>
         <result column="patient_condition"  property="patientCondition"/>

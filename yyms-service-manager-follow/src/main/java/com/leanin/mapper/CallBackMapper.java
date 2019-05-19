@@ -3,6 +3,8 @@ package com.leanin.mapper;
 import java.util.List;
 
 import com.leanin.domain.dto.CallBackDto;
+import com.leanin.domain.excel.ComplainExcel;
+import com.leanin.domain.excel.PraiseExcel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -55,4 +57,10 @@ public interface CallBackMapper {
 	CallBackDeal findBackDetail(@Param("callBackNum") String callBackNum);
 
     Integer callBackAnalysis(@Param("type") Integer type,@Param("dealStatus") Integer dealStatus);
+
+    List<ComplainExcel> exportComplainExcel(@Param("beginDate") String beginDate,@Param("endDate") String endDate,@Param("dealStatus") Integer dealStatus,
+											@Param("accuseWard") String accuseWard,@Param("backNum") String backNum,@Param("status") int status);
+
+	List<PraiseExcel> exportPraiseExcel(@Param("beginDate") String beginDate,@Param("endDate") String endDate,@Param("dealStatus") Integer dealStatus,
+										@Param("accuseWard") String accuseWard,@Param("backNum") String backNum,@Param("status") int status);
 }

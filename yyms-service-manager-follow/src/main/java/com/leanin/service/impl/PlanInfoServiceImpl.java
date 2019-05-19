@@ -101,6 +101,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         //添加到计划表单中
 //        String patsWardCode = record.getPatsWardCode();//患者科室
         rulesInfoVo.setRulesCreateTime(new Date());
+        rulesInfoVo.setRulesInfoStatus(0);
         rulesInfoMapper.addRulesInfo(rulesInfoVo);
         log.info("添加的规则信息:{}",JSON.toJSONString(rulesInfoVo));
         record.setRulesInfoNum(rulesInfoVo.getRulesInfoId());
@@ -149,7 +150,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 Map datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) && error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                 }
@@ -168,7 +169,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 datamap = managerPatientClient.findOutHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }
@@ -186,7 +187,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
                 datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
                 //调用服务发生异常
                 Object error = datamap.get("error");
-                if (!"".equals(error) || error !=null){
+                if ((!"".equals(error) && error !=null) || datamap == null){
 //                    return ReturnFomart.retParam(1006, "服务器网络异常，请联系管理员");
                     ExceptionCast.cast(CommonCode.FEIGN_ERROR);
                 }

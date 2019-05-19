@@ -123,8 +123,8 @@ public class ManagerPatientController implements ManagerPatientApi {
 
     @Override
     @GetMapping("findByIdCard")
-    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard) {
-        return managerPatientService.findByIdCard(idCard);
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,@RequestParam("patientName")String patientName) {
+        return managerPatientService.findByIdCard(idCard,patientName);
     }
 
 

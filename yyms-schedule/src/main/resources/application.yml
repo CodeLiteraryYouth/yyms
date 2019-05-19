@@ -1,6 +1,8 @@
 server: ##端口号
   port: 8089
 spring:
+  jackson:
+    time-zone: GMT+8
   application:
     name: yyms-schedule
   datasource: #数据源

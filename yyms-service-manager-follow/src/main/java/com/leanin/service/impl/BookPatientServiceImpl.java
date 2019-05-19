@@ -1,10 +1,16 @@
 package com.leanin.service.impl;
 
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.domain.dao.BookPatientDao;
+import com.leanin.domain.excel.BookPatientExcel;
+import com.leanin.domain.excel.FocusPatientExcel;
+import com.leanin.domain.excel.SeeDocExcle;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.MessageRecord;
@@ -14,10 +20,17 @@ import com.leanin.service.BookPatientService;
 import com.leanin.utils.CSMSUtils;
 import com.leanin.utils.CompareUtil;
 import com.leanin.utils.JsonUtil;
+import com.leanin.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,4 +129,50 @@ public class BookPatientServiceImpl implements BookPatientService {
             return ReturnFomart.retParam(5003, patientId);
         }
     }
+
+    @Override
+    public void exportBookExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response) {
+        List<BookPatientExcel> list = bookPatientMapper.exportBookExcel(patientName,deptId,startDate,endDate);
+        try {
+            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
+                    .getBytes(), "UTF-8");
+            ServletOutputStream out = response.getOutputStream();
+            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
+
+            Sheet sheet1 = new Sheet(1, 0, BookPatientExcel.class);
+            sheet1.setSheetName("第一个sheet");
+            writer.write(list, sheet1);
+            writer.finish();
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-disposition", "attachment;filename="+fileName+".xls");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void exportSeeDocExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response) {
+        List<SeeDocExcle> list = bookPatientMapper.exportSeeDocExcel(patientName,deptId,startDate,endDate);
+        try {
+            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
+                    .getBytes(), "UTF-8");
+            ServletOutputStream out = response.getOutputStream();
+            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
+
+            Sheet sheet1 = new Sheet(1, 0, SeeDocExcle.class);
+            sheet1.setSheetName("第一个sheet");
+            writer.write(list, sheet1);
+            writer.finish();
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-disposition", "attachment;filename="+fileName+".xls");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

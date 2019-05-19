@@ -66,7 +66,7 @@ public class FeignClientFallback implements ManagerPatientClient {
     }
 
     @Override
-    public DataOutResponse findByIdCard(String idCard) {
+    public DataOutResponse findByIdCard(String idCard,String patientName) {
         return null;
     }
 
