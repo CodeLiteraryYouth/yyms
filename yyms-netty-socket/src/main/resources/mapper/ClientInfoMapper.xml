@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.socket.mapper.ClientInfoRepository">
+
+    <resultMap id="BaseResultMap" type="com.leanin.socket.domain.ClientInfo">
+        <id column="client_id"  property="clientid" />
+        <result column="connected"  property="connected" />
+        <result column="mostsign_bits"  property="mostsignbits" />
+        <result column="leastsign_bits"  property="leastsignbits" />
+        <result column="last_connected_date"  property="lastconnecteddate" />
+    </resultMap>
+
+    <sql id="BaseSql">
+        c.client_id ,c.connected ,c.mostsign_bits,
+        c.leastsign_bits ,c.last_connected_date
+    </sql>
+
+    <insert id="addClientInfo">
+        insert into leanin_client_connect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientid!=null">
+                client_id,
+            </if>
+            <if test="connected!=null">
+                connected,
+            </if>
+            <if test="mostsignbits!=null">
+                mostsign_bits,
+            </if>
+            <if test="leastsignbits!=null">
+                leastsign_bits,
+            </if>
+            <if test="lastconnecteddate!=null">
+                last_connected_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientid!=null">
+                #{clientid},
+            </if>
+            <if test="connected!=null">
+                #{connected},
+            </if>
+            <if test="mostsignbits!=null">
+                #{mostsignbits},
+            </if>
+            <if test="leastsignbits!=null">
+                #{leastsignbits},
+            </if>
+            <if test="lastconnecteddate!=null">
+                #{lastconnecteddate},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateClientInfo">
+        update leanin_client_connect
+        <set>
+            <if test="connected!=null">
+                connected=#{connected},
+            </if>
+            <if test="mostsignbits!=null">
+                mostsign_bits=#{mostsignbits},
+            </if>
+            <if test="leastsignbits!=null">
+                leastsign_bits=#{leastsignbits},
+            </if>
+            <if test="lastconnecteddate!=null">
+                last_connected_date=#{lastconnecteddate},
+            </if>
+        </set>
+         where client_id=#{clientid}
+    </update>
+
+
+    <select id="findClientByClientId" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from leanin_client_connect c
+        where c.client_id=#{clientId}
+    </select>
+</mapper>

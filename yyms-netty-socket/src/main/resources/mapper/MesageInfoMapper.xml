@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.socket.mapper.MessageInfoRepository">
+    <insert id="addMessageInfo">
+        insert into leanin_message_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sourceClientId!=null">
+                source_client_id,
+            </if>
+            <if test="targetClientId!=null">
+                target_client_id,
+            </if>
+            <if test="msgType!=null">
+                msg_type,
+            </if>
+            <if test="msgContent!=null">
+                msg_text,
+            </if>
+            <if test="msgDate!=null">
+                msg_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=" )" suffixOverrides=",">
+            <if test="sourceClientId!=null">
+                #{sourceClientId},
+            </if>
+            <if test="targetClientId!=null">
+                #{targetClientId},
+            </if>
+            <if test="msgType!=null">
+                #{msgType},
+            </if>
+            <if test="msgContent!=null">
+                #{msgContent},
+            </if>
+            <if test="msgDate!=null">
+                #{msgDate},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findPatientIdList" resultType="java.lang.String">
+          select distinct c.client_id from leanin_client_connect c
+          left join leanin_message_info m on c.client_id=m.source_client_id
+          where m.target_client_id=#{clientId}
+          and DATE_FORMAT(c.last_connected_date,'%Y-%m-%d')=#{date}
+    </select>
+    <select id="findMessageList" resultType="com.leanin.socket.domain.MessageInfo">
+        select
+        m.source_client_id as sourceId,target_client_id as targetId,
+        m.msg_type as msgType,m.msg_text as msgText,m.msg_date as msgDate
+        from leanin_message_info m where m. m.source_client_id=#{sourceId}
+        and m.target_client_id=#{targetId}
+        <if test="startDate! = null">
+            and m.msg_date<![CDATA[>=]]>#{startDate}
+        </if>
+        <if test="endDate!=null">
+            and m.msg_date<![CDATA[<=]]>#{endDate}
+        </if>
+    </select>
+</mapper>
