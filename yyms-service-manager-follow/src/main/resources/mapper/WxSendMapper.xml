@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leanin.mapper.WxSendMapper">
+
+
+    <select id="deptFollowAnalysis" resultType="com.leanin.domain.analysis.DeptAnalysis">
+        SELECT
+            COUNT(1) as hitCount,
+            patient_ward as deptName,
+            -4 as state
+        FROM `leanin_wx_send`
+        WHERE send_status = 2
+        AND plan_type = #{planType}
+        <if test="planNum != null">
+            and plan_num = #{planNum}
+        </if>
+        <if test="dept != null">
+            and patient_ward = #{dept}
+        </if>
+        <if test="patientSource != null">
+            and patient_source = #{patientSource}
+        </if>
+        <if test="startDate != null">
+            and next_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and plan_num &lt;= #{endDate}
+        </if>
+        GROUP BY patient_ward
+    </select>
+</mapper>

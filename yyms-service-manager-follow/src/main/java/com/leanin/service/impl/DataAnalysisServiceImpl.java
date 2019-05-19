@@ -4,10 +4,7 @@ import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.mapper.CallBackMapper;
-import com.leanin.mapper.FollowRecordMapper;
-import com.leanin.mapper.PlanPatientMapper;
-import com.leanin.mapper.SatisfyPatientMapper;
+import com.leanin.mapper.*;
 import com.leanin.service.DataAnalysisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,12 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Autowired
     CallBackMapper callBackMapper;
+
+    @Autowired
+    MsgRecordMapper msgRecordMapper;
+
+    @Autowired
+    WxSendMapper wxSendMapper;
 
     @Override
     public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId,Integer isAll) {
@@ -146,8 +149,14 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Override
     public DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate) {
+        //随访患者科室统计
         List<DeptAnalysis> list = planPatientMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        //随访记录患者科室统计
         List<DeptAnalysis> records = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        //随访短信患者科室统计 -3
+        List<DeptAnalysis> msgRecord = msgRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
+        //微信发送患者科室统计 -4
+        List<DeptAnalysis> wxSend = wxSendMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
 
         return null;
     }

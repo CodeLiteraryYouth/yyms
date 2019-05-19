@@ -654,6 +654,7 @@ public class WorkJob {
             wxSendDao.setPatientWard(patientDto.getPatientWard());//患者科室
             switch (errcode) {
                 case 0: {//发送成功
+                    wxSendDao.setSendStatus(2);
                     wxSendDao.setMsgId(Long.parseLong((String) map.get("msgid")));  //微信公众号发送成功的id
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息成功:{}", JSON.toJSONString(save));
@@ -664,6 +665,7 @@ public class WorkJob {
 //                wxSendRepository.save(wxSendDao);
                     return 3;//access_token 失效
                 default://其他
+                    wxSendDao.setSendStatus(3);
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息失败:{}", JSON.toJSONString(save));
                     return 4;//发送失败
@@ -728,6 +730,7 @@ public class WorkJob {
             wxSendDao.setPatientWard(satisfyPatientVo.getPatientWard());//患者科室
             switch (errcode) {
                 case 0: {//发送成功
+                    wxSendDao.setSendStatus(2);
                     wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息成功:{}", JSON.toJSONString(save));
@@ -738,6 +741,7 @@ public class WorkJob {
 //                wxSendRepository.save(wxSendDao);
                     return 3;//access_token 失效
                 default://其他
+                    wxSendDao.setSendStatus(3);
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息失败:{}", JSON.toJSONString(save));
                     return 4;//发送失败
