@@ -2,6 +2,7 @@ package com.leanin.domain;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
+import lombok.Data;
 
 import java.util.Date;
 import javax.persistence.*;
@@ -139,6 +140,20 @@ public class LeaninCallLogInfoDao extends BaseRowModel {
     @ExcelProperty(value = "拨打时间",index = 5)
     private String startTime;
 
+    @Column(name = "plan_patient_id")
+    private Long planPatientId;     //计划患者主键
+
+    @Column(name = "plan_type")
+    private Integer planType;       //计划类型  1 随访 2 宣教 3 满意度 4 其他
+
+    @Column(name = "patient_ward")
+    private String patientWard;     //患者科室  科室中文名
+
+    @Column(name = "next_date")
+    private Date nextDate;          //  计划患者 随访/宣教/满意度 发送时间
+
+    @Column(name = "patient_source")
+    private Integer patientSource;  // 患者来源
     /**
      * @return call_log_info_id
      */
@@ -479,6 +494,47 @@ public class LeaninCallLogInfoDao extends BaseRowModel {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+
+    public Long getPlanPatientId() {
+        return planPatientId;
+    }
+
+    public void setPlanPatientId(Long planPatientId) {
+        this.planPatientId = planPatientId;
+    }
+
+    public Integer getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(Integer planType) {
+        this.planType = planType;
+    }
+
+    public String getPatientWard() {
+        return patientWard;
+    }
+
+    public void setPatientWard(String patientWard) {
+        this.patientWard = patientWard;
+    }
+
+    public Date getNextDate() {
+        return nextDate;
+    }
+
+    public void setNextDate(Date nextDate) {
+        this.nextDate = nextDate;
+    }
+
+    public Integer getPatientSource() {
+        return patientSource;
+    }
+
+    public void setPatientSource(Integer patientSource) {
+        this.patientSource = patientSource;
     }
 
     @Override

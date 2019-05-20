@@ -2,6 +2,7 @@ package com.leanin.manager.patient.controller;
 
 
 import com.leanin.api.patient.ManagerPatientApi;
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.manager.patient.service.ManagerPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ public class ManagerPatientController implements ManagerPatientApi {
     /**
      * 分页查询出住院患者信息
      * patientName  患者名称
-     * inhosNo 1在院 2出院
+     * inhosNo 出住院号
+     * inOut 1在院 2出院
      * dept 科室名称  模糊查询
      * dist 病区 模糊查询
      * startDate 开始时间
@@ -125,6 +127,15 @@ public class ManagerPatientController implements ManagerPatientApi {
     @GetMapping("findByIdCard")
     public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,@RequestParam("patientName")String patientName) {
         return managerPatientService.findByIdCard(idCard,patientName);
+    }
+
+    @Override
+    @GetMapping("findInOutCount")
+    public List<DeptAnalysis> findInOutCount(@RequestParam(name = "dept",required = false) String dept,
+                                             @RequestParam(name = "startDate",required = false) String startDate,
+                                             @RequestParam(name = "endDate",required = false) String endDate,
+                                             @RequestParam(value = "inOut",required = true) Integer inOut){
+        return managerPatientService.findInOutCount(dept,startDate,endDate,inOut);
     }
 
 

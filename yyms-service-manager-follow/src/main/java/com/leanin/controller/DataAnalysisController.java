@@ -21,11 +21,11 @@ public class DataAnalysisController {
     /**
      * 随访计划条件分析
      * @param patientSource  患者来源
-     * @param planNum       计划主键
-     * @param dept          科室
-     * @param startDate     开始时间
-     * @param endDate       结束时间
-     * @param planType      计划类型  1随访  2 宣教  3满意度
+     * @param planNum        计划主键
+     * @param dept           科室
+     * @param startDate      开始时间
+     * @param endDate        结束时间
+     * @param planType       计划类型  1随访  2 宣教  3满意度
      * @return
      */
 //    @PreAuthorize("hasAnyAuthority('root','dataAly')")

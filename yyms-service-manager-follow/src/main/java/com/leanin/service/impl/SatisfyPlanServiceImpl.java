@@ -73,7 +73,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse addSatisfyPlan(SatisfyPlanVo record) {
         log.info("增加的满意度计划信息为:" + JSON.toJSONString(record));
-        record.setPlanSatisfyNum(UUIDUtils.getUUID());
+//        record.setPlanSatisfyNum(UUIDUtils.getUUID());
 //        SatisfyPlanVo satisfyPlanPlanVo = satisfyPlanMapper.findSatisfyPlanByName(record.getPlanSatisfyName());
         SatisfyPlanVo satisfyPlanPlanVo = satisfyPlanMapper.findSatisfyPlanById(record.getPlanSatisfyNum());
         if (CompareUtil.isNotEmpty(satisfyPlanPlanVo)) {

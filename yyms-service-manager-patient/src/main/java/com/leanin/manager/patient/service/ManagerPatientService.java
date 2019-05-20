@@ -1,5 +1,6 @@
 package com.leanin.manager.patient.service;
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 
 import java.util.List;
@@ -73,4 +74,7 @@ public interface ManagerPatientService {
     DataOutResponse findDoctorDept();
 
     DataOutResponse findByIdCard(String idCard,String patientName);
+
+    List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate,Integer inOut);
+
 }

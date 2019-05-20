@@ -28,6 +28,9 @@
             <id property="formNum" column="form_num"/>
             <result property="formName" column="form_name"/>
         </association>
+        <collection property="wardInfoVos" column="sendUser" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId">
+        </collection>
     </resultMap>
 
     <sql id="ExtSql">

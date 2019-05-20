@@ -1,5 +1,6 @@
 package com.leanin.client;
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 import org.springframework.stereotype.Component;
 
@@ -67,6 +68,11 @@ public class FeignClientFallback implements ManagerPatientClient {
 
     @Override
     public DataOutResponse findByIdCard(String idCard,String patientName) {
+        return null;
+    }
+
+    @Override
+    public List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate, Integer inOut) {
         return null;
     }
 

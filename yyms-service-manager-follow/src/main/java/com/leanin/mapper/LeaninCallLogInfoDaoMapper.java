@@ -4,6 +4,7 @@ package com.leanin.mapper;
 
 import com.leanin.dao.BaseMapper;
 import com.leanin.domain.LeaninCallLogInfoDao;
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.dto.CallLogInfoDto;
 import com.leanin.dto.query.QueryCallLogInfoDto;
 import com.leanin.vo.CallLoginfoVo;
@@ -30,4 +31,8 @@ public interface LeaninCallLogInfoDaoMapper extends BaseMapper<LeaninCallLogInfo
     CallLogInfoDto findCallLogInfoById( @Param("callLogInfoId") Long callLogInfoId);
 
     List<LeaninCallLogInfoDao> exportCallLogExcel(QueryCallLogInfoDto queryCallLogInfoDto);
+
+    List<DeptAnalysis> deptFollowAnalysis(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,
+                                          @Param("startDate") String startDate,@Param("endDate") String endDate,@Param("planType") Integer planType);
+
 }

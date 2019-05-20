@@ -21,31 +21,34 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CallLogInfoDto extends LeaninCallLogInfoDao {
-        /**
-         * 录音id
-         */
-        private Long audioUpId;
-        /**
-         * 文件路径
-         */
-        private String path;
+    /**
+     * 录音id
+     */
+    private Long audioUpId;
 
-        /**
-         * 文件格式
-         */
-        private String format;
+    /**
+     * 文件路径
+     */
+    private String path;
 
-        /**
-         * 音频时长(秒)
-         */
-        private Integer duration;
-        /**
-         * 开始时间
-         */
-        private String callStartTimeString;
-        /**
-         * 结束时间
-         */
-        private String callEndTimeString;
+    /**
+     * 文件格式
+     */
+    private String format;
 
-        }
+    /**
+     * 音频时长(秒)
+     */
+    private Integer duration;
+
+    /**
+     * 开始时间
+     */
+    private String callStartTimeString;
+
+    /**
+     * 结束时间
+     */
+    private String callEndTimeString;
+
+}

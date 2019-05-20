@@ -166,6 +166,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				return ReturnFomart.retParam(3306,save);
 			}
 			edu.setSendTime(new Date());
+			edu.setFormStatus(2); //在线宣教发送即已读
 			OnlineEdu save = onlineEduRepository.save(onlineEdu);
 		}
 		return ReturnFomart.retParam(200,"操作成功");

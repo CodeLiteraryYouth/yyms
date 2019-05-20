@@ -1,5 +1,6 @@
 package com.leanin.api.patient;
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -59,5 +60,8 @@ public interface ManagerPatientApi {
 
     @ApiOperation("根据身份证号查询患者信息")
     public DataOutResponse findByIdCard(String idCard,String patientName);
+
+    @ApiOperation("查询出住院患者人数，过滤条件科室  日期")
+    public List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate,Integer inOut);
 
 }

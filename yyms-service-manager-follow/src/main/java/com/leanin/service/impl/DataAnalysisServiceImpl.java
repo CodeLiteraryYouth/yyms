@@ -1,5 +1,6 @@
 package com.leanin.service.impl;
 
+import com.leanin.client.ManagerPatientClient;
 import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.response.DataOutResponse;
@@ -35,6 +36,12 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Autowired
     WxSendMapper wxSendMapper;
+
+    @Autowired
+    LeaninCallLogInfoDaoMapper leaninCallLogInfoDaoMapper;
+
+    @Autowired
+    ManagerPatientClient managerPatientClient;
 
     @Override
     public DataOutResponse followAnalysis(Integer patientSource, String planNum, String dept, String startDateStr, String endDateStr,Integer planType,Integer formStatus,Long userId,Integer isAll) {
@@ -149,16 +156,54 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
 
     @Override
     public DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate) {
+        List<DeptAnalysis> data =new ArrayList<>();
         //随访患者科室统计
-        List<DeptAnalysis> list = planPatientMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        List<DeptAnalysis> follow = planPatientMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        data.addAll(follow);
         //随访记录患者科室统计
-        List<DeptAnalysis> records = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        List<DeptAnalysis> followRecords = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+        data.addAll(followRecords);
         //随访短信患者科室统计 -3
         List<DeptAnalysis> msgRecord = msgRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
+        data.addAll(msgRecord);
         //微信发送患者科室统计 -4
         List<DeptAnalysis> wxSend = wxSendMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
+        data.addAll(wxSend);
+        //拨打电话和时长科室统计 -5
+        List<DeptAnalysis> callLog = leaninCallLogInfoDaoMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
+        data.addAll(callLog);
+        List<DeptAnalysis> inOutCount = new ArrayList<>();
+        switch (patientSource){
+            case 1: //出院  -6
+                inOutCount = managerPatientClient.findInOutCount(dept, startDate, endDate, 2);
+                data.addAll(inOutCount);
+                break;
+            case 2://门诊
 
-        return null;
+                break;
+            case 3://在院
+                inOutCount = managerPatientClient.findInOutCount(dept, startDate, endDate, 1);
+                data.addAll(inOutCount);
+                break;
+            case 4://体检
+                break;
+            case 5://建档
+                break;
+            case 6://签约
+                break;
+            case 7://转入
+                break;
+            case 8://转出
+                break;
+            case 9://患者管理
+                break;
+            default://其他情况
+                break;
+        }
+        //随访成功人次  -7
+        List<DeptAnalysis> finishCount = planPatientMapper.findFinishCountByParam(patientSource,planNum,dept,startDate,endDate);
+        data.addAll(finishCount);
+        return ReturnFomart.retParam(200,data);
     }
 
     private Map<Integer,Double> userFollow(Map<Integer,Double> dataMap,Long userId,String time){

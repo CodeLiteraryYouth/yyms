@@ -1,5 +1,6 @@
 package com.leanin.client;
 
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,4 +79,10 @@ public interface ManagerPatientClient {
     @GetMapping("/managerPatient/findByIdCard")
     public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,@RequestParam("patientName")String patientName);
 
+
+    @GetMapping("/managerPatient/findInOutCount")
+    public List<DeptAnalysis> findInOutCount(@RequestParam(name = "dept",required = false) String dept,
+                                             @RequestParam(name = "startDate",required = false) String startDate,
+                                             @RequestParam(name = "endDate",required = false) String endDate,
+                                             @RequestParam(value = "inOut",required = true) Integer inOut);
 }

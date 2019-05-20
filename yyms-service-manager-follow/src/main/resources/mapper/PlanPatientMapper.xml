@@ -526,4 +526,38 @@
     </select>
 
 
+    <select id="findFinishCountByParam" resultType="com.leanin.domain.analysis.DeptAnalysis">
+        SELECT
+        COUNT(distinct(lpp.patient_id) ) as  hitCount,
+        -7 as state ,
+        lwi.`ward_name` as deptName
+        FROM
+        leanin_plan_patient lpp,
+        leanin_plan_info lpi,
+        `leanin_ward_info` lwi
+        WHERE lpp.patient_status = 1
+        AND lpp.plan_num = lpi.plan_num
+        AND lpi.plan_status = 0
+        AND lpp.`patient_ward` = lwi.`ward_name`
+        AND lpp.plan_pats_status = 2
+        <if test="planNum != null">
+            and lpp.plan_num = #{planNum}
+        </if>
+        <if test="patientSource != null">
+            and lpp.patient_source = #{patientSource}
+        </if>
+        <if test="dept != null">
+            and lpp.patient_ward = #{dept}
+        </if>
+        <if test="startDate != null">
+            and lpp.next_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and lpp.next_date &lt;= #{endDate}
+        </if>
+        GROUP BY lwi.`ward_name`
+        ORDER BY lpp.plan_pats_status
+    </select>
+
+
 </mapper>

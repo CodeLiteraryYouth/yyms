@@ -37,7 +37,22 @@
         and ward_name like CONCAT('%',#{wardName},'%') 
     </if>
   </select>
-  <update id="deleteById" >
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+          lwi.*
+        FROM
+          `leanin_ward_info` lwi
+        WHERE lwi.`ward_status` = 0
+          AND lwi.`ward_id` IN
+          (SELECT
+            luw.`ward_id`
+          FROM
+            `leanin_user_ward` luw
+          WHERE luw.`user_id` = #{userId})
+    </select>
+
+    <update id="deleteById" >
     update leanin_ward_info w set w.ward_status=#{status} 
     where w.ward_id = #{wardId,jdbcType=BIGINT}
   </update>

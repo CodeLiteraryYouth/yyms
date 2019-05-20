@@ -49,4 +49,7 @@ public interface WardInfoMapper {
      */
     int updateWardInfo(WardInfoVo record);
 
+
+    List<WardInfoVo> findByUserId(@Param("userId") Long userId);
+
 }

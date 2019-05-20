@@ -1,9 +1,11 @@
 package com.leanin.manager.patient.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.manager.patient.service.ManagerPatientService;
+import com.leanin.webserviceclient.WebServiceClient;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse findListByParam(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -41,10 +44,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse findOutHosPatientByParam(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -66,10 +69,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public Map findOutHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -92,10 +95,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public Map findInHosPatientByParamToSF(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         String jsonString = JSON.toJSONString(paramMap);
@@ -119,10 +122,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public List<Map> findInHosRecordById(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         //获取webService返回结果
@@ -146,10 +149,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public List<Map> findOutHosRecordById(String patientId) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         // 需要密码的情况需要加上用户名和密码
         // client.getOutInterceptors().add(new ClientLoginInterceptor(USER_NAME,PASS_WORD));
         //获取webService返回结果
@@ -172,10 +175,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public Map findInHosPatientById(String patientId) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         Map dataMap=new HashMap();
         try {
             Object[] objects = client.invoke("findInHosPatientInfo", patientId);
@@ -190,10 +193,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public Map findOutHosPatientById(String patientId) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         Map dataMap=new HashMap();
         try {
             Object[] objects = client.invoke("findOutHosPatientInfo", patientId);
@@ -208,10 +211,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse findRegList(Map paramMap) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        Client client = dcf.createClient("http://127.0.0.1:8082/soap/test?wsdl");
-
+        Client client = WebServiceClient.createClient();
         List<Map> listMap=null;
         String jsonString = JSON.toJSONString(paramMap);
         try {
@@ -260,8 +263,9 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse findDoctorDept() {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+        Client client = WebServiceClient.createClient();
         List<Map> listMap=null;
         try {
             Object[] objects = client.invoke("findDoctorDept", "");
@@ -276,9 +280,10 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
     @Override
     public DataOutResponse findByIdCard(String idCard,String patientName) {
         // 创建动态客户端
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
+//        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+//        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");
 //        List<Map> listMap=null;
+        Client client = WebServiceClient.createClient();
         Map<String,String> param =new HashMap<>();
         param.put("idCard",idCard);
         param.put("patientName",patientName);
@@ -289,6 +294,27 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
             }
 //            Map map = JSON.parseObject(objects[0].toString(), Map.class);
             return ReturnFomart.retParam(200,objects[0].toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate,Integer inOut) {
+        Client client = WebServiceClient.createClient();
+        Map param =new HashMap<>();
+        param.put("dept",dept);
+        param.put("startDate",startDate);
+        param.put("endDate",endDate);
+        param.put("inOut",inOut);
+        try {
+            Object[] objects = client.invoke("findInOutCount", JSON.toJSONString(param));
+            if (objects[0] == null){
+                return null;
+            }
+            List<DeptAnalysis> result = JSON.parseArray(objects[0].toString(), DeptAnalysis.class);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

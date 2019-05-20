@@ -89,7 +89,7 @@ public class CommonServiceImpl implements CommonService {
             messagePatientVo.setPatientSex(patientReq.getSex());//设置病人性别
             messagePatientVo.setPatientAge(patientReq.getAge());//设置病人年龄
             messagePatientVo.setPatientPhone(patientReq.getPhone());//设置病人手机号码
-//            satisfyPatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
+//            messagePatientVo.setPatientWard(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
 //            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
@@ -146,12 +146,10 @@ public class CommonServiceImpl implements CommonService {
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
             satisfyPatientVo.setPatientDiagous(satisfyPlan.getDiseaseName());//设置病人诊断  可能是集合
             satisfyPatientVo.setPatientType(satisfyPlan.getPatientType());//设置病人来源   可能是集合
-//                String areaCode = (String) map.get("areaCode");
-//                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
+            satisfyPatientVo.setAreaCode(patientReq.getAreaCode());//设置院区编码   可能是集合
             satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
             satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
             satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
-//            satisfyPatientVo.setAreaCode();//设置院区编码
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(lastDate);
             calendar.add(Calendar.DATE, Integer.parseInt(timeNumStr));
@@ -229,7 +227,7 @@ public class CommonServiceImpl implements CommonService {
             planPatientVo.setPatientSex(patientReq.getSex());//设置病人性别
             planPatientVo.setPatientAge(patientReq.getAge());//设置病人年龄
             planPatientVo.setPatientPhone(patientReq.getPhone());//设置病人手机号码
-            planPatientVo.setPatientWard(planInfo.getPatsWardCode());//设置病人科室  可能是集合
+            planPatientVo.setPatientWard(patientReq.getWard());//设置病人科室  可能是集合
             planPatientVo.setFormStatus(1);//设置随访状态 1 未完成  2 已完成
             planPatientVo.setPatientStatus(1);//设置 状态  1：未删除  2 已删除
 //                String patientCondition = (String) map.get("patientCondition");
@@ -237,8 +235,13 @@ public class CommonServiceImpl implements CommonService {
             planPatientVo.setPatientDiagous(planInfo.getDiseaseCode());//设置病人诊断  可能是集合
             planPatientVo.setPatientType(planInfo.getPatientInfoSource());//设置病人来源   可能是集合
 //                String areaCode = (String) map.get("areaCode");
-//                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
-            planPatientVo.setPlanPatsStatus(0);//-1:收案 0：全部 1：待随访 2：已完成；3:已过期
+            planPatientVo.setAreaCode(patientReq.getAreaCode());//设置院区编码   可能是集合
+            if (planInfo.getPlanType() ==1){//随访
+                planPatientVo.setPlanPatsStatus(0);//-1:收案 0：全部 1：待随访 2：已完成；3:已过期
+            }else if (planInfo.getPlanType() ==2){//宣教
+                planPatientVo.setPlanPatsStatus(1);//-1:收案 0：全部 1：待随访 2：已完成；3:已过期
+            }
+
             planPatientVo.setPatientSource(planInfo.getPatientInfoSource());//设置患者来源
             planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
 
