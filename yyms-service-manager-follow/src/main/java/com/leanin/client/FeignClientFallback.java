@@ -76,6 +76,11 @@ public class FeignClientFallback implements ManagerPatientClient {
         return null;
     }
 
+    @Override
+    public List<DeptAnalysis> findInOutCountByYear(String dept, String year, Integer inOut) {
+        return null;
+    }
+
     /*@Override
     public String findUserName(Long adminId) {
         return null;

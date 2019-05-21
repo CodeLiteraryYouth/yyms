@@ -239,6 +239,7 @@
           `leanin_ward_info` lwi
         WHERE lfr.patient_status = 1
           AND lfr.plan_num = lpi.plan_num
+          AND lpi.plan_type = 1
           AND lpi.plan_status = 0
           AND lfr.`patient_ward` = lwi.`ward_name`
         <if test="planNum != null">

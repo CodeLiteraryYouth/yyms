@@ -504,6 +504,7 @@
           `leanin_ward_info` lwi
         WHERE lpp.patient_status = 1
           AND lpp.plan_num = lpi.plan_num
+          AND lpi.plan_type = 1
           AND lpi.plan_status = 0
           AND lpp.`patient_ward` = lwi.`ward_name`
         <if test="planNum != null">
@@ -537,6 +538,7 @@
         `leanin_ward_info` lwi
         WHERE lpp.patient_status = 1
         AND lpp.plan_num = lpi.plan_num
+        AND lpi.plan_type = 1
         AND lpi.plan_status = 0
         AND lpp.`patient_ward` = lwi.`ward_name`
         AND lpp.plan_pats_status = 2
@@ -557,6 +559,30 @@
         </if>
         GROUP BY lwi.`ward_name`
         ORDER BY lpp.plan_pats_status
+    </select>
+
+    <select id="findInOutCountByYear" resultType="com.leanin.domain.analysis.DeptAnalysis">
+        SELECT
+            COUNT(DISTINCT (lpp.patient_id)) AS hitCount,
+            MONTH(lpp.`next_date`) as followUpMonth,
+            -7 as state
+        FROM `leanin_plan_patient` lpp, `leanin_plan_info` lpi
+        WHERE lpp.`plan_num` = lpi.`plan_num`
+        AND lpi.`plan_type` =1
+        AND lpi.`plan_status` = 0
+        AND lpp.`patient_status` = 1
+        AND lpp.`plan_pats_status` =2
+        AND YEAR(lpp.`next_date`) = #{year}
+        <if test="dept != null">
+            and lpp.patient_ward = #{dept}
+        </if>
+        <if test="planNum != null">
+            and lpp.plan_num = #{planNum}
+        </if>
+        <if test="patientSource != null">
+            and lpp.patient_source = #{patientSource}
+        </if>
+        GROUP BY MONTH(lpp.`next_date`)
     </select>
 
 

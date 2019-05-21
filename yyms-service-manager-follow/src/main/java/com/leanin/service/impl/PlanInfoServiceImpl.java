@@ -120,7 +120,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
 
         //疾病集合
         String diseaseCode = planResult.getDiseaseCode();
-        if (diseaseCode != null){
+        if (diseaseCode != null && !"[]".equals(diseaseCode)){
             List<String> diseaseCodeList = JSON.parseArray(diseaseCode, String.class);
             paramMap.put("diseaseCode", diseaseCodeList);//疾病编码
         }

@@ -112,7 +112,7 @@ public class PlanPatientController extends BaseController {
     }
 
     /**
-     * 修改计划患者状态
+     * 修改计划患者状态   宣教短信走这个接口
      * @param planPatientId  计划患者主键
      * @param status 状态
      * @return

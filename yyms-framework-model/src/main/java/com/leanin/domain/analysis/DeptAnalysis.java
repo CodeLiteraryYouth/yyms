@@ -22,5 +22,7 @@ public class DeptAnalysis /*implements Serializable*/ {
 
     private Long totalSecond;       //总的时间秒数
 
+    private Integer followUpMonth;  //随访月份
+
 
 }

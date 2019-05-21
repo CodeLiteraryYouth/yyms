@@ -64,4 +64,7 @@ public interface ManagerPatientApi {
     @ApiOperation("查询出住院患者人数，过滤条件科室  日期")
     public List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate,Integer inOut);
 
+    @ApiOperation("查询出住院每个月患者人数  按年份查询")
+    public List<DeptAnalysis> findInOutCountByYear(String dept, String year,Integer inOut);
+
 }

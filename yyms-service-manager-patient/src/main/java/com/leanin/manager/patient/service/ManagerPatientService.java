@@ -77,4 +77,6 @@ public interface ManagerPatientService {
 
     List<DeptAnalysis> findInOutCount(String dept, String startDate, String endDate,Integer inOut);
 
+    List<DeptAnalysis> findInOutCountByYear(String dept, String year, Integer inOut);
+
 }

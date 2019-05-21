@@ -320,4 +320,24 @@ public class ManagerPatientServiceImpl implements ManagerPatientService {
             return null;
         }
     }
+
+    @Override
+    public List<DeptAnalysis> findInOutCountByYear(String dept, String year, Integer inOut) {
+        Client client = WebServiceClient.createClient();
+        Map param =new HashMap<>();
+        param.put("dept",dept);
+        param.put("year",year);
+        param.put("inOut",inOut);
+        try {
+            Object[] objects = client.invoke("findInOutCountByYear", JSON.toJSONString(param));
+            if (objects[0] == null){
+                return null;
+            }
+            List<DeptAnalysis> result = JSON.parseArray(objects[0].toString(), DeptAnalysis.class);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

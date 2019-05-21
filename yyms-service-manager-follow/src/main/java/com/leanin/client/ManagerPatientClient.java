@@ -85,4 +85,10 @@ public interface ManagerPatientClient {
                                              @RequestParam(name = "startDate",required = false) String startDate,
                                              @RequestParam(name = "endDate",required = false) String endDate,
                                              @RequestParam(value = "inOut",required = true) Integer inOut);
+
+
+    @GetMapping("/managerPatient/findInOutCountByYear")
+    public List<DeptAnalysis> findInOutCountByYear(@RequestParam(name = "dept",required = false) String dept,
+                                                   @RequestParam(name = "year",required = true) String year,
+                                                   @RequestParam(name = "inOut",required = true) Integer inOut);
 }

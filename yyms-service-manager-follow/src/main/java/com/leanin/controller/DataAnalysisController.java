@@ -35,7 +35,7 @@ public class DataAnalysisController {
     }
 
     /**
-     * 随访统计
+     * 患者科室 随访统计
      * @param patientSource 患者来源
      * @param planNum     计划号
      * @param dept       科室
@@ -46,6 +46,25 @@ public class DataAnalysisController {
     @GetMapping("deptFollowAnalysis")
     public DataOutResponse deptFollowAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate){
         return dataAnalysisService.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
+    }
+
+    /**
+     * 随访率
+     * @param patientSource  患者来源
+     * @param planNum        计划号
+     * @param dept           患者科室
+     * @param year           年份
+     * @return
+     */
+    @GetMapping("followUpRate")
+    public DataOutResponse followUpRate(Integer patientSource,String planNum,String dept,@RequestParam("year") String year){
+        return dataAnalysisService.followUpRate(patientSource,planNum,dept,year);
+    }
+
+
+    @GetMapping("followDeptAnalysis")
+    public DataOutResponse followDeptAnalysis(){
+
     }
 
 

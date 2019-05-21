@@ -1,5 +1,6 @@
 package com.leanin.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
@@ -203,6 +204,47 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         //随访成功人次  -7
         List<DeptAnalysis> finishCount = planPatientMapper.findFinishCountByParam(patientSource,planNum,dept,startDate,endDate);
         data.addAll(finishCount);
+        return ReturnFomart.retParam(200,data);
+    }
+
+    @Override
+    public DataOutResponse followUpRate(Integer patientSource, String planNum, String dept, String year) {
+        log.info("随访率的全年月份展示,过滤的条件为=>患者来源:"+patientSource+",计划主键:"+planNum+",患者科室:"+dept+",年份:"+year);
+        List<DeptAnalysis> data = new ArrayList<>();
+        List<DeptAnalysis> inOutCount = new ArrayList<>();
+        switch (patientSource){
+            case 1: //出院  -6
+                inOutCount = managerPatientClient.findInOutCountByYear(dept,year , 2);
+                log.info("出院人数集合:{}", JSON.toJSONString(inOutCount));
+                data.addAll(inOutCount);
+                break;
+            case 2://门诊
+
+                break;
+            case 3://在院
+                inOutCount = managerPatientClient.findInOutCountByYear(dept,year , 1);
+                log.info("在院人数集合:{}", JSON.toJSONString(inOutCount));
+                data.addAll(inOutCount);
+                break;
+            case 4://体检
+                break;
+            case 5://建档
+                break;
+            case 6://签约
+                break;
+            case 7://转入
+                break;
+            case 8://转出
+                break;
+            case 9://患者管理
+                break;
+            default://其他情况
+                break;
+        }
+        //随访成功  -7
+        List<DeptAnalysis> success = planPatientMapper.findInOutCountByYear(patientSource,planNum,dept,year);
+        log.info("随访成功人数集合",JSON.toJSONString(success));
+        data.addAll(success);
         return ReturnFomart.retParam(200,data);
     }
 

@@ -139,4 +139,13 @@ public class ManagerPatientController implements ManagerPatientApi {
     }
 
 
+    @Override
+    @GetMapping("findInOutCountByYear")
+    public List<DeptAnalysis> findInOutCountByYear(@RequestParam(name = "dept",required = false) String dept,
+                                                   @RequestParam(name = "year",required = true) String year,
+                                                   @RequestParam(name = "inOut",required = true) Integer inOut) {
+        return managerPatientService.findInOutCountByYear(dept,year,inOut);
+    }
+
+
 }
