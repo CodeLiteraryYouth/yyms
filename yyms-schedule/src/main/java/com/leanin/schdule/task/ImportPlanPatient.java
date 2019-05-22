@@ -2,10 +2,7 @@ package com.leanin.schdule.task;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.vo.PlanInfoVo;
-import com.leanin.domain.vo.SatisfyInfoVo;
 import com.leanin.domain.vo.SatisfyPlanVo;
-import com.leanin.exception.ExceptionCast;
-import com.leanin.model.response.CommonCode;
 import com.leanin.schdule.config.RabbitMQConfig;
 import com.leanin.schdule.feign.ManagerPatientClient;
 import com.leanin.schdule.mapper.PlanInfoMapper;
@@ -294,7 +291,6 @@ public class ImportPlanPatient {
                 log.info("满意度计划导入患者信息完成：{}", satisfyPlan.getPlanSatisfyNum());
             }
         }
-
 
 
     }
