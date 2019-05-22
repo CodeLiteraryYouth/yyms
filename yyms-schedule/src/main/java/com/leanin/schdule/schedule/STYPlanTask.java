@@ -10,10 +10,10 @@ import com.leanin.schdule.mapper.SatisfyPatientMapper;
 import com.leanin.schdule.mapper.SatisfyPlanMapper;
 import com.leanin.utils.CSMSUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+//import org.quartz.DisallowConcurrentExecution;
+//import org.quartz.Job;
+//import org.quartz.JobExecutionContext;
+//import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 //满意度定时任务
-@DisallowConcurrentExecution
-@Slf4j
-public class STYPlanTask implements Job {
+//@DisallowConcurrentExecution
+//@Slf4j
+public class STYPlanTask /*implements Job*/ {
 
-    @Autowired
+    /*@Autowired
     SatisfyPlanMapper satisfyPlanMapper;
 
     @Autowired
@@ -86,5 +86,5 @@ public class STYPlanTask implements Job {
 
             satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
         }
-    }
+    }*/
 }

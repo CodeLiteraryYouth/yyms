@@ -51,7 +51,7 @@ public class PlanPatientVo implements Serializable {
 
     private String areaCode;    //院区编码
 
-    private Integer planPatsStatus; //
+    private Integer planPatsStatus; //-1:收案 0：未发送表单或者短信前的状态 1：待随访 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
 
     private Long rulesInfoId; //随访规则id
 
@@ -67,6 +67,12 @@ public class PlanPatientVo implements Serializable {
     private String opendId;     //openid
 
     private String formId;      //表单id
+
+    private String patientWardId;   //患者科室码
+
+    private Date patientTime;       //患者时间
+
+    private String diagousId;       //患者疾病主键
 
 //    private String sendStatus;  //发送状态
 

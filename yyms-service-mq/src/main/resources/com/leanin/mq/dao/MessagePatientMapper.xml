@@ -77,43 +77,79 @@
       <if test="inhosNo != null">
         inhos_no,
       </if>
+      <if test="patientStatus != null">
+        patient_status,
+      </if>
+      <if test="patientWard != null">
+        patient_ward,
+      </if>
+      <if test="patientWardId != null">
+        patient_ward_id,
+      </if>
+      <if test="patientTime != null">
+        patient_time,
+      </if>
+      <if test="illnessId != null">
+        illness_id,
+      </if>
+      <if test="illnessName != null">
+        illness_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="msgTopicId != null">
-        #{msgTopicId,jdbcType=VARCHAR},
+        #{msgTopicId},
       </if>
       <if test="patientId != null">
-        #{patientId,jdbcType=BIGINT},
+        #{patientId},
       </if>
       <if test="patientName != null">
-        #{patientName,jdbcType=VARCHAR},
+        #{patientName},
       </if>
       <if test="patientSex != null">
-        #{patientSex,jdbcType=INTEGER},
+        #{patientSex},
       </if>
       <if test="patientAge != null">
-        #{patientAge,jdbcType=INTEGER},
+        #{patientAge},
       </if>
       <if test="patientPhone != null">
-        #{patientPhone,jdbcType=VARCHAR},
+        #{patientPhone},
       </if>
       <if test="patientIdCard != null">
-        #{patientIdCard,jdbcType=VARCHAR},
+        #{patientIdCard},
       </if>
       <if test="patientType != null">
-        #{patientType,jdbcType=INTEGER},
+        #{patientType},
       </if>
       <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
+        #{areaCode},
       </if>
       <if test="sendType != null">
-        #{sendType,jdbcType=INTEGER},
+        #{sendType},
       </if>
       <if test="idCard != null">
         #{idCard},
       </if>
       <if test="inhosNo != null">
         #{inhosNo},
+      </if>
+      <if test="patientStatus != null">
+        #{patientStatus},
+      </if>
+      <if test="patientWard != null">
+        #{patientWard},
+      </if>
+      <if test="patientWardId != null">
+        #{patientWardId},
+      </if>
+      <if test="patientTime != null">
+        #{patientTime},
+      </if>
+      <if test="illnessId != null">
+        #{illnessId},
+      </if>
+      <if test="illnessName != null">
+        #{illnessName},
       </if>
     </trim>
   </insert>

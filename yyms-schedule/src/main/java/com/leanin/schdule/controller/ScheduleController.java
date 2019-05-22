@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
  * 定时任务的维护接口
  * @author Administrator
  */
-@RestController
-@RequestMapping(value = "schedule")
-public class ScheduleController implements ScheduleApi{
+//@RestController
+//@RequestMapping(value = "schedule")
+public class ScheduleController /*implements ScheduleApi*/{
 
-    @Autowired
+    /*@Autowired
     private ScheduleService scheduleService;
 
     @Override
@@ -35,5 +35,5 @@ public class ScheduleController implements ScheduleApi{
     @PostMapping(value = "updateSchedule")
     public DataOutResponse updateSchedule(@RequestBody ScheduleJobDto scheduleJobDto) {
         return ReturnFomart.retParam(200,scheduleService.updateScheduleJob(scheduleJobDto));
-    }
+    }*/
 }

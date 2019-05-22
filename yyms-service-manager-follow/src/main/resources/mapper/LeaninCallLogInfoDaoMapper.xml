@@ -170,7 +170,7 @@
             patient_ward as deptName,
             COUNT(1) as hitCount,
             SUM(TIMESTAMPDIFF(SECOND,call_start_time,call_end_time)) AS totalSecond,
-            -4 as state
+            -7 as state
         FROM `leanin_call_log_info`
         WHERE is_delete = 'N'
         AND plan_type = #{planType}

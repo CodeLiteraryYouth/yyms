@@ -7,7 +7,7 @@
         SELECT
             COUNT(1) as hitCount,
             patient_ward as deptName,
-            -4 as state
+            -8 as state
         FROM `leanin_wx_send`
         WHERE send_status = 2
         AND plan_type = #{planType}

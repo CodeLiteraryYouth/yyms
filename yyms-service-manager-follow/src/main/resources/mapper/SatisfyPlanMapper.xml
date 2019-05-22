@@ -219,6 +219,9 @@
       <if test="msgType != null">
         msg_type,
       </if>
+      <if test="importData != null">
+        import_data,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="planSatisfyNum != null">
@@ -289,6 +292,9 @@
       </if>
       <if test="msgType != null">
         #{msgType,jdbcType=BIGINT},
+      </if>
+      <if test="importData != null">
+        #{importData},
       </if>
     </trim>
   </insert>

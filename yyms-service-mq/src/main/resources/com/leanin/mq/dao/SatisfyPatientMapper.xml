@@ -79,9 +79,6 @@
     <insert id="insertSelective" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
         insert into leanin_satisfy_patient
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="patientSatisfyId != null">
-                patient_satisfy_id,
-            </if>
             <if test="satisfyPlanNum != null">
                 satisfy_plan_num,
             </if>
@@ -127,79 +124,100 @@
             <if test="areaCode != null">
                 area_code,
             </if>
-            <if test="formId != null">
-                form_id,
-            </if>
-            <if test="formStatus != null">
-                form_status,
-            </if>
             <if test="idCard != null">
                 id_card,
             </if>
             <if test="inhosNo != null">
                 inhos_no,
             </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="patientSatisfyId != null">
-                #{patientSatisfyId,jdbcType=BIGINT},
+            <if test="formStatus != null">
+                form_status,
             </if>
-            <if test="satisfyPlanNum != null">
-                #{satisfyPlanNum,jdbcType=VARCHAR},
-            </if>
-            <if test="patientId != null">
-                #{patientId,jdbcType=BIGINT},
-            </if>
-            <if test="sendType != null">
-                #{sendType,jdbcType=INTEGER},
-            </if>
-            <if test="patientName != null">
-                #{patientName,jdbcType=VARCHAR},
-            </if>
-            <if test="patientSex != null">
-                #{patientSex,jdbcType=INTEGER},
-            </if>
-            <if test="patientAge != null">
-                #{patientAge,jdbcType=INTEGER},
-            </if>
-            <if test="patientPhone != null">
-                #{patientPhone,jdbcType=VARCHAR},
-            </if>
-            <if test="patientWard != null">
-                #{patientWard,jdbcType=VARCHAR},
-            </if>
-            <if test="patientDateTime != null">
-                #{patientDateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="finishType != null">
-                #{finishType,jdbcType=INTEGER},
-            </if>
-            <if test="patientCondition != null">
-                #{patientCondition,jdbcType=VARCHAR},
-            </if>
-            <if test="patientDiagous != null">
-                #{patientDiagous,jdbcType=VARCHAR},
-            </if>
-            <if test="patientType != null">
-                #{patientType,jdbcType=INTEGER},
-            </if>
-            <if test="patientStatus != null">
-                #{patientStatus,jdbcType=INTEGER},
-            </if>
-            <if test="areaCode != null">
-                #{areaCode,jdbcType=VARCHAR},
+            <if test="suggess != null">
+                suggess,
             </if>
             <if test="formId != null">
-                #{formId},
+                form_id,
             </if>
-            <if test="formStatus != null">
-                #{formStatus},
+            <if test="patientWardId != null">
+                patient_ward_id,
+            </if>
+            <if test="patientTime != null">
+                patient_time,
+            </if>
+            <if test="diagousId != null">
+                diagous_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="satisfyPlanNum != null">
+                #{satisfyPlanNum},
+            </if>
+            <if test="patientId != null">
+                #{patientId},
+            </if>
+            <if test="sendType != null">
+                #{sendType},
+            </if>
+            <if test="patientName != null">
+                #{patientName},
+            </if>
+            <if test="patientSex != null">
+                #{patientSex},
+            </if>
+            <if test="patientAge != null">
+                #{patientAge},
+            </if>
+            <if test="patientPhone != null">
+                #{patientPhone},
+            </if>
+            <if test="patientWard != null">
+                #{patientWard},
+            </if>
+            <if test="patientDateTime != null">
+                #{patientDateTime},
+            </if>
+            <if test="finishType != null">
+                #{finishType},
+            </if>
+            <if test="patientCondition != null">
+                #{patientCondition},
+            </if>
+            <if test="patientDiagous != null">
+                #{patientDiagous},
+            </if>
+            <if test="patientType != null">
+                #{patientType},
+            </if>
+            <if test="patientStatus != null">
+                #{patientStatus},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode},
             </if>
             <if test="idCard != null">
                 #{idCard},
             </if>
             <if test="inhosNo != null">
                 #{inhosNo},
+            </if>
+            <if test="formStatus != null">
+                #{formStatus},
+            </if>
+            <if test="suggess != null">
+                #{suggess},
+            </if>
+            <if test="formId != null">
+                #{formId},
+            </if>
+            <if test="patientWardId != null">
+                #{patientWardId},
+            </if>
+            <if test="patientTime != null">
+                #{patientTime},
+            </if>
+            <if test="diagousId != null">
+                #{diagousId},
             </if>
         </trim>
     </insert>

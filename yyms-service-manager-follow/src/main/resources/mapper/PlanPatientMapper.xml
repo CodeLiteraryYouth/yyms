@@ -530,7 +530,7 @@
     <select id="findFinishCountByParam" resultType="com.leanin.domain.analysis.DeptAnalysis">
         SELECT
         COUNT(distinct(lpp.patient_id) ) as  hitCount,
-        -7 as state ,
+        -4 as state ,
         lwi.`ward_name` as deptName
         FROM
         leanin_plan_patient lpp,

@@ -172,14 +172,26 @@
             <if test="patientSource !=null">
                 patient_source,
             </if>
-            <if test="formId !=null">
-                form_id,
+            <if test="handleSugges !=null">
+                handle_sugges,
             </if>
             <if test="idCard !=null">
                 id_card,
             </if>
             <if test="inhosNo !=null">
                 inhos_no,
+            </if>
+            <if test="formId !=null">
+                form_id,
+            </if>
+            <if test="patientWardId !=null">
+                patient_ward_id,
+            </if>
+            <if test="patientTime !=null">
+                patient_time,
+            </if>
+            <if test="diagousId !=null">
+                diagous_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -204,7 +216,7 @@
             <if test="patientPhone != null">
                 #{patientPhone},
             </if>
-            <if test="patientWard != null">
+            <if test="patientWard !=null">
                 #{patientWard},
             </if>
             <if test="formStatus != null">
@@ -237,14 +249,26 @@
             <if test="patientSource !=null">
                 #{patientSource},
             </if>
-            <if test="formId !=null">
-                #{formId},
+            <if test="handleSugges !=null">
+                #{handleSugges},
             </if>
             <if test="idCard !=null">
                 #{idCard},
             </if>
             <if test="inhosNo !=null">
                 #{inhosNo},
+            </if>
+            <if test="formId !=null">
+                #{formId},
+            </if>
+            <if test="patientWardId !=null">
+                #{patientWardId},
+            </if>
+            <if test="patientTime !=null">
+                #{patientTime},
+            </if>
+            <if test="diagousId !=null">
+                #{diagousId},
             </if>
         </trim>
     </insert>

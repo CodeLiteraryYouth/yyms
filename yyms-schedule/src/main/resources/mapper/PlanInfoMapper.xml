@@ -26,6 +26,8 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
+        <result column="import_data" jdbcType="BIGINT" property="msgType"/>
+        <result column="pats_ward_id" jdbcType="BIGINT" property="msgType"/>
     </resultMap>
     <resultMap id="BlobResultMap" type="com.leanin.domain.dto.PlanInfoDto">
         <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
@@ -73,10 +75,10 @@
         </association>-->
     </resultMap>
     <sql id="Base_Column_List">
-    plan_num, plan_name, patient_info_source, plan_begin_time, plan_end_time, plan_ward_code, 
-    plan_duty_per, plan_target, plan_send_type, form_type_id, follow_form_num, rules_info_num, 
-    plan_sex, plan_age_interval, plan_exis_phone, plan_type, plan_status, area_code,disease_code,
-    pats_ward_code,plan_creater,create_date,import_data,msg_id,msg_type
+    plan_num, plan_name, patient_info_source, plan_begin_time, plan_end_time, plan_ward_code,
+    plan_duty_per, plan_target, plan_send_type, form_type_id, follow_form_num, rules_info_num,
+    plan_sex, plan_age_interval, plan_exis_phone, plan_type, plan_status, area_code,import_data
+    ,disease_code,pats_ward_code,plan_creater,create_date,msg_id,msg_type,pats_ward_id
   </sql>
     <sql id="Blob_Column_List">
   	p.plan_num, p.plan_name, p.patient_info_source, p.plan_begin_time, p.plan_end_time, p.plan_ward_code, p.follow_form_num,
@@ -137,234 +139,8 @@
         left join leanin_rules_info r on p.rules_info_num=r.rules_info_id
         where p.plan_status >= 0
     </select>
-    <!--<update id="updatePlanStatus">
-    update leanin_plan_info set plan_status=#{status}
-    where plan_num = #{planNum,jdbcType=VARCHAR}
-  </update>
-    <insert id="addPlanInfo" parameterType="com.leanin.domain.vo.PlanInfoVo">
-        insert into leanin_plan_info
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="planNum != null">
-                plan_num,
-            </if>
-            <if test="planName != null">
-                plan_name,
-            </if>
-            <if test="patientInfoSource != null">
-                patient_info_source,
-            </if>
-            <if test="planBeginTime != null">
-                plan_begin_time,
-            </if>
-            <if test="planEndTime != null">
-                plan_end_time,
-            </if>
-            <if test="planWardCode != null">
-                plan_ward_code,
-            </if>
-            <if test="planDutyPer != null">
-                plan_duty_per,
-            </if>
-            <if test="planTarget != null">
-                plan_target,
-            </if>
-            <if test="planSendType != null">
-                plan_send_type,
-            </if>
-            <if test="formTypeId != null">
-                form_type_id,
-            </if>
-            <if test="followFormNum != null">
-                follow_form_num,
-            </if>
-            <if test="rulesInfoNum != null">
-                rules_info_num,
-            </if>
-            <if test="planSex != null">
-                plan_sex,
-            </if>
-            <if test="planAgeInterval != null">
-                plan_age_interval,
-            </if>
-            <if test="planExisPhone != null">
-                plan_exis_phone,
-            </if>
-            <if test="planType != null">
-                plan_type,
-            </if>
-            <if test="planStatus != null">
-                plan_status,
-            </if>
-            <if test="areaCode != null">
-                area_code,
-            </if>
-            <if test="diseaseCode != null">
-                disease_code,
-            </if>
-            <if test="patsWardCode !=null">
-                pats_ward_code,
-            </if>
-            <if test="planCreater != null">
-                plan_creater,
-            </if>
-            <if test="createDate !=null">
-                create_date,
-            </if>
-            <if test="importData !=null">
-                import_data,
-            </if>
-            <if test="msgId !=null">
-                msg_id,
-            </if>
-            <if test="msgType !=null">
-                msg_type,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="planNum != null">
-                #{planNum,jdbcType=VARCHAR},
-            </if>
-            <if test="planName != null">
-                #{planName,jdbcType=VARCHAR},
-            </if>
-            <if test="patientInfoSource != null">
-                #{patientInfoSource,jdbcType=INTEGER},
-            </if>
-            <if test="planBeginTime != null">
-                #{planBeginTime,jdbcType=DATE},
-            </if>
-            <if test="planEndTime != null">
-                #{planEndTime,jdbcType=DATE},
-            </if>
-            <if test="planWardCode != null">
-                #{planWardCode,jdbcType=VARCHAR},
-            </if>
-            <if test="planDutyPer != null">
-                #{planDutyPer,jdbcType=BIGINT},
-            </if>
-            <if test="planTarget != null">
-                #{planTarget,jdbcType=VARCHAR},
-            </if>
-            <if test="planSendType != null">
-                #{planSendType,jdbcType=INTEGER},
-            </if>
-            <if test="formTypeId != null">
-                #{formTypeId,jdbcType=BIGINT},
-            </if>
-            <if test="followFormNum != null">
-                #{followFormNum,jdbcType=VARCHAR},
-            </if>
-            <if test="rulesInfoNum != null">
-                #{rulesInfoNum,jdbcType=BIGINT},
-            </if>
-            <if test="planSex != null">
-                #{planSex,jdbcType=INTEGER},
-            </if>
-            <if test="planAgeInterval != null">
-                #{planAgeInterval,jdbcType=VARCHAR},
-            </if>
-            <if test="planExisPhone != null">
-                #{planExisPhone,jdbcType=INTEGER},
-            </if>
-            <if test="planType != null">
-                #{planType,jdbcType=INTEGER},
-            </if>
-            <if test="planStatus != null">
-                #{planStatus,jdbcType=INTEGER},
-            </if>
-            <if test="areaCode != null">
-                #{areaCode,jdbcType=VARCHAR},
-            </if>
-            <if test="diseaseCode != null">
-                #{diseaseCode,jdbcType=VARCHAR},
-            </if>
-            <if test="patsWardCode !=null">
-                #{patsWardCode,jdbcType=VARCHAR},
-            </if>
-            <if test="planCreater !=null">
-                #{planCreater,jdbcType=BIGINT},
-            </if>
-            <if test="createDate !=null">
-                #{createDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="importData !=null">
-                #{importData,jdbcType=INTEGER},
-            </if>
-            <if test="msgId !=null">
-                #{msgId,jdbcType=VARCHAR},
-            </if>
-            <if test="msgType !=null">
-                #{msgType,jdbcType=BIGINT},
-            </if>
-        </trim>
-    </insert>
-    <update id="updatePlanInfo" parameterType="com.leanin.domain.vo.PlanInfoVo">
-        update leanin_plan_info
-        <set>
-            <if test="planName != null">
-                plan_name = #{planName,jdbcType=VARCHAR},
-            </if>
-            <if test="patientInfoSource != null">
-                patient_info_source = #{patientInfoSource,jdbcType=INTEGER},
-            </if>
-            <if test="planBeginTime != null">
-                plan_begin_time = #{planBeginTime,jdbcType=DATE},
-            </if>
-            <if test="planEndTime != null">
-                plan_end_time = #{planEndTime,jdbcType=DATE},
-            </if>
-            <if test="planWardCode != null">
-                plan_ward_code = #{planWardCode,jdbcType=VARCHAR},
-            </if>
-            <if test="planDutyPer != null">
-                plan_duty_per = #{planDutyPer,jdbcType=BIGINT},
-            </if>
-            <if test="planTarget != null">
-                plan_target = #{planTarget,jdbcType=VARCHAR},
-            </if>
-            <if test="planSendType != null">
-                plan_send_type = #{planSendType,jdbcType=INTEGER},
-            </if>
-            <if test="formTypeId != null">
-                form_type_id = #{formTypeId,jdbcType=BIGINT},
-            </if>
-            <if test="followFormNum != null">
-                follow_form_num = #{followFormNum,jdbcType=VARCHAR},
-            </if>
-            <if test="rulesInfoNum != null">
-                rules_info_num = #{rulesInfoNum,jdbcType=VARCHAR},
-            </if>
-            <if test="planSex != null">
-                plan_sex = #{planSex,jdbcType=INTEGER},
-            </if>
-            <if test="planAgeInterval != null">
-                plan_age_interval = #{planAgeInterval,jdbcType=VARCHAR},
-            </if>
-            <if test="planExisPhone != null">
-                plan_exis_phone = #{planExisPhone,jdbcType=INTEGER},
-            </if>
-            <if test="planType != null">
-                plan_type = #{planType,jdbcType=INTEGER},
-            </if>
-            <if test="planStatus != null">
-                plan_status = #{planStatus,jdbcType=INTEGER},
-            </if>
-            <if test="areaCode != null">
-                area_code = #{areaCode,jdbcType=VARCHAR},
-            </if>
-            <if test="diseaseCode != null">
-                disease_code = #{diseaseCode,jdbcType=VARCHAR},
-            </if>
-            <if test="patsWardCode !=null">
-                pats_ward_code = #{patsWardCode,jdbcType=VARCHAR}
-            </if>
-            <if test="msgId !=null">
-                msg_id = #{msgId,jdbcType=VARCHAR}
-            </if>
-            <if test="msgType !=null">
-                msg_type = #{msgType,jdbcType=BIGINT}
-            </if>
-        </set>
-        where plan_num = #{planNum,jdbcType=VARCHAR}
-    </update>-->
+
+    <select id="findByImportData" resultType="com.leanin.domain.vo.PlanInfoVo">
+
+    </select>
 </mapper>

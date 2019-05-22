@@ -164,18 +164,18 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         //随访记录患者科室统计
         List<DeptAnalysis> followRecords = followRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate);
         data.addAll(followRecords);
-        //随访短信患者科室统计 -3
+        //随访短信患者科室统计 -9
         List<DeptAnalysis> msgRecord = msgRecordMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
         data.addAll(msgRecord);
-        //微信发送患者科室统计 -4
+        //微信发送患者科室统计 -8
         List<DeptAnalysis> wxSend = wxSendMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
         data.addAll(wxSend);
-        //拨打电话和时长科室统计 -5
+        //拨打电话和时长科室统计 -7
         List<DeptAnalysis> callLog = leaninCallLogInfoDaoMapper.deptFollowAnalysis(patientSource,planNum,dept,startDate,endDate,1);
         data.addAll(callLog);
         List<DeptAnalysis> inOutCount = new ArrayList<>();
         switch (patientSource){
-            case 1: //出院  -6
+            case 1: //出院  -3
                 inOutCount = managerPatientClient.findInOutCount(dept, startDate, endDate, 2);
                 data.addAll(inOutCount);
                 break;
@@ -201,7 +201,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
             default://其他情况
                 break;
         }
-        //随访成功人次  -7
+        //随访成功人次  -4
         List<DeptAnalysis> finishCount = planPatientMapper.findFinishCountByParam(patientSource,planNum,dept,startDate,endDate);
         data.addAll(finishCount);
         return ReturnFomart.retParam(200,data);
@@ -246,6 +246,13 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         log.info("随访成功人数集合",JSON.toJSONString(success));
         data.addAll(success);
         return ReturnFomart.retParam(200,data);
+    }
+
+
+    @Override
+    public DataOutResponse followDeptAnalysis(Long deptId, String startTime, String endTime) {
+//        List<> = planPatientMapper.followDeptAnalysis(deptId,startTime,endTime);
+        return null;
     }
 
     private Map<Integer,Double> userFollow(Map<Integer,Double> dataMap,Long userId,String time){

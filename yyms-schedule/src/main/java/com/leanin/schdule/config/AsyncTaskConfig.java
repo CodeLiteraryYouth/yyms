@@ -20,7 +20,7 @@ import java.util.concurrent.Executor;
 @EnableScheduling
 public class AsyncTaskConfig implements SchedulingConfigurer, AsyncConfigurer {
     //线程池线程数量
-    private int corePoolSize = 5;
+    private int corePoolSize = 8;
 
     @Bean
     public ThreadPoolTaskScheduler taskScheduler()

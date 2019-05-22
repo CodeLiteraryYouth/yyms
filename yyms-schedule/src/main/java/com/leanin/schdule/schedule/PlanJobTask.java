@@ -8,10 +8,10 @@ import com.leanin.schdule.mapper.PlanInfoMapper;
 import com.leanin.schdule.mapper.PlanPatientMapper;
 import com.leanin.utils.CSMSUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+//import org.quartz.DisallowConcurrentExecution;
+//import org.quartz.Job;
+//import org.quartz.JobExecutionContext;
+//import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +23,11 @@ import java.util.Map;
  *
  * @author Administrator
  */
-@DisallowConcurrentExecution
-@Slf4j
-public class PlanJobTask implements Job {
+//@DisallowConcurrentExecution
+//@Slf4j
+public class PlanJobTask /*implements Job */{
 
-    @Autowired
+    /*@Autowired
     PlanInfoMapper planInfoMapper;
 
     @Autowired
@@ -89,5 +89,5 @@ public class PlanJobTask implements Job {
             patientDto.setSendType(3); //发送失败
         }
         planPatientMapper.updatePlanPatient(patientDto);
-    }
+    }*/
 }

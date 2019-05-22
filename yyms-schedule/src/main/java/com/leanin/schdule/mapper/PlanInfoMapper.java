@@ -74,4 +74,5 @@ public interface PlanInfoMapper {
     //查询所有计划信息
     List<PlanInfoDto> findAllPlan();
 
+    List<PlanInfoVo> findByImportData(Integer status);
 }

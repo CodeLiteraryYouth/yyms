@@ -61,11 +61,20 @@ public class DataAnalysisController {
         return dataAnalysisService.followUpRate(patientSource,planNum,dept,year);
     }
 
-
+    /**
+     * 随访科室数据统计
+     * @param deptId  科室id
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return
+     */
     @GetMapping("followDeptAnalysis")
-    public DataOutResponse followDeptAnalysis(){
-
+    public DataOutResponse followDeptAnalysis(Long deptId,String startTime,String endTime){
+        return dataAnalysisService.followDeptAnalysis(deptId,startTime,endTime);
     }
+
+
+
 
 
 

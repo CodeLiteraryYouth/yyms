@@ -19,11 +19,11 @@ import java.util.List;
  * 定时任务列表实现类
  * @author Administrator
  */
-@Service
-@Slf4j
+//@Service
+//@Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
 
-    @Autowired
+    /*@Autowired
     private ScheduleMapper scheduleMapper;
 
     @Override
@@ -64,7 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public int updateScheduleJob(ScheduleJobDto scheduleJobDto) {
         log.info("修改的定时任务信息为:"+JSON.toJSONString(scheduleJobDto));
         TaskCronDto taskCronDto= JsonUtil.json2Obj(scheduleJobDto.getCronDto(),TaskCronDto.class);
-        /* 获取Cron表达式 */
+        *//* 获取Cron表达式 *//*
         String cronExpression= CronUtil.createCronExpression(taskCronDto);
         ScheduleJobVo scheduleJobVo=new ScheduleJobVo();
         scheduleJobVo.setJobId(scheduleJobDto.getJobId());
@@ -75,5 +75,5 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleJobVo.setJobStatus(scheduleJobDto.getJobStatus());
         scheduleJobVo.setQuartzClass(scheduleJobDto.getQuartzClass());
         return scheduleMapper.updateScheduleJob(scheduleJobVo);
-    }
+    }*/
 }

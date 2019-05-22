@@ -8,10 +8,10 @@ import com.leanin.schdule.mapper.FollowRecordMapper;
 import com.leanin.schdule.mapper.PlanInfoMapper;
 import com.leanin.schdule.mapper.PlanPatientMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+//import org.quartz.DisallowConcurrentExecution;
+//import org.quartz.Job;
+//import org.quartz.JobExecutionContext;
+//import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 //修改下次随访时间
-@DisallowConcurrentExecution
-@Slf4j
-public class UpdateNextTask implements Job {
+//@DisallowConcurrentExecution
+//@Slf4j
+public class UpdateNextTask /*implements Job*/ {
 
-    @Autowired
+    /*@Autowired
     PlanInfoMapper planInfoMapper;
 
     @Autowired
@@ -189,7 +189,7 @@ public class UpdateNextTask implements Job {
             break;
         }
         return nextDate;
-    }
+    }*/
 
 
 }

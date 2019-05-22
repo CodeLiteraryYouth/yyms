@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
  * 当定时任务调用此方法时发生服务异常执行此异常方法
  * @author Administrator
  */
-@Component
+//@Component
 public class PlanPatientFallback implements PlanPatientFeign {
 
-    @Override
+    /*@Override
     public DataOutResponse findAllPlan() {
         return ReturnFomart.retParam(0,"");
     }
@@ -18,5 +18,5 @@ public class PlanPatientFallback implements PlanPatientFeign {
     @Override
     public DataOutResponse findListByPlanId(String planNum) {
         return ReturnFomart.retParam(0,planNum);
-    }
+    }*/
 }

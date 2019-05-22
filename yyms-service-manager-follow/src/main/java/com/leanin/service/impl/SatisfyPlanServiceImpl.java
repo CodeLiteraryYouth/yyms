@@ -1,9 +1,6 @@
 package com.leanin.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.config.RabbitMQConfig;
@@ -80,7 +77,11 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
             //如果已经存在该信息,请勿重复添加
             ExceptionCast.cast(PlanResponseCode.INVALID_PARAM);
         }
-
+        if (record.getPlanSatisfyEndDate().getTime() < new Date().getTime()){//结束时间小于当前时间 计划导入患者完成
+            record.setImportData(2);
+        }else{//结束时间大于当前时间 导入计划未完成
+            record.setImportData(1);
+        }
         satisfyPlanMapper.addSatisfyPlan(record);
         //添加到计划表单中
 //        String patsWardCode = record.getPatsWardCode();//患者科室

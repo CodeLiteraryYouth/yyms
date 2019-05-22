@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * 发送信息主题的病人
  * @author Administrator
@@ -24,7 +26,7 @@ public class MessagePatientVo {
 
     private String patientName;	//病人姓名
 
-    private Integer patientSex;	//病人性别
+    private Integer patientSex;	//病人性别  1 男 2 女
 
     private Integer patientAge;	//病人年龄
 
@@ -34,7 +36,7 @@ public class MessagePatientVo {
 
     private Integer patientType;	//病人来源
 
-    private String areaCode;	//院区编码
+    private String areaCode;	//病区编码
 
     private Integer sendType;  //发送状态
 
@@ -44,6 +46,19 @@ public class MessagePatientVo {
 
     private String openId;      //openid
 
-    private Integer patientStatus;  //-1 收案 1 未完成 2已完成
+    private Integer patientStatus;  //-1 删除  1 使用
+
+    private String patientWard;     //患者his科室中文名
+
+    private String patientWardId;   //his科室码
+
+    private Date patientTime;       //患者时间
+
+    private String illnessId;       //his疾病码
+
+    private String illnessName;     //his疾病名称
+
+
+
 
 }

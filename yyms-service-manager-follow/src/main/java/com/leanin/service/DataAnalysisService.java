@@ -13,4 +13,6 @@ public interface DataAnalysisService {
     DataOutResponse deptFollowAnalysis(Integer patientSource, String planNum, String dept, String startDate, String endDate);
 
     DataOutResponse followUpRate(Integer patientSource, String planNum, String dept, String year);
+
+    DataOutResponse followDeptAnalysis(Long deptId, String startTime, String endTime);
 }

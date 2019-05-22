@@ -125,7 +125,7 @@
         SELECT
             COUNT(1) as hitCount,
             patient_ward as deptName,
-            -3 as state
+            -9 as state
         FROM `leanin_msg_send_record`
         WHERE plan_type = #{planType}
         AND msg_send_status = 2

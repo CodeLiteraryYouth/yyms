@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 import com.leanin.domain.vo.ScheduleJobVo;
 import com.leanin.schdule.service.ScheduleService;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+//import org.quartz.CronScheduleBuilder;
+//import org.quartz.CronTrigger;
+//import org.quartz.Job;
+//import org.quartz.JobBuilder;
+//import org.quartz.JobDetail;
+//import org.quartz.JobKey;
+//import org.quartz.Scheduler;
+//import org.quartz.TriggerBuilder;
+//import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ import org.springframework.stereotype.Component;
  * 调度工厂类
  *
  */
-@Configuration
+//@Configuration
 //@EnableScheduling
-@Component
+//@Component
 public class ScheduleFactory {
 
-    private static Logger logger = LoggerFactory.getLogger(ScheduleFactory.class);
+    /*private static Logger logger = LoggerFactory.getLogger(ScheduleFactory.class);
 
     private Map<String, String> jobUniqueMap = new HashMap<String, String>(); // 当前Trigger使用的
 
@@ -42,7 +42,7 @@ public class ScheduleFactory {
     public SchedulerFactoryBean schedulerFactoryBean() {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         return schedulerFactoryBean;
-    }
+    }*/
 
 //    public SchedulerFactoryBean getSchedulerFactoryBean() {
 //        return schedulerFactoryBean;
@@ -52,7 +52,7 @@ public class ScheduleFactory {
 //        this.schedulerFactoryBean = schedulerFactoryBean;
 //    }
 
-    @Autowired
+    /*@Autowired
     private ScheduleService scheduleService;
 
     public ScheduleService getScheduleService() {
@@ -61,14 +61,14 @@ public class ScheduleFactory {
 
     public void setScheduleService(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
-    }
+    }*/
 
     /**
      * 每隔5s查库，并根据查询结果决定是否重新设置定时任务
      * @throws Exception  360000
      */
 //    @Scheduled(fixedRate = 50000)
-    public void scheduleUpdateCronTrigger() throws Exception {
+   /* public void scheduleUpdateCronTrigger() throws Exception {
 
         try {
             // schedulerFactoryBean 由spring创建注入
@@ -128,5 +128,5 @@ public class ScheduleFactory {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

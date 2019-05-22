@@ -57,29 +57,46 @@ public class PlanPatientMQ {
             messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());//设置短信主题计划id
 //            Long patientId = Long.parseLong(map.get("patientId").toString());
             Long patientId = Long.parseLong(map.get("patientId")+"");
-            messagePatientVo.setPatientId(patientId);//患者id
+            messagePatientVo.setPatientId(patientId);//his患者id
             String patientName = (String) map.get("patientName");
             messagePatientVo.setPatientName(patientName);//患者姓名
             Integer patientSex = (Integer) map.get("patientSex");
-            messagePatientVo.setPatientSex(patientSex);//设置病人性别
+            messagePatientVo.setPatientSex(patientSex);//设置病人性别  1 男  2 女
             Integer patientAge = (Integer) map.get("patientAge");
             messagePatientVo.setPatientAge(patientAge);//设置病人年龄
             String patientPhone = (String) map.get("patientPhone");
             messagePatientVo.setPatientPhone(patientPhone);//设置病人手机号码
+            messagePatientVo.setPatientIdCard((String) map.get("idCard"));
+            messagePatientVo.setIdCard((String) map.get("idCard"));//身份证号
+            messagePatientVo.setPatientType(msgTopic.getPatientType());//设置病人来源
+            messagePatientVo.setAreaCode((String) map.get("DIST"));//设置病区编码
+            messagePatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
+            messagePatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
+            messagePatientVo.setPatientStatus(1);  //患者状态  -1 删除  1 正在使用
+            String dept = (String) map.get("DEPT");
+            messagePatientVo.setPatientWard(dept);//患者科室
+            String deptId = map.get("DEPTID").toString();
+            messagePatientVo.setPatientWardId(deptId);//患者科室主键
+            Date patientTime = new Date((Long) map.get("lastDate"));
+            messagePatientVo.setPatientTime(patientTime);//获取患者时间
+            String diagousId = (String) map.get("DIAGNOSIS_ICD");
+            messagePatientVo.setIllnessId(diagousId);
+            String diagous = (String) map.get("DIAGNOSIS_NAME");
+            messagePatientVo.setIllnessName(diagous);
 //            messagePatientVo.set(satisfyPlan.getPatientWard());//设置病人科室  可能是集合
 //            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
 //            satisfyPatientVo.setPatientDiagous(satisfyPlan.getDiseaseName());//设置病人诊断  可能是集合
-            messagePatientVo.setPatientType(msgTopic.getPatientType());//设置病人来源   可能是集合
+
 //                String areaCode = (String) map.get("areaCode");
 //                planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
 //            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
-            messagePatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
+
 //            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
-            messagePatientVo.setIdCard((String) map.get("idCard"));//身份证号
-            messagePatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
-            messagePatientVo.setAreaCode((String) map.get("DIST"));//设置院区编码
+
+
+
             log.info("短信计划患者信息:{}",JSON.toJSONString(messagePatientVo));
             messagePatientMapper.insertSelective(messagePatientVo);
         }
@@ -126,21 +143,28 @@ public class PlanPatientMQ {
             String patientPhone = (String) map.get("patientPhone");
             satisfyPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
             String dept = (String) map.get("DEPT");
-            satisfyPatientVo.setPatientWard(dept);//设置病人科室  可能是集合
-            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
+            satisfyPatientVo.setPatientWard(dept);//设置病人科室
+
+            satisfyPatientVo.setFinishType(1); //完成状态  -1:收案 1：未完成 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
             String diagous = (String) map.get("DIAGNOSIS_NAME");
             satisfyPatientVo.setPatientDiagous(diagous);//设置病人诊断
-            satisfyPatientVo.setPatientType(satisfyPlan.getPatientType());//设置病人来源   可能是集合
+            satisfyPatientVo.setPatientType(satisfyPlan.getPatientType());//设置病人来源 1,出院；2,门诊;3,在院;4体检 5 建档
+            satisfyPatientVo.setPatientStatus(0);  //0 在用  1  已删除
             String areaCode = (String) map.get("DIST");
             satisfyPatientVo.setAreaCode(areaCode);//设置病区编码   可能是集合
-            satisfyPatientVo.setFinishType(1); //完成状态  1 未完成 2已完成
             satisfyPatientVo.setSendType(1); //发送状态；1 未发送 2 已发送 3 发送失败
-            satisfyPatientVo.setPatientStatus(0); //是否删除; 0 未删除 1 已删除
-//            satisfyPatientVo.setAreaCode();//设置院区编码
-            satisfyPatientVo.setIdCard((String) map.get("idCard"));
-            satisfyPatientVo.setInhosNo((String) map.get("inhosNo"));
+            satisfyPatientVo.setIdCard((String) map.get("idCard"));     //身份证号
+            satisfyPatientVo.setInhosNo((String) map.get("inhosNo"));   //在院号
+            satisfyPatientVo.setFormStatus(1);//表单填写状态 1 未填写 2 已填写
+            satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());//满意度表单主键
+            Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
+            satisfyPatientVo.setPatientTime(lastDate);//获取患者时间
+            String deptId = map.get("DEPTID").toString();
+            satisfyPatientVo.setPatientWardId(deptId);//患者科室主键
+            String diagousId = (String) map.get("DIAGNOSIS_ICD");
+            satisfyPatientVo.setDiagousId(diagousId);   //患者疾病主键
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(lastDate);
             calendar.add(Calendar.DATE, Integer.parseInt(timeNumStr));
@@ -153,8 +177,7 @@ public class PlanPatientMQ {
             if(((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
                 satisfyPatientVo.setFinishType(3);
             }
-            satisfyPatientVo.setFormStatus(1);
-            satisfyPatientVo.setFormId(satisfyPlan.getSatisfyNum());
+
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
             satisfyPatientMapper.insertSelective(satisfyPatientVo);
         }
@@ -221,8 +244,8 @@ public class PlanPatientMQ {
                 planPatientVo.setPlanNum(planInfo.getPlanNum());//设置计划编号
 //                Long patientId = Long.parseLong(map.get("patientId").toString());
                 Long patientId = Long.parseLong(map.get("patientId")+"");
-                planPatientVo.setPatientId(patientId);//设置病人id
-                planPatientVo.setSendType(1);//发送状态  1未发送  2已发送 3发送异常
+                planPatientVo.setPatientId(patientId);      //设置his 患者主键
+                planPatientVo.setSendType(1);               //发送状态  1未发送  2已发送 3发送异常
                 String patientName = (String) map.get("patientName");
                 planPatientVo.setPatientName(patientName);//设置病人姓名
                 Integer patientSex = (Integer) map.get("patientSex");
@@ -232,14 +255,14 @@ public class PlanPatientMQ {
                 String patientPhone = (String) map.get("patientPhone");
                 planPatientVo.setPatientPhone(patientPhone);//设置病人手机号码
                 String dept = (String) map.get("DEPT");
-                planPatientVo.setPatientWard(dept);//设置病人科室  可能是集合
-                planPatientVo.setFormStatus(1);//设置随访状态 1 未完成  2 已完成
+                planPatientVo.setPatientWard(dept);         //设置病人科室
+                planPatientVo.setFormStatus(1);//设置表单完成状态 1 未完成  2 已完成
                 planPatientVo.setPatientStatus(1);//设置 状态  1：未删除  2 已删除
 //                String patientCondition = (String) map.get("patientCondition");
 //                planPatientVo.setPatientCondition(patientCondition);//设置病人情况  可能是集合
                 String disease = (String) map.get("DIAGNOSIS_NAME");
-                planPatientVo.setPatientDiagous(disease);//设置病人诊断  可能是集合
-                planPatientVo.setPatientType(planInfo.getPatientInfoSource());//设置病人来源   可能是集合
+                planPatientVo.setPatientDiagous(disease);//设置病人诊断
+                planPatientVo.setPatientType(planInfo.getPatientInfoSource());//设置病人来源 1,出院；2,门诊;3,在院;4体检 5 建档
                 String areaCode = (String) map.get("DIST");
                 planPatientVo.setAreaCode(areaCode);//设置院区编码   可能是集合
                 if (planInfo.getPlanType() == 1){//随访
@@ -247,21 +270,17 @@ public class PlanPatientMQ {
                 }else{//宣教
                     planPatientVo.setPlanPatsStatus(1);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
                 }
-//                planPatientVo.setPlanPatsStatus(0);//-1:收案 0.初始状态全部 1：待随访 2：已完成；3:已过期
+                planPatientVo.setRulesInfoId(planInfo.getRulesInfoNum());//规则号
                 planPatientVo.setPatientSource(planInfo.getPatientInfoSource());//设置患者来源
-                planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
                 planPatientVo.setIdCard(map.get("idCard").toString());//身份证号
                 planPatientVo.setInhosNo(map.get("inhosNo").toString());//住院号
-                planPatientVo.setRulesInfoId(planInfo.getRulesInfoNum());//规则号
-
-//                if(rules.getRulesInfoType() ==1){
-//
-//                }else if (rules.getRulesInfoType() ==2){
-//
-//                }else if (rules.getRulesInfoType() ==3){
-//
-//                }
+                planPatientVo.setFormId(planInfo.getFollowFormNum());//设置随访表单id
+                String deptId = map.get("DEPTID").toString();
+                planPatientVo.setPatientWardId(deptId);
                 Date lastDate = new Date((Long) map.get("lastDate"));//获取最近一次的出院时间
+                planPatientVo.setPatientTime(lastDate);
+                String diagousId = (String) map.get("DIAGNOSIS_ICD");
+                planPatientVo.setDiagousId(diagousId);
                 Date nextDate = null;
 
                 switch (rules.getRulesInfoTypeName()) {

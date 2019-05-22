@@ -91,7 +91,11 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult addPlanInfo(PlanInfoVo record, RulesInfoVo rulesInfoVo) {
         log.info("增加的计划信息为:" + JSON.toJSONString(record));
-        record.setImportData(2);//默认设置未导入数据库
+        if (record.getPlanEndTime().getTime() < new Date().getTime()){
+            record.setImportData(2);//导入患者信息状态  1 导入未完成  2 导入完成
+        }else{
+            record.setImportData(1);//导入患者信息状态  1 导入未完成  2 导入完成
+        }
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoByName(record.getPlanName());
         if (planInfo != null) {
             //如果已经存在该名称,不允许重复添加
