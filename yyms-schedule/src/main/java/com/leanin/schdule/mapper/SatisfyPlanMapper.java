@@ -1,5 +1,6 @@
 package com.leanin.schdule.mapper;
 
+import com.leanin.domain.vo.SatisfyInfoVo;
 import com.leanin.domain.vo.SatisfyPlanVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,8 @@ public interface SatisfyPlanMapper {
 //    int updateSatisfyPlan(SatisfyPlanVo record);
 
 	List<SatisfyPlanVo> findList();
+
+    List<SatisfyPlanVo> findByImportData(@Param("importData") Integer importData);
+
+	void updateImportData(@Param("planSatisfyNum") String planSatisfyNum,@Param("importData") int importData);
 }

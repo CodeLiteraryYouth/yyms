@@ -86,50 +86,15 @@
     r.rules_info_type_name, r.rules_info_name,r.rules_info_text,p.plan_sex, p.plan_age_interval, p.plan_exis_phone, p.plan_type, p.plan_status, p.area_code,p.disease_code,
     p.pats_ward_code,p.plan_creater,p.create_date,p.import_data,msg_id,msg_type
   </sql>
-    <!--<select id="findPlanList" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Blob_Column_List"/>
-        from leanin_plan_info p
-        left join leanin_form_type t on t.form_type_id=p.form_type_id
-        left join leanin_form_info f on p.follow_form_num=f.form_num
-        left join leanin_rules_info r on p.rules_info_num=r.rules_info_id
-        where p.plan_status>=0
-        and p.plan_type=#{planType}
-        <if test="planName != null">
-            and p.plan_name like CONCAT('%',#{planName},'%')
-        </if>
-    </select>
-    <select id="findPlanInfoById" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from leanin_plan_info where plan_status>=0
-        and plan_num = #{planNum,jdbcType=VARCHAR}
-    </select>
-    <select id="findPlanInfoByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from leanin_plan_info where plan_status>=0
-        and plan_name = #{planName,jdbcType=VARCHAR}
-    </select>
-    <select id="findPlanListByImportData" resultType="com.leanin.domain.vo.PlanInfoVo">
-        SELECT
-        <include refid="Base_Column_List"/>
-        from leanin_plan_info where import_data =#{importData}
-    </select>
-    &lt;!&ndash;根据计划名称查询计划信息&ndash;&gt;
-    <select id="findPlanInfoByPlanName" resultType="com.leanin.domain.vo.PlanInfoVo">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM leanin_plan_info
-        WHERE plan_num LIKE #{planName} and plan_status != -1
-    </select>
-    &lt;!&ndash;根据计划类型查询计划信息&ndash;&gt;
-    <select id="findPlanListByType" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM leanin_plan_info
-        WHERE plan_type = #{planType} and plan_status > -1
-    </select>-->
+
+    <update id="updateImportData">
+        UPDATE
+          `leanin_plan_info`
+        SET
+          import_data = #{importData}
+        WHERE plan_num = #{planNum}
+    </update>
+
     <select id="findAllPlan" resultMap="BlobResultMap">
         select
         <include refid="Blob_Column_List"/>
@@ -140,7 +105,12 @@
         where p.plan_status >= 0
     </select>
 
-    <select id="findByImportData" resultType="com.leanin.domain.vo.PlanInfoVo">
-
+    <select id="findByImportData" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Blob_Column_List"/>
+        FROM
+          `leanin_plan_info`
+        WHERE plan_status = 0
+          AND import_data = #{status}
     </select>
 </mapper>

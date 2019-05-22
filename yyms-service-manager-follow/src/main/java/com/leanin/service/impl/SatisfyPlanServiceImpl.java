@@ -94,7 +94,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
         Map paramMap = new HashMap();
         //科室集合
         String patsWardCode = satisfyPlan.getPatientWard();
-        if (patsWardCode != null){
+        if (patsWardCode != null && !"[]".equals(patsWardCode)){
             List<String> patsWardCodeList =JSON.parseArray(patsWardCode, String.class);
             paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
         }

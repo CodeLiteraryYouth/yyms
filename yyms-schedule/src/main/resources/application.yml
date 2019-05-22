@@ -5,6 +5,22 @@ spring:
     time-zone: GMT+8
   application:
     name: yyms-schedule
+  redis:
+    host: 39.108.217.158
+    port: 6379
+    timeout: 60000 #连接超时 毫秒
+    jedis:
+      pool:
+        maxActive: 3
+        maxIdle: 3
+        minIdle: 1
+        maxWait: -1 #连接池最大等行时间 -1没有限制
+    rabbitmq:
+      host: 39.108.217.158
+      port: 5672
+      username: guest
+      password: guest
+      virtual-host: /
   datasource: #数据源
     druid:
       url: jdbc:mysql://221.12.12.58:3306/leanin_follow?characterEncoding=utf-8&serverTimezone=UTC
