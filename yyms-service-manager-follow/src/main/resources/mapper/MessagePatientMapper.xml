@@ -68,8 +68,15 @@
       and patient_id = #{patientId}
     </select>
 
+  <select id="findCountByMsgTopicId" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+    FROM `leanin_msg_patient`
+    WHERE send_type = 1
+    AND msg_topic_id = #{msgTopicId}
+  </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </delete>

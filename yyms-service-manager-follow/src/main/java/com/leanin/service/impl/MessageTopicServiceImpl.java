@@ -52,14 +52,18 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		return ReturnFomart.retParam(200, pageInfo);
 	}
 
-//	@Override
-//	@Transactional(rollbackFor=Exception.class)
-//	public DataOutResponse updateTopicStatus(String msgTopicId, int status) {
-//		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(msgTopicId);
-//		log.info("改变状态的短信主题信息为:"+JSON.toJSONString(messageTopic));
-//		messageTopicMapper.updateTopicStatus(msgTopicId, status);
-//		return ReturnFomart.retParam(200, messageTopic);
-//	}
+	@Override
+	@Transactional(rollbackFor=Exception.class)
+	public DataOutResponse updateTopicStatus(String msgTopicId, int status) {
+		log.info("修改的短信主题主键为："+msgTopicId+"");
+		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(msgTopicId);
+		if (messageTopic == null){//短信主题不存在
+			log.info("短信主题不存在"+msgTopicId);
+			return ReturnFomart.retParam(5100,msgTopicId);
+		}
+		messageTopicMapper.updateTopicStatus(msgTopicId, status);
+		return ReturnFomart.retParam(200, messageTopic);
+	}
 
 	@Override
 	@Transactional(rollbackFor=Exception.class)
@@ -70,12 +74,12 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		if(CompareUtil.isNotEmpty(messageTopic)) {
 			ExceptionCast.cast(PlanPatCode.DATA_ERROR);
 		}
+		record.setMsgTopicState(1);//设置短信主题状态  1 正在使用 -1 删除
 		messageTopicMapper.addMsgTopic(record);
 		MessageTopicVo messageTopicVo = messageTopicMapper.findMsgTopicById(record.getMsgTopicId());
 		if (messageTopicVo == null){
 			ExceptionCast.cast(PlanPatCode.FAIL);
 		}
-		Map resMap = new HashMap();
 		// 封装参数
 		Map paramMap = new HashMap();
 		//科室集合
@@ -89,8 +93,8 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		}
 //		paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
 //		paramMap.put("planSex", 1);//病人性别 1男 2女
-//		paramMap.put("beginDate", planResult.getPlanBeginTime());//开始区间
-//		paramMap.put("endDate", planResult.getPlanEndTime());//结束区间
+		paramMap.put("beginDate", messageTopicVo.getMsgStartDate());//开始区间
+		paramMap.put("endDate", messageTopicVo.getMsgEndDate());//结束区间
 //		String planAgeInterval = planResult.getPlanAgeInterval();//年龄区间
 //		if (planAgeInterval != null) {//年龄区间
 //			String[] split = planAgeInterval.split(",");
@@ -105,17 +109,17 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 				Map datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
 				//调用服务发生异常
 				Object error = datamap.get("error");
-				if (!"".equals(error) && error !=null){
+				if ((!"".equals(error) && error !=null) || datamap == null){
 					ExceptionCast.cast(CommonCode.FEIGN_ERROR);
 				}
 				if (datamap != null) {
 					List<Map> list = (List<Map>) datamap.get("list");
-					resMap.put("totalCount", datamap.get("totalCount"));
 					redisTemplate.boundHashOps("msgPlan").put(messageTopicVo.getMsgTopicId(), list);
 				}
 			}
 			break;
 			case 2: {//门诊
+				ExceptionCast.cast(CommonCode.DATA_ERROR);
 				Map datamap = null;
 				datamap = managerPatientClient.findOutHosPatientByParamToSF(paramMap);
 				//调用服务发生异常
@@ -125,7 +129,6 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 				}
 				if (datamap != null) {
 					List<Map> list = (List<Map>) datamap.get("list");
-					resMap.put("totalCount", datamap.get("totalCount"));
 					redisTemplate.boundHashOps("msgPlan").put(messageTopicVo.getMsgTopicId(), list);
 				}
 			}
@@ -136,31 +139,28 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 				datamap = managerPatientClient.findInHosPatientByParamToSF(paramMap);
 				//调用服务发生异常
 				Object error = datamap.get("error");
-				if (!"".equals(error) || error !=null){
+				if ((!"".equals(error) && error !=null) || datamap == null){
 					ExceptionCast.cast(CommonCode.FEIGN_ERROR);
 				}
 				if (datamap != null) {
 					List<Map> list = (List<Map>) datamap.get("list");
-					resMap.put("totalCount", datamap.get("totalCount"));
 					redisTemplate.boundHashOps("msgPlan").put(messageTopicVo.getMsgTopicId(), list);
 				}
 			}
 			break;
 			case 4: {//体检
-
+				ExceptionCast.cast(CommonCode.DATA_ERROR);
 			}
 			break;
 			case 5: {//建档
-
+				ExceptionCast.cast(CommonCode.DATA_ERROR);
 			}
 			break;
 			default: {
-
+				ExceptionCast.cast(CommonCode.DATA_ERROR);
 			}
 			break;
 		}
-
-		resMap.put("plan", messageTopicVo);
 		//发送消息   参数1 交换机  参数2 路由地址  参数3 需要发送的数据
 		rabbitTemplate.convertAndSend(RabbitMQConfig.Exchange_NAME_SEND,RabbitMQConfig.EX_ROUTING_SEND,messageTopicVo.getMsgTopicId());
 		log.info("rabbitMQ 传递的参数：{}",messageTopicVo.getMsgTopicId());
@@ -171,6 +171,10 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	@Override
 	public DataOutResponse findMsgTopicById(String msgTopicId) {
 		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(msgTopicId);
+		if (messageTopic == null){
+			log.info("短信主题为空:"+msgTopicId);
+			return ReturnFomart.retParam(5100,msgTopicId);
+		}
 		log.info("短信主题信息为:"+JSON.toJSONString(messageTopic));
 		return ReturnFomart.retParam(200, messageTopic);
 	}

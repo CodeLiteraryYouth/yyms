@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.MessageTopicMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessageTopicVo">
+  <resultMap id="BASE" type="com.leanin.domain.vo.MessageTopicVo">
     <id column="msg_topic_id" jdbcType="VARCHAR" property="msgTopicId" />
     <result column="msg_topic_title" jdbcType="VARCHAR" property="msgTopicTitle" />
     <result column="patient_type" jdbcType="INTEGER" property="patientType" />
@@ -12,21 +12,32 @@
     <result column="msg_topic_creater"  property="msgTopicCreater" />
     <result column="msg_topic_creater_ward" jdbcType="VARCHAR" property="msgTopicCreaterWard" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="msg_topic_state"  property="msgTopicState" />
+    <result column="msg_start_date"  property="msgStartDate" />
+    <result column="msg_end_date"  property="msgEndDate" />
+
+  </resultMap>
+
+  <resultMap extends="BASE" id="BaseResultMap" type="com.leanin.domain.vo.MessageTopicVo">
     <association property="createrName" column="msg_topic_creater" javaType="string"
                  select="com.leanin.mapper.UserMapper.findUserName">
     </association>
+    <association property="unsentCount" column="msg_topic_id" javaType="integer"
+                 select="com.leanin.mapper.MessagePatientMapper.findCountByMsgTopicId">
+    </association>
   </resultMap>
+
   <sql id="Base_Column_List">
     msg_topic_id,msg_topic_title,patient_type,disease_name,msg_topic_head,
     msg_content, msg_send_date, msg_topic_creater, msg_topic_creater_ward,
-    area_code
+    area_code,msg_topic_state,msg_start_date,msg_end_date
   </sql>
 
   <select id="findMsgTopicList" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_msg_topic
-    where 1 = 1
+    where msg_topic_state = 1
     <if test="msgTopicTitle != null">
          AND msg_topic_title like CONCAT('%',#{msgTopicTitle,jdbcType=VARCHAR},'%')
     </if>
@@ -34,7 +45,7 @@
 
   <select id="findMsgTopicById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />
     from leanin_msg_topic
     where msg_topic_id = #{msgTopicId}
   </select>
@@ -80,6 +91,15 @@
       <if test="areaCode != null">
         area_code,
       </if>
+      <if test="msgTopicState != null">
+        msg_topic_state,
+      </if>
+      <if test="msgStartDate != null">
+        msg_start_date,
+      </if>
+      <if test="msgEndDate != null">
+        msg_end_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="msgTopicId != null">
@@ -111,6 +131,15 @@
       </if>
       <if test="areaCode != null">
         #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTopicState != null">
+        #{msgTopicState},
+      </if>
+      <if test="msgStartDate != null">
+        #{msgStartDate},
+      </if>
+      <if test="msgEndDate != null">
+        #{msgEndDate},
       </if>
     </trim>
   </insert>
@@ -147,5 +176,13 @@
       </if>
     </set>
     where msg_topic_id = #{msgTopicId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateTopicStatus">
+        UPDATE
+          `leanin_msg_topic`
+        SET
+          msg_topic_state = #{status}
+        WHERE msg_topic_id = #{msgTopicId}
   </update>
 </mapper>

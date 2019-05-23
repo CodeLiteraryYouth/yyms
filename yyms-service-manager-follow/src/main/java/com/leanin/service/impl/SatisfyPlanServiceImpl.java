@@ -145,6 +145,7 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
             }
             break;
             case 2: {//门诊
+                ExceptionCast.cast(CommonCode.DATA_ERROR);
 //                int i = 0;
 //                Map paramMap = new HashMap();
                 Map datamap = null;
@@ -208,15 +209,15 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
             }
             break;
             case 4: {//体检
-
+                ExceptionCast.cast(CommonCode.DATA_ERROR);
             }
             break;
             case 5: {//建档
-
+                ExceptionCast.cast(CommonCode.DATA_ERROR);
             }
             break;
             default: {
-
+                ExceptionCast.cast(CommonCode.DATA_ERROR);
             }
             break;
         }

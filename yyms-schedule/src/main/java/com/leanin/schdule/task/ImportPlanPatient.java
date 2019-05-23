@@ -45,7 +45,7 @@ public class ImportPlanPatient {
 
 
     //随访  宣教 计划导入患者
-    @Scheduled(cron = "0 0 0 * * ? *")//每日 0:00:00  执行
+    @Scheduled(cron = "0 0 0 * * ? ")//每日 0:00:00  执行
     @Transactional(rollbackFor = Exception.class)
     public void importFollowPatient(){
         Date endDate = new Date();
@@ -171,7 +171,7 @@ public class ImportPlanPatient {
 
 
     //随访  宣教 计划导入患者
-    @Scheduled(cron = "0 0 0 * * ? *")//每日 0:00:00  执行
+    @Scheduled(cron = "0 0 0 * * ? ")//每日 0:00:00  执行
     @Transactional(rollbackFor = Exception.class)
     public void importSatisfyPatient(){
         Date endDate = new Date();

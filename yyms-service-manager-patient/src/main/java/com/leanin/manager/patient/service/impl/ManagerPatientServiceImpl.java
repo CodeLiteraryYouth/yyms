@@ -6,6 +6,7 @@ import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.manager.patient.service.ManagerPatientService;
 import com.leanin.webserviceclient.WebServiceClient;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,14 @@ import java.util.Map;
 
 
 @Service
+@Slf4j
 public class ManagerPatientServiceImpl implements ManagerPatientService {
 
 	
 
     @Override
     public DataOutResponse findListByParam(Map paramMap) {
+        log.info("患者管理查询的参数",paramMap.toString());
         // 创建动态客户端
 //        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 //        Client client = dcf.createClient("http://221.12.12.58:8082/soap/test?wsdl");

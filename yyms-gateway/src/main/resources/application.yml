@@ -46,6 +46,7 @@ eureka:
   client:
     registerWithEureka: true
     fetchRegistry: true
+    registry-fetch-interval-seconds: 5  # eureka client间隔多久去拉取服务注册信息
     serviceUrl:
 #      defaultZone: http://39.108.217.158:50101/eureka/,http://39.108.217.158:50102/eureka/  #阿里云
       defaultZone: http://221.12.12.58:50101/eureka/,http://221.12.12.58:50102/eureka/  #浪潮

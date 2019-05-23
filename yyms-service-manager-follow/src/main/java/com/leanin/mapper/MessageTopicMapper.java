@@ -26,7 +26,7 @@ public interface MessageTopicMapper {
      * @param status
      * @return
      */
-//    int updateTopicStatus(@Param("msgTopicId") String msgTopicId,@Param("status") int status);
+    int updateTopicStatus(@Param("msgTopicId") String msgTopicId,@Param("status") int status);
 
     /**
      * 增加短信主题信息

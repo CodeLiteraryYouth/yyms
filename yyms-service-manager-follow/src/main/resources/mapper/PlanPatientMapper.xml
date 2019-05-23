@@ -367,12 +367,17 @@
             <if test="myFollowReq.planId != null">
                 AND pi.plan_num = #{myFollowReq.planId}
             </if>
-            <if test="myFollowReq.planType == 1">
-                AND pi.plan_duty_per = #{myFollowReq.userId}
-            </if>
-            <if test="myFollowReq.planType == 2">
-                AND pi.plan_creater = #{myFollowReq.userId}
-            </if>
+            <choose>
+                <when test="myFollowReq.planType == 1">
+                    AND pi.plan_duty_per = #{myFollowReq.userId}
+                </when>
+                <when test="myFollowReq.planType == 2">
+                    AND pi.plan_creater = #{myFollowReq.userId}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
         )
         <if test="myFollowReq.startDate != null">
             AND next_date &gt;= #{myFollowReq.startDate}
@@ -397,7 +402,7 @@
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
-        <if test="myFollowReq.folStatus == 1">
+        <if test="myFollowReq.folStatus == 1 and myFollowReq.planType == 1">
             AND send_type = 2
         </if>
     </select>

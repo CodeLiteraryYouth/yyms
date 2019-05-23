@@ -101,6 +101,8 @@ public class ReturnFomart {
         messageMap.put("5004","医院暂无此身份信息，请重新输入");
         messageMap.put("5005","当前无医生号源，请重新选择");
 
+        messageMap.put("5100","短信主题不存在");
+
 
     }
     public static DataOutResponse retParam(int status,Object data) {

@@ -40,21 +40,11 @@ public class MessageTopicVo {
 
     private String areaCode;	//院区编码
 
+    private Integer msgTopicState;      //短信主题状态  1 在用  -1 删除
 
+    private Date msgStartDate;          //短信主题筛选患者开始时间
 
+    private Date msgEndDate;            //短信主题筛选患者结束时间
 
-
-//    private Long msgId;	//短信表单ID
-//
-//    private Integer msgSendType;	//短信发送方式
-//
-//    private Date msgSendDate;	//短信发送日期和时间
-//
-//    private Integer msgSendStatus;	//短信发送状态（-1：发送失败 0：发送成功）
-//
-//    private String msgTopicCreateWard;	//短信主题创建者科室
-    
-
-
-
+    private Integer unsentCount;        //未发送人数
 }

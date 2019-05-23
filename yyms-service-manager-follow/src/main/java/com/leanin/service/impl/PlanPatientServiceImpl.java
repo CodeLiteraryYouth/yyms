@@ -342,26 +342,6 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         return nextDate;
     }
 
-    /**
-     * 我的随访
-     *
-     * @param startDate
-     * @param endDate
-     * @param planNum
-     * @param patientName
-     * @return
-     */
-    /*@Override
-    public DataOutResponse findPlanPatientList(Date startDate, Date endDate, String planNum, String patientName) {
-
-        //获取登录人信息 判断是否是管理员
-
-
-        String userId = "1";
-
-//        planPatientMapper.findPlanPatientList()
-        return null;
-    }*/
 
     //根据patientId查询患者信息和病史
     @Override
@@ -424,7 +404,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
                 dataMap.put("record", inHosRecord);
             }
             break;
-            case 3: {//门诊
+            case 2: {//门诊
 //                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
                 patientMap = managerPatientClient.findOutHosPatientById(patientId + "");
 //                }
@@ -432,7 +412,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
                 dataMap.put("record", outHosRecord);
             }
             break;
-            case 2: {//在院
+            case 3: {//在院
                 paraMap.put("inOut", 1);
 //                if (PatientInfoVo == null){//没有本地患者信息  调用远程患者信息
                 patientMap = managerPatientClient.findInHosPatientById(patientId + "");

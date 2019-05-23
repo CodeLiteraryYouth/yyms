@@ -56,7 +56,6 @@ public class ExceptionCatch {
             return new ResponseResult(CommonCode.SERVER_ERROR);
         }
 
-
     }
 
 

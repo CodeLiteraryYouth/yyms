@@ -203,7 +203,7 @@ public class PlanPatientMQ {
             String rulesInfoText = rules.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);//获取规则
             String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            String timeNumStr = (String) rulesMap.get("timeNum");
+            String timeNumStr = rulesMap.get("timeNum").toString();//数字
             int timeNum = 0;
             if (!"".equals(timeNumStr) && timeNumStr != null) {
                 timeNum = Integer.parseInt(timeNumStr);//

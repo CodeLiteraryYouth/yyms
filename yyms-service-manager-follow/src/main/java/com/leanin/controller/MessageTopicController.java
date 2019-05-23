@@ -20,35 +20,63 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("msgTopic")
 public class MessageTopicController extends BaseController {
+
 	@Autowired
 	private MessageTopicService messageTopicService;
 
+	/**
+	 * 分页查询条件查询短信主题
+	 * @param page 当前页
+	 * @param pageSize 每页展示条数
+	 * @param msgTopicName  短信主题名称
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
 	@GetMapping("findMsgTopicList")
 	public DataOutResponse findMsgTopicList(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, @RequestParam(value="msgTopicName",required=false) String msgTopicName) {
 		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName);
 	}
-	
-//	@GetMapping("udpateTopicStatus")
-//	public DataOutResponse udpateTopicStatus(@RequestParam String msgTopicId,@RequestParam int status) {
-//		return messageTopicService.updateTopicStatus(msgTopicId, status);
-//	}
 
+	/**
+	 *  修改短信主题状态
+	 * @param msgTopicId  短信主题主键
+	 * @param status	 状态  1 正在使用  -1 删除
+	 * @return
+	 */
+	@GetMapping("udpateTopicStatus")
+	public DataOutResponse udpateTopicStatus(@RequestParam("msgTopicId") String msgTopicId,@RequestParam("status") int status) {
+		return messageTopicService.updateTopicStatus(msgTopicId, status);
+	}
+
+	/**
+	 * 添加短信主题
+	 * @param messageTopic
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','addMsgPlan')")
 	@PostMapping("addMsgTopic")
 	public DataOutResponse addMsgTopic(@RequestBody MessageTopicVo messageTopic) {
 		LyOauth2Util.UserJwt userJwt = getUser(request);
 		messageTopic.setMsgTopicCreater(userJwt.getId());
-		messageTopic.setMsgTopicCreaterWard(userJwt.getWardCode());
 		return messageTopicService.addMsgTopic(messageTopic);
 	}
 
+	/**
+	 * 根据主键查询短信主题
+	 * @param msgTopicId  短信主题主键
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
 	@GetMapping("findMsgTopicById")
 	public DataOutResponse findMsgTopicById(@RequestParam("msgTopicId") String msgTopicId) {
 		return messageTopicService.findMsgTopicById(msgTopicId);
 	}
 
+	/**
+	 * 修改短信主题
+	 * @param messageTopic
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','updateMsgPlan')")
 	@PostMapping("updateMsgTopic")
 	public DataOutResponse updateMsgTopic(@RequestBody MessageTopicVo messageTopic) {
