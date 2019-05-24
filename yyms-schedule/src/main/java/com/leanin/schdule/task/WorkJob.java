@@ -29,8 +29,6 @@ public class WorkJob {
     @Value("${wx.appSecret}")
     private String appSecret;
 
-//    private String accessToken;
-
     @Autowired
     PlanInfoMapper planInfoMapper;
 
@@ -168,9 +166,6 @@ public class WorkJob {
 
                         case 2: {//微信公众号
                             log.info("微信公众号推送:{}");
-//                            if (accessToken == null) {
-//                            String accessToken = getAccessToken();//获取accessToken
-//                            }
                             int flag = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
@@ -239,10 +234,6 @@ public class WorkJob {
         messageRecord.setPatientWard(patientDto.getPatientWard()); //患者科室
         messageRecord.setPatientSource(patientDto.getPatientSource());  //患者来源
         messageRecord.setNextDate(patientDto.getNextDate());//计划患者发送时间
-//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
-//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
-//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
-//        planPatientMapper.updatePlanPatient(patientDto);
         MessageRecord save = messageRecordRepository.save(messageRecord);
         log.info("发送随访/宣教短信信息",JSON.toJSONString(save));
         return patientDto;
@@ -325,13 +316,7 @@ public class WorkJob {
                                 satisfyPatientVo.setSendType(3); //发送失败
                             }
                             addMsgRecord(satisfyPatientVo,msgText + param,satisfyPlanVo);
-//                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
-//                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
-//                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                             //推送公众号
-//                            if (accessToken == null) {
-//                            String accessToken = getAccessToken();//获取accessToken
-//                            }
                             int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
@@ -344,9 +329,6 @@ public class WorkJob {
                         }
                         break;
                         case 2: {//公众号
-//                            if (accessToken == null) {
-//                            String accessToken = getAccessToken();//获取accessToken
-//                            }
                             int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2,accessToken);
                             if (flag == 3) {//accessToken失效 重新获取令牌
                                 accessToken = getAccessToken();//获取accessToken
@@ -369,9 +351,6 @@ public class WorkJob {
                                 satisfyPatientVo.setSendType(3); //发送失败
                             }
                             addMsgRecord(satisfyPatientVo,msgText + param,satisfyPlanVo);
-//                            msgRecordMapper.addMsgRecord(new MessageRecord(null,/*satisfyPlanVo.getDiscoverPerson()*/0l, satisfyPlanVo.getSatisfyPlanWard(), new Date(),
-//                                    satisfyPatientVo.getPatientPhone(), msgText, satisfyPatientVo.getSendType(), null, 3, satisfyPatientVo.getPatientSatisfyId(),
-//                                    satisfyPatientVo.getPatientId() + "", satisfyPatientVo.getFormId(), satisfyPlanVo.getPlanSatisfyName()));
                         }
                         break;
                     }
@@ -577,11 +556,6 @@ public class WorkJob {
 //        body
         //发送链接
 
-//        String sendMsgUrl="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
-//        String templeteId="WVatT8Lq64rB81gEYnnfNw_ulCAgJkri5iyi_FPVRrc";
-//        String openId = "o0XfE5Mbr0YAyMlvyjxeapM6IvvY";
-//        param.put("touser",openId);//openid
-//        param.put("template_id",templeteId);
     }
 
     public int sendWxMsg(PlanInfoDto planInfo, PlanPatientVo patientDto, WxSendDao wxSendDao,
@@ -768,10 +742,6 @@ public class WorkJob {
         messageRecord.setPatientWard(satisfyPatientVo.getPatientWard()); //患者科室
         messageRecord.setPatientSource(satisfyPatientVo.getPatientType());  //患者来源
         messageRecord.setNextDate(satisfyPatientVo.getPatientDateTime());//计划患者发送时间
-//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
-//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
-//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
-//        planPatientMapper.updatePlanPatient(patientDto);
         MessageRecord save = messageRecordRepository.save(messageRecord);
         log.info("满意度计划发送短信:{}",JSON.toJSONString(messageRecord));
     }
