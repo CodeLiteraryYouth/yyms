@@ -154,8 +154,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			OnlineEdu onlineEdu = onlineEduRepository.save(edu);
 			String param = "http://sf-system.leanin.com.cn/education?planPatientId=" + onlineEdu.getEduId() + "&planType=4&formNum=" + onlineEdu.getFormId();
 
-			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText() + param,onlineEdu.getPhoneNum() );
-			String msgStatus = (String) map.get("msg");
+//			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText() + param,onlineEdu.getPhoneNum() );
+//			String msgStatus = (String) map.get("msg");
+			String msgStatus = "true";
 			if (msgStatus.equals("true")){
 				onlineEdu.setSendStatus(2);//已发送短信
 				onlineEdu.setFormStatus(1);//已完成未阅读状态
@@ -177,8 +178,10 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 	public DataOutResponse sendCommonMsg(List<MessageRecord> messageRecord, HttpServletRequest request) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		for (MessageRecord record : messageRecord) {
-			Map map = CSMSUtils.sendMessage(record.getMsgText(), record.getMsgSendNum());
-			String msg = (String) map.get("msg");
+
+//			Map map = CSMSUtils.sendMessage(record.getMsgText(), record.getMsgSendNum());
+//			String msg = (String) map.get("msg");
+			String msg = "true"; //短信发送状态写死 已发送
 			if (msg.equals("true")){
 				record.setMsgSendStatus(2);
 			}else{
@@ -212,9 +215,10 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 //					param = "http://sf-system.leanin.com.cn/#/education?planPatientId=" + planPatient.getPatientPlanId() + "&palnType=2&formNum=" + formId;
 //				}
 			}
-			map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, planPatient.getPatientPhone());
+//			map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param, planPatient.getPatientPhone());
 			log.info("发送短信的内容:{}",msgInfo.getMsgText()+param);
-			String msgStatus = (String) map.get("msg");
+//			String msgStatus = (String) map.get("msg");
+			String msgStatus = "true";// 短信发送状态写死  true 已发送
 			MessageRecord messageRecord =new MessageRecord();
 			messageRecord.setMsgSendId(null);//主键自增
 			messageRecord.setMsgSendName(user.getId());// 0 表示系统自动发送
@@ -231,10 +235,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			messageRecord.setPatientWard(planPatient.getPatientWard()); //患者科室
 			messageRecord.setPatientSource(planPatient.getPatientSource());  //患者来源
 			messageRecord.setNextDate(planPatient.getNextDate());//计划患者发送时间
-//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
-//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
-//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
-//        planPatientMapper.updatePlanPatient(patientDto);
 
 			if (msgStatus.equals("true")){
 				planPatient.setSendType(2); 		//发送成功
@@ -246,9 +246,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setSendType(3); //发送失败
 				messageRecord.setMsgSendStatus(planPatient.getSendType());//发送状态  2 发送成功  3 发送失败
 				planPatientMapper.updatePlanPatient(planPatient);
-//				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*planInfoVo.getPlanDutyPer()*/,planInfoVo.getPlanWardCode(),new Date(),
-//						planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
-//						planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 				MessageRecord save = messageRecordRepository.save(messageRecord);
 				log.info("重发随访/宣教表单失败",JSON.toJSONString(save));
 				return false;
@@ -257,9 +254,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			planPatientMapper.updatePlanPatient(planPatient);
 			MessageRecord save = messageRecordRepository.save(messageRecord);
 			log.info("重发随访/宣教表单成功",JSON.toJSONString(save));
-//			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*planInfoVo.getPlanDutyPer()*/,planInfoVo.getPlanWardCode(),new Date(),
-//					planPatient.getPatientPhone(),msgInfo.getMsgText(),planPatient.getSendType(),null,planInfoVo.getPlanType(),planPatient.getPatientPlanId(),
-//					planPatient.getPatientId()+"",planPatient.getFormId(),planPatient.getPlanNum()));
 		}
 		return true;
 	}
@@ -271,8 +265,9 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(satisfyPatientVo.getSatisfyPlanNum());
 			MsgInfoVo msgInfo = msgInfoMapper.findMsgInfoById(satisfyPlan.getMsgId());
 			String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId="+satisfyPatientVo.getPatientSatisfyId()+"&planType=3&formNum="+satisfyPlan.getSatisfyNum();
-			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,satisfyPatientVo.getPatientPhone());
-			String msgStatus = (String) map.get("msg");
+//			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText()+param,satisfyPatientVo.getPatientPhone());
+//			String msgStatus = (String) map.get("msg");
+			String msgStatus = "true";
 			MessageRecord messageRecord =new MessageRecord();
 			messageRecord.setMsgSendId(null);//主键自增
 			messageRecord.setMsgSendName(user.getId());// 0 表示系统自动发送
@@ -289,10 +284,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			messageRecord.setPatientWard(satisfyPatientVo.getPatientWard()); //患者科室
 			messageRecord.setPatientSource(satisfyPatientVo.getPatientType());  //患者来源
 			messageRecord.setNextDate(satisfyPatientVo.getPatientDateTime());//计划患者发送时间
-//        msgRecordMapper.addMsgRecord(new MessageRecord(null,/*planInfo.getPlanDutyPer()*/0l, planInfo.getPlanWardCode(), new Date(),
-//                patientDto.getPatientPhone(), msg, patientDto.getSendType(), null, planInfo.getPlanType(), patientDto.getPatientPlanId(),
-//                patientDto.getPatientId() + "", patientDto.getFormId(), patientDto.getPlanNum()));
-//        planPatientMapper.updatePlanPatient(patientDto);
 
 			if (msgStatus.equals("true")){
 				satisfyPatientVo.setSendType(2); //发送成功
@@ -303,9 +294,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				satisfyPatientVo.setSendType(3); //发送失败
 				messageRecord.setMsgSendStatus(satisfyPatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
 				satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
-//				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*satisfyPlan.getDiscoverPerson()*/,satisfyPlan.getSatisfyPlanWard(),new Date(),
-//						satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
-//						satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 				MessageRecord save = messageRecordRepository.save(messageRecord);
 				log.info("重发满意度表单：{}",JSON.toJSONString(save));
 				return false;
@@ -313,9 +301,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 			MessageRecord save = messageRecordRepository.save(messageRecord);
 			log.info("重发满意度表单：{}",JSON.toJSONString(save));
-//			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*satisfyPlan.getDiscoverPerson()*/,satisfyPlan.getSatisfyPlanWard(),new Date(),
-//					satisfyPatientVo.getPatientPhone(),msgInfo.getMsgText(),satisfyPatientVo.getSendType(),null,3,satisfyPatientVo.getPatientSatisfyId(),
-//					satisfyPatientVo.getPatientId()+"",satisfyPatientVo.getFormId(),satisfyPatientVo.getSatisfyPlanNum()));
 		}
 		return true;
 	}
@@ -324,15 +309,12 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 		for (String LongStr : longs) {
 			long aLong = Long.parseLong(LongStr);
 			MessagePatientVo messagePatientVo=messagePatientMapper.findById(aLong);
-//			MessageTopicVo msgTopic = new MessageTopicVo();
-			/*if (formId != null ){
-				msgTopic = messageTopicMapper.findMsgTopicById(formId);
-			}else{*/
 			MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(messagePatientVo.getMsgTopicId());
 			/*}*/
 			String content =msgTopic.getMsgTopicHead()+msgTopic.getMsgContent();
-			Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
-			String msgStatus = (String) map.get("msg");
+//			Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
+//			String msgStatus = (String) map.get("msg");
+			String msgStatus = "true";
 			MessageRecord messageRecord =new MessageRecord();
 			messageRecord.setMsgSendId(null);//主键自增
 			messageRecord.setMsgSendName(user.getId());// 0 表示系统自动发送
@@ -356,9 +338,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				messagePatientVo.setSendType(3);//发送失败
 				messageRecord.setMsgSendStatus(messagePatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
 				messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
-//				msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*msgTopic.getMsgTopicCreater()*/,msgTopic.getMsgTopicCreaterWard(),
-//						new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
-//						messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 				MessageRecord save = messageRecordRepository.save(messageRecord);
 				log.info("重发短信主题短信失败：{}",JSON.toJSONString(save));
 				return false;
@@ -366,9 +345,6 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
 			MessageRecord save = messageRecordRepository.save(messageRecord);
 			log.info("重发短信主题短信成功：{}",JSON.toJSONString(save));
-//			msgRecordMapper.addMsgRecord(new MessageRecord(null,user.getId()/*msgTopic.getMsgTopicCreater()*/,msgTopic.getMsgTopicCreaterWard(),
-//					new Date(),messagePatientVo.getPatientPhone(),content,messagePatientVo.getSendType(),msgTopic.getMsgTopicTitle(),4,messagePatientVo.getPatientMsgId(),
-//					messagePatientVo.getPatientId()+"",messagePatientVo.getMsgTopicId(),messagePatientVo.getMsgTopicId()));
 		}
 		return true;
 	}

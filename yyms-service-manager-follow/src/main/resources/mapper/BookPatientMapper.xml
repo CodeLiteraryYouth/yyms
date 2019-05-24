@@ -167,7 +167,7 @@
 
   <select id="findcountOrder" resultType="java.lang.Integer">
     select count(b.book_id) from leanin_book_patient b
-    where b.patient_id=#{patientId} and b.see_doc_time=#{bookDate}
+    where b.book_status=0 and b.patient_id=#{patientId} and b.see_doc_time=#{bookDate}
   </select>
 
 
@@ -229,6 +229,7 @@
         lbp.registration_dept as dept,
         lbp.book_time as bookTime,
         lau.admin_name as registrationDoc,
+        lbp.phone_num as phoneNum,
       CASE
       lbp.advice_type
       WHEN '0'

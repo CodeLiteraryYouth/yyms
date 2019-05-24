@@ -47,11 +47,10 @@ public class LeaninPatientRelaController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public DataOutResponse add(HttpServletRequest request,
-			@ModelAttribute LeaninPatientRelaDao leaninPatientRelaDao){
+	public DataOutResponse add(@ModelAttribute LeaninPatientRelaDao leaninPatientRelaDao){
 		
 		try{
-			return leaninPatientRelaService.add(leaninPatientRelaDao);
+			return leaninPatientRelaService.add(leaninPatientRelaDao,request);
 		}catch(Exception e){
 			 return ReturnFomart.retParam(404, e.getMessage());	
 		}

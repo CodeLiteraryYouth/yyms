@@ -89,4 +89,13 @@ public class WardInfoServiceImpl implements WardInfoService {
 		return ReturnFomart.retParam(200, record);
 	}
 
+	@Override
+	public DataOutResponse findlist(int page, int pageSize, String wardName) {
+		log.info("输入的科室名称为:"+wardName);
+		PageHelper.startPage(page, pageSize);
+		List<WardInfoVo> wardInfo= wardInfoMapper.findlist(wardName);
+		PageInfo pageInfo=new PageInfo<>(wardInfo);
+		return ReturnFomart.retParam(200, pageInfo);
+	}
+
 }

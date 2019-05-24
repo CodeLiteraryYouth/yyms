@@ -23,7 +23,7 @@
   </sql>
   <select id="listPage" resultMap="BaseResultMap"> 
   select 
-  * 
+  <include refid="Base_Column_List"/>
   from 
   leanin_patient_rela 
   where 
@@ -31,5 +31,18 @@
   and patient_id =#{patientId}  
   ORDER BY 
   create_time desc
+  </select>
+
+  <select id="findByNameAndReL" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List"/>
+    FROM
+      `leanin_patient_rela`
+    WHERE patient_id = #{patientId}
+      AND patient_rela_name = #{patientRelaName}
+      AND patient_rela = #{patientRela}
+      AND patient_rela_phone = #{patientRelaPhone}
+      AND is_delete = 'N'
+    LIMIT 1
   </select>
 </mapper>

@@ -134,8 +134,7 @@ public class BookPatientServiceImpl implements BookPatientService {
     public void exportBookExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response) {
         List<BookPatientExcel> list = bookPatientMapper.exportBookExcel(patientName,deptId,startDate,endDate);
         try {
-            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-                    .getBytes(), "UTF-8");
+            String fileName = new String("患者预约列表".getBytes(), "ISO-8859-1");
             ServletOutputStream out = response.getOutputStream();
             ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
 
@@ -156,8 +155,7 @@ public class BookPatientServiceImpl implements BookPatientService {
     public void exportSeeDocExcel(String patientName, String deptId, String startDate, String endDate, HttpServletRequest request, HttpServletResponse response) {
         List<SeeDocExcle> list = bookPatientMapper.exportSeeDocExcel(patientName,deptId,startDate,endDate);
         try {
-            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-                    .getBytes(), "UTF-8");
+            String fileName = new String("就诊状态列表".getBytes(), "ISO-8859-1");
             ServletOutputStream out = response.getOutputStream();
             ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
 

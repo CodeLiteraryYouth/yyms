@@ -75,6 +75,16 @@ public class CallBackConfigController extends BaseController {
 		return callBackConfigService.findDealNameByType(type,status);
 	}
 
+	/**
+	 * 批量删除投诉表扬设置
+	 * @param configNums  投诉表扬设置
+	 * @return
+	 */
+	@GetMapping("delByConfigNums")
+	public DataOutResponse delByConfigNums(@RequestParam("configNums") String configNums){
+		return callBackConfigService.delByConfigNums(configNums);
+	}
+
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();
 		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);

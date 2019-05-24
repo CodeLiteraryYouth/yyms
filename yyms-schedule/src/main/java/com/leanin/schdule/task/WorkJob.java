@@ -77,8 +77,9 @@ public class WorkJob {
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
                 log.info("短信主题内的患者信息:{}", JSON.toJSONString(messagePatientVo));
                 String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
-                Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
-                String msgStatus = (String) map.get("msg");
+//                Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
+//                String msgStatus = (String) map.get("msg");
+                String msgStatus = "true";
                 if (msgStatus.equals("true")) {
                     log.info("发送的内容和号码：{}", content, messagePatientVo.getPatientPhone(), msgStatus);
                     messagePatientVo.setSendType(2);//发送成功
@@ -88,7 +89,7 @@ public class WorkJob {
                 }
                 messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
                 MessageRecord messageRecord =new MessageRecord();
-                messageRecord.setMsgSendId(null);//主键自增
+//                messageRecord.setMsgSendId(null);//主键自增
                 messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
                 messageRecord.setMsgSendWard(messageTopicVo.getMsgTopicCreaterWard());//计划负责科室
                 messageRecord.setMsgSendDate(new Date());
@@ -100,13 +101,10 @@ public class WorkJob {
                 messageRecord.setPlanPatientId(messagePatientVo.getPatientId());//计划患者主键
                 messageRecord.setPatientId(messagePatientVo.getPatientId()+"");//his 患者主键
                 messageRecord.setPlanNum(messageTopicVo.getMsgTopicId());//短信主题 主键
-                messageRecord.setFormId(null);//表单主键
-                messageRecord.setPatientWard(null); //患者科室
+//                messageRecord.setFormId(null);//表单主键
+//                messageRecord.setPatientWard(null); //患者科室
                 messageRecord.setPatientSource(messagePatientVo.getPatientType());  //患者来源
                 messageRecord.setNextDate(messageTopicVo.getMsgSendDate());//计划患者发送时间
-//                msgRecordMapper.addMsgRecord(new MessageRecord(null, 0l, messageTopicVo.getMsgTopicCreaterWard(),
-//                        new Date(), messagePatientVo.getPatientPhone(), content, messagePatientVo.getSendType(), messageTopicVo.getMsgTopicTitle(), 4, messagePatientVo.getPatientMsgId(), messagePatientVo.getPatientId() + "",
-//                        messageTopicVo.getMsgTopicId(), messageTopicVo.getMsgTopicId()));
                 MessageRecord save = messageRecordRepository.save(messageRecord);
                 log.info("添加的短信主题发送记录为:{}",JSON.toJSONString(messageRecord));
             }
@@ -203,9 +201,10 @@ public class WorkJob {
         } else {//宣教
             param = "http://sf-system.leanin.com.cn/education?planPatientId=" + patientDto.getPatientPlanId() + "&planType=2&formNum=" + planInfo.getFollowFormNum();
         }
-        Map map = CSMSUtils.sendMessage(msg + param, patientDto.getPatientPhone());//patientDto.getPatientPhone()
+//        Map map = CSMSUtils.sendMessage(msg + param, patientDto.getPatientPhone());//patientDto.getPatientPhone()
         //设置病人发送状态
-        String msgStatus = (String) map.get("msg");
+//        String msgStatus = (String) map.get("msg");
+        String msgStatus = "true";
         log.info("随访/宣教短信，短信内容，患者手机号，发送状态：{}", msg + param, patientDto.getPatientPhone(), msgStatus);
         if (msgStatus.equals("true")) {
             patientDto.setSendType(2); //发送成功
@@ -307,8 +306,9 @@ public class WorkJob {
                         case 1: {//短信 公众号
                             //推送短信
                             String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&planType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
-                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
-                            String msgStatus = (String) map.get("msg");
+//                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
+//                            String msgStatus = (String) map.get("msg");
+                            String msgStatus = "true";
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
                             if (msgStatus.equals("true")) {
                                 satisfyPatientVo.setSendType(2); //已发送短信
@@ -342,8 +342,9 @@ public class WorkJob {
                         break;
                         case 3: {//短信
                             String param = "http://sf-system.leanin.com.cn/satisfied?planPatientId=" + satisfyPatientVo.getPatientSatisfyId() + "&planType=3&formNum=" + satisfyPlanVo.getSatisfyNum();
-                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
-                            String msgStatus = (String) map.get("msg");
+//                            Map map = CSMSUtils.sendMessage(msgText + param, satisfyPatientVo.getPatientPhone()); //satisfyPatientVo.getPatientPhone()
+//                            String msgStatus = (String) map.get("msg");
+                            String msgStatus = "true";
                             log.info("满意度短信：{}", msgText + param, satisfyPatientVo.getPatientPhone(), msgStatus, satisfyPlanVo.getSatisfyNum());
                             if (msgStatus.equals("true")) {
                                 satisfyPatientVo.setSendType(2); //已发送短信
@@ -354,7 +355,6 @@ public class WorkJob {
                         }
                         break;
                     }
-//                    }
                 }
                 satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
             }

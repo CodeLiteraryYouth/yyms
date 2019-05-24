@@ -74,6 +74,7 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		if(CompareUtil.isNotEmpty(messageTopic)) {
 			ExceptionCast.cast(PlanPatCode.DATA_ERROR);
 		}
+		if (record.getMsgEndDate().before( record.getMsgStartDate()))
 		record.setMsgTopicState(1);//设置短信主题状态  1 正在使用 -1 删除
 		messageTopicMapper.addMsgTopic(record);
 		MessageTopicVo messageTopicVo = messageTopicMapper.findMsgTopicById(record.getMsgTopicId());

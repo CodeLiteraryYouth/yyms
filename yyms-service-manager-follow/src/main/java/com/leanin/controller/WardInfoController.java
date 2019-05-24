@@ -12,10 +12,29 @@ public class WardInfoController {
 
 	@Autowired
 	private WardInfoService wardInfoService;
-	
+
+	/**
+	 * 查询科室  下拉框
+	 * @param page
+	 * @param pageSize
+	 * @param wardName
+	 * @return
+	 */
 	@GetMapping("findWardList")
 	public DataOutResponse findWardList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String wardName) {
 		return wardInfoService.findWardList(page,pageSize,wardName);
+	}
+
+	/**
+	 * 科室管理
+	 * @param page
+	 * @param pageSize
+	 * @param wardName
+	 * @return
+	 */
+	@GetMapping("findList")
+	public DataOutResponse findList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String wardName) {
+		return wardInfoService.findlist(page,pageSize,wardName);
 	}
 	
 	@GetMapping("deleteById")

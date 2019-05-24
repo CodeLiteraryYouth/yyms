@@ -238,8 +238,7 @@ public class CallLogInfoServiceImpl implements CallLogInfoService {
     public void exportCallLogExcel(QueryCallLogInfoDto queryCallLogInfoDto, HttpServletRequest request, HttpServletResponse response) {
         List<LeaninCallLogInfoDao> list = leaninCallLogInfoDaoMapper.exportCallLogExcel(queryCallLogInfoDto);
         try {
-            String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-                    .getBytes(), "UTF-8");
+            String fileName = new String("通话记录列表".getBytes(), "ISO-8859-1");
             ServletOutputStream out = response.getOutputStream();
             ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
 

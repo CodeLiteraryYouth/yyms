@@ -110,8 +110,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 	public void exportExcel(String patientName, HttpServletRequest request, HttpServletResponse response) {
 		List<FocusPatientExcel> list = focusPatientMapper.exportExcel(patientName);
 		try {
-			String fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-					.getBytes(), "UTF-8");
+			String fileName = new String("关注患者列表".getBytes(), "ISO-8859-1");
 			ServletOutputStream out = response.getOutputStream();
 			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
 

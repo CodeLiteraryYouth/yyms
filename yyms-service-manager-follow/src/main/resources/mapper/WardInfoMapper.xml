@@ -32,7 +32,7 @@
   <select id="findWardList" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select 
   	<include refid="Base_Column_List" />
-  	from leanin_ward_info where ward_status>=0
+  	from leanin_ward_info where ward_status = 0
   	<if test="wardName != null">
         and ward_name like CONCAT('%',#{wardName},'%') 
     </if>
@@ -51,8 +51,16 @@
             `leanin_user_ward` luw
           WHERE luw.`user_id` = #{userId})
     </select>
+  <select id="findlist" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from leanin_ward_info where ward_status &gt;= 0
+    <if test="wardName != null">
+      and ward_name like CONCAT('%',#{wardName},'%')
+    </if>
+  </select>
 
-    <update id="deleteById" >
+  <update id="deleteById" >
     update leanin_ward_info w set w.ward_status=#{status} 
     where w.ward_id = #{wardId,jdbcType=BIGINT}
   </update>

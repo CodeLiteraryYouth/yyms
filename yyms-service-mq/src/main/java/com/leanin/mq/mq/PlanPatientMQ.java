@@ -50,6 +50,10 @@ public class PlanPatientMQ {
     public void msgQueue(String msgTopicId){
         log.info("添加短信计划的主键是:{}",msgTopicId);
         MessageTopicVo msgTopic = messageTopicMapper.findMsgTopicById(msgTopicId);
+        if(msgTopic == null ){
+            log.info("短信主题计划为空"+msgTopicId);
+            return;
+        }
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("msgPlan").get(msgTopic.getMsgTopicId());
         log.info("导入计划患者的信息:{}", JSON.toJSONString(list));
         MessagePatientVo messagePatientVo =new MessagePatientVo();
@@ -193,6 +197,10 @@ public class PlanPatientMQ {
         log.info("添加随访/宣教计划主键是:{}",planNum);
         //获取计划信息
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);
+        if (planInfo == null){
+            log.info("随访/宣教计划不存在:{}",planNum);
+            return;
+        }
 //        log.info("计划信息为:" + planNum);
         //获取缓存中的病人数据
         List<Map> list = (List<Map>) redisTemplate.boundHashOps("plan").get(planNum);

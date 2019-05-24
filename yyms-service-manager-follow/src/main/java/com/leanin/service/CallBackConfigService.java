@@ -40,4 +40,6 @@ public interface CallBackConfigService {
 	DataOutResponse findConfigList(Integer page, Integer size, Integer configType);
 
 	DataOutResponse findDealNameByType(Integer type,Integer status);
+
+    DataOutResponse delByConfigNums(String configNums);
 }

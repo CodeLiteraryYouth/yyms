@@ -14,4 +14,10 @@ public interface LeaninPatientRelaDaoMapper extends BaseMapper<LeaninPatientRela
 	 * @return
 	 */
 	List<LeaninPatientRelaDao> listPage(@Param("patientId")String patientId);
+
+	LeaninPatientRelaDao findByNameAndReL(@Param("patientId") String patientId,
+										  @Param("patientRelaName") String patientRelaName,
+										  @Param("patientRela") String patientRela,
+										  @Param("patientRelaPhone")String patientRelaPhone);
+
 }

@@ -39,4 +39,6 @@ public interface WardInfoService {
      * @return
      */
 	DataOutResponse updateWardInfo(WardInfoVo record);
+
+	DataOutResponse findlist(int page, int pageSize, String wardName);
 }

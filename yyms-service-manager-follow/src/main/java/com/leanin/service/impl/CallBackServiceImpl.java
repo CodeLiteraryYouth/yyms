@@ -109,8 +109,11 @@ public class CallBackServiceImpl implements CallBackService {
         ServletOutputStream out = null;
         ExcelWriter writer =null;
         try {
-            fileName = new String((UUIDUtils.getUUID() + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
-                    .getBytes(), "UTF-8");
+            if (status == 1){//投诉
+                fileName = new String("投诉列表".getBytes(), "ISO-8859-1");
+            }else{//表扬
+                fileName = new String("表扬列表".getBytes(), "ISO-8859-1");
+            }
             out = response.getOutputStream();
             writer = new ExcelWriter(out, ExcelTypeEnum.XLS, true);
         } catch (IOException e) {

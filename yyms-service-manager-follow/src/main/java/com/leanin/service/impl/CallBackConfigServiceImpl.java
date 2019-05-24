@@ -38,6 +38,9 @@ public class CallBackConfigServiceImpl implements CallBackConfigService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updateConfigStatus(String configNum, int status) {
 		CallBackConfig callBackConfig=callBackConfigMapper.findConfigById(configNum);
+		if (callBackConfig ==null){
+			return ReturnFomart.retParam(1,configNum);
+		}
 		log.info("要修改状态的数据为:"+JSON.toJSONString(callBackConfig));
 		callBackConfigMapper.updateConfigStatus(configNum, status);
 		return ReturnFomart.retParam(200, callBackConfig);
@@ -91,6 +94,20 @@ public class CallBackConfigServiceImpl implements CallBackConfigService {
 	public DataOutResponse findDealNameByType(Integer type,Integer status) {
 		List<CallBackConfig> list = callBackConfigMapper.findDealNameByType(type,status);
 		return ReturnFomart.retParam(200,list);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataOutResponse delByConfigNums(String configNums) {
+		String[] callBackConfigNums = configNums.split(",");
+		for (String callBackConfigNum : callBackConfigNums) {
+			CallBackConfig callBackConfig=callBackConfigMapper.findConfigById(callBackConfigNum);
+			if (null == callBackConfig){
+				return ReturnFomart.retParam(1,callBackConfigNum);
+			}
+			callBackConfigMapper.updateConfigStatus(callBackConfigNum, -1);
+		}
+		return ReturnFomart.retParam(200,"删除成功");
 	}
 
 }

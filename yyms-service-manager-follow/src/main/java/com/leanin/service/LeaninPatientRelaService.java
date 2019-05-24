@@ -3,6 +3,8 @@ package com.leanin.service;
 import com.leanin.domain.LeaninPatientRelaDao;
 import com.leanin.domain.response.DataOutResponse;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 
  * @author zliu
@@ -20,7 +22,7 @@ public interface LeaninPatientRelaService {
 	 * @param leaninPatientRelaDao
 	 * @return
 	 */
-	DataOutResponse add(LeaninPatientRelaDao leaninPatientRelaDao);
+	DataOutResponse add(LeaninPatientRelaDao leaninPatientRelaDao, HttpServletRequest request);
 	/**
 	 * 根据id查看详情
 	 * @param id

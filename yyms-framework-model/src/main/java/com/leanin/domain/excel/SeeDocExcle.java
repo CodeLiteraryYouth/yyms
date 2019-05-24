@@ -24,16 +24,19 @@ public class SeeDocExcle extends BaseRowModel implements Serializable {
     @ExcelProperty(value = "性别",index = 2)
     private String sex;
 
-    @ExcelProperty(value = "操作人",index = 3)
+    @ExcelProperty(value = "手机号",index = 3)
+    private String phoneNum;
+
+    @ExcelProperty(value = "操作人",index = 4)
     private String registrationDoc;
 
-    @ExcelProperty(value = "预约医生",index = 4)
+    @ExcelProperty(value = "预约医生",index = 5)
     private String bookDoc;
 
-    @ExcelProperty(value = "预约科室",index = 5)
+    @ExcelProperty(value = "预约科室",index = 6)
     private String dept;
 
-    @ExcelProperty(value = "是否就诊",index = 6)
+    @ExcelProperty(value = "是否就诊",index = 7)
     private String status;
 
 

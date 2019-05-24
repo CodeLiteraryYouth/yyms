@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
+ * 每天更新计划患者
  * @author CPJ.
  * @date 2019/5/22.
  * @time 17:19.
