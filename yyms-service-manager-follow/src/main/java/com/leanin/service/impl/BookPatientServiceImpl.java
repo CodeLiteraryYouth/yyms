@@ -54,10 +54,10 @@ public class BookPatientServiceImpl implements BookPatientService {
 
 
     @Override
-    public DataOutResponse findBookPatientList(int page,int pageSize,String patientName,
+    public DataOutResponse findBookPatientList(int page,int pageSize,String patientName,String patientId,
                                                String deptId, String startDate, String endDate) {
         PageHelper.startPage(page, pageSize);
-        List<Map> result=bookPatientMapper.findBookPatientList(patientName,deptId,startDate,endDate);
+        List<Map> result=bookPatientMapper.findBookPatientList(patientName,patientId,deptId,startDate,endDate);
         PageInfo pageList=new PageInfo<>(result);
         return ReturnFomart.retParam(200,pageList);
     }

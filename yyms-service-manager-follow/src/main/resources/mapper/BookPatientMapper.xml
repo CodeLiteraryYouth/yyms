@@ -143,6 +143,9 @@
     <if test="endDate!=null">
       and b.see_doc_time<![CDATA[<=]]>#{endDate}
     </if>
+    <if test="patientId!=null">
+      and b.patient_id=#{patientId}
+    </if>
   </select>
   <select id="findBookPatient" resultType="java.util.Map">
     SELECT

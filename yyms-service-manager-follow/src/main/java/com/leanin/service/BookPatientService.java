@@ -21,7 +21,7 @@ public interface BookPatientService {
      * @param endDate
      * @return
      */
-    DataOutResponse findBookPatientList(int page,int pageSize,String patientName,
+    DataOutResponse findBookPatientList(int page,int pageSize,String patientName,String patientId,
                                         String deptId, String startDate,String endDate);
 
     /**

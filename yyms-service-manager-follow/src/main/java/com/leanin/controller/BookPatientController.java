@@ -30,9 +30,9 @@ public class BookPatientController extends BaseController {
      * @return
      */
     @GetMapping("findBookList")
-    public DataOutResponse findBookList(@RequestParam int page,@RequestParam int pageSize,@RequestParam(required = false) String patientName,
+    public DataOutResponse findBookList(@RequestParam int page,@RequestParam int pageSize,@RequestParam(required = false) String patientName,@RequestParam(required = false) String patientId,
                                         @RequestParam(required = false) String deptId,@RequestParam(required = false) String startDate,@RequestParam(required =false) String endDate) {
-        return bookService.findBookPatientList(page,pageSize,patientName,deptId,startDate,endDate);
+        return bookService.findBookPatientList(page,pageSize,patientName,patientId,deptId,startDate,endDate);
     }
 
     /**

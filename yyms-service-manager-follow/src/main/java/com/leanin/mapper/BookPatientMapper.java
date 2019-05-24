@@ -18,7 +18,7 @@ public interface BookPatientMapper {
      * @param patientName
      * @return
      */
-    List<Map> findBookPatientList(@Param("patientName") String patientName, @Param("deptId") String deptId,
+    List<Map> findBookPatientList(@Param("patientName") String patientName,@Param("patientId") String patientId,@Param("deptId") String deptId,
                                   @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     /**
