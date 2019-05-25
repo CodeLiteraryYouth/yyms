@@ -58,4 +58,5 @@
     WHERE satisfy_plan_status = 0
     AND import_data = #{importData}
   </select>
+
 </mapper>
