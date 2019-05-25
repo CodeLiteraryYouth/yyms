@@ -107,7 +107,7 @@
 
     <select id="findByImportData" resultMap="BaseResultMap">
         SELECT
-          <include refid="Blob_Column_List"/>
+          <include refid="Base_Column_List"/>
         FROM
           `leanin_plan_info`
         WHERE plan_status = 0
