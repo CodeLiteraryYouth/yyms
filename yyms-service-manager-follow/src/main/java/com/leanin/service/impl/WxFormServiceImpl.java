@@ -76,8 +76,9 @@ public class WxFormServiceImpl implements WxFormService {
             return ReturnFomart.retParam(300,"患者信息不存在");
         }
         planPatient.setFormStatus(2);//设置已完成
+        formRecordMapper.addFormRecord(formRecordVo);//添加表单记录
+        planPatient.setFormRecordId(formRecordVo.getFormId());//添加历史表单主键
         planPatientMapper.updatePlanPatient(planPatient);
-        formRecordMapper.addFormRecord(formRecordVo);
         return ReturnFomart.retParam(200,"操作成功");
     }
 
@@ -89,13 +90,16 @@ public class WxFormServiceImpl implements WxFormService {
             return ReturnFomart.retParam(300,"患者信息不存在");
         }
         SatisfyPatientVo.setFormStatus(2);//设置已完成状态
-        satisfyPatientMapper.updateByPrimaryKeySelective(SatisfyPatientVo);
+
         if (styInfoRecordVo == null ){
             return ReturnFomart.retParam(300,"传入数据为空");
         }
-        styInfoRecordVo.setSatisfyId(UUIDUtils.getUUID());
+        String uuid = UUIDUtils.getUUID();
+        styInfoRecordVo.setSatisfyId(uuid);
         styInfoRecordVo.setCreateTime(new Date());
-        styInfoRecordMapper.addRecord(styInfoRecordVo);
+        styInfoRecordMapper.addRecord(styInfoRecordVo);//添加满意度历史表单
+        SatisfyPatientVo.setFormRedordId(uuid);//添加满意度历史表单主键
+        satisfyPatientMapper.updateByPrimaryKeySelective(SatisfyPatientVo);
         return ReturnFomart.retParam(200,"操作成功");
     }
 }

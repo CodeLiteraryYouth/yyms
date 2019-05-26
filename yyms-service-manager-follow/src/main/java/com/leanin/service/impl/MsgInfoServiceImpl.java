@@ -243,15 +243,17 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				planPatient.setHandleSugges("");
 				messageRecord.setMsgSendStatus(planPatient.getSendType());//发送状态  2 发送成功  3 发送失败
 			}else {
-				planPatient.setSendType(3); //发送失败
+//				planPatient.setSendType(3); //发送失败
 				messageRecord.setMsgSendStatus(planPatient.getSendType());//发送状态  2 发送成功  3 发送失败
-				planPatientMapper.updatePlanPatient(planPatient);
+//				planPatientMapper.updatePlanPatient(planPatient);
+//				planPatientMapper.updatePlanPatientFormRecordId(planPatient);//设置表单历史记录主键 为 null
 				MessageRecord save = messageRecordRepository.save(messageRecord);
 				log.info("重发随访/宣教表单失败",JSON.toJSONString(save));
 				return false;
 			}
 			log.info("发送短信后的患者信息:{}",JSON.toJSONString(planPatient));
-			planPatientMapper.updatePlanPatient(planPatient);
+//			planPatientMapper.updatePlanPatient(planPatient);
+			planPatientMapper.updatePlanPatientFormRecordId(planPatient);//设置表单历史记录主键 为 null
 			MessageRecord save = messageRecordRepository.save(messageRecord);
 			log.info("重发随访/宣教表单成功",JSON.toJSONString(save));
 		}

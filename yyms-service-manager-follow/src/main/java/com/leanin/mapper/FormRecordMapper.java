@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface FormRecordMapper {
 
-    void addFormRecord(@Param("formRecordVo") FormRecordVo formRecordVo);
+    int addFormRecord(@Param("formRecordVo") FormRecordVo formRecordVo);
 
     FormRecordVo findFormRecordByPid(@Param("patientPlanId") Long patientPlanId);
 }

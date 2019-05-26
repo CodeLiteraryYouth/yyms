@@ -71,4 +71,6 @@ public class SatisfyPatientVo implements Serializable {
 
     private String diagousId;       //患者疾病主键
 
+    private String formRedordId;    //满意度表单记录主键
+
 }

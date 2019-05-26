@@ -453,6 +453,8 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if (formRecordVo != null) {//表单处理记录
             formRecordVo.setCreateTime(new Date());
             formRecordMapper.addFormRecord(formRecordVo);//添加表单记录
+            log.info("添加随访表单后的表单对象"+JSON.toJSONString(formRecordVo));
+            patient.setFormRecordId(formRecordVo.getFormId());//添加提交表单后的历史表单主键
         }
 
         if (followType != null) {

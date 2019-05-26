@@ -103,4 +103,6 @@ public interface PlanPatientMapper {
     List<DeptAnalysis> findFinishCountByParam(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") String startDate,@Param("endDate") String endDate);
 
     List<DeptAnalysis> findInOutCountByYear(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("year") String year);
+
+    void updatePlanPatientFormRecordId(@Param("planPatientVo")PlanPatientVo planPatient);
 }

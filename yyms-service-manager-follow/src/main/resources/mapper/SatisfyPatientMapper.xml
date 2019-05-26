@@ -111,9 +111,9 @@
         <if test="patientSource != null ">
             AND patient_type = #{patientSource}
         </if>
-        <if test="finishType == 1">
+        <!--<if test="finishType == 1">
             AND send_type = 2
-        </if>
+        </if>-->
     </select>
 
     <!--根据计划id 查询未完成人数-->
@@ -327,6 +327,9 @@
             </if>
             <if test="formStatus != null">
                 form_status = #{formStatus},
+            </if>
+            <if test="formRedordId != null">
+                form_redord_id = #{formRedordId},
             </if>
         </set>
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}

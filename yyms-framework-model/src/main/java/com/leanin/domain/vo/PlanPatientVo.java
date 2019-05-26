@@ -74,6 +74,8 @@ public class PlanPatientVo implements Serializable {
 
     private String diagousId;       //患者疾病主键
 
+    private Long formRecordId;      //提交表单后的历史表单主键
+
 //    private String sendStatus;  //发送状态
 
 }

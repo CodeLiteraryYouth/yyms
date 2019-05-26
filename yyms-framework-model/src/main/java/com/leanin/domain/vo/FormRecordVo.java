@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FormRecordVo implements Serializable {
+public class FormRecordVo /*implements Serializable*/ {
 
     private Long formId;  //表单记录主键
     private String formNum; //表单号

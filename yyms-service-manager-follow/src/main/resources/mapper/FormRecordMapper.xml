@@ -25,7 +25,12 @@
         area_code,patient_plan_id,create_id,create_time
     </sql>
 
-    <insert id="addFormRecord">
+
+    <!--添加表单记录后返回主键 keyProperty="formId" useGeneratedKeys="true"-->
+    <insert id="addFormRecord" >
+        <selectKey resultType="java.lang.Long" keyProperty="formRecordVo.formId" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into leanin_form_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
           <if test="formRecordVo.formNum != null">

@@ -100,6 +100,7 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
             styInfoRecordVo.setInhosNo(satisfyPatientVo.getInhosNo());
             styInfoRecordVo.setPatientId(satisfyPatientVo.getPatientId());
             styInfoRecordMapper.addRecord(styInfoRecordVo);
+            satisfyPatientVo.setFormRedordId(uuid);
         }
 
         if (finishType != null){//满意度完成状态
