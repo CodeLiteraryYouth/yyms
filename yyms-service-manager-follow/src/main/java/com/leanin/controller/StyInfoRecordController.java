@@ -34,6 +34,16 @@ public class StyInfoRecordController extends BaseController {
         return styInfoRecordService.findStyInfoRecordByPid(planPatientId);
     }
 
+    /**
+     * 根据满意度历史表单主键查询满意度历史表单
+     * @param satisfyRecordId  满意度历史表单主键
+     * @return
+     */
+    @GetMapping("/findById")
+    public DataOutResponse findById(@RequestParam("satisfyRecordId")String satisfyRecordId){
+        return styInfoRecordService.findById(satisfyRecordId);
+    }
+
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
         LyOauth2Util lyOauth2Util = new LyOauth2Util();

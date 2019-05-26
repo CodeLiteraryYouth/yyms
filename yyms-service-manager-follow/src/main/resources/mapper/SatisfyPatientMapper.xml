@@ -5,6 +5,7 @@
         <id column="patient_satisfy_id" jdbcType="BIGINT" property="patientSatisfyId"/>
         <result column="satisfy_plan_num" jdbcType="VARCHAR" property="satisfyPlanNum"/>
         <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
         <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
@@ -17,12 +18,15 @@
         <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
-        <result column="suggess" property="suggess"/>
         <result column="id_card" property="idCard"/>
         <result column="inhos_no" property="inhosNo"/>
         <result column="form_status" property="formStatus"/>
+        <result column="suggess" property="suggess"/>
         <result column="form_id" property="formId"/>
+        <result column="patient_ward_id" property="patientWardId"/>
+        <result column="patient_time" property="patientTime"/>
+        <result column="diagous_id" property="diagousId"/>
+        <result column="form_redord_id" property="formRedordId"/>
         <association property="satisfyPlanVo" column="satisfy_plan_num" javaType="com.leanin.domain.vo.SatisfyPlanVo"
                      select="com.leanin.mapper.SatisfyPlanMapper.findSatisfyPlanById">
         </association>
@@ -31,6 +35,7 @@
         <id column="patient_satisfy_id" jdbcType="BIGINT" property="patientSatisfyId"/>
         <result column="satisfy_plan_num" jdbcType="VARCHAR" property="satisfyPlanNum"/>
         <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
         <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
         <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
         <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
@@ -43,12 +48,15 @@
         <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
         <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"/>
-        <result column="suggess" property="suggess"/>
         <result column="id_card" property="idCard"/>
         <result column="inhos_no" property="inhosNo"/>
         <result column="form_status" property="formStatus"/>
+        <result column="suggess" property="suggess"/>
         <result column="form_id" property="formId"/>
+        <result column="patient_ward_id" property="patientWardId"/>
+        <result column="patient_time" property="patientTime"/>
+        <result column="diagous_id" property="diagousId"/>
+        <result column="form_redord_id" property="formRedordId"/>
     </resultMap>
 
     <resultMap id="CountMap" type="com.leanin.domain.common.AnalysisVo">
@@ -61,7 +69,8 @@
         patient_satisfy_id, satisfy_plan_num, patient_id, send_type, patient_name,
         patient_sex, patient_age, patient_phone, patient_ward, patient_date_time, finish_type,
         patient_condition, patient_diagous, patient_type, patient_status,
-        area_code,id_card,inhos_no,form_status,suggess,form_id
+        area_code,id_card,inhos_no,form_status,suggess,form_id,
+        patient_ward_id,patient_time,diagous_id,form_redord_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

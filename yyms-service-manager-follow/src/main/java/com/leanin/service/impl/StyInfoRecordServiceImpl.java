@@ -55,4 +55,13 @@ public class StyInfoRecordServiceImpl implements StyInfoRecordService {
         }
         return ReturnFomart.retParam(300,"数据不存在");
     }
+
+    @Override
+    public DataOutResponse findById(String satisfyRecordId) {
+        StyInfoRecordVo styInfoRecordVo = styInfoRecordMapper.findById(satisfyRecordId);
+        if (null == styInfoRecordVo){
+            return ReturnFomart.retParam(1,satisfyRecordId);
+        }
+        return ReturnFomart.retParam(200,styInfoRecordVo);
+    }
 }

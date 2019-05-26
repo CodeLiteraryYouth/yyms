@@ -124,4 +124,11 @@
         ORDER BY create_time DESC
         LIMIT 1
     </select>
+
+    <select id="findById" resultMap="BASE_MAP">
+        SELECT
+        <include refid="BASE_SQL"/>
+        FROM `leanin_form_record`
+        WHERE form_id = #{formRecordId}
+    </select>
 </mapper>

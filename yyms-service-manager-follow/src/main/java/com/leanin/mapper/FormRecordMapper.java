@@ -11,4 +11,6 @@ public interface FormRecordMapper {
     int addFormRecord(@Param("formRecordVo") FormRecordVo formRecordVo);
 
     FormRecordVo findFormRecordByPid(@Param("patientPlanId") Long patientPlanId);
+
+    FormRecordVo findById(@Param("formRecordId") Long formRecordId);
 }

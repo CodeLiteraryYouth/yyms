@@ -10,13 +10,13 @@
         <result column="patient_sex"  property="patientSex"/>
         <result column="patient_age"  property="patientAge"/>
         <result column="patient_phone" property="patientPhone"/>
+        <result column="patient_ward" property="patientWard"/>
         <result column="form_status" property="formStatus"/>
         <result column="patient_status" property="patientStatus"/>
         <result column="patient_condition" property="patientCondition"/>
         <result column="patient_diagous" property="patientDiagous"/>
         <result column="patient_type" property="patientType"/>
         <result column="area_code" property="areaCode"/>
-        <result column="patient_ward" property="patientWard"/>
         <result column="plan_pats_status" property="planPatsStatus"/>
         <result column="rules_info_id" property="rulesInfoId"></result>
         <result column="next_date" property="nextDate"></result>
@@ -26,6 +26,10 @@
         <result column="inhos_no" property="inhosNo"></result>
         <result column="opend_id" property="opendId"></result>
         <result column="form_id" property="formId"></result>
+        <result column="patient_ward_id" property="patientWardId"></result>
+        <result column="patient_time" property="patientTime"></result>
+        <result column="diagous_id" property="diagousId"></result>
+        <result column="form_record_id" property="formRecordId"></result>
         <association property="planInfoVo" column="plan_num" javaType="com.leanin.domain.vo.PlanInfoVo"
                      select="com.leanin.mapper.PlanInfoMapper.findPlanInfoById">
         </association>
@@ -39,6 +43,7 @@
         <result column="patient_sex" property="patientSex"/>
         <result column="patient_age" property="patientAge"/>
         <result column="patient_phone" property="patientPhone"/>
+        <result column="patient_ward"  property="patientWard"/>
         <result column="form_status" property="formStatus"/>
         <result column="patient_status" property="patientStatus"/>
         <result column="patient_condition" property="patientCondition"/>
@@ -50,11 +55,14 @@
         <result column="next_date"  property="nextDate"></result>
         <result column="patient_source"  property="patientSource"></result>
         <result column="handle_sugges" property="handleSugges"></result>
-        <result column="patient_ward"  property="patientWard"/>
         <result column="id_card" property="idCard"></result>
         <result column="inhos_no" property="inhosNo"></result>
         <result column="opend_id" property="opendId"></result>
         <result column="form_id" property="formId"></result>
+        <result column="patient_ward_id" property="patientWardId"></result>
+        <result column="patient_time" property="patientTime"></result>
+        <result column="diagous_id" property="diagousId"></result>
+        <result column="form_record_id" property="formRecordId"></result>
     </resultMap>
 
     <resultMap id="CountMap" type="com.leanin.domain.common.AnalysisVo">
@@ -67,7 +75,8 @@
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
     patient_age, patient_phone,patient_ward,form_status, patient_status, patient_condition,
     patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,
-    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id
+    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id,
+    patient_ward_id,patient_time,diagous_id,form_record_id
   </sql>
     <select id="findPlanPatientById" resultMap="BaseResultMap">
         select

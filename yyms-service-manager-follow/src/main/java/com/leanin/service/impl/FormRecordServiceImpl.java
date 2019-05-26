@@ -56,4 +56,13 @@ public class FormRecordServiceImpl implements FormRecordService {
 
     }
 
+    @Override
+    public DataOutResponse findById(Long formRecordId) {
+        FormRecordVo formRecordVo = formRecordMapper.findById(formRecordId);
+        if (null == formRecordVo){
+            return ReturnFomart.retParam(1,formRecordId);
+        }
+        return ReturnFomart.retParam(200,formRecordVo);
+    }
+
 }

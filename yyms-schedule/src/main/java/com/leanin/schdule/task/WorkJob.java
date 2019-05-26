@@ -390,7 +390,9 @@ public class WorkJob {
         }
     }
 
-
+    /**
+     * 更新阶段随访的下次随访时间
+     */
     @Scheduled(cron = "0 0/5 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
     public void updateNextTime() {
@@ -400,7 +402,7 @@ public class WorkJob {
 
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
-            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新随访
+            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新 阶段 随访
                 continue;
             }
             String rulesInfoText = rulesInfo.getRulesInfoText();
@@ -434,10 +436,13 @@ public class WorkJob {
                 Date nextDate = planPatientVo.getNextDate();//随访时间
                 int days = (int) (System.currentTimeMillis() - nextDate.getTime()) / (1000 * 3600 * 24);//两个时间相差的天数
                 if (days > validDays) {
+                    if (planPatientVo.getPlanPatsStatus() == -1){//收案跳过
+                        continue;
+                    }
                     updateRecord(planPatientVo.getPlanPatsStatus(), planPatientVo, rulesInfo, timeSelect,
                             timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                 }
-                switch (planPatientVo.getPlanPatsStatus()) {
+                /*switch (planPatientVo.getPlanPatsStatus()) {
                     case -1: // -1 收案
                         break;
                     case 0: //未发送表单或者短信前的状态
@@ -462,6 +467,9 @@ public class WorkJob {
                         }
                         break;
                     case 3: //已过期随访
+                        if (days > validDays){
+
+                        }
                         updateRecord(3, planPatientVo, rulesInfo, timeSelect,
                                 timeChoosed, weeks, sendTimeDays, sendTimeMonths);
                         break;
@@ -469,7 +477,7 @@ public class WorkJob {
 
                         break;
 
-                }
+                }*/
             }
             log.info("一次计划更新完成{}", planInfoDto.getPlanNum());
         }
@@ -491,7 +499,7 @@ public class WorkJob {
             planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
             planPatientVo.setHandleSugges("");
         }
-        planPatientMapper.updatePlanPatient(planPatientVo);
+        planPatientMapper.updatePlanPatientFormRecordId(planPatientVo);
         return true;
     }
 

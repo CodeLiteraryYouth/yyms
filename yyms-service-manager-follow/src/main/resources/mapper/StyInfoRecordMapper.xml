@@ -38,6 +38,13 @@
         limit 1
     </select>
 
+    <select id="findById" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseSql"/>
+        FROM `leanin_sty_info_record`
+        WHERE satisfy_id = #{satisfyRecordId}
+    </select>
+
     <insert id="addRecord">
         insert into leanin_sty_info_record
         <trim prefix="(" suffix=" )" suffixOverrides=",">

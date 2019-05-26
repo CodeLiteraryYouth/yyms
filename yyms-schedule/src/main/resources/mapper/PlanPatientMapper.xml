@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.schdule.mapper.PlanPatientMapper">
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientVo">
-        <id column="patient_plan_id"  property="patientPlanId"/>
+        <!--<id column="patient_plan_id"  property="patientPlanId"/>
         <result column="plan_num"  property="planNum"/>
         <result column="patient_id"  property="patientId"/>
         <result column="send_type"  property="sendType"></result>
@@ -24,7 +24,35 @@
         <result column="handle_sugges"  property="handleSugges"></result>
         <result column="id_card"  property="idCard"></result>
         <result column="inhos_no"  property="inhosNo"></result>
-        <result column="form_id"  property="formId"></result>
+        <result column="form_id"  property="formId"></result>-->
+        <id column="patient_plan_id"  property="patientPlanId"/>
+        <result column="plan_num"  property="planNum"/>
+        <result column="patient_id"  property="patientId"/>
+        <result column="send_type"  property="sendType"></result>
+        <result column="patient_name"  property="patientName"/>
+        <result column="patient_sex"  property="patientSex"/>
+        <result column="patient_age"  property="patientAge"/>
+        <result column="patient_phone" property="patientPhone"/>
+        <result column="patient_ward" property="patientWard"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="patient_status" property="patientStatus"/>
+        <result column="patient_condition" property="patientCondition"/>
+        <result column="patient_diagous" property="patientDiagous"/>
+        <result column="patient_type" property="patientType"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="plan_pats_status" property="planPatsStatus"/>
+        <result column="rules_info_id" property="rulesInfoId"></result>
+        <result column="next_date" property="nextDate"></result>
+        <result column="patient_source" property="patientSource"></result>
+        <result column="handle_sugges" property="handleSugges"></result>
+        <result column="id_card" property="idCard"></result>
+        <result column="inhos_no" property="inhosNo"></result>
+        <result column="opend_id" property="opendId"></result>
+        <result column="form_id" property="formId"></result>
+        <result column="patient_ward_id" property="patientWardId"></result>
+        <result column="patient_time" property="patientTime"></result>
+        <result column="diagous_id" property="diagousId"></result>
+        <result column="form_record_id" property="formRecordId"></result>
     </resultMap>
     <resultMap extends="BaseResultMap" id="OpenIdResultMap" type="com.leanin.domain.vo.PlanPatientVo">
         <association property="opendId" column="id_card" javaType="string"
@@ -66,8 +94,9 @@
     <sql id="Base_Column_List">
     patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,
     patient_age, patient_phone,patient_ward,form_status, patient_status, patient_condition,
-    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,
-    handle_sugges,id_card,inhos_no,form_id,opend_id
+    patient_diagous, patient_type, area_code, plan_pats_status,rules_info_id,
+    next_date,patient_source,handle_sugges,id_card,inhos_no,opend_id,form_id,
+    patient_ward_id,patient_time,diagous_id,form_record_id
   </sql>
     <select id="findPlanPatientById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -192,6 +221,67 @@
             <if test="planPatientVo.patientSource != null">
                 patient_source = #{planPatientVo.patientSource}
             </if>
+        </set>
+        where patient_plan_id = #{planPatientVo.patientPlanId}
+    </update>
+    <update id="updatePlanPatientFormRecordId">
+        UPDATE leanin_plan_patient
+        <set>
+            <if test="planPatientVo.planNum != null">
+                plan_num = #{planPatientVo.planNum},
+            </if>
+            <if test="planPatientVo.patientId != null ">
+                patient_id = #{planPatientVo.patientId},
+            </if>
+            <if test="planPatientVo.sendType != null">
+                send_type = #{planPatientVo.sendType},
+            </if>
+            <if test="planPatientVo.patientName != null">
+                patient_name = #{planPatientVo.patientName},
+            </if>
+            <if test="planPatientVo.patientSex != null">
+                patient_sex = #{planPatientVo.patientSex},
+            </if>
+            <if test="planPatientVo.patientAge != null ">
+                patient_age = #{planPatientVo.patientAge},
+            </if>
+            <if test="planPatientVo.patientPhone != null ">
+                patient_phone = #{planPatientVo.patientPhone},
+            </if>
+            <if test="planPatientVo.patientWard != null ">
+                patient_ward = #{planPatientVo.patientWard},
+            </if>
+            <if test="planPatientVo.formStatus != null ">
+                form_status = #{planPatientVo.formStatus},
+            </if>
+            <if test="planPatientVo.patientStatus != null">
+                patient_status = #{planPatientVo.patientStatus},
+            </if>
+            <if test="planPatientVo.patientCondition != null ">
+                patient_condition = #{planPatientVo.patientCondition},
+            </if>
+            <if test="planPatientVo.patientDiagous != null ">
+                patient_diagous = #{planPatientVo.patientDiagous},
+            </if>
+            <if test="planPatientVo.patientType != null ">
+                patient_type = #{planPatientVo.patientType},
+            </if>
+            <if test="planPatientVo.areaCode != null ">
+                area_code = #{planPatientVo.areaCode},
+            </if>
+            <if test="planPatientVo.planPatsStatus != null ">
+                plan_pats_status = #{planPatientVo.planPatsStatus},
+            </if>
+            <if test="planPatientVo.rulesInfoId != null">
+                rules_info_id = #{planPatientVo.rulesInfoId},
+            </if>
+            <if test="planPatientVo.nextDate != null">
+                next_date = #{planPatientVo.nextDate},
+            </if>
+            <if test="planPatientVo.patientSource != null">
+                patient_source = #{planPatientVo.patientSource},
+            </if>
+            form_record_id = null
         </set>
         where patient_plan_id = #{planPatientVo.patientPlanId}
     </update>

@@ -9,5 +9,7 @@ public interface FormRecordService {
 
     DataOutResponse findFormRecordByPid(Long patientPlanId);
 
+    DataOutResponse findById(Long formRecordId);
+
     /*DataOutResponse findFormByplanPatientId(Long planPatientId);*/
 }

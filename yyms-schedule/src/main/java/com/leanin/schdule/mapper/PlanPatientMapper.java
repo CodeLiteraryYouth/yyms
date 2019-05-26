@@ -83,6 +83,5 @@ public interface PlanPatientMapper {
     void updatePlanPatient(@Param("planPatientVo") PlanPatientVo planPatientVo);
 
 
-
-
+    void updatePlanPatientFormRecordId(@Param("planPatientVo")PlanPatientVo planPatientVo);
 }

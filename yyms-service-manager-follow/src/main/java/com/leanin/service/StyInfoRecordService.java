@@ -8,4 +8,6 @@ public interface StyInfoRecordService {
     DataOutResponse addStyInfoRecord(StyInfoRecordVo styInfoRecordVo);
 
     DataOutResponse findStyInfoRecordByPid(Long planPatientId);
+
+    DataOutResponse findById(String satisfyRecordId);
 }
