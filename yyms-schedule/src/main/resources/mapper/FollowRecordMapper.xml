@@ -3,41 +3,51 @@
 <mapper namespace="com.leanin.schdule.mapper.FollowRecordMapper">
 
     <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PlanPatientRecordVo">
-        <id column="patient_plan_id" jdbcType="BIGINT" property="patientPlanId"/>
-        <result column="plan_num" jdbcType="VARCHAR" property="planNum"/>
-        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
-        <result column="send_type" jdbcType="INTEGER" property="sendType"></result>
-        <result column="patient_name" jdbcType="VARCHAR" property="patientName"/>
-        <result column="patient_sex" jdbcType="INTEGER" property="patientSex"/>
-        <result column="patient_age" jdbcType="INTEGER" property="patientAge"/>
-        <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone"/>
-        <result column="form_status" jdbcType="INTEGER" property="formStatus"/>
-        <result column="patient_status" jdbcType="INTEGER" property="patientStatus"/>
-        <result column="patient_condition" jdbcType="VARCHAR" property="patientCondition"/>
-        <result column="patient_diagous" jdbcType="VARCHAR" property="patientDiagous"/>
-        <result column="patient_type" jdbcType="INTEGER" property="patientType"/>
-        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="plan_pats_status" jdbcType="INTEGER" property="areaCode"/>
-        <result column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"></result>
-        <result column="next_date" jdbcType="TIMESTAMP" property="nextDate"></result>
-        <result column="patient_source" jdbcType="INTEGER" property="patientSource"></result>
-        <result column="handle_sugges"  property="handleSugges"></result>
-        <result column="open_id"  property="openid"></result>
-        <result column="id_card"  property="idCard"></result>
-        <result column="inhos_no"  property="inhosNo"></result>
-        <result column="form_id"  property="formId"></result>
+        <id column="follow_record_id" property="followRecordId"/>
+        <result column="patient_plan_id" property="patientPlanId"/>
+        <result column="plan_num" property="planNum"/>
+        <result column="patient_id" property="patientId"/>
+        <result column="send_type" property="sendType"/>
+        <result column="patient_name" property="patientName"/>
+        <result column="patient_sex" property="patientSex"/>
+        <result column="patient_age" property="patientAge"/>
+        <result column="patient_phone" property="patientPhone"/>
+        <result column="patient_ward" property="patientWard"/>
+        <result column="form_status" property="formStatus"/>
+        <result column="patient_status" property="patientStatus"/>
+        <result column="patient_condition" property="patientCondition"/>
+        <result column="patient_diagous" property="patientDiagous"/>
+        <result column="patient_type" property="patientType"/>
+        <result column="plan_pats_status" property="areaCode"/>
+        <result column="rules_info_id" property="rulesInfoId"/>
+        <result column="next_date" property="nextDate"/>
+        <result column="patient_source" property="patientSource"/>
+        <result column="handle_sugges"  property="handleSugges"/>
+        <result column="open_id"  property="openid"/>
+        <result column="id_card"  property="idCard"/>
+        <result column="inhos_no"  property="inhosNo"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="form_id"  property="formId"/>
+        <result column="form_record_id"  property="formId"/>
+        <result column="form_id"  property="formId"/>
+        <result column="form_id"  property="formId"/>
+
+
     </resultMap>
 
     <sql id="Base_Column_List">
-        patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,patient_age,
+        follow_record_id,patient_plan_id, plan_num, patient_id,send_type, patient_name, patient_sex,patient_age,
         patient_phone,patient_ward,form_status, patient_status, patient_condition,patient_diagous,
-        patient_type, area_code, plan_pats_status,rules_info_id,next_date,patient_source,handle_sugges,
-        open_id,id_card,inhos_no,form_id
+        patient_type, plan_pats_status,rules_info_id,next_date,patient_source,handle_sugges,open_id,
+        id_card,inhos_no,area_code,form_id,form_record_id,patient_ward_id,patient_time,diagous_id
     </sql>
 
-    <insert id="addFollowRecord">
+    <insert id="addFollowRecord" parameterType="com.leanin.domain.vo.PlanPatientVo">
         insert into leanin_follow_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patientPlanId != null">
+                patient_plan_id,
+            </if>
             <if test="planNum != null">
                 plan_num,
             </if>
@@ -77,9 +87,6 @@
             <if test="patientType != null">
                 patient_type,
             </if>
-            <if test="areaCode != null">
-                area_code,
-            </if>
             <if test="planPatsStatus !=null">
                 plan_pats_status,
             </if>
@@ -104,11 +111,29 @@
             <if test="inhosNo !=null">
                 inhos_no,
             </if>
+            <if test="areaCode !=null">
+                area_code,
+            </if>
             <if test="formId !=null">
                 form_id,
             </if>
+            <if test="formRecordId !=null">
+                form_record_id,
+            </if>
+            <if test="patientWardId !=null">
+                patient_ward_id,
+            </if>
+            <if test="patientTime !=null">
+                patient_time,
+            </if>
+            <if test="diagousId !=null">
+                diagous_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="patientPlanId != null">
+                #{patientPlanId},
+            </if>
             <if test="planNum != null">
                 #{planNum},
             </if>
@@ -130,7 +155,7 @@
             <if test="patientPhone != null">
                 #{patientPhone},
             </if>
-            <if test="patientWard != null">
+            <if test="patientWard !=null">
                 #{patientWard},
             </if>
             <if test="formStatus != null">
@@ -147,9 +172,6 @@
             </if>
             <if test="patientType != null">
                 #{patientType},
-            </if>
-            <if test="areaCode != null">
-                #{areaCode},
             </if>
             <if test="planPatsStatus !=null">
                 #{planPatsStatus},
@@ -175,8 +197,23 @@
             <if test="inhosNo !=null">
                 #{inhosNo},
             </if>
+            <if test="areaCode !=null">
+                #{areaCode},
+            </if>
             <if test="formId !=null">
                 #{formId},
+            </if>
+            <if test="formRecordId !=null">
+                #{formRecordId},
+            </if>
+            <if test="patientWardId !=null">
+                #{patientWardId},
+            </if>
+            <if test="patientTime !=null">
+                #{patientTime},
+            </if>
+            <if test="diagousId !=null">
+                #{diagousId},
             </if>
         </trim>
     </insert>

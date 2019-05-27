@@ -69,15 +69,18 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse addMsgTopic(MessageTopicVo record) {
 		log.info("增加的短信主题信息为:"+JSON.toJSONString(record));
-		record.setMsgTopicId(UUIDUtils.getUUID());
+		String uuid = UUIDUtils.getUUID();
+		record.setMsgTopicId(uuid);
 		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(record.getMsgTopicId());
 		if(CompareUtil.isNotEmpty(messageTopic)) {
 			ExceptionCast.cast(PlanPatCode.DATA_ERROR);
 		}
-		if (record.getMsgEndDate().before( record.getMsgStartDate()))
-		record.setMsgTopicState(1);//设置短信主题状态  1 正在使用 -1 删除
+		/*if (record.getMsgEndDate().before( record.getMsgStartDate())){
+
+		}*/
 		messageTopicMapper.addMsgTopic(record);
-		MessageTopicVo messageTopicVo = messageTopicMapper.findMsgTopicById(record.getMsgTopicId());
+		MessageTopicVo messageTopicVo = messageTopicMapper.findMsgTopicById(uuid);
+		log.info("添加的短信主题信息"+JSON.toJSONString(messageTopicVo));
 		if (messageTopicVo == null){
 			ExceptionCast.cast(PlanPatCode.FAIL);
 		}

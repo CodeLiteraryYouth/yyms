@@ -46,4 +46,8 @@ public interface SatisfyPatientMapper {
     List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
 
     List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
+
+    void updateFormRecordId(SatisfyPatientVo satisfyPatientVo);
+
+
 }

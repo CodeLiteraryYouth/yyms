@@ -75,6 +75,9 @@ public class WorkJob {
                 continue;
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
+                if (messageTopicVo.getMsgSendDate().after(new Date())){
+                    continue;
+                }
                 log.info("短信主题内的患者信息:{}", JSON.toJSONString(messagePatientVo));
                 String content = messageTopicVo.getMsgTopicHead() + messageTopicVo.getMsgContent();
 //                Map map = CSMSUtils.sendMessage(content, messagePatientVo.getPatientPhone());
@@ -147,9 +150,9 @@ public class WorkJob {
                             log.info("短信和公众号推送:{}");
                             patientDto = sendMessage(planInfo, patientDto);
                             String opendId = patientDto.getOpendId();
-                            if (null == opendId){//患者的openid为空 跳过推送模板消息
-                                log.info("患者的openId为空",JSON.toJSONString(patientDto));
-                            }else{//openid不为空 则进行微信模板推送
+                            if (null == opendId) {//患者的openid为空 跳过推送模板消息
+                                log.info("患者的openId为空", JSON.toJSONString(patientDto));
+                            } else {//openid不为空 则进行微信模板推送
                                 int i = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1, accessToken);
 
                                 if (i == 3) {//accessToken失效 重新获取令牌
@@ -171,11 +174,11 @@ public class WorkJob {
                         case 2: {//微信公众号
                             log.info("微信公众号推送:{}");
                             String opendId = patientDto.getOpendId();
-                            if (null == opendId){//患者的openid为空 跳过推送模板消息
-                                log.info("患者的openId为空",JSON.toJSONString(patientDto));
+                            if (null == opendId) {//患者的openid为空 跳过推送模板消息
+                                log.info("患者的openId为空", JSON.toJSONString(patientDto));
                                 patientDto.setSendType(3); //发送失败
                                 patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
-                            }else{
+                            } else {
                                 int flag = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1, accessToken);
                                 if (flag == 3) {//accessToken失效 重新获取令牌
                                     accessToken = getAccessToken();//获取accessToken
@@ -334,9 +337,9 @@ public class WorkJob {
                             addMsgRecord(satisfyPatientVo, msgText + param, satisfyPlanVo);
                             //推送公众号
                             String openId = satisfyPatientVo.getOpenId();
-                            if (null == openId){
-                                log.info("患者的openId为空:{}",JSON.toJSONString(satisfyPatientVo));
-                            }else{
+                            if (null == openId) {
+                                log.info("患者的openId为空:{}", JSON.toJSONString(satisfyPatientVo));
+                            } else {
                                 int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2, accessToken);
                                 if (flag == 3) {//accessToken失效 重新获取令牌
                                     accessToken = getAccessToken();//获取accessToken
@@ -352,18 +355,18 @@ public class WorkJob {
                         break;
                         case 2: {//公众号
                             String openId = satisfyPatientVo.getOpenId();
-                            if (null == openId){
+                            if (null == openId) {
                                 satisfyPatientVo.setSendType(3); //推送微信消息失败
-                                log.info("患者的openId为空:{}",JSON.toJSONString(satisfyPatientVo));
-                            }else{
+                                log.info("患者的openId为空:{}", JSON.toJSONString(satisfyPatientVo));
+                            } else {
                                 int flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2, accessToken);
                                 if (flag == 3) {//accessToken失效 重新获取令牌
                                     accessToken = getAccessToken();//获取accessToken
                                     flag = sendWxMsg(null, null, wxSendDao, satisfyPlanVo, satisfyPatientVo, 2, accessToken);
                                 }
-                                if (flag ==2 ){//微信推送模板消息成功
+                                if (flag == 2) {//微信推送模板消息成功
                                     satisfyPatientVo.setSendType(2); //推送微信消息成功
-                                }else{//推送模板消息失败
+                                } else {//推送模板消息失败
                                     satisfyPatientVo.setSendType(3); //推送微信消息失败
                                 }
                             }
@@ -403,7 +406,7 @@ public class WorkJob {
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
             if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新 阶段 随访
-                continue;
+                continue; //宣教和 不是 阶段随访过滤掉
             }
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
@@ -436,7 +439,7 @@ public class WorkJob {
                 Date nextDate = planPatientVo.getNextDate();//随访时间
                 int days = (int) (System.currentTimeMillis() - nextDate.getTime()) / (1000 * 3600 * 24);//两个时间相差的天数
                 if (days > validDays) {
-                    if (planPatientVo.getPlanPatsStatus() == -1){//收案跳过
+                    if (planPatientVo.getPlanPatsStatus() == -1) {//收案跳过
                         continue;
                     }
                     updateRecord(planPatientVo.getPlanPatsStatus(), planPatientVo, rulesInfo, timeSelect,
@@ -487,18 +490,18 @@ public class WorkJob {
     private boolean updateRecord(Integer status, PlanPatientVo planPatientVo, RulesInfoVo rulesInfo, String timeSelect,
                                  Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths) {
         //填写失访记录
-        planPatientVo.setPlanPatsStatus(status); // 2 已完成随访 3 失访 4 随访异常
+        planPatientVo.setPlanPatsStatus(status); // -1:收案 0：未发送表单或者短信前的状态 1：待随访 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
         followRecordMapper.addFollowRecord(planPatientVo);
-        if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
-            //计算下次随访时间
-            Date date = setNextDate(new Date(), timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
-            //复位
-            planPatientVo.setNextDate(date); //设置下次随访时间
-            planPatientVo.setSendType(1); //未发送
-            planPatientVo.setPlanPatsStatus(0); //未发送状态
-            planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
-            planPatientVo.setHandleSugges("");
-        }
+//        if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
+        //计算下次随访时间
+        Date date = setNextDate(new Date(), timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+        //复位
+        planPatientVo.setNextDate(date); //设置下次随访时间
+        planPatientVo.setSendType(1); //未发送
+        planPatientVo.setPlanPatsStatus(0); //未发送状态
+        planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
+        planPatientVo.setHandleSugges("");
+//        }
         planPatientMapper.updatePlanPatientFormRecordId(planPatientVo);
         return true;
     }
@@ -667,7 +670,7 @@ public class WorkJob {
                 case 0: {//发送成功
                     wxSendDao.setSendStatus(2);
                     //(String)
-                    wxSendDao.setMsgId(Long.parseLong( map.get("msgid").toString()));  //微信公众号发送成功的id
+                    wxSendDao.setMsgId(Long.parseLong(map.get("msgid").toString()));  //微信公众号发送成功的id
                     WxSendDao save = wxSendRepository.save(wxSendDao);
                     log.info("微信推送模板消息成功:{}", JSON.toJSONString(save));
                 }

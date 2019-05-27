@@ -293,14 +293,14 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 				satisfyPatientVo.setSuggess("");
 				messageRecord.setMsgSendStatus(satisfyPatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
 			}else {//发送失败
-				satisfyPatientVo.setSendType(3); //发送失败
+//				satisfyPatientVo.setSendType(3); //发送失败
 				messageRecord.setMsgSendStatus(satisfyPatientVo.getSendType());//发送状态  2 发送成功  3 发送失败
-				satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+//				satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
 				MessageRecord save = messageRecordRepository.save(messageRecord);
 				log.info("重发满意度表单：{}",JSON.toJSONString(save));
 				return false;
 			}
-			satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+			satisfyPatientMapper.updateFormRecordId(satisfyPatientVo);
 			MessageRecord save = messageRecordRepository.save(messageRecord);
 			log.info("重发满意度表单：{}",JSON.toJSONString(save));
 		}

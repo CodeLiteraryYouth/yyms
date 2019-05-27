@@ -368,6 +368,70 @@
       SET patient_status = 1
       WHERE patient_satisfy_id = #{patientSatisfyId}
     </update>
+    <update id="updateFormRecordId" parameterType="com.leanin.domain.vo.SatisfyPatientVo">
+        update leanin_satisfy_patient
+        <set>
+            <if test="satisfyPlanNum != null">
+                satisfy_plan_num = #{satisfyPlanNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientId != null">
+                patient_id = #{patientId,jdbcType=BIGINT},
+            </if>
+            <if test="sendType != null">
+                send_type = #{sendType,jdbcType=INTEGER},
+            </if>
+            <if test="patientName != null">
+                patient_name = #{patientName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientSex != null">
+                patient_sex = #{patientSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientAge != null">
+                patient_age = #{patientAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientPhone != null">
+                patient_phone = #{patientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientWard != null">
+                patient_ward = #{patientWard,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDateTime != null">
+                patient_date_time = #{patientDateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=INTEGER},
+            </if>
+            <if test="patientCondition != null">
+                patient_condition = #{patientCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="patientDiagous != null">
+                patient_diagous = #{patientDiagous,jdbcType=VARCHAR},
+            </if>
+            <if test="patientType != null">
+                patient_type = #{patientType,jdbcType=INTEGER},
+            </if>
+            <if test="patientStatus != null">
+                patient_status = #{patientStatus,jdbcType=INTEGER},
+            </if>
+            <if test="areaCode != null">
+                area_code = #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="suggess != null">
+                suggess = #{suggess},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard},
+            </if>
+            <if test="inhosNo != null">
+                inhos_no = #{inhosNo},
+            </if>
+            <if test="formStatus != null">
+                form_status = #{formStatus},
+            </if>
+                form_redord_id = null,
+        </set>
+        where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
+    </update>
 
 
     <select id="findPatsByParam" resultMap="BaseResultMap">

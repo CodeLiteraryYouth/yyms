@@ -58,6 +58,7 @@ public class MessageTopicController extends BaseController {
 	public DataOutResponse addMsgTopic(@RequestBody MessageTopicVo messageTopic) {
 		LyOauth2Util.UserJwt userJwt = getUser(request);
 		messageTopic.setMsgTopicCreater(userJwt.getId());
+		messageTopic.setMsgTopicState(1);//设置短信主题状态  1 正在使用 -1 删除
 		return messageTopicService.addMsgTopic(messageTopic);
 	}
 

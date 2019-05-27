@@ -21,7 +21,7 @@ public class MessagePatientServiceImpl implements MessagePatientService {
     MessagePatientMapper messagePatientMapper;
 
     @Override
-    public DataOutResponse findList(Integer currentPage, Integer pageSize, String patientName, Integer sendType) {
+    public DataOutResponse findList(Integer currentPage, Integer pageSize, String patientName, Integer sendType,String msgTopicId) {
         if (currentPage <0 || currentPage == null ){
             currentPage=1;
         }
@@ -30,7 +30,7 @@ public class MessagePatientServiceImpl implements MessagePatientService {
         }
         Map dataMap =new HashMap();
         PageHelper.startPage(currentPage,pageSize);
-        Page<MessagePatientVo> page = (Page<MessagePatientVo>) messagePatientMapper.findList(patientName,sendType);
+        Page<MessagePatientVo> page = (Page<MessagePatientVo>) messagePatientMapper.findList(patientName,sendType,msgTopicId);
         dataMap.put("totalCount",page.getTotal());
         dataMap.put("list",page.getResult());
         return ReturnFomart.retParam(200, dataMap);
@@ -42,5 +42,21 @@ public class MessagePatientServiceImpl implements MessagePatientService {
         messagePatientVo.setPatientStatus(status);
         messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);
         return ReturnFomart.retParam(200,messagePatientVo);
+    }
+
+    @Override
+    public DataOutResponse findByMsgTopicId(Integer currentPage, Integer pageSize, String msgTopicId) {
+        if (null == currentPage || currentPage < 0){
+            currentPage = 1;
+        }
+        if (null == pageSize || pageSize < 0){
+            pageSize = 10;
+        }
+        PageHelper.startPage(currentPage,pageSize);
+        Page<MessagePatientVo> page = (Page<MessagePatientVo>) messagePatientMapper.findByMsgTopicId(msgTopicId);
+        Map dataMap = new HashMap();
+        dataMap.put("totalCount",page.getTotal());
+        dataMap.put("list",page.getResult());
+        return ReturnFomart.retParam(200, dataMap);
     }
 }

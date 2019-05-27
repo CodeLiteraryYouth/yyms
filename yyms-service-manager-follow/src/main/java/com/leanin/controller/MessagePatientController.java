@@ -19,8 +19,20 @@ public class MessagePatientController {
 //    @PreAuthorize("hasAnyAuthority('root','findMsgPat')")
     @GetMapping("/findList")
     public DataOutResponse findList(@RequestParam Integer currentPage, @RequestParam Integer pageSize,
-                                    String patientName,Integer sendType){
-        return messagePatientService.findList(currentPage,pageSize,patientName,sendType);
+                                    String patientName,Integer sendType,String msgTopicId){
+        return messagePatientService.findList(currentPage,pageSize,patientName,sendType,msgTopicId);
+    }
+
+    /**
+     * 根据短信主题查询 主题患者信息
+     * @param currentPage 当前页
+     * @param pageSize 每页展示条数
+     * @param msgTopicId 短信主题id
+     * @return
+     */
+    @GetMapping("/findByMsgTopicId")
+    public DataOutResponse findByMsgTopicId(Integer currentPage,Integer pageSize,String msgTopicId){
+        return messagePatientService.findByMsgTopicId(currentPage,pageSize,msgTopicId);
     }
 
     /**

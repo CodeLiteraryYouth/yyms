@@ -676,5 +676,38 @@
         GROUP BY MONTH(lpp.`next_date`)
     </select>
 
+    <resultMap id="EduRecord_ResultMap" type="com.leanin.domain.vo.EduRecordVo">
+        <result property="sendTime" column="next_date"/>
+        <result property="senderName" column="admin_name"/>
+        <result property="eduFormName" column="form_name"/>
+        <result property="eduFormNum" column="form_id"/>
+        <result property="formStatus" column="form_status"/>
+    </resultMap>
+
+    <resultMap extends="EduRecord_ResultMap" id="EduWard_ResultMap" type="com.leanin.domain.vo.EduRecordVo">
+        <collection property="wardInfoVos" column="plan_duty_per" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId">
+        </collection>
+    </resultMap>
+
+    <select id="findPageEduRecord" resultMap="EduWard_ResultMap">
+        SELECT
+            lpp.`next_date`,
+            lau.`admin_name`,
+            lpp.`form_id`,
+            lfi.`form_name`,
+            lpi.plan_duty_per,
+            CASE lpp.`form_status`
+            WHEN 1 THEN '未读'
+            WHEN 2 THEN '已读'
+            ELSE '其他' END AS form_status
+        FROM `leanin_plan_patient` lpp, `leanin_plan_info` lpi,`leanin_admin_user` lau,`leanin_form_info` lfi
+        WHERE lpi.`plan_num` = lpp.`plan_num`
+        AND lpp.`patient_status` = 1
+        AND lpp.`form_id` = lfi.`form_num`
+        AND lpi.`plan_duty_per` = lau.`admin_id`
+        AND lpp.patient_id = #{patientId}
+    </select>
+
 
 </mapper>

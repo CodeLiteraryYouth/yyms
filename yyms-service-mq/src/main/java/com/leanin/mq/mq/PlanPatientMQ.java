@@ -128,7 +128,7 @@ public class PlanPatientMQ {
 
         String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天
         String timeNumStr = (String) rulesMap.get("timeNum");
-        Integer timeChoosed =(Integer) rulesMap.get("timeChoosed"); //Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
+        Integer timeChoosed =Integer.parseInt(rulesMap.get("timeChoosed").toString());//Integer.parseInt((String)rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
         String timeSelect = (String) rulesMap.get("timeSelect");//1出院
 
 

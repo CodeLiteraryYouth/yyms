@@ -4,7 +4,9 @@ package com.leanin.mapper;
 import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
+import com.leanin.domain.vo.EduRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * @author Administrator
  */
+@Mapper
 public interface PlanPatientMapper {
 
     /**
@@ -105,4 +108,7 @@ public interface PlanPatientMapper {
     List<DeptAnalysis> findInOutCountByYear(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("year") String year);
 
     void updatePlanPatientFormRecordId(@Param("planPatientVo")PlanPatientVo planPatient);
+
+    List<EduRecordVo> findPageEduRecord(@Param("patientId") Long patientId);
+
 }

@@ -53,4 +53,5 @@ public interface WardInfoMapper {
     List<WardInfoVo> findByUserId(@Param("userId") Long userId);
 
 	List<WardInfoVo> findlist(@Param("wardName") String wardName);
+
 }

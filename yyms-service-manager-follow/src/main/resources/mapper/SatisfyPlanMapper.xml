@@ -89,6 +89,7 @@
     <if test="satisfyPlanName !=null">
     	and plan_satisfy_name like CONCAT('%',#{satisfyPlanName},'%')
     </if>
+    order by create_date desc
   </select>
 
   <select id="findSatisfyPlanById" parameterType="java.lang.String" resultMap="BaseResultMap">

@@ -49,6 +49,9 @@
     <if test="sendType != null ">
       and send_type = #{sendType}
     </if>
+    <if test="msgTopicId != null ">
+      and msg_topic_id = #{msgTopicId}
+    </if>
   </select>
 
 
@@ -75,8 +78,18 @@
     AND msg_topic_id = #{msgTopicId}
   </select>
 
+    <select id="findByMsgTopicId" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM leanin_msg_patient
+      WHERE 1 = 1
+      <if test="msgTopicId != null ">
+        and msg_topic_id = #{msgTopicId}
+      </if>
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from leanin_msg_patient
     where patient_msg_id = #{patientMsgId,jdbcType=BIGINT}
   </delete>

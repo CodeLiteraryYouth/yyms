@@ -20,7 +20,7 @@ public interface MessagePatientMapper {
 
     int updateByPrimaryKey(MessagePatientVo record);
 
-    List<MessagePatientVo> findList(@Param("patientName") String patientName,@Param("sendType") Integer sendType);
+    List<MessagePatientVo> findList(@Param("patientName") String patientName,@Param("sendType") Integer sendType,@Param("msgTopicId") String msgTopicId);
 
     MessagePatientVo findById(@Param("patientMsgId") Long patientMsgId);
 
@@ -30,4 +30,6 @@ public interface MessagePatientMapper {
 
     //根据短信主题查询未发送人数
     Integer findCountByMsgTopicId(@Param("msgTopicId") String msgTopicId);
+
+    List<MessagePatientVo> findByMsgTopicId(@Param("msgTopicId") String msgTopicId);
 }

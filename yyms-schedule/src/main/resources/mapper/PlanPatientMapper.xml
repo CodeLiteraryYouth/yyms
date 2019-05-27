@@ -28,7 +28,7 @@
         <id column="patient_plan_id"  property="patientPlanId"/>
         <result column="plan_num"  property="planNum"/>
         <result column="patient_id"  property="patientId"/>
-        <result column="send_type"  property="sendType"></result>
+        <result column="send_type"  property="sendType"/>
         <result column="patient_name"  property="patientName"/>
         <result column="patient_sex"  property="patientSex"/>
         <result column="patient_age"  property="patientAge"/>
@@ -41,18 +41,18 @@
         <result column="patient_type" property="patientType"/>
         <result column="area_code" property="areaCode"/>
         <result column="plan_pats_status" property="planPatsStatus"/>
-        <result column="rules_info_id" property="rulesInfoId"></result>
-        <result column="next_date" property="nextDate"></result>
-        <result column="patient_source" property="patientSource"></result>
-        <result column="handle_sugges" property="handleSugges"></result>
-        <result column="id_card" property="idCard"></result>
-        <result column="inhos_no" property="inhosNo"></result>
-        <result column="opend_id" property="opendId"></result>
-        <result column="form_id" property="formId"></result>
-        <result column="patient_ward_id" property="patientWardId"></result>
-        <result column="patient_time" property="patientTime"></result>
-        <result column="diagous_id" property="diagousId"></result>
-        <result column="form_record_id" property="formRecordId"></result>
+        <result column="rules_info_id" property="rulesInfoId"/>
+        <result column="next_date" property="nextDate"/>
+        <result column="patient_source" property="patientSource"/>
+        <result column="handle_sugges" property="handleSugges"/>
+        <result column="id_card" property="idCard"/>
+        <result column="inhos_no" property="inhosNo"/>
+        <result column="opend_id" property="opendId"/>
+        <result column="form_id" property="formId"/>
+        <result column="patient_ward_id" property="patientWardId"/>
+        <result column="patient_time" property="patientTime"/>
+        <result column="diagous_id" property="diagousId"/>
+        <result column="form_record_id" property="formRecordId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="OpenIdResultMap" type="com.leanin.domain.vo.PlanPatientVo">
         <association property="opendId" column="id_card" javaType="string"

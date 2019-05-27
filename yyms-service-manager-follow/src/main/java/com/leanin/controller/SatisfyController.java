@@ -53,7 +53,13 @@ public class SatisfyController extends BaseController {
 		return satisfyService.updateSatisfyInfo(record);
 	}
 
-
+	/**
+	 * 根据openid 查询表单信息
+	 * @param openId
+	 * @param finishType
+	 * @param formStatus
+	 * @return
+	 */
 	@GetMapping("/findStyInfoByOpenId")
 	public DataOutResponse findStyInfoByOpenId(@RequestParam String openId,@RequestParam Integer finishType,Integer formStatus){
 		return satisfyService.findStyInfoByOpenId(openId,finishType,formStatus);
