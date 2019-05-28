@@ -26,7 +26,7 @@ public interface MessagePatientMapper {
 
     List<MessagePatientVo> bindPatient(@Param("idCard") String idCard,@Param("patientName") String patientName,@Param("phoneNum") String phoneNum);
 
-    MessagePatientVo findByPIdAndPnum(@Param("patientId") Long patientId,@Param("planNum") String planNum);
+    MessagePatientVo findByPIdAndPnum(@Param("patientId") String patientId,@Param("planNum") String planNum);
 
     //根据短信主题查询未发送人数
     Integer findCountByMsgTopicId(@Param("msgTopicId") String msgTopicId);

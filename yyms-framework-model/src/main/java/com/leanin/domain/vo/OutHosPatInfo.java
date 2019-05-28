@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class OutHosPatInfo {
     private Long hosId;             //医疗机构唯一识别号
-    private Long patientId;         //院内病人唯一识别号,此字段与HOS_ID构成联合主键
+    private String patientId;         //院内病人唯一识别号,此字段与HOS_ID构成联合主键
     private String outhosNo;        //门诊号码
     private String patientName;     //病人姓名
     private Integer sex;            //病人性别，1男2女

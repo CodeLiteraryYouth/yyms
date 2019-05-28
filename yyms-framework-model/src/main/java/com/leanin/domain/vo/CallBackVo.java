@@ -30,7 +30,7 @@ public class CallBackVo {
 
     private String callBackKeyText;	//事件重点
 
-    private Long patientId;	//病人唯一标识
+    private String patientId;	//病人唯一标识
 
     private String callBackName;	//投诉/表扬姓名
 

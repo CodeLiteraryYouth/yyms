@@ -25,8 +25,11 @@ public class CheckPatientVo {
     private String patientId;	//病人唯一标识
 
     private String formId;      //表单id
+
     private String opendId;      //表单id
+
     private String idCard;      //表单id
+
     private String inhosNo;      //表单id
 
     private String patientName;	//抽查病人姓名

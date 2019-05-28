@@ -25,7 +25,7 @@ public class SatisfyPatientVo implements Serializable {
 
     private SatisfyPlanVo satisfyPlanVo;        // 计划名称
 
-    private Long patientId;	//病人唯一标识
+    private String patientId;	//病人唯一标识 改成身份证号
 
     private String patientName;	//病人姓名
 

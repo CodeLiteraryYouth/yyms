@@ -710,15 +710,79 @@
     </select>
 
     <resultMap id="FollowRecordMap" type="com.leanin.domain.vo.FollowRecordVo">
-
+        <result column="next_date" property="sendDate"></result>
+        <result column="admin_name" property="senderName"></result>
+        <result column="form_name" property="formName"></result>
+        <result column="form_num" property="formId"></result>
+        <result column="handle_sugges" property="handlerSuggess"></result>
+        <result column="form_record_id" property="formRecordId"></result>
+        <result column="state" property="followStat"></result>
     </resultMap>
 
     <resultMap extends="FollowRecordMap" id="WardFollowRecordMap" type="com.leanin.domain.vo.FollowRecordVo">
-
+        <collection property="wardInfoVos" column="plan_duty_per" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId">
+        </collection>
     </resultMap>
 
     <select id="findPageFollowRecord" resultMap="WardFollowRecordMap">
-
+        SELECT
+            lpp.`next_date`,
+            lau.`admin_name`,
+            lfi.`form_name`,
+            lfi.`form_num`,
+            lpp.`handle_sugges`,
+            lpi.plan_duty_per,
+            lpp.form_record_id,
+            CASE lpp.`plan_pats_status`
+            WHEN -1  THEN '收案'
+            WHEN 0 THEN '未发送表单'
+            WHEN 1 THEN '待随访'
+            WHEN 2 THEN '已完成'
+            WHEN 3 THEN '已过期'
+            WHEN 4 THEN '无法监听'
+            WHEN 5 THEN '号码错误'
+            WHEN 6 THEN '拒绝监听'
+            WHEN 7 THEN '无人监听'
+            WHEN 8 THEN '家属监听'
+            WHEN 9 THEN '患者不合作'
+            WHEN 10 THEN '无联系电话'
+            ELSE '其他' END AS state
+        FROM `leanin_plan_info` lpi,`leanin_plan_patient` lpp,`leanin_form_info` lfi,`leanin_admin_user` lau
+        WHERE lpp.patient_status = 1
+        AND lpi.`plan_num` = lpp.`plan_num`
+        AND lpi.`plan_duty_per` = lau.`admin_id`
+        AND lpp.`form_id` = lfi.`form_num`
+        AND lpp.patient_id = #{patientId}
+        UNION ALL
+        SELECT
+            lfr.`next_date`,
+            lau.`admin_name`,
+            lfi.`form_name`,
+            lfi.`form_num`,
+            lfr.`handle_sugges`,
+            lpi.plan_duty_per,
+            lfr.form_record_id,
+            CASE lfr.`plan_pats_status`
+            WHEN -1  THEN '收案'
+            WHEN 0 THEN '未发送表单'
+            WHEN 1 THEN '待随访'
+            WHEN 2 THEN '已完成'
+            WHEN 3 THEN '已过期'
+            WHEN 4 THEN '无法监听'
+            WHEN 5 THEN '号码错误'
+            WHEN 6 THEN '拒绝监听'
+            WHEN 7 THEN '无人监听'
+            WHEN 8 THEN '家属监听'
+            WHEN 9 THEN '患者不合作'
+            WHEN 10 THEN '无联系电话'
+            ELSE '其他' END AS state
+        FROM `leanin_plan_info` lpi,`leanin_follow_record` lfr, `leanin_form_info` lfi,`leanin_admin_user` lau
+        WHERE lfr.`patient_status` = 1
+        AND lpi.`plan_num` = lfr.`plan_num`
+        AND lpi.`plan_duty_per` = lau.`admin_id`
+        AND lfr.`form_id` = lfi.`form_num`
+        AND lfr.patient_id = #{patientId}
     </select>
 
 

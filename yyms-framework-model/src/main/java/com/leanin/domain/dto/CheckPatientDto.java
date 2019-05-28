@@ -22,7 +22,7 @@ public class CheckPatientDto {
 
     private String checkNum;	//抽查编号
 
-    private Long patientId;	//病人唯一标识
+    private String patientId;	//病人唯一标识
 
     private String patientName;	//抽查病人姓名	
 

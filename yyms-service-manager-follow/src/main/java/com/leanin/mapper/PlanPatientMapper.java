@@ -65,7 +65,7 @@ public interface PlanPatientMapper {
      */
     PlanPatientVo findPlanPatientByPatientId(@Param("patientId") Long patientId);
 
-    PlanPatientVo findPlanPatientByPIdAndPNum(@Param("patientId") Long patientId,@Param("planNum") String planNum);
+    PlanPatientVo findPlanPatientByPIdAndPNum(@Param("patientId") String patientId,@Param("planNum") String planNum);
 
     /*
      * 待随访人数
@@ -96,7 +96,7 @@ public interface PlanPatientMapper {
 
     List<PlanPatientVo> findListByPlanNum(@Param("planNums") String[] planNums);
 
-    PlanPatientVo findByPnumAndPid(@Param("patientId") Long patientId,@Param("planNum") String planNum);
+    PlanPatientVo findByPnumAndPid(@Param("patientId") String patientId,@Param("planNum") String planNum);
 
     List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource, @Param("planNum") String planNum, @Param("dept") String dept, @Param("startDate") Date startDate, @Param("endDate") Date endDate/*, @Param("status") int status*/,@Param("planType") Integer planType,@Param("formStatus") Integer formStatus,@Param("userId")Long userId);
 

@@ -22,7 +22,7 @@ public class SatisfyPatientDto {
 
     private String satisfyPlanNum;	//满意度号
 
-    private Long patientId;	//病人唯一标识
+    private String patientId;	//病人唯一标识
 
     private String patientName;	//病人姓名
 

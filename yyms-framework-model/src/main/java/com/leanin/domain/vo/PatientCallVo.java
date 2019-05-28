@@ -20,7 +20,7 @@ public class PatientCallVo {
 
     private String callId;	//通话单号
 
-    private Long patientId;	//病人唯一标识
+    private String patientId;	//病人唯一标识
 
     private Integer patientSource;	//病人来源
 

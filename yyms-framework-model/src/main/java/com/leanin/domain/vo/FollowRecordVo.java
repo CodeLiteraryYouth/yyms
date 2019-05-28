@@ -26,7 +26,7 @@ public class FollowRecordVo {
 
     private String formId;                  //表单号
 
-    private String formStat;                //表单状态
+    private String followStat;             //随访状态
 
     private Long formRecordId;              //表单记录id
 }

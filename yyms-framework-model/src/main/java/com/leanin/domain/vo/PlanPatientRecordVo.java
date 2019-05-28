@@ -25,7 +25,7 @@ public class PlanPatientRecordVo implements Serializable {
 
     private String planNum;    //计划单号
 
-    private Long patientId;    //病人唯一标识
+    private String patientId;    //病人唯一标识
 
     private Integer sendType; //发送状态
 

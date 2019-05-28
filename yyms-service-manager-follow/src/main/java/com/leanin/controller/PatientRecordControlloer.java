@@ -34,10 +34,10 @@ public class PatientRecordControlloer {
     }
 
     /**
-     *
-     * @param page
-     * @param pageSize
-     * @param patientId
+     * 分页查询患者随访记录
+     * @param page 当前页
+     * @param pageSize 每页展示条数
+     * @param patientId his患者主键
      * @return
      */
     @GetMapping("/findPageFollowRecord")

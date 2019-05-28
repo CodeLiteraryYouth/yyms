@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class OutHosCheck {
     private Long hosId;             //医疗机构唯一识别号
-    private Long patientId;         //院内病人唯一识别号
+    private String patientId;         //院内病人唯一识别号
     private Long registrationId;    //就诊识别号，此字段与上面两个字段，构成唯一识别号
     private String checkName;       //检查名称
     private String checkUnit;       //检查单位

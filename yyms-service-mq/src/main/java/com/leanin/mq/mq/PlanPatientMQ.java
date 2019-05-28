@@ -60,7 +60,7 @@ public class PlanPatientMQ {
         for (Map map : list) {
             messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());//设置短信主题计划id
 //            Long patientId = Long.parseLong(map.get("patientId").toString());
-            Long patientId = Long.parseLong(map.get("patientId")+"");
+            String patientId = map.get("patientId").toString();
             messagePatientVo.setPatientId(patientId);//his患者id
             String patientName = (String) map.get("patientName");
             messagePatientVo.setPatientName(patientName);//患者姓名
@@ -136,7 +136,7 @@ public class PlanPatientMQ {
         for (Map map : list) {
             satisfyPatientVo.setSatisfyPlanNum(satisfyPlan.getPlanSatisfyNum());//设置满意度计划id
 //            Long patientId = Long.parseLong(map.get("patientId").toString());
-            Long patientId = Long.parseLong(map.get("patientId")+"");
+            String patientId = map.get("patientId").toString();
             satisfyPatientVo.setPatientId(patientId);//患者id
             String patientName = (String) map.get("patientName");
             satisfyPatientVo.setPatientName(patientName);//患者姓名
@@ -251,7 +251,7 @@ public class PlanPatientMQ {
             for (Map map : list) {
                 planPatientVo.setPlanNum(planInfo.getPlanNum());//设置计划编号
 //                Long patientId = Long.parseLong(map.get("patientId").toString());
-                Long patientId = Long.parseLong(map.get("patientId")+"");
+                String patientId =map.get("patientId").toString();
                 planPatientVo.setPatientId(patientId);      //设置his 患者主键
                 planPatientVo.setSendType(1);               //发送状态  1未发送  2已发送 3发送异常
                 String patientName = (String) map.get("patientName");

@@ -106,6 +106,8 @@ public class ReturnFomart {
         //患者联系人
         messageMap.put("5200","请勿导入相同的患者联系人");
 
+        messageMap.put("5300","获取患者科室失败");
+
 
     }
     public static DataOutResponse retParam(int status,Object data) {

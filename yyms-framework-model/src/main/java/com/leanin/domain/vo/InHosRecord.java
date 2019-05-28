@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class InHosRecord {
     private Long hosId; //医院id
-    private Long patientId;//患者id
+    private String patientId;//患者id
     private String dept;//科室id
     private String dist;//医院病区id
     private String outhosDate;//出院日期

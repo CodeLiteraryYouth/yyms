@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class InHosPatInfo {
     private Long hosId; //医院id
-    private Long patientId;//患者id
+    private String patientId;//患者id
     private String inhosNo;//住院号码
     private String patientName;//患者姓名
     private Integer sex; //患者性别 1男 2女

@@ -10,7 +10,7 @@ import java.util.Date;
 public class ImportPatientReq {
 
 //    private String planNum;     //移入患者的计划号
-    private Long patientId;     //his患者主键
+    private String patientId;     //his患者主键
     private String patientName; //患者姓名
     private Integer sex;        // 1 男  2女
     private Integer age;        //年龄

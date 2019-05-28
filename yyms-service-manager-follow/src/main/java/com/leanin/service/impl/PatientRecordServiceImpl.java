@@ -2,6 +2,7 @@ package com.leanin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.EduRecordVo;
@@ -53,6 +54,9 @@ public class PatientRecordServiceImpl implements PatientRecordService {
         }
         PageHelper.startPage(page,pageSize);
         Page<FollowRecordVo> pageList = (Page<FollowRecordVo>) planPatientMapper.findPageFollowRecord(patientId);
-        return null;
+        Map data =new HashMap();
+        data.put("totalCount",pageList.getTotal());
+        data.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,data);
     }
 }

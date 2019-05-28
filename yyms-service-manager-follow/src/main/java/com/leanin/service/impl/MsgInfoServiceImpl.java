@@ -326,7 +326,7 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 			messageRecord.setMsgText(content);//发送内容
 			messageRecord.setMsgThem(msgTopic.getMsgTopicTitle());//短信主题
 			messageRecord.setPlanType(4);//计划类型  1 随访 2 宣教 3 满意度 4 短信主题  5 自定义短信
-			messageRecord.setPlanPatientId(messagePatientVo.getPatientId());//计划患者主键
+			messageRecord.setPlanPatientId(messagePatientVo.getPatientMsgId());//计划患者主键
 			messageRecord.setPatientId(messagePatientVo.getPatientId()+"");//his 患者主键
 			messageRecord.setPlanNum(msgTopic.getMsgTopicId());//短信主题 主键
 			messageRecord.setFormId(null);//表单主键
