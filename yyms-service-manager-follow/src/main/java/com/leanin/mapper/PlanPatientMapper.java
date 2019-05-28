@@ -5,6 +5,7 @@ import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
 import com.leanin.domain.vo.EduRecordVo;
+import com.leanin.domain.vo.FollowRecordVo;
 import com.leanin.domain.vo.PlanPatientVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -111,4 +112,5 @@ public interface PlanPatientMapper {
 
     List<EduRecordVo> findPageEduRecord(@Param("patientId") Long patientId);
 
+    List<FollowRecordVo> findPageFollowRecord(@Param("patientId") Long patientId);
 }

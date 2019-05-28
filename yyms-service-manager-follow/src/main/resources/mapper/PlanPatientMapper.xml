@@ -709,5 +709,17 @@
         AND lpp.patient_id = #{patientId}
     </select>
 
+    <resultMap id="FollowRecordMap" type="com.leanin.domain.vo.FollowRecordVo">
+
+    </resultMap>
+
+    <resultMap extends="FollowRecordMap" id="WardFollowRecordMap" type="com.leanin.domain.vo.FollowRecordVo">
+
+    </resultMap>
+
+    <select id="findPageFollowRecord" resultMap="WardFollowRecordMap">
+
+    </select>
+
 
 </mapper>
