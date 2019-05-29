@@ -265,6 +265,9 @@
             <if test="msgType !=null">
                 msg_type,
             </if>
+            <if test="patsWardId !=null">
+                pats_ward_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="planNum != null">
@@ -341,6 +344,9 @@
             </if>
             <if test="msgType !=null">
                 #{msgType,jdbcType=BIGINT},
+            </if>
+            <if test="patsWardId !=null">
+                #{patsWardId},
             </if>
         </trim>
     </insert>

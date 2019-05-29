@@ -1,260 +1,356 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.PatientInfoMapper">
-  <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PatientInfoVo">
-    <id column="patient_info_id" jdbcType="VARCHAR" property="patientInfoId" />
-    <result column="patient_info_name" jdbcType="VARCHAR" property="patientInfoName" />
-    <result column="patient_info_sex" jdbcType="INTEGER" property="patientInfoSex" />
-    <result column="patient_info_birthday" jdbcType="TIMESTAMP" property="patientInfoBirthday" />
-    <result column="patient_info_idcard" jdbcType="VARCHAR" property="patientInfoIdcard" />
-    <result column="patient_info_phone" jdbcType="VARCHAR" property="patientInfoPhone" />
-    <result column="patient_info_marr_status" jdbcType="INTEGER" property="patientInfoMarrStatus" />
-    <result column="patient_info_national" jdbcType="VARCHAR" property="patientInfoNational" />
-    <result column="patient_info_culture" jdbcType="VARCHAR" property="patientInfoCulture" />
-    <result column="patient_info_job" jdbcType="VARCHAR" property="patientInfoJob" />
-    <result column="patient_info_job_addre" jdbcType="VARCHAR" property="patientInfoJobAddre" />
-    <result column="patient_info_addre" jdbcType="VARCHAR" property="patientInfoAddre" />
-    <result column="hospital_area_code" jdbcType="VARCHAR" property="hospitalAreaCode" />
-    <result column="emer_cont_name" jdbcType="VARCHAR" property="emerContName" />
-    <result column="emer_cont_relation" jdbcType="VARCHAR" property="emerContRelation" />
-    <result column="emer_cont_phone" jdbcType="VARCHAR" property="emerContPhone" />
-    <result column="admin_creater" jdbcType="VARCHAR" property="adminCreater" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    patient_info_id, patient_info_name, patient_info_sex, patient_info_birthday, patient_info_idcard, 
-    patient_info_phone, patient_info_marr_status, patient_info_national, patient_info_culture, 
-    patient_info_job, patient_info_job_addre, patient_info_addre, hospital_area_code, 
-    emer_cont_name, emer_cont_relation, emer_cont_phone, admin_creater,create_time
+    <resultMap id="BaseResultMap" type="com.leanin.domain.vo.PatientInfoVo">
+        <id column="id" property="id"/>
+        <result column="patient_info_id" jdbcType="VARCHAR" property="patientInfoId"/>
+        <result column="patient_info_name" jdbcType="VARCHAR" property="patientInfoName"/>
+        <result column="patient_info_sex" jdbcType="INTEGER" property="patientInfoSex"/>
+        <result column="patient_info_birthday" jdbcType="TIMESTAMP" property="patientInfoBirthday"/>
+        <result column="patient_info_idcard" jdbcType="VARCHAR" property="patientInfoIdcard"/>
+        <result column="patient_info_phone" jdbcType="VARCHAR" property="patientInfoPhone"/>
+        <result column="patient_info_marr_status" jdbcType="INTEGER" property="patientInfoMarrStatus"/>
+        <result column="patient_info_national" jdbcType="VARCHAR" property="patientInfoNational"/>
+        <result column="patient_info_culture" jdbcType="VARCHAR" property="patientInfoCulture"/>
+        <result column="patient_info_job" jdbcType="VARCHAR" property="patientInfoJob"/>
+        <result column="patient_info_job_addre" jdbcType="VARCHAR" property="patientInfoJobAddre"/>
+        <result column="patient_info_addre" jdbcType="VARCHAR" property="patientInfoAddre"/>
+        <result column="hospital_area_code" jdbcType="VARCHAR" property="hospitalAreaCode"/>
+        <result column="emer_cont_name" jdbcType="VARCHAR" property="emerContName"/>
+        <result column="emer_cont_relation" jdbcType="VARCHAR" property="emerContRelation"/>
+        <result column="emer_cont_phone" jdbcType="VARCHAR" property="emerContPhone"/>
+        <result column="admin_creater" jdbcType="VARCHAR" property="adminCreater"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="patient_source" property="patientSource"/>
+        <result column="health_card_no" property="healthCardNo"/>
+        <result column="hos_no" property="hosNo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id,patient_info_id, patient_info_name, patient_info_sex, patient_info_birthday, patient_info_idcard,
+    patient_info_phone, patient_info_marr_status, patient_info_national, patient_info_culture,
+    patient_info_job, patient_info_job_addre, patient_info_addre, hospital_area_code,
+    emer_cont_name, emer_cont_relation, emer_cont_phone, admin_creater,create_time,
+    patient_source,health_card_no,hos_no
   </sql>
-  <select id="findPatientByParam" resultType="com.leanin.domain.dto.PatientInfoDto">
-    select
-    patient_info_id as patientInfoId, patient_info_name as patientInfoName, patient_info_sex as patientInfoSex,
-    TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE()) as patientAge, patient_info_idcard as patientInfoIdcard,
-    patient_info_phone as patientInfoPhone, patient_info_marr_status as patientInfoMarrStatus, patient_info_national as patientInfoNational,
-    patient_info_culture as patientInfoCulture,patient_info_job as patientInfoJob, patient_info_job_addre as patientInfoJobAddre,
-     patient_info_addre as patientInfoAddre, hospital_area_code as hospitalAreaCode,emer_cont_name as emerContName,
-     emer_cont_relation as emerContRelation, emer_cont_phone as emerContPhone, admin_creater as adminCreater,create_time as createTime
-    from leanin_patient_info where 1=1
-    <if test="sex !=null">
-      and patient_info_sex=#{sex,jdbcType=INTEGER}
-    </if>
-    <if test="startAge !=null">
-      <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())>=#{startAge,jdbcType=INTEGER}]]>
-    </if>
-    <if test="endAge !=null">
-      <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())<=#{endAge,jdbcType=INTEGER}]]>
-    </if>
-    <if test="isPhone ==1">
-      and patient_info_phone is not null
-    </if>
-    <if test="isPhone ==2">
-      and patient_info_phone is null
-    </if>
-    order by create_time desc
-  </select>
-  <select id="findPatientInfoList" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select
-  	<include refid="Base_Column_List" />
-  	from leanin_patient_info where 1=1
-  	<if test="areaCode !=null">
-  		and hospital_area_code=#{areaCode,jdbcType=VARCHAR}
-  	</if>
-  	<if test="patientName != null">
-        and patient_info_name like CONCAT('%',#{patientName},'%')
-    </if>
-    <if test="patientId != null">
-        and patient_info_id like CONCAT('%',#{patientId},'%')
-    </if>
-    <if test="beginDate != null">
-        <![CDATA[and create_time>=#{beginDate}]]>
-    </if>
-    <if test="endDate != null">
-        <![CDATA[and create_time<=#{endDate}]]>
-    </if>
-    order by create_time desc
-  </select>
+    <select id="findPatientByParam" resultType="com.leanin.domain.dto.PatientInfoDto">
+        select
+        patient_info_id as patientInfoId, patient_info_name as patientInfoName, patient_info_sex as patientInfoSex,
+        TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE()) as patientAge, patient_info_idcard as patientInfoIdcard,
+        patient_info_phone as patientInfoPhone, patient_info_marr_status as patientInfoMarrStatus, patient_info_national
+        as patientInfoNational,
+        patient_info_culture as patientInfoCulture,patient_info_job as patientInfoJob, patient_info_job_addre as
+        patientInfoJobAddre,
+        patient_info_addre as patientInfoAddre, hospital_area_code as hospitalAreaCode,emer_cont_name as emerContName,
+        emer_cont_relation as emerContRelation, emer_cont_phone as emerContPhone, admin_creater as
+        adminCreater,create_time as createTime
+        from leanin_patient_info where 1=1
+        <if test="sex !=null">
+            and patient_info_sex=#{sex,jdbcType=INTEGER}
+        </if>
+        <if test="startAge !=null">
+            <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())>=#{startAge,jdbcType=INTEGER}]]>
+        </if>
+        <if test="endAge !=null">
+            <![CDATA[and TIMESTAMPDIFF(YEAR, @patient_info_birthday, CURDATE())<=#{endAge,jdbcType=INTEGER}]]>
+        </if>
+        <if test="isPhone ==1">
+            and patient_info_phone is not null
+        </if>
+        <if test="isPhone ==2">
+            and patient_info_phone is null
+        </if>
+        order by create_time desc
+    </select>
+    <select id="findPatientInfoList" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_patient_info where 1=1
+        <if test="areaCode !=null">
+            and hospital_area_code=#{areaCode,jdbcType=VARCHAR}
+        </if>
+        <if test="patientName != null">
+            and patient_info_name like CONCAT('%',#{patientName},'%')
+        </if>
+        <if test="patientId != null">
+            and patient_info_id like CONCAT('%',#{patientId},'%')
+        </if>
+        <if test="beginDate != null">
+            <![CDATA[and create_time>=#{beginDate}]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[and create_time<=#{endDate}]]>
+        </if>
+        order by create_time desc
+    </select>
 
-  <select id="findPatientById" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    	from leanin_patient_info where patient_info_id = #{patientInfoId,jdbcType=VARCHAR}
-    <if test="areaCode != null">
-    	and hospital_area_code=#{areaCode,jdbcType=VARCHAR}
-    </if>
-  </select>
+    <select id="findPatientById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_patient_info where patient_info_id = #{patientInfoId,jdbcType=VARCHAR}
+        <if test="areaCode != null">
+            and hospital_area_code=#{areaCode,jdbcType=VARCHAR}
+        </if>
+    </select>
 
-  <insert id="addPatientInfo" parameterType="com.leanin.domain.vo.PatientInfoVo">
-    insert into leanin_patient_info
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="patientInfoId != null">
-        patient_info_id,
-      </if>
-      <if test="patientInfoName != null">
-        patient_info_name,
-      </if>
-      <if test="patientInfoSex != null">
-        patient_info_sex,
-      </if>
-      <if test="patientInfoBirthday != null">
-        patient_info_birthday,
-      </if>
-      <if test="patientInfoIdcard != null">
-        patient_info_idcard,
-      </if>
-      <if test="patientInfoPhone != null">
-        patient_info_phone,
-      </if>
-      <if test="patientInfoMarrStatus != null">
-        patient_info_marr_status,
-      </if>
-      <if test="patientInfoNational != null">
-        patient_info_national,
-      </if>
-      <if test="patientInfoCulture != null">
-        patient_info_culture,
-      </if>
-      <if test="patientInfoJob != null">
-        patient_info_job,
-      </if>
-      <if test="patientInfoJobAddre != null">
-        patient_info_job_addre,
-      </if>
-      <if test="patientInfoAddre != null">
-        patient_info_addre,
-      </if>
-      <if test="hospitalAreaCode != null">
-        hospital_area_code,
-      </if>
-      <if test="emerContName != null">
-        emer_cont_name,
-      </if>
-      <if test="emerContRelation != null">
-        emer_cont_relation,
-      </if>
-      <if test="emerContPhone != null">
-        emer_cont_phone,
-      </if>
-      <if test="adminCreater != null">
-        admin_creater,
-      </if> 
-      <if test="createTime != null">
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="patientInfoId != null">
-        #{patientInfoId,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoName != null">
-        #{patientInfoName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoSex != null">
-        #{patientInfoSex,jdbcType=INTEGER},
-      </if>
-      <if test="patientInfoBirthday != null">
-        #{patientInfoBirthday,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoIdcard != null">
-        #{patientInfoIdcard,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoPhone != null">
-        #{patientInfoPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoMarrStatus != null">
-        #{patientInfoMarrStatus,jdbcType=INTEGER},
-      </if>
-      <if test="patientInfoNational != null">
-        #{patientInfoNational,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoCulture != null">
-        #{patientInfoCulture,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoJob != null">
-        #{patientInfoJob,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoJobAddre != null">
-        #{patientInfoJobAddre,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoAddre != null">
-        #{patientInfoAddre,jdbcType=VARCHAR},
-      </if>
-      <if test="hospitalAreaCode != null">
-        #{hospitalAreaCode,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContName != null">
-        #{emerContName,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContRelation != null">
-        #{emerContRelation,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContPhone != null">
-        #{emerContPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="adminCreater != null">
-        #{adminCreater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP}
-      </if>
-    </trim>
-  </insert>
-  <update id="updatePatientInfo" parameterType="com.leanin.domain.vo.PatientInfoVo">
-    update leanin_patient_info
-    <set>
-      <if test="patientInfoName != null">
-        patient_info_name = #{patientInfoName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoSex != null">
-        patient_info_sex = #{patientInfoSex,jdbcType=INTEGER},
-      </if>
-      <if test="patientInfoBirthday != null">
-        patient_info_birthday = #{patientInfoBirthday,jdbcType=TIMESTAMP},
-      </if>
-      <if test="patientInfoIdcard != null">
-        patient_info_idcard = #{patientInfoIdcard,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoPhone != null">
-        patient_info_phone = #{patientInfoPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoMarrStatus != null">
-        patient_info_marr_status = #{patientInfoMarrStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoNational != null">
-        patient_info_national = #{patientInfoNational,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoCulture != null">
-        patient_info_culture = #{patientInfoCulture,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoJob != null">
-        patient_info_job = #{patientInfoJob,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoJobAddre != null">
-        patient_info_job_addre = #{patientInfoJobAddre,jdbcType=VARCHAR},
-      </if>
-      <if test="patientInfoAddre != null">
-        patient_info_addre = #{patientInfoAddre,jdbcType=VARCHAR},
-      </if>
-      <if test="hospitalAreaCode != null">
-        hospital_area_code = #{hospitalAreaCode,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContName != null">
-        emer_cont_name = #{emerContName,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContRelation != null">
-        emer_cont_relation = #{emerContRelation,jdbcType=VARCHAR},
-      </if>
-      <if test="emerContPhone != null">
-        emer_cont_phone = #{emerContPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="adminCreater != null">
-        admin_creater = #{adminCreater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where patient_info_id = #{patientInfoId,jdbcType=VARCHAR}
-  </update>
- 
+    <select id="findByParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_patient_info
+        where 1 = 1
+        <choose>
+            <when test="patientSource ==1 or patientSource == 3">
+                and (patient_source = 1 or patient_source = 3)
+            </when>
+            <otherwise>
+                and patient_source = #{patientSource}
+            </otherwise>
+        </choose>
+        <if test="hosNo != null">
+            and hos_no like CONCAT('%',#{hosNo},'%')
+        </if>
+        <if test="idCard != null">
+            and patient_info_idcard like CONCAT('%',#{idCard},'%')
+        </if>
+        <if test="idCard != null">
+            and patient_info_name like CONCAT('%',#{patientName},'%')
+        </if>
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_patient_info
+        where id = #{id}
+    </select>
+
+    <insert id="addPatientInfo" parameterType="com.leanin.domain.vo.PatientInfoVo">
+        insert into leanin_patient_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patientInfoId != null">
+                patient_info_id,
+            </if>
+            <if test="patientInfoName != null">
+                patient_info_name,
+            </if>
+            <if test="patientInfoSex != null">
+                patient_info_sex,
+            </if>
+            <if test="patientInfoBirthday != null">
+                patient_info_birthday,
+            </if>
+            <if test="patientInfoIdcard != null">
+                patient_info_idcard,
+            </if>
+            <if test="patientInfoPhone != null">
+                patient_info_phone,
+            </if>
+            <if test="patientInfoMarrStatus != null">
+                patient_info_marr_status,
+            </if>
+            <if test="patientInfoNational != null">
+                patient_info_national,
+            </if>
+            <if test="patientInfoCulture != null">
+                patient_info_culture,
+            </if>
+            <if test="patientInfoJob != null">
+                patient_info_job,
+            </if>
+            <if test="patientInfoJobAddre != null">
+                patient_info_job_addre,
+            </if>
+            <if test="patientInfoAddre != null">
+                patient_info_addre,
+            </if>
+            <if test="hospitalAreaCode != null">
+                hospital_area_code,
+            </if>
+            <if test="emerContName != null">
+                emer_cont_name,
+            </if>
+            <if test="emerContRelation != null">
+                emer_cont_relation,
+            </if>
+            <if test="emerContPhone != null">
+                emer_cont_phone,
+            </if>
+            <if test="adminCreater != null">
+                admin_creater,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="patientInfoId != null">
+                #{patientInfoId,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoName != null">
+                #{patientInfoName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoSex != null">
+                #{patientInfoSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfoBirthday != null">
+                #{patientInfoBirthday,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoIdcard != null">
+                #{patientInfoIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoPhone != null">
+                #{patientInfoPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoMarrStatus != null">
+                #{patientInfoMarrStatus,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfoNational != null">
+                #{patientInfoNational,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoCulture != null">
+                #{patientInfoCulture,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJob != null">
+                #{patientInfoJob,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJobAddre != null">
+                #{patientInfoJobAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoAddre != null">
+                #{patientInfoAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalAreaCode != null">
+                #{hospitalAreaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContName != null">
+                #{emerContName,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContRelation != null">
+                #{emerContRelation,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContPhone != null">
+                #{emerContPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adminCreater != null">
+                #{adminCreater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </insert>
+    <update id="updatePatientInfo" parameterType="com.leanin.domain.vo.PatientInfoVo">
+        update leanin_patient_info
+        <set>
+            <if test="patientInfoName != null">
+                patient_info_name = #{patientInfoName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoSex != null">
+                patient_info_sex = #{patientInfoSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfoBirthday != null">
+                patient_info_birthday = #{patientInfoBirthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="patientInfoIdcard != null">
+                patient_info_idcard = #{patientInfoIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoPhone != null">
+                patient_info_phone = #{patientInfoPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoMarrStatus != null">
+                patient_info_marr_status = #{patientInfoMarrStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoNational != null">
+                patient_info_national = #{patientInfoNational,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoCulture != null">
+                patient_info_culture = #{patientInfoCulture,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJob != null">
+                patient_info_job = #{patientInfoJob,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJobAddre != null">
+                patient_info_job_addre = #{patientInfoJobAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoAddre != null">
+                patient_info_addre = #{patientInfoAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalAreaCode != null">
+                hospital_area_code = #{hospitalAreaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContName != null">
+                emer_cont_name = #{emerContName,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContRelation != null">
+                emer_cont_relation = #{emerContRelation,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContPhone != null">
+                emer_cont_phone = #{emerContPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adminCreater != null">
+                admin_creater = #{adminCreater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where patient_info_id = #{patientInfoId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateById" parameterType="com.leanin.domain.vo.PatientInfoVo">
+        update leanin_patient_info
+        <set>
+            <if test="patientInfoName != null">
+                patient_info_name = #{patientInfoName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoSex != null">
+                patient_info_sex = #{patientInfoSex,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfoBirthday != null">
+                patient_info_birthday = #{patientInfoBirthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="patientInfoIdcard != null">
+                patient_info_idcard = #{patientInfoIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoPhone != null">
+                patient_info_phone = #{patientInfoPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoMarrStatus != null">
+                patient_info_marr_status = #{patientInfoMarrStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoNational != null">
+                patient_info_national = #{patientInfoNational,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoCulture != null">
+                patient_info_culture = #{patientInfoCulture,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJob != null">
+                patient_info_job = #{patientInfoJob,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoJobAddre != null">
+                patient_info_job_addre = #{patientInfoJobAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfoAddre != null">
+                patient_info_addre = #{patientInfoAddre,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalAreaCode != null">
+                hospital_area_code = #{hospitalAreaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContName != null">
+                emer_cont_name = #{emerContName,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContRelation != null">
+                emer_cont_relation = #{emerContRelation,jdbcType=VARCHAR},
+            </if>
+            <if test="emerContPhone != null">
+                emer_cont_phone = #{emerContPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adminCreater != null">
+                admin_creater = #{adminCreater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

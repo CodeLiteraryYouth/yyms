@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -12,6 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientInfoVo {
+
+    private Long id;        //患者档案表主键
 	
     private String patientInfoId;	//病人唯一标识
 
@@ -48,5 +51,11 @@ public class PatientInfoVo {
     private String adminCreater;	//建党病人创建者
     
     private Date createTime;	//建档时间
+
+    private Integer patientSource;      //患者来源 1,出院；2,门诊;3,在院;4体检 5 建档
+
+    private String healthCardNo;    //医保卡号
+
+    private String hosNo;           //住院号 / 门诊号 / 体检号
 
 }

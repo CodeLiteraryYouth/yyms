@@ -43,4 +43,10 @@ public interface PatientInfoMapper {
      */
     int updatePatientInfo(PatientInfoVo record);
 
+    List<PatientInfoVo> findByParam(@Param("hosNo") String hosNo,@Param("idCard") String idCard,@Param("patientSource") Integer patientSource,@Param("patientName") String patientName);
+
+    PatientInfoVo findById(@Param("id") Long id);
+
+    void updateById(PatientInfoVo patientInfoVo);
+
 }

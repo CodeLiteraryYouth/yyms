@@ -107,7 +107,6 @@ public class AuthService {
         LinkedMultiValueMap<String, String> header = new LinkedMultiValueMap<>();
         String httpBasic = getHttpBasic(clientId, clientSecret);
         header.add("Authorization",httpBasic);
-
         //定义body
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type","password");

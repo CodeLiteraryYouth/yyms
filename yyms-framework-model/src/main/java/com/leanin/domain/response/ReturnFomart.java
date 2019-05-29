@@ -108,6 +108,9 @@ public class ReturnFomart {
 
         messageMap.put("5300","获取患者科室失败");
 
+        messageMap.put("5400","患者档案不存在");
+
+
 
     }
     public static DataOutResponse retParam(int status,Object data) {

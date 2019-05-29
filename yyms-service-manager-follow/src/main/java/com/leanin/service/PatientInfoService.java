@@ -35,5 +35,10 @@ public interface PatientInfoService {
 	 * @return
 	 */
 	DataOutResponse findPatientById(String patientId);
-	
+
+	DataOutResponse findByParam(Integer page, Integer pageSize, String hosNo, String idCard, Integer patientSource,String patientName);
+
+	DataOutResponse findById(Long id);
+
+	DataOutResponse updatePatienInfo(PatientInfoVo patientInfoVo);
 }

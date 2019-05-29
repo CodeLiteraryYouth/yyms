@@ -48,7 +48,7 @@ public class PlanInfoVo implements Serializable {
 
     private Integer planSex;	//病人性别
     
-    private String patsWardCode;	//病人科室
+    private String patsWardCode;	//病人科室  中文名
 
     private String planAgeInterval;	//年龄段区间
 
@@ -73,6 +73,8 @@ public class PlanInfoVo implements Serializable {
     private String msgId;//短信id
 
     private Long msgType;//短信类型
+
+    private String patsWardId;  //患者科室码
 
     private String rulesText;   //规则字符串
 

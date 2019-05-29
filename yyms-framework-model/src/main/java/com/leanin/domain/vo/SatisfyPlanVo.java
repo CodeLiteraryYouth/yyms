@@ -70,6 +70,8 @@ public class  SatisfyPlanVo {
 
     private Long msgType; //短信类型
 
+    private String patientWardId;   //患者科室的科室码
+
     private Integer importData;     //导入数据是否完成  1 未完成  2 已完成
 
 }

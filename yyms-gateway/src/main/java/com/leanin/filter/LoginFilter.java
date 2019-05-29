@@ -61,6 +61,7 @@ public class LoginFilter extends ZuulFilter {
         //得到request
         HttpServletRequest request = requestContext.getRequest();
         String requestURI = request.getRequestURI();
+
         if (requestURI.equals("/api/auth/userlogin") ||
                 requestURI.equals("/api/auth/userjwt")){
             access_pass();
@@ -76,12 +77,12 @@ public class LoginFilter extends ZuulFilter {
             return null;
         }*/
         //从header中取jwt
-        String jwtFromHeader = authService.getJwtFromHeader(request);
+       /* String jwtFromHeader = authService.getJwtFromHeader(request);
         if(StringUtils.isEmpty(jwtFromHeader)){
             //拒绝访问
             access_denied();
             return null;
-        }
+        }*/
         //从redis取出jwt的过期时间
         /*long expire = authService.getExpire(tokenFromCookie);
         if(expire<0){

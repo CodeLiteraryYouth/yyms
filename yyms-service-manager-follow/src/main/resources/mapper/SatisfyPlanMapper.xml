@@ -223,6 +223,9 @@
       <if test="importData != null">
         import_data,
       </if>
+      <if test="patientWardId != null">
+        patient_ward_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="planSatisfyNum != null">
@@ -296,6 +299,9 @@
       </if>
       <if test="importData != null">
         #{importData},
+      </if>
+      <if test="patientWardId != null">
+        #{patientWardId},
       </if>
     </trim>
   </insert>
