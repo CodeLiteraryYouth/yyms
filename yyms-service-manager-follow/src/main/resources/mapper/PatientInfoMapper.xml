@@ -129,7 +129,7 @@
         from leanin_patient_info
         where patient_info_id = #{patientInfoId}
         <choose>
-            <when test="patientSource ==1 or patientSource == 3">
+            <when test="patientSource == 1 or patientSource == 3">
                 and (patient_source = 1 or patient_source = 3)
             </when>
             <otherwise>

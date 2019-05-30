@@ -41,4 +41,6 @@ public interface PatientInfoService {
 	DataOutResponse findById(Long id);
 
 	DataOutResponse updatePatienInfo(PatientInfoVo patientInfoVo);
+
+    DataOutResponse findByIdAndSource(String patientId, Integer patientSource);
 }

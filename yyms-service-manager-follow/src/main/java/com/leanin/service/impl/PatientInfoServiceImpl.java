@@ -142,4 +142,13 @@ public class PatientInfoServiceImpl implements PatientInfoService {
         return ReturnFomart.retParam(200,"患者档案修改成功");
     }
 
+    @Override
+    public DataOutResponse findByIdAndSource(String patientId, Integer patientSource) {
+        PatientInfoVo byPatientIdAndSource = patientInfoMapper.findByPatientIdAndSource(patientId, patientSource);
+        if (byPatientIdAndSource == null){
+            return ReturnFomart.retParam(5400,patientId);
+        }
+        return ReturnFomart.retParam(200,byPatientIdAndSource);
+    }
+
 }

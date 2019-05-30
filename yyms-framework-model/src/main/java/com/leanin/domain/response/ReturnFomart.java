@@ -112,6 +112,10 @@ public class ReturnFomart {
 
         messageMap.put("5500","调取his患者异常");
 
+        messageMap.put("5600","计划内的患者已经发送过表单不能删除计划");
+
+
+
 
 
 

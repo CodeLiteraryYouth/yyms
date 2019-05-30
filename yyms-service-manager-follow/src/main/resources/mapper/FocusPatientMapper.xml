@@ -39,7 +39,7 @@
     <if test="healthCardNo != null">
       and health_card_no like CONCAT('%',#{healthCardNo},'%')
     </if>
-    <if test="patientName != null">
+    <if test="patientSource != null">
       and patient_source = #{patientSource}
     </if>
   </select>

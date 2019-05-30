@@ -73,4 +73,15 @@ public class PatientInfoController {
 	public DataOutResponse updatePatienInfo(@RequestBody PatientInfoVo patientInfoVo){
 		return patientInfoService.updatePatienInfo(patientInfoVo);
 	}
+
+	/**
+	 * 根据 patientId 患者身份证号 和 patientSource 患者来源 查询患者档案
+	 * @param patientId  患者身份证号
+	 * @param patientSource 患者来源
+	 * @return
+	 */
+	@GetMapping("/findByIdAndSource")
+	public DataOutResponse findByIdAndSource(@RequestParam String patientId,@RequestParam Integer patientSource){
+		return patientInfoService.findByIdAndSource(patientId,patientSource);
+	}
 }

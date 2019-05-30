@@ -89,6 +89,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 		if(CompareUtil.isNotEmpty(patient)) {
 			return ReturnFomart.retParam(5000, "病人已关注，不需要再次关注");
 		}
+		record.setFocusStatus(1);// 1 关注  -1 取消关注
 		focusPatientMapper.insertFocusPatient(record);
 		return ReturnFomart.retParam(200, record);
 	}

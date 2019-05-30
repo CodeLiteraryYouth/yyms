@@ -11,6 +11,7 @@ import com.leanin.domain.plan.response.PlanResponseCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.PlanInfoVo;
+import com.leanin.domain.vo.PlanPatientVo;
 import com.leanin.domain.vo.RulesInfoVo;
 import com.leanin.exception.ExceptionCast;
 import com.leanin.mapper.PatientInfoMapper;
@@ -76,8 +77,14 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updatePlanStatus(String planNum, int status) {
         log.info("计划编号为:" + planNum + "状态为:" + status);
+        if(status == -1 ){//删除计划
+//            PlanPatientVo planPatientVo = planPatientMapper.findByPlanNumAndSendType(planNum);
+//            if (planPatientVo != null){
+//                return ReturnFomart.retParam(5600,planNum);
+//            }
+        }
+
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);
-        log.info("计划信息为:" + planNum);
         if (CompareUtil.isEmpty(planInfo) && planInfo.getPlanStatus() == 2) {
             //禁止状态下禁止更改状态
             return ReturnFomart.retParam(96, planInfo);

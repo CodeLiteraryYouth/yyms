@@ -37,12 +37,17 @@ public class FocusPatientController extends BaseController {
 	 */
 //	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("findPatientList")
-	public DataOutResponse findPatientList(Integer page,Integer pageSize,@RequestParam(required=false) String patientName,
+	public DataOutResponse findPatientList(Integer page,Integer pageSize,String patientName,
 										   String healthCardNo,String idCard,Integer patientSource) {
 		LyOauth2Util.UserJwt user = getUser(request);
 		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize,healthCardNo,idCard,patientSource);
 	}
 
+	/**
+	 * 添加关注患者
+	 * @param focusPatient
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','addFocusPat')")
 	@PostMapping("addFocusPatient")
 	public DataOutResponse addFocusPatient(@RequestBody FocusPatientVo focusPatient) {
@@ -51,6 +56,12 @@ public class FocusPatientController extends BaseController {
 		return focusPatientService.insertFocusPatient(focusPatient);
 	}
 
+	/**
+	 * 批量取消关注
+	 * @param focusId 关注患者id  多个用逗号 隔开
+	 * @param status -1 取消关注
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','delFocusPat')")
 	@GetMapping("updatePatientStatus")
 	public DataOutResponse updatePatientStatus(@RequestParam String focusId, @RequestParam Integer status) {
