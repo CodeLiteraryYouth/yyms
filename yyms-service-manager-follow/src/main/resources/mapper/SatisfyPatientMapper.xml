@@ -552,4 +552,13 @@
           MONTH(lsp.`patient_date_time`)
         ORDER BY lsp.`finish_type`
     </select>
+
+    <select id="findByPlanNumAndSendType" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_satisfy_patient
+        where patient_status = 0
+        and satisfy_plan_num =#{planSatisfyNum}
+        and send_type != #{sendType}
+    </select>
 </mapper>

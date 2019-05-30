@@ -785,5 +785,15 @@
         AND lfr.patient_id = #{patientId}
     </select>
 
+    <select id="findByPlanNumAndSendType" resultMap="BASE_MAP">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_plan_patient
+        where patient_status = 1
+        and send_type != #{sendStatus}
+        and plan_num = #{planNum}
+        limit 1
+    </select>
+
 
 </mapper>

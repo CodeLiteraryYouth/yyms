@@ -50,4 +50,5 @@ public interface SatisfyPatientMapper {
     void updateFormRecordId(SatisfyPatientVo satisfyPatientVo);
 
 
+    SatisfyPatientVo findByPlanNumAndSendType(@Param("planSatisfyNum") String planSatisfyNum,@Param("sendType") int sendType);
 }

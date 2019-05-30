@@ -113,4 +113,7 @@ public interface PlanPatientMapper {
     List<EduRecordVo> findPageEduRecord(@Param("patientId") Long patientId);
 
     List<FollowRecordVo> findPageFollowRecord(@Param("patientId") Long patientId);
+
+
+    PlanPatientVo findByPlanNumAndSendType(@Param("planNum") String planNum,@Param("sendStatus") Integer sendStatus);
 }

@@ -34,6 +34,12 @@ public class SatisfyPlanController extends BaseController {
 		return satisfyPlanService.findSatisfyPlanList(page, pageSize, satisfyPlanName);
 	}
 
+	/**
+	 * 修改满意度计划状态
+	 * @param planSatisfyNum
+	 * @param status
+	 * @return
+	 */
 //	@PreAuthorize("hasAnyAuthority('root','delStyPlan')")
 	@GetMapping("updateSatisfyStatus")
 	public DataOutResponse updateSatisfyStatus(@RequestParam String planSatisfyNum,@RequestParam int status) {

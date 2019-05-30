@@ -78,10 +78,10 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     public DataOutResponse updatePlanStatus(String planNum, int status) {
         log.info("计划编号为:" + planNum + "状态为:" + status);
         if(status == -1 ){//删除计划
-//            PlanPatientVo planPatientVo = planPatientMapper.findByPlanNumAndSendType(planNum);
-//            if (planPatientVo != null){
-//                return ReturnFomart.retParam(5600,planNum);
-//            }
+            PlanPatientVo planPatientVo = planPatientMapper.findByPlanNumAndSendType(planNum,1);
+            if (planPatientVo != null){//如果计划内的患者已经发送过表单 则不能删除
+                return ReturnFomart.retParam(5600,planNum);
+            }
         }
 
         PlanInfoVo planInfo = planInfoMapper.findPlanInfoById(planNum);

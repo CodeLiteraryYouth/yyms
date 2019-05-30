@@ -7,8 +7,10 @@ import com.leanin.config.RabbitMQConfig;
 import com.leanin.domain.plan.response.PlanResponseCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.SatisfyPatientVo;
 import com.leanin.domain.vo.SatisfyPlanVo;
 import com.leanin.exception.ExceptionCast;
+import com.leanin.mapper.SatisfyPatientMapper;
 import com.leanin.model.response.CommonCode;
 import com.leanin.utils.CompareUtil;
 import com.leanin.utils.UUIDUtils;
@@ -39,6 +41,9 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     ManagerPatientClient managerPatientClient;
 
     @Autowired
+    SatisfyPatientMapper satisfyPatientMapper;
+
+    @Autowired
     RedisTemplate redisTemplate;
 
     @Autowired
@@ -57,6 +62,12 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse updateSatisfyStatus(String planSatisfyNum, int status) {
         log.info("满意度表单号为:" + planSatisfyNum + "-" + "状态为:" + status);
+        if (status == -1){//如果是删除
+            SatisfyPatientVo satisfyPatientVo = satisfyPatientMapper.findByPlanNumAndSendType(planSatisfyNum,1);
+            if (satisfyPatientVo != null){//满意度计划内有已经发送过表单的患者则不能删除
+                return ReturnFomart.retParam(5600,planSatisfyNum);
+            }
+        }
         SatisfyPlanVo satisfyPlan = satisfyPlanMapper.findSatisfyPlanById(planSatisfyNum);
         if(satisfyPlan ==null){
             return ReturnFomart.retParam(300, "计划不存在");
