@@ -59,6 +59,18 @@ public class OnlineEdu implements Serializable {
     @Column(name = "phone_num")
     private String phoneNum;     //手机号
 
+    @Column(name = "patient_dept_id")
+    private String patientDeptId; //患者科室主键
+
+    @Column(name = "patient_dept_name")
+    private String patientDeptName; //患者科室名称
+
+    @Column(name = "patient_diagnosis_icd")
+    private String patientDiagnosisIcd; //患者诊断icd
+
+    @Column(name = "patient_diagnosis_name")
+    private String patientDiagnosisName;//患者诊断名称
+
 
 
 }

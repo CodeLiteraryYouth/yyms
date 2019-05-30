@@ -89,7 +89,7 @@ public class PlanPatientMQ {
             }
             //
             //患者档案、
-            patientInfoVo.setPatientInfoId(patientId);      //身份证号
+            patientInfoVo.setPatientInfoId(idCard);      //身份证号
             patientInfoVo.setPatientInfoName(patientName);  //患者档案中的 患者姓名
             patientInfoVo.setPatientInfoSex(patientSex);    //患者档案中的 患者性别  1 男 2 女
             patientInfoVo.setPatientInfoBirthday(birthstring);//出生日期
@@ -117,7 +117,7 @@ public class PlanPatientMQ {
 
             //短信主题患者
             messagePatientVo.setMsgTopicId(msgTopic.getMsgTopicId());   //设置短信主题计划id
-            messagePatientVo.setPatientId(patientId);                   //his患者id
+            messagePatientVo.setPatientId(idCard);                   //his患者id
             messagePatientVo.setPatientName(patientName);               //患者姓名
             messagePatientVo.setPatientSex(patientSex);                 //设置病人性别  1 男  2 女
             messagePatientVo.setPatientAge(patientAge);                 //设置病人年龄
@@ -208,7 +208,7 @@ public class PlanPatientMQ {
             }
             //
             //患者档案、
-            patientInfoVo.setPatientInfoId(patientId);      //身份证号
+            patientInfoVo.setPatientInfoId(idCard);      //身份证号
             patientInfoVo.setPatientInfoName(patientName);  //患者档案中的 患者姓名
             patientInfoVo.setPatientInfoSex(patientSex);    //患者档案中的 患者性别  1 男 2 女
             patientInfoVo.setPatientInfoBirthday(birthstring);//出生日期
@@ -236,7 +236,7 @@ public class PlanPatientMQ {
 
             //满意度计划患者
             satisfyPatientVo.setSatisfyPlanNum(satisfyPlan.getPlanSatisfyNum());//设置满意度计划id
-            satisfyPatientVo.setPatientId(patientId);//患者id
+            satisfyPatientVo.setPatientId(idCard);//患者id
             satisfyPatientVo.setPatientName(patientName);//患者姓名
             satisfyPatientVo.setPatientSex(patientSex);//设置病人性别
             satisfyPatientVo.setPatientAge(patientAge);//设置病人年龄
@@ -364,7 +364,7 @@ public class PlanPatientMQ {
 
                 //计划患者
                 planPatientVo.setPlanNum(planInfo.getPlanNum());//设置计划编号
-                planPatientVo.setPatientId(patientId);          //设置his 患者主键
+                planPatientVo.setPatientId(idcard);          //设置his 患者主键
                 planPatientVo.setSendType(1);                   //发送状态  1未发送  2已发送 3发送异常
                 planPatientVo.setPatientName(patientName);      //设置病人姓名
                 planPatientVo.setPatientSex(patientSex);        //设置病人性别
@@ -394,7 +394,7 @@ public class PlanPatientMQ {
                 Date nextDate = null;
 
                 //患者档案、
-                patientInfoVo.setPatientInfoId(patientId);      //身份证号
+                patientInfoVo.setPatientInfoId(idcard);      //身份证号
                 patientInfoVo.setPatientInfoName(patientName);  //患者档案中的 患者姓名
                 patientInfoVo.setPatientInfoSex(patientSex);    //患者档案中的 患者性别  1 男 2 女
                 patientInfoVo.setPatientInfoBirthday(birthstring);//出生日期

@@ -75,7 +75,7 @@ public class WorkJob {
                 continue;
             }
             for (MessagePatientVo messagePatientVo : messagePatientVos) {
-                if (messageTopicVo.getMsgSendDate().after(new Date())){
+                if (messageTopicVo.getMsgSendDate().after(new Date())) {
                     continue;
                 }
                 log.info("短信主题内的患者信息:{}", JSON.toJSONString(messagePatientVo));
@@ -133,6 +133,17 @@ public class WorkJob {
         String accessToken = getAccessToken();//获取accessToken
 
         for (PlanInfoDto planInfo : planList) {
+            Date overTime = planInfo.getOverTime();//计划结束时间
+            if (null != overTime ){
+                Calendar calendar =Calendar.getInstance();
+                calendar.setTime(overTime);
+                calendar.add(Calendar.DATE,1);
+                Date time = calendar.getTime();
+                boolean before = time.before(new Date()); //当前时间大于计划结束时间
+                if (before){//不发送任何消息
+                    continue;
+                }
+            }
             log.info("随访/宣教计划信息:{}", JSON.toJSONString(planInfo));
             //根据病人的编号查询计划病人信息
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfo.getPlanNum(), null, 1, null);
@@ -272,7 +283,7 @@ public class WorkJob {
             log.info("满意度计划信息：{}", JSON.toJSONString(planVo));
 
             //获取计划对应的患者信息
-            List<SatisfyPatientVo> list = satisfyPatientMapper.findList(planVo.getPlanSatisfyNum(), null, null, null, null, null, 1);
+            List<SatisfyPatientVo> list = satisfyPatientMapper.findList(planVo.getPlanSatisfyNum(), null, null, null, null, null, null);
             if (list.size() == 0) {
                 continue;
             }
@@ -314,11 +325,15 @@ public class WorkJob {
             int days = (int) ((System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime()) / (1000 * 3600 * 24));
             if (System.currentTimeMillis() - satisfyPatientVo.getPatientDateTime().getTime() > 0) {
                 if (days > rangeDays) {//判断是否过期
-//                    if (satisfyPatientVo.getFinishType() == 1) {
-                    satisfyPatientVo.setFinishType(3);//已过期
-                    satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
-                    continue;//跳出本次循环
-//                    }
+                    if (satisfyPatientVo.getFinishType() == -1) {
+                        //收案不进行判断 直接跳过
+                        continue;
+                    }
+                    if (satisfyPatientVo.getFinishType() == 1) {//未完成满意度 不管表单是否提交 都算已过期
+                        satisfyPatientVo.setFinishType(3);//已过期
+                        satisfyPatientMapper.updateByPrimaryKeySelective(satisfyPatientVo);
+                        continue;//跳出本次循环
+                    }
                 } /*else {*/
                 if (satisfyPatientVo.getSendType() == 1) {//未发送
                     switch (type) {
@@ -394,7 +409,7 @@ public class WorkJob {
     }
 
     /**
-     * 更新阶段随访的下次随访时间
+     * 更新阶段随访的下次随访时间 和判断是否过期
      */
     @Scheduled(cron = "0 0/5 * * * ? ")
     @Transactional(rollbackFor = Exception.class)
@@ -405,13 +420,13 @@ public class WorkJob {
 
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
-            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新 阶段 随访
-                continue; //宣教和 不是 阶段随访过滤掉
-            }
+//            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新 阶段 随访
+//                continue; //宣教和 不是 阶段随访过滤掉
+//            }
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            int validDays = Integer.parseInt(rulesMap.get("validDays") + "");
+            int validDays = Integer.parseInt(rulesMap.get("validDays") + "");//有效时间
 
             int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
             String timeSelect = (String) rulesMap.get("timeSelect");
@@ -438,12 +453,12 @@ public class WorkJob {
             for (PlanPatientVo planPatientVo : planPatientList) {
                 Date nextDate = planPatientVo.getNextDate();//随访时间
                 int days = (int) (System.currentTimeMillis() - nextDate.getTime()) / (1000 * 3600 * 24);//两个时间相差的天数
-                if (days > validDays) {
+                if (days > validDays) {//大于有时间
                     if (planPatientVo.getPlanPatsStatus() == -1) {//收案跳过
                         continue;
                     }
                     updateRecord(planPatientVo.getPlanPatsStatus(), planPatientVo, rulesInfo, timeSelect,
-                            timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+                            timeChoosed, weeks, sendTimeDays, sendTimeMonths, planInfoDto);
                 }
                 /*switch (planPatientVo.getPlanPatsStatus()) {
                     case -1: // -1 收案
@@ -488,20 +503,26 @@ public class WorkJob {
     }
 
     private boolean updateRecord(Integer status, PlanPatientVo planPatientVo, RulesInfoVo rulesInfo, String timeSelect,
-                                 Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths) {
+                                 Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths, PlanInfoDto planInfoDto) {
         //填写失访记录
         planPatientVo.setPlanPatsStatus(status); // -1:收案 0：未发送表单或者短信前的状态 1：待随访 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
-        followRecordMapper.addFollowRecord(planPatientVo);
+
 //        if (rulesInfo.getRulesInfoTypeName() == 1) {//阶段随访
-        //计算下次随访时间
-        Date date = setNextDate(new Date(), timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
-        //复位
-        planPatientVo.setNextDate(date); //设置下次随访时间
-        planPatientVo.setSendType(1); //未发送
-        planPatientVo.setPlanPatsStatus(0); //未发送状态
-        planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
-        planPatientVo.setHandleSugges("");
-//        }
+        if (planPatientVo.getPlanPatsStatus() == 0 || planPatientVo.getPlanPatsStatus() == 1) {
+            //未发送 或者 未完成随访 都算已过期 不管表单是否提交  都算过期
+            planPatientVo.setPlanPatsStatus(3); //
+        }
+        if (planInfoDto.getPlanType() == 1 && rulesInfo.getRulesInfoTypeName() == 1) {//只更新 定期随访
+            followRecordMapper.addFollowRecord(planPatientVo);
+            //计算下次随访时间
+            Date date = setNextDate(new Date(), timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+            //复位
+            planPatientVo.setNextDate(date); //设置下次随访时间
+            planPatientVo.setSendType(1); //未发送
+            planPatientVo.setPlanPatsStatus(0); //未发送状态
+            planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
+            planPatientVo.setHandleSugges("");
+        }
         planPatientMapper.updatePlanPatientFormRecordId(planPatientVo);
         return true;
     }

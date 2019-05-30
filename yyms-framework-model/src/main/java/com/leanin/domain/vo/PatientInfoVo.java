@@ -8,10 +8,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+/**
+ * 患者档案实体类
+ */
 @Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class PatientInfoVo {
 
     private Long id;        //患者档案表主键

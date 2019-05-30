@@ -7,6 +7,7 @@
     <result column="patient_name"  property="patientName" />
     <result column="patient_sex"  property="patientSex" />
     <result column="patient_birthday"  property="patientBirthday" />
+    <result column="age"  property="age" />
     <result column="patient_phone"  property="patientPhone" />
     <result column="patient_id_card"  property="patientIdCard" />
     <result column="focus_status"  property="focusStatus" />
@@ -16,10 +17,12 @@
     <result column="open_id" property="openId" />
     <result column="patient_ward" property="patientWard" />
     <result column="area_code" property="areaCode" />
+    <result column="health_card_no" property="healthCardNo" />
   </resultMap>
   <sql id="Base_Column_List">
     focus_id, patient_id, patient_name, patient_sex, patient_birthday, patient_phone, 
-    patient_id_card, focus_status, patient_source,user_id,inhos_no,open_id,patient_ward,area_code
+    patient_id_card, focus_status, patient_source,user_id,inhos_no,open_id,patient_ward,area_code,
+    health_card_no,TIMESTAMPDIFF(YEAR,patient_birthday,NOW()) AS age
   </sql>
   <select id="findPatientList" parameterType="java.lang.String" resultMap="BaseResultMap">
   	 select 
@@ -29,6 +32,15 @@
     and user_id = #{userId}
     <if test="patientName != null">
        and patient_name like CONCAT('%',#{patientName},'%')
+    </if>
+    <if test="idCard != null">
+      and patient_id_card like CONCAT('%',#{idCard},'%')
+    </if>
+    <if test="healthCardNo != null">
+      and health_card_no like CONCAT('%',#{healthCardNo},'%')
+    </if>
+    <if test="patientName != null">
+      and patient_source = #{patientSource}
     </if>
   </select>
   <select id="selectFocusPatientById" resultMap="BaseResultMap">
@@ -126,6 +138,9 @@
       <if test="areaCode != null">
         area_code,
       </if>
+      <if test="healthCardNo != null">
+        health_card_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="patientId != null">
@@ -166,6 +181,9 @@
       </if>
       <if test="areaCode != null">
         #{areaCode},
+      </if>
+      <if test="healthCardNo != null">
+        #{healthCardNo},
       </if>
     </trim>
   </insert>

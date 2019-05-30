@@ -29,9 +29,9 @@ public class PlanInfoDto {
 
 	private Integer patientInfoSource;	//病人来源(1:出院 2：门诊 3：在院 4：体检 5：建档)
 
-	private Date planBeginTime;	//计划起始时间
+	private Date planBeginTime;	//筛选患者起始时间
 
-	private Date planEndTime;	//计划结束时间
+	private Date planEndTime;	//筛选患者结束时间
 
 	private String planWardCode;	//随访科室编码
 
@@ -82,6 +82,8 @@ public class PlanInfoDto {
 	private FormInfoVo formInfo;	//表单号
 
 	private Long msgType;//短信类型
+
+	private Date overTime;	//计划结束时间
 
 	private Integer unFinishCount;  //待完成人数
 

@@ -7,6 +7,7 @@ import com.leanin.service.AuthService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  **/
 
-//@Component
+@Component
+@Slf4j
 public class LoginFilter extends ZuulFilter {
 
     @Autowired
@@ -61,16 +63,17 @@ public class LoginFilter extends ZuulFilter {
         //得到request
         HttpServletRequest request = requestContext.getRequest();
         String requestURI = request.getRequestURI();
-
-        if (requestURI.equals("/api/auth/userlogin") ||
+        log.info("访问路径-->"+requestURI);
+        access_pass();
+        /*if (requestURI.equals("/api/auth/userlogin") ||
                 requestURI.equals("/api/auth/userjwt")){
             access_pass();
             return null;
-        }
+        }*/
         //得到response
-        HttpServletResponse response = requestContext.getResponse();
+//        HttpServletResponse response = requestContext.getResponse();
         //取cookie中的身份令牌
-        String tokenFromCookie = authService.getTokenFromCookie(request);
+//        String tokenFromCookie = authService.getTokenFromCookie(request);
         /*if(StringUtils.isEmpty(tokenFromCookie)){
             //拒绝访问
             access_denied();

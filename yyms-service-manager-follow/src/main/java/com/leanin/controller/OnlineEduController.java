@@ -1,16 +1,17 @@
 package com.leanin.controller;
 
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.vo.PatientInfoEduVo;
 import com.leanin.service.OnlineEduService;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("onlineEdu")
-public class OnlineEduController {
+public class OnlineEduController extends BaseController {
 
     @Autowired
     OnlineEduService onlineEduService;
@@ -46,6 +47,17 @@ public class OnlineEduController {
     @GetMapping("updateFormStatus")
     public DataOutResponse updateFormStatus(@RequestParam("eduId") String eduId,@RequestParam("formStatus") Integer formStatus){
         return onlineEduService.updateFormStatus(eduId,formStatus);
+    }
+
+
+    /**
+     * 在院宣教  发送并导入档案
+     * @param patientInfoEduVos
+     * @return
+     */
+    @PostMapping("/sendOnlineEdu")
+    public DataOutResponse sendOnlineEdu(@RequestBody List<PatientInfoEduVo> patientInfoEduVos){
+        return onlineEduService.sendOnlineEdu(patientInfoEduVos,request);
     }
 
 

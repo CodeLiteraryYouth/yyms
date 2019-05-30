@@ -122,6 +122,22 @@
         where id = #{id}
     </select>
 
+
+    <select id="findByPatientIdAndSource" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leanin_patient_info
+        where patient_info_id = #{patientInfoId}
+        <choose>
+            <when test="patientSource ==1 or patientSource == 3">
+                and (patient_source = 1 or patient_source = 3)
+            </when>
+            <otherwise>
+                and patient_source = #{patientSource}
+            </otherwise>
+        </choose>
+    </select>
+
     <insert id="addPatientInfo" parameterType="com.leanin.domain.vo.PatientInfoVo">
         insert into leanin_patient_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -179,6 +195,15 @@
             <if test="createTime != null">
                 create_time,
             </if>
+            <if test="patientSource != null">
+                patient_source,
+            </if>
+            <if test="healthCardNo != null">
+                health_card_no,
+            </if>
+            <if test="hosNo != null">
+                hos_no,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="patientInfoId != null">
@@ -233,7 +258,16 @@
                 #{adminCreater,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP}
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="patientSource != null">
+                #{patientSource},
+            </if>
+            <if test="healthCardNo != null">
+                #{healthCardNo},
+            </if>
+            <if test="hosNo != null">
+                #{hosNo},
             </if>
         </trim>
     </insert>

@@ -157,12 +157,12 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 //			Map map = CSMSUtils.sendMessage(msgInfo.getMsgText() + param,onlineEdu.getPhoneNum() );
 //			String msgStatus = (String) map.get("msg");
 			String msgStatus = "true";
-			if (msgStatus.equals("true")){
+			if (msgStatus.equals("true")){//发送成功
 				onlineEdu.setSendStatus(2);//已发送短信
-				onlineEdu.setFormStatus(1);//已完成未阅读状态
-			}else{
+			}else{//发送失败
 				onlineEdu.setSendStatus(3);//发送失败
 				edu.setSendTime(new Date());
+				onlineEdu.setFormStatus(1);//短信发送宣教即已读
 				OnlineEdu save = onlineEduRepository.save(onlineEdu);
 				return ReturnFomart.retParam(3306,save);
 			}

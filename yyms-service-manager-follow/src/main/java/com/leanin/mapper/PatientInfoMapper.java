@@ -49,4 +49,6 @@ public interface PatientInfoMapper {
 
     void updateById(PatientInfoVo patientInfoVo);
 
+    PatientInfoVo findByPatientIdAndSource(@Param("patientInfoId") String patientInfoId,@Param("patientSource") Integer patientSource);
+
 }

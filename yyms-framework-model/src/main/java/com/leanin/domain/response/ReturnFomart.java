@@ -110,6 +110,9 @@ public class ReturnFomart {
 
         messageMap.put("5400","患者档案不存在");
 
+        messageMap.put("5500","调取his患者异常");
+
+
 
 
     }

@@ -98,6 +98,8 @@ public class MsgInfoController extends BaseController {
 		return msgInfoService.sendEduMessage(onlineEdus);
 	}
 
+
+
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();
 		LyOauth2Util.UserJwt userJwt = lyOauth2Util.getUserJwtFromHeader(httpServletRequest);

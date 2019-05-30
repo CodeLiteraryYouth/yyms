@@ -43,7 +43,8 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 	private StringRedisTemplate redisTemplate;
 	
 	@Override
-	public DataOutResponse findPatientList(String patientName,Long userId,Integer page,Integer pageSize) {
+	public DataOutResponse findPatientList(String patientName,Long userId,Integer page,Integer pageSize,
+										   String healthCardNo,String idCard,Integer patientSource) {
 		log.info("查询的病人姓名为:"+patientName);
 //		String patientJson=redisTemplate.opsForValue().get("patient_"+patientName);
 //		if(StringUtils.isEmpty(patientJson)) {
@@ -54,7 +55,7 @@ public class FocusPatientServiceImpl implements FocusPatientService {
 			pageSize = 10;
 		}
 		PageHelper.startPage(page,pageSize);
-		Page<FocusPatientVo> pageVo= (Page<FocusPatientVo>) focusPatientMapper.findPatientList(patientName,userId);
+		Page<FocusPatientVo> pageVo= (Page<FocusPatientVo>) focusPatientMapper.findPatientList(patientName,userId,healthCardNo,idCard,patientSource);
 			log.info("查询的关注病人列表信息为:"+ JSON.toJSONString(pageVo.getResult()));
 //			redisTemplate.opsForValue().set("patient_"+patientName, JSON.toJSONString(patientList));
 //		} else {

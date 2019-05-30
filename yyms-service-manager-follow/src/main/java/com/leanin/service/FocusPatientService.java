@@ -15,7 +15,8 @@ public interface FocusPatientService {
 	 * @param patientName
 	 * @return
 	 */
-	DataOutResponse findPatientList(String patientName,Long userId,Integer page,Integer pageSize);
+	DataOutResponse findPatientList(String patientName,Long userId,Integer page,Integer pageSize,
+									String healthCardNo,String idCard,Integer patientSource);
 	
 	/**
 	 * 修改病人的状态信息

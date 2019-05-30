@@ -3,6 +3,7 @@ package com.leanin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.leanin.domain.response.DataOutResponse;
+import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.FocusPatientVo;
 import com.leanin.service.FocusPatientService;
 import com.leanin.utils.LyOauth2Util;
@@ -36,9 +37,10 @@ public class FocusPatientController extends BaseController {
 	 */
 //	@PreAuthorize("hasAnyAuthority('root','findFocusPat')")
 	@GetMapping("findPatientList")
-	public DataOutResponse findPatientList(@RequestParam(required=false) String patientName,Integer page,Integer pageSize) {
+	public DataOutResponse findPatientList(Integer page,Integer pageSize,@RequestParam(required=false) String patientName,
+										   String healthCardNo,String idCard,Integer patientSource) {
 		LyOauth2Util.UserJwt user = getUser(request);
-		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize);
+		return focusPatientService.findPatientList(patientName,user.getId(),page,pageSize,healthCardNo,idCard,patientSource);
 	}
 
 //	@PreAuthorize("hasAnyAuthority('root','addFocusPat')")
@@ -52,6 +54,9 @@ public class FocusPatientController extends BaseController {
 //	@PreAuthorize("hasAnyAuthority('root','delFocusPat')")
 	@GetMapping("updatePatientStatus")
 	public DataOutResponse updatePatientStatus(@RequestParam String focusId, @RequestParam Integer status) {
+		if ( "".equals(focusId)){
+			return ReturnFomart.retParam(1001,focusId);
+		}
         String[] longs = focusId.split(",");
 		return focusPatientService.updatePatientStatus(longs, status);
 	}
