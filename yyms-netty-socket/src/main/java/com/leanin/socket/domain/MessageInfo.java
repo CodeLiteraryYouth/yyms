@@ -1,6 +1,7 @@
 package com.leanin.socket.domain;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,5 +41,9 @@ public class MessageInfo {
     //消息时间戳
     @Column(name="msg_date")
     private long msgDate;
+
+    //0:未读 1:已读
+    @Column(name="is_read")
+    private int read;
 
 }

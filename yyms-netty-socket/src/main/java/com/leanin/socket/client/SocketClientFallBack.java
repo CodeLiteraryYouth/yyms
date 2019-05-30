@@ -2,8 +2,11 @@ package com.leanin.socket.client;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import feign.hystrix.FallbackFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +20,23 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Component
-public class SocketClientFallBack implements SocketClient {
-
+@Slf4j
+public class SocketClientFallBack implements FallbackFactory<SocketClient> {
 
     @Override
-    public DataOutResponse findHosList(String patientId) {
-        return ReturnFomart.retParam(1000,patientId);
+    public SocketClient create(Throwable throwable) {
+        log.info("调用follow异常:"+throwable.getMessage());
+        SocketClient socketClient = new SocketClient() {
+            @Override
+            public DataOutResponse findHosList(String patientId) {
+                return ReturnFomart.retParam(1000, patientId);
+            }
+
+            @Override
+            public DataOutResponse findHisPlanPatientById(Long patientId, Integer patientSource) {
+                return ReturnFomart.retParam(1000, patientId);
+            }
+        };
+        return socketClient;
     }
 }

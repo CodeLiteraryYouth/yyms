@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 /**
  * @ProjectName: yyms
  * @Package: com.leanin.socket.mapper
@@ -35,4 +37,10 @@ public interface ClientInfoRepository {
      * @param client
      */
     void updateClientInfo(ClientInfo client);
+
+    /**
+     * 查询医生在线连接列表
+     * @return
+     */
+    List<ClientInfo> findClientList();
 }

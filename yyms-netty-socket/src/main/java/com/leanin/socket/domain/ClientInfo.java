@@ -38,4 +38,6 @@ public class ClientInfo {
     @Column(name="last_connected_date")
     private Date lastconnecteddate;
 
+    @Column(name="client_type")
+    private String clientType;
 }

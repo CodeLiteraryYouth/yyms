@@ -8,11 +8,12 @@
         <result column="mostsign_bits"  property="mostsignbits" />
         <result column="leastsign_bits"  property="leastsignbits" />
         <result column="last_connected_date"  property="lastconnecteddate" />
+        <result column="client_type"  property="clientType" />
     </resultMap>
 
     <sql id="BaseSql">
         c.client_id ,c.connected ,c.mostsign_bits,
-        c.leastsign_bits ,c.last_connected_date
+        c.leastsign_bits ,c.last_connected_date,c.client_type
     </sql>
 
     <insert id="addClientInfo">
@@ -33,6 +34,9 @@
             <if test="lastconnecteddate!=null">
                 last_connected_date,
             </if>
+            <if test="clientType!=null">
+                client_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="clientid!=null">
@@ -49,6 +53,9 @@
             </if>
             <if test="lastconnecteddate!=null">
                 #{lastconnecteddate},
+            </if>
+            <if test="clientType!=null">
+                #{clientType},
             </if>
         </trim>
     </insert>
@@ -69,7 +76,7 @@
                 last_connected_date=#{lastconnecteddate},
             </if>
         </set>
-         where client_id=#{clientid}
+        where client_id=#{clientid}
     </update>
 
 
@@ -78,5 +85,12 @@
         <include refid="BaseSql"/>
         from leanin_client_connect c
         where c.client_id=#{clientId}
+    </select>
+
+    <select id="findClientList" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from leanin_client_connect c
+        where c.client_type=1 and c.connected=1
     </select>
 </mapper>

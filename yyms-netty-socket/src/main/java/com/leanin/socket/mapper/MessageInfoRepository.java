@@ -33,11 +33,24 @@ public interface MessageInfoRepository {
     List<String> findPatientIdList(@Param("clientId") String clientId,@Param("date") String date);
 
     /**
+     * 查询当前医生未读消息总数
+     * @param clientId
+     * @return
+     */
+    int findMsgCount(@Param("clientId") String clientId);
+
+    /**
      * 根据发送者ID和接收者ID查询消息列表
      * @param sourceId
      * @param targetId
      * @return
      */
-    List<MessageInfo> findMessageList(@Param("sourceId") String sourceId,@Param("targetId") String targetId,
+    List<Map> findMessageList(@Param("sourceId") List<String> sourceId,@Param("targetId") List<String> targetId,
                               @Param("startDate") long startDate,@Param("endDate") long endDate);
+
+    /**
+     * 修改消息阅读状态
+     * @param id
+     */
+    void updateMsgStatus(@Param("idList") List<String> id);
 }

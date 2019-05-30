@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.socket.mapper.MessageInfoRepository">
+
     <insert id="addMessageInfo">
         insert into leanin_message_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,17 +46,37 @@
           where m.target_client_id=#{clientId}
           and DATE_FORMAT(c.last_connected_date,'%Y-%m-%d')=#{date}
     </select>
-    <select id="findMessageList" resultType="com.leanin.socket.domain.MessageInfo">
+    <select id="findMessageList" resultType="java.util.Map">
         select
-        m.source_client_id as sourceId,target_client_id as targetId,
-        m.msg_type as msgType,m.msg_text as msgText,m.msg_date as msgDate
-        from leanin_message_info m where m. m.source_client_id=#{sourceId}
-        and m.target_client_id=#{targetId}
-        <if test="startDate! = null">
+        m.id as id,m.source_client_id as sourceClientId,target_client_id as targetClientId,
+        m.msg_type as msgType,m.msg_text as msgContent,m.msg_date as msgDate,m.is_read as isRead
+        from leanin_message_info m where m.source_client_id in
+        <foreach collection="sourceId" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and m.target_client_id in
+        <foreach collection="targetId" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="startDate!= null">
             and m.msg_date<![CDATA[>=]]>#{startDate}
         </if>
         <if test="endDate!=null">
             and m.msg_date<![CDATA[<=]]>#{endDate}
         </if>
     </select>
+    <select id="findMsgCount" resultType="java.lang.Integer">
+        select count(c.client_id)
+        from leanin_message_info m
+        where m.target_client_id=#{clientId}
+        and m.is_read=0
+    </select>
+
+    <update id="updateMsgStatus">
+        update leanin_message_info
+        set is_read=1 where id in
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>
