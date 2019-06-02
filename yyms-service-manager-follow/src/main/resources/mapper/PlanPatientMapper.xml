@@ -703,10 +703,27 @@
             ELSE '其他' END AS form_status
         FROM `leanin_plan_patient` lpp, `leanin_plan_info` lpi,`leanin_admin_user` lau,`leanin_form_info` lfi
         WHERE lpi.`plan_num` = lpp.`plan_num`
-        AND lpp.`patient_status` = 1
+        AND lpi.plan_type = 2
+--         AND lpp.`patient_status` = 1
         AND lpp.`form_id` = lfi.`form_num`
         AND lpi.`plan_duty_per` = lau.`admin_id`
         AND lpp.patient_id = #{patientId}
+        UNION ALL
+        SELECT
+            loe.`send_time` as next_date,
+            loe.`send_user` as plan_duty_per,
+            lfi.`form_name`,
+            loe.`form_id`,
+            lau.admin_name,
+            CASE loe.`form_status`
+            WHEN 1 THEN '未读'
+            WHEN 2 THEN '已读'
+            ELSE '其他' END AS form_status
+        FROM `leanin_online_edu` loe,`leanin_form_info` lfi,`leanin_admin_user` lau
+        WHERE loe.`form_id` = lfi.`form_num`
+        AND lau.admin_id = loe.send_user
+        AND loe.send_status = 2
+        AND loe.patient_id = #{patientId}
     </select>
 
     <resultMap id="FollowRecordMap" type="com.leanin.domain.vo.FollowRecordVo">
@@ -740,17 +757,18 @@
             WHEN 1 THEN '待随访'
             WHEN 2 THEN '已完成'
             WHEN 3 THEN '已过期'
-            WHEN 4 THEN '无法监听'
+            WHEN 4 THEN '无法接听'
             WHEN 5 THEN '号码错误'
-            WHEN 6 THEN '拒绝监听'
-            WHEN 7 THEN '无人监听'
-            WHEN 8 THEN '家属监听'
+            WHEN 6 THEN '拒绝接听'
+            WHEN 7 THEN '无人接听'
+            WHEN 8 THEN '家属接听'
             WHEN 9 THEN '患者不合作'
             WHEN 10 THEN '无联系电话'
             ELSE '其他' END AS state
         FROM `leanin_plan_info` lpi,`leanin_plan_patient` lpp,`leanin_form_info` lfi,`leanin_admin_user` lau
-        WHERE lpp.patient_status = 1
-        AND lpi.`plan_num` = lpp.`plan_num`
+        WHERE lpi.`plan_num` = lpp.`plan_num`
+--         AND lpp.patient_status = 1
+        AND lpi.plan_type = 1
         AND lpi.`plan_duty_per` = lau.`admin_id`
         AND lpp.`form_id` = lfi.`form_num`
         AND lpp.patient_id = #{patientId}
@@ -769,17 +787,17 @@
             WHEN 1 THEN '待随访'
             WHEN 2 THEN '已完成'
             WHEN 3 THEN '已过期'
-            WHEN 4 THEN '无法监听'
+            WHEN 4 THEN '无法接听'
             WHEN 5 THEN '号码错误'
-            WHEN 6 THEN '拒绝监听'
-            WHEN 7 THEN '无人监听'
-            WHEN 8 THEN '家属监听'
+            WHEN 6 THEN '拒绝接听'
+            WHEN 7 THEN '无人接听'
+            WHEN 8 THEN '家属接听'
             WHEN 9 THEN '患者不合作'
             WHEN 10 THEN '无联系电话'
             ELSE '其他' END AS state
         FROM `leanin_plan_info` lpi,`leanin_follow_record` lfr, `leanin_form_info` lfi,`leanin_admin_user` lau
-        WHERE lfr.`patient_status` = 1
-        AND lpi.`plan_num` = lfr.`plan_num`
+        WHERE lpi.`plan_num` = lfr.`plan_num`
+--         AND lfr.`patient_status` = 1
         AND lpi.`plan_duty_per` = lau.`admin_id`
         AND lfr.`form_id` = lfi.`form_num`
         AND lfr.patient_id = #{patientId}
@@ -793,6 +811,104 @@
         and send_type != #{sendStatus}
         and plan_num = #{planNum}
         limit 1
+    </select>
+
+    <resultMap id="SatisfyRecordMap" type="com.leanin.domain.vo.SatisfyRecordVo">
+        <result column="patient_date_time" property="sendTime"></result>
+        <result column="admin_name" property="senderName"></result>
+        <result column="suggess" property="handleSuggess"></result>
+        <result column="satisfy_num" property="formId"></result>
+        <result column="satisfy_name" property="formName"></result>
+        <result column="form_redord_id" property="formRedcordId"></result>
+        <result column="state" property="state"></result>
+    </resultMap>
+
+    <resultMap extends="SatisfyRecordMap" id="WardSatisfyRecordMap" type="com.leanin.domain.vo.SatisfyRecordVo">
+        <collection property="wardInfoVos" column="discover_person" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId"></collection>
+    </resultMap>
+    <select id="findPageSatisfyRecord" resultMap="WardSatisfyRecordMap">
+        SELECT
+            lsp.`patient_date_time`,
+            lau.`admin_name`,
+            lsp.`suggess`,
+            lsi.`satisfy_num`,
+            lsi.`satisfy_name`,
+            lsp.`form_redord_id`,
+            lspl.discover_person,
+            CASE lsp.`finish_type`
+            WHEN -1 THEN '收案'
+            WHEN 1 THEN '未完成'
+            WHEN 2 THEN '已完成'
+            WHEN 3 THEN '已过期'
+            WHEN 4 THEN '无法接听'
+            WHEN 5 THEN '号码错误'
+            WHEN 6 THEN '拒绝接听'
+            WHEN 7 THEN '无人接听'
+            WHEN 8 THEN '家属接听'
+            WHEN 9 THEN '患者不合作'
+            WHEN 10 THEN '无联系电话'
+            WHEN 11 THEN '其他'
+            ELSE '其他' END AS state
+        FROM `leanin_satisfy_patient` lsp,`leanin_satisfy_info` lsi,`leanin_admin_user` lau,`leanin_satisfy_plan` lspl
+        WHERE lsp.`satisfy_plan_num` = lspl.`plan_satisfy_num`
+        AND lspl.`discover_person` = lau.`admin_id`
+        AND lsi.`satisfy_num` = lsp.`form_id`
+        AND lsp.patient_id = #{patientId}
+    </select>
+
+    <resultMap id="MsgRecordMap" type="com.leanin.domain.vo.MsgRecordVo">
+        <result column="msg_send_date" property="sendTime"></result>
+        <result column="admin_name" property="senderName"></result>
+        <result column="msg_send_num" property="phone"></result>
+        <result column="msg_topic_title" property="msgTopicName"></result>
+        <result column="msg_content" property="msgContent"></result>
+    </resultMap>
+
+    <resultMap extends="MsgRecordMap" id="WardMsgRecordMap" type="com.leanin.domain.vo.MsgRecordVo">
+        <collection property="wardInfoVos" column="msg_topic_creater" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId"></collection>
+    </resultMap>
+
+    <select id="findPageMsgRecord" resultMap="WardMsgRecordMap">
+        SELECT
+            lmsr.`msg_send_date`,
+            lau.`admin_name`,
+            lmsr.`msg_send_num`,
+            lst.`msg_topic_title`,
+            lst.`msg_content`,
+            lst.`msg_topic_creater`
+        FROM `leanin_msg_send_record` lmsr,`leanin_msg_topic` lst,`leanin_admin_user` lau
+        WHERE lmsr.`plan_type` = 4
+        AND lmsr.`msg_send_status` = 2
+        AND lmsr.`plan_num` = lst.`msg_topic_id`
+        AND lst.`msg_topic_creater` = lau.`admin_id`
+        AND lmsr.`patient_id` = #{patientId}
+    </select>
+
+    <resultMap id="PhoneRecordMap" type="com.leanin.domain.vo.PhoneRecordVo">
+        <result column="call_start_time" property="phoneTime"></result>
+        <result column="customer_number" property="phoneNum"></result>
+        <result column="call_creater_name" property="medicalWorkerName"></result>
+        <result column="holding_time" property="callDuration"></result>
+        <result column="call_log_info_id" property="callInfoId"></result>
+    </resultMap>
+
+    <resultMap extends="PhoneRecordMap" id="WardPhoneRecordMap" type="com.leanin.domain.vo.PhoneRecordVo">
+        <collection property="wardInfoVos" column="call_creater_id" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId"></collection>
+    </resultMap>
+
+    <select id="findPagePhoneRecord" resultMap="WardPhoneRecordMap">
+        SELECT
+            lcli.`call_start_time`,
+            lcli.`call_creater_id`,
+            lcli.`customer_number`,
+            lcli.`holding_time`,
+            lcli.call_creater_name,
+            lcli.`call_log_info_id`
+        FROM `leanin_call_log_info` lcli
+        WHERE lcli.`customer_id` = #{patientId}
     </select>
 
 

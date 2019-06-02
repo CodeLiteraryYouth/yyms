@@ -3,6 +3,8 @@ package com.leanin.controller;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.service.DataAnalysisService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("dataAnalysis")
-public class DataAnalysisController {
+public class DataAnalysisController extends BaseController {
 
     @Autowired
     DataAnalysisService dataAnalysisService;
@@ -31,7 +35,9 @@ public class DataAnalysisController {
 //    @PreAuthorize("hasAnyAuthority('root','dataAly')")
     @GetMapping("followAnalysis")
     public DataOutResponse followAnalysis(Integer patientSource,String planNum,String dept,String startDate,String endDate,@RequestParam("planType") Integer planType,Integer formStatus,Long userId,Integer isAll){
-        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
+        LyOauth2Util.UserJwt user = getUser(request);
+
+        return dataAnalysisService.followAnalysis(patientSource,planNum,dept,startDate,endDate,planType,formStatus,user.getId(),isAll);
     }
 
     /**
@@ -102,11 +108,11 @@ public class DataAnalysisController {
     }
 
 
-
-
-
-
-
+    private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+        LyOauth2Util lyOauth2Util = new LyOauth2Util();
+        LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+        return userJwt;
+    }
 
 
 }

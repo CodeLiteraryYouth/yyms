@@ -5,8 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.EduRecordVo;
-import com.leanin.domain.vo.FollowRecordVo;
+import com.leanin.domain.vo.*;
 import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.service.PatientRecordService;
 import com.rabbitmq.client.Return;
@@ -29,7 +28,7 @@ public class PatientRecordServiceImpl implements PatientRecordService {
     PlanPatientMapper planPatientMapper;
 
     @Override
-    public DataOutResponse findPageEduRecord(Integer page, Integer pageSize,Long patientId) {
+    public DataOutResponse findPageEduRecord(Integer page, Integer pageSize,String patientId) {
         if (null == page || page < 0  ){//默认显示第一页
             page = 1;
         }
@@ -45,7 +44,7 @@ public class PatientRecordServiceImpl implements PatientRecordService {
     }
 
     @Override
-    public DataOutResponse findPageFollowRecord(Integer page, Integer pageSize, Long patientId) {
+    public DataOutResponse findPageFollowRecord(Integer page, Integer pageSize, String patientId) {
         if (null == page || page < 0  ){//默认显示第一页
             page = 1;
         }
@@ -58,5 +57,53 @@ public class PatientRecordServiceImpl implements PatientRecordService {
         data.put("totalCount",pageList.getTotal());
         data.put("list",pageList.getResult());
         return ReturnFomart.retParam(200,data);
+    }
+
+    @Override
+    public DataOutResponse findPageSatisfyRecord(Integer page, Integer pageSize, String patientId) {
+        if (null == page || page < 0  ){//默认显示第一页
+            page = 1;
+        }
+        if (null == pageSize || pageSize < 0  ){//每页展示条数
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<SatisfyRecordVo> pageList = (Page<SatisfyRecordVo>) planPatientMapper.findPageSatisfyRecord(patientId);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
+    }
+
+    @Override
+    public DataOutResponse findPageMsgRecord(Integer page, Integer pageSize, String patientId) {
+        if (null == page || page < 0  ){//默认显示第一页
+            page = 1;
+        }
+        if (null == pageSize || pageSize < 0  ){//每页展示条数
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<MsgRecordVo> pageList = (Page<MsgRecordVo>) planPatientMapper.findPageMsgRecord(patientId);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
+    }
+
+    @Override
+    public DataOutResponse findPagePhoneRecord(Integer page, Integer pageSize, String patientId) {
+        if (null == page || page < 0  ){//默认显示第一页
+            page = 1;
+        }
+        if (null == pageSize || pageSize < 0  ){//每页展示条数
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<PhoneRecordVo> pageList = (Page<PhoneRecordVo>) planPatientMapper.findPagePhoneRecord(patientId);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
     }
 }

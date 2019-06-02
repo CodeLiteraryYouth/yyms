@@ -46,5 +46,7 @@ public class MessageTopicVo {
 
     private Date msgEndDate;            //短信主题筛选患者结束时间
 
+    private Date createDate;            //创建时间
+
     private Integer unsentCount;        //未发送人数
 }

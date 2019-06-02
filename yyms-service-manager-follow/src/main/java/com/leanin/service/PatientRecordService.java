@@ -9,7 +9,13 @@ import com.leanin.domain.response.DataOutResponse;
  */
 public interface PatientRecordService {
 
-    DataOutResponse findPageEduRecord(Integer page, Integer pageSize,Long patientId);
+    DataOutResponse findPageEduRecord(Integer page, Integer pageSize,String patientId);
 
-    DataOutResponse findPageFollowRecord(Integer page, Integer pageSize, Long patientId);
+    DataOutResponse findPageFollowRecord(Integer page, Integer pageSize, String patientId);
+
+    DataOutResponse findPageSatisfyRecord(Integer page, Integer pageSize, String patientId);
+
+    DataOutResponse findPageMsgRecord(Integer page, Integer pageSize, String patientId);
+
+    DataOutResponse findPagePhoneRecord(Integer page, Integer pageSize, String patientId);
 }

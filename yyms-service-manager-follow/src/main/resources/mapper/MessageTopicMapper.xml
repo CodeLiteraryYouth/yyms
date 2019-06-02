@@ -15,7 +15,7 @@
     <result column="msg_topic_state"  property="msgTopicState" />
     <result column="msg_start_date"  property="msgStartDate" />
     <result column="msg_end_date"  property="msgEndDate" />
-
+    <result column="create_date"  property="createDate" />
   </resultMap>
 
   <resultMap extends="BASE" id="BaseResultMap" type="com.leanin.domain.vo.MessageTopicVo">
@@ -30,7 +30,7 @@
   <sql id="Base_Column_List">
     msg_topic_id,msg_topic_title,patient_type,disease_name,msg_topic_head,
     msg_content, msg_send_date, msg_topic_creater, msg_topic_creater_ward,
-    area_code,msg_topic_state,msg_start_date,msg_end_date
+    area_code,msg_topic_state,msg_start_date,msg_end_date,create_date
   </sql>
 
   <select id="findMsgTopicList" resultMap="BaseResultMap">
@@ -100,6 +100,9 @@
       <if test="msgEndDate != null">
         msg_end_date,
       </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="msgTopicId != null">
@@ -140,6 +143,9 @@
       </if>
       <if test="msgEndDate != null">
         #{msgEndDate},
+      </if>
+      <if test="createDate != null">
+        #{createDate},
       </if>
     </trim>
   </insert>

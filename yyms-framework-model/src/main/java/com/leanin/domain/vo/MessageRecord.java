@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ToString
@@ -65,6 +66,9 @@ public class MessageRecord {
 
     @Column(name = "patient_source")
     private Integer patientSource;  //患者来源
+
+
+
 
 
 }

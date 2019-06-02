@@ -17,6 +17,15 @@
         <result column="plan_num"  property="planNum" />
     </resultMap>
 
+    <resultMap extends="BaseResultMap" id="WardBaseResultMap" type="com.leanin.domain.vo.MessageRecordVo">
+        <association property="senderName" column="msg_send_name" javaType="string"
+                     select="com.leanin.mapper.UserMapper.findUserName">
+        </association>
+        <collection property="wardInfoVos" column="msg_send_name" ofType="com.leanin.domain.vo.WardInfoVo"
+                    select="com.leanin.mapper.WardInfoMapper.findByUserId">
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List">
         msg_send_id,msg_send_name,msg_send_ward,msg_send_date,msg_send_num,msg_text,msg_send_status,
         plan_patient_id,patient_id,form_id,plan_num,msg_them,plan_type
@@ -102,7 +111,7 @@
         </trim>
     </insert>
 
-    <select id="findMsgRecordList" resultMap="BaseResultMap">
+    <select id="findMsgRecordList" resultMap="WardBaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM leanin_msg_send_record

@@ -93,7 +93,7 @@ public class WorkJob {
                 messagePatientMapper.updateByPrimaryKeySelective(messagePatientVo);///*messageTopicVo.getMsgTopicCreater()*/
                 MessageRecord messageRecord = new MessageRecord();
 //                messageRecord.setMsgSendId(null);//主键自增
-                messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+                messageRecord.setMsgSendName(messageTopicVo.getMsgTopicCreater());// 0 表示系统自动发送
                 messageRecord.setMsgSendWard(messageTopicVo.getMsgTopicCreaterWard());//计划负责科室
                 messageRecord.setMsgSendDate(new Date());
                 messageRecord.setMsgSendNum(messagePatientVo.getPatientPhone());//发送手机号
@@ -188,7 +188,7 @@ public class WorkJob {
                             if (null == opendId) {//患者的openid为空 跳过推送模板消息
                                 log.info("患者的openId为空", JSON.toJSONString(patientDto));
                                 patientDto.setSendType(3); //发送失败
-                                patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
+//                                patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                             } else {
                                 int flag = sendWxMsg(planInfo, patientDto, wxSendDao, null, null, 1, accessToken);
                                 if (flag == 3) {//accessToken失效 重新获取令牌
@@ -201,7 +201,7 @@ public class WorkJob {
                                     patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                                 } else {
                                     patientDto.setSendType(3); //发送失败
-                                    patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
+//                                    patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                                 }
                             }
                             //修改推送状态
@@ -244,11 +244,11 @@ public class WorkJob {
             }
         } else {
             patientDto.setSendType(3); //发送失败
-            patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
+//            patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
         }
         MessageRecord messageRecord = new MessageRecord();
         messageRecord.setMsgSendId(null);//主键自增
-        messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+        messageRecord.setMsgSendName(planInfo.getPlanDutyPer());// 0 表示系统自动发送
         messageRecord.setMsgSendWard(planInfo.getPlanWardCode());//计划负责科室
         messageRecord.setMsgSendDate(new Date());
         messageRecord.setMsgSendNum(patientDto.getPatientPhone());//发送手机号
@@ -420,13 +420,15 @@ public class WorkJob {
 
             //读取规则 解析规则
             RulesInfoVo rulesInfo = planInfoDto.getRulesInfo();
-//            if (planInfoDto.getPlanType() == 2 || rulesInfo.getRulesInfoTypeName() != 1) {//只更新 阶段 随访
-//                continue; //宣教和 不是 阶段随访过滤掉
-//            }
+            if (planInfoDto.getPlanType() == 2 ) {//宣教不存在过期
+                continue; //宣教和 不是 阶段随访过滤掉
+            }
             String rulesInfoText = rulesInfo.getRulesInfoText();
             Map rulesMap = JSON.parseObject(rulesInfoText, Map.class);
 //            String tiemFont = (String) rulesMap.get("tiemFont");//获取下次任务的时间 1天 2星期 3月
-            int validDays = Integer.parseInt(rulesMap.get("validDays") + "");//有效时间
+            Object validDays1 = rulesMap.get("validDays");
+            int validDays = Integer.parseInt((String)validDays1);//有效时间
+
 
             int timeChoosed = Integer.parseInt((String) rulesMap.get("timeChoosed")); //1 6:00， 2 7:00 一次后推直到 16 21:00
             String timeSelect = (String) rulesMap.get("timeSelect");
@@ -437,12 +439,12 @@ public class WorkJob {
             }
             String sendTimeDays1 = (String) rulesMap.get("sendTimeDays");
             int sendTimeDays = 0;
-            if (!"".equals(sendTimeDays1) && sendTimeDays1 != null) {
+            if (!"".equals(sendTimeDays1) && sendTimeDays1 != null && !"null".equals(sendTimeDays1)) {
                 sendTimeDays = Integer.parseInt(sendTimeDays1);
             }
             String sendTimeMonths1 = (String) rulesMap.get("sendTimeMonths");
             int sendTimeMonths = 0;
-            if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null) {
+            if (!"".equals(sendTimeMonths1) && sendTimeMonths1 != null && !"null".equals(sendTimeMonths1)) {
                 sendTimeMonths = Integer.parseInt(sendTimeMonths1);
             }
             List<PlanPatientVo> planPatientList = planPatientMapper.findPlanPatientList(planInfoDto.getPlanNum(), null, null, null);
@@ -790,7 +792,7 @@ public class WorkJob {
     private void addMsgRecord(SatisfyPatientVo satisfyPatientVo, String msgContent, SatisfyPlanVo satisfyPlanVo) {
         MessageRecord messageRecord = new MessageRecord();
         messageRecord.setMsgSendId(null);//主键自增
-        messageRecord.setMsgSendName(0L);// 0 表示系统自动发送
+        messageRecord.setMsgSendName(satisfyPlanVo.getDiscoverPerson());// 0 表示系统自动发送
         messageRecord.setMsgSendWard(satisfyPlanVo.getSatisfyPlanWard());//计划负责科室
         messageRecord.setMsgSendDate(new Date());
         messageRecord.setMsgSendNum(satisfyPatientVo.getPatientPhone());//发送手机号

@@ -2,147 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.schdule.mapper.MessageTopicMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessageTopicVo">
-    <id column="msg_topic_id" jdbcType="VARCHAR" property="msgTopicId" />
-    <result column="msg_topic_title" jdbcType="VARCHAR" property="msgTopicTitle" />
-    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
-    <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
-    <result column="msg_topic_head" jdbcType="VARCHAR" property="msgTopicHead" />
-    <result column="msg_content" jdbcType="LONGVARCHAR" property="msgContent" />
-    <result column="msg_send_date" jdbcType="TIMESTAMP" property="msgSendDate" />
-    <result column="msg_topic_creater" jdbcType="VARCHAR" property="msgTopicCreater" />
-    <result column="msg_topic_creater_ward" jdbcType="VARCHAR" property="msgTopicCreaterWard" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <id column="msg_topic_id"  property="msgTopicId" />
+    <result column="msg_topic_title"  property="msgTopicTitle" />
+    <result column="patient_type"  property="patientType" />
+    <result column="disease_name"  property="diseaseName" />
+    <result column="msg_topic_head"  property="msgTopicHead" />
+    <result column="msg_content"  property="msgContent" />
+    <result column="msg_send_date"  property="msgSendDate" />
+    <result column="msg_topic_creater"  property="msgTopicCreater" />
+    <result column="msg_topic_creater_ward" property="msgTopicCreaterWard" />
+    <result column="area_code"  property="areaCode" />
+    <result column="msg_topic_state"  property="msgTopicState" />
+    <result column="msg_start_date"  property="msgStartDate" />
+    <result column="msg_end_date"  property="msgEndDate" />
+    <result column="create_date"  property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
     msg_topic_id,msg_topic_title,patient_type,disease_name,msg_topic_head,
     msg_content, msg_send_date, msg_topic_creater, msg_topic_creater_ward,
-    area_code
+    area_code,msg_topic_state,msg_start_date,msg_end_date,create_date
   </sql>
 
   <select id="findMsgTopicList" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from leanin_msg_topic
-    where 1 = 1
+    where msg_topic_state = 1
     <if test="msgTopicTitle != null">
          AND msg_topic_title like CONCAT('%',#{msgTopicTitle,jdbcType=VARCHAR},'%')
     </if>
   </select>
 
-  <!--<select id="findMsgTopicById" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from leanin_msg_topic
-    where msg_topic_id = #{msgTopicId,jdbcType=VARCHAR}
-  </select>
-
-  <select id="findMsgTopicByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from leanin_msg_topic
-    where
-    msg_topic_title = #{msgTopicName,jdbcType=VARCHAR}
-  </select>
-
-  <insert id="addMsgTopic" parameterType="com.leanin.domain.vo.MessageTopicVo">
-    insert into leanin_msg_topic
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="msgTopicId != null">
-        msg_topic_id,
-      </if>
-      <if test="msgTopicTitle != null">
-        msg_topic_title,
-      </if>
-      <if test="patientType != null">
-        patient_type,
-      </if>
-      <if test="diseaseName != null">
-        disease_name,
-      </if>
-      <if test="msgTopicHead != null">
-        msg_topic_head,
-      </if>
-      <if test="msgContent != null">
-        msg_content,
-      </if>
-      <if test="msgSendDate != null">
-        msg_send_date,
-      </if>
-      <if test="msgTopicCreater != null">
-        msg_topic_creater,
-      </if>
-      <if test="msgTopicCreaterWard != null">
-        msg_topic_creater_ward,
-      </if>
-      <if test="areaCode != null">
-        area_code,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="msgTopicId != null">
-        #{msgTopicId,jdbcType=VARCHAR},
-      </if>
-      <if test="msgTopicTitle != null">
-        #{msgTopicTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="patientType != null">
-        #{patientType,jdbcType=INTEGER},
-      </if>
-      <if test="diseaseName != null">
-        #{diseaseName,jdbcType=VARCHAR},
-      </if>
-      <if test="msgTopicHead != null">
-        #{msgTopicHead,jdbcType=VARCHAR},
-      </if>
-      <if test="msgContent != null">
-        #{msgContent,jdbcType=VARCHAR},
-      </if>
-      <if test="msgSendDate != null">
-        #{msgSendDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="msgTopicCreater != null">
-        #{msgTopicCreater,jdbcType=VARCHAR},
-      </if>
-      <if test="msgTopicCreaterWard != null">
-        #{msgTopicCreaterWard,jdbcType=VARCHAR},
-      </if>
-      <if test="areaCode != null">
-        #{areaCode,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateMsgTopic" parameterType="com.leanin.domain.vo.MessageTopicVo">
-    update leanin_msg_topic
-    <set>
-      <if test="msgTopicTitle != null">
-        msg_topic_title = #{msgTopicTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="patientType != null">
-        patient_type = #{patientType,jdbcType=INTEGER},
-      </if>
-      <if test="diseaseName != null">
-        disease_name = #{diseaseName,jdbcType=VARCHAR},
-      </if>
-      <if test="msgTopicHead != null">
-        msg_topic_head = #{msgTopicHead,jdbcType=VARCHAR},
-      </if>
-      <if test="msgContent != null">
-        msg_content = #{msgContent,jdbcType=VARCHAR},
-      </if>
-      <if test="msgSendDate != null">
-        msg_send_date = #{msgSendDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="msgTopicCreater != null">
-        msg_topic_creater = #{msgTopicCreater,jdbcType=VARCHAR},
-      </if>
-      <if test="msgTopicCreaterWard != null">
-        msg_topic_creater_ward = #{msgTopicCreaterWard,jdbcType=VARCHAR},
-      </if>
-      <if test="areaCode != null">
-        area_code = #{areaCode,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where msg_topic_id = #{msgTopicId,jdbcType=VARCHAR}
-  </update>-->
 </mapper>

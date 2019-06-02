@@ -32,4 +32,6 @@ public interface MessagePatientMapper {
     Integer findCountByMsgTopicId(@Param("msgTopicId") String msgTopicId);
 
     List<MessagePatientVo> findByMsgTopicId(@Param("msgTopicId") String msgTopicId);
+
+    MessagePatientVo findBymsgTopicIdAndSendState(@Param("msgTopicId") String msgTopicId,@Param("sendState") Integer sendState);
 }

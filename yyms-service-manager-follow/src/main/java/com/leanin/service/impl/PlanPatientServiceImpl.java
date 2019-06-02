@@ -357,7 +357,7 @@ public class PlanPatientServiceImpl implements PlanPatientService {
                 dataMap = getRecord(patientId + "", patientSource, dataMap);
             }
         } else {//查询随访/宣教计划患者信息
-            dataMap = getRecord(patientId + "", patientSource, dataMap);
+//            dataMap = getRecord(patientId + "", patientSource, dataMap);
             PlanPatientVo planPatient = planPatientMapper.findPlanPatientById(patientId);
 //            PatientInfoVo PatientInfoVo = patientInfoMapper.findPatientById(patientId + "", null);
 //            if (PatientInfoVo != null ){

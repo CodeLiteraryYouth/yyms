@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.MessageRecord;
+import com.leanin.domain.vo.MessageRecordVo;
 import com.leanin.mapper.MsgRecordMapper;
 import com.leanin.service.MsgRecordService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class MsgRecordServiceImpl implements MsgRecordService {
         }
         Map dataMap =new HashMap();
         PageHelper.startPage(currentPage,pageSize);
-        Page<MessageRecord> page = (Page<MessageRecord>) msgRecordMapper.findMsgRecordList(planType,msgThem,sendType,patientId);
+        Page<MessageRecordVo> page = (Page<MessageRecordVo>) msgRecordMapper.findMsgRecordList(planType,msgThem,sendType,patientId);
         dataMap.put("totalCount",page.getTotal());
         dataMap.put("list",page.getResult());
         return ReturnFomart.retParam(200, dataMap);

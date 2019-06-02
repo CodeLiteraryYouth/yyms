@@ -29,7 +29,7 @@ public class PatientRecordControlloer {
      * @return
      */
     @GetMapping("/findPageEduRecord")
-    public DataOutResponse findPageEduRecord(Integer page,Integer pageSize,@RequestParam("patientId") Long patientId){
+    public DataOutResponse findPageEduRecord(Integer page,Integer pageSize,@RequestParam("patientId") String patientId){
         return patientRecordService.findPageEduRecord(page,pageSize,patientId);
     }
 
@@ -41,8 +41,49 @@ public class PatientRecordControlloer {
      * @return
      */
     @GetMapping("/findPageFollowRecord")
-    public DataOutResponse findPageFollowRecord(Integer page,Integer pageSize,@RequestParam("patientId") Long patientId){
+    public DataOutResponse findPageFollowRecord(Integer page,Integer pageSize,@RequestParam("patientId") String patientId){
         return patientRecordService.findPageFollowRecord(page,pageSize,patientId);
     }
+
+
+    /**
+     * 分页查询患者满意度记录
+     * @param page  当前页
+     * @param pageSize 每页展示条数
+     * @param patientId his患者主键
+     * @return
+     */
+    @GetMapping("/findPageSatisfyRecord")
+    public DataOutResponse findPageSatisfyRecord(Integer page,Integer pageSize,@RequestParam("patientId") String patientId){
+        return patientRecordService.findPageSatisfyRecord(page,pageSize,patientId);
+    }
+
+
+    /**
+     * 分页查询患者短信记录
+     * @param page  当前页 默认第一页
+     * @param pageSize 每页展示条数 默认10条
+     * @param patientId his患者id  现改成身份证号
+     * @return
+     */
+    @GetMapping("/findPageMsgRecord")
+    public DataOutResponse findPageMsgRecord(Integer page,Integer pageSize,@RequestParam("patientId") String patientId){
+        return patientRecordService.findPageMsgRecord(page,pageSize,patientId);
+    }
+
+
+    /**
+     * 分页查询患者通话记录
+     * @param page 当前页  默认第一页
+     * @param pageSize 每页展示条数 默认 10 条
+     * @param patientId his患者主键
+     * @return
+     */
+    @GetMapping("/findPagePhoneRecord")
+    public DataOutResponse findPagePhoneRecord(Integer page,Integer pageSize,@RequestParam("patientId") String patientId){
+        return patientRecordService.findPagePhoneRecord(page,pageSize,patientId);
+    }
+
+
 
 }

@@ -13,10 +13,21 @@
     <result column="patient_type" jdbcType="INTEGER" property="patientType" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <result column="send_type" jdbcType="INTEGER" property="sendType" />
+    <result column="id_card" property="idCard" />
+    <result column="inhos_no" property="inhosNo" />
+    <result column="open_id" property="openId" />
+    <result column="patient_status" property="patientStatus" />
+    <result column="patient_ward" property="patientWard" />
+    <result column="patient_ward_id" property="patientWardId" />
+    <result column="patient_time" property="patientTime" />
+    <result column="illness_id" property="illnessId" />
+    <result column="illness_name" property="illnessName" />
   </resultMap>
   <sql id="Base_Column_List">
     patient_msg_id, msg_topic_id, patient_id, patient_name, patient_sex, patient_age, 
-    patient_phone, patient_id_card, patient_type, area_code,send_type
+    patient_phone, patient_id_card, patient_type, area_code,send_type,id_card,
+    inhos_no,open_id,patient_status,patient_ward,patient_ward_id,patient_time,
+    illness_id,illness_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 

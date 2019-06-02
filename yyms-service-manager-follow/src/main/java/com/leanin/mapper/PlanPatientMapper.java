@@ -4,9 +4,7 @@ package com.leanin.mapper;
 import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.common.AnalysisVo;
 import com.leanin.domain.request.MyFollowReq;
-import com.leanin.domain.vo.EduRecordVo;
-import com.leanin.domain.vo.FollowRecordVo;
-import com.leanin.domain.vo.PlanPatientVo;
+import com.leanin.domain.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -110,10 +108,16 @@ public interface PlanPatientMapper {
 
     void updatePlanPatientFormRecordId(@Param("planPatientVo")PlanPatientVo planPatient);
 
-    List<EduRecordVo> findPageEduRecord(@Param("patientId") Long patientId);
+    List<EduRecordVo> findPageEduRecord(@Param("patientId") String patientId);
 
-    List<FollowRecordVo> findPageFollowRecord(@Param("patientId") Long patientId);
+    List<FollowRecordVo> findPageFollowRecord(@Param("patientId") String patientId);
 
 
     PlanPatientVo findByPlanNumAndSendType(@Param("planNum") String planNum,@Param("sendStatus") Integer sendStatus);
+
+    List<SatisfyRecordVo> findPageSatisfyRecord(@Param("patientId") String patientId);
+
+    List<MsgRecordVo> findPageMsgRecord(@Param("patientId") String patientId);
+
+    List<PhoneRecordVo> findPagePhoneRecord(@Param("patientId") String patientId);
 }

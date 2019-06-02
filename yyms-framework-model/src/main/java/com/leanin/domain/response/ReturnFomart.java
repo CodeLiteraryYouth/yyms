@@ -114,6 +114,8 @@ public class ReturnFomart {
 
         messageMap.put("5600","计划内的患者已经发送过表单不能删除计划");
 
+        messageMap.put("5601","短信主题内的患者已经发送过短信不能删除短信主题");
+
 
 
 

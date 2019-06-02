@@ -1,17 +1,16 @@
 package com.leanin.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.config.RabbitMQConfig;
 import com.leanin.domain.planpatient.response.PlanPatCode;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.domain.vo.MessagePatientVo;
 import com.leanin.domain.vo.MessageTopicVo;
 import com.leanin.exception.ExceptionCast;
+import com.leanin.mapper.MessagePatientMapper;
 import com.leanin.model.response.CommonCode;
 import com.leanin.utils.CompareUtil;
 import com.leanin.utils.UUIDUtils;
@@ -38,6 +37,9 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	ManagerPatientClient managerPatientClient;
 
 	@Autowired
+	MessagePatientMapper messagePatientMapper;
+
+	@Autowired
 	RedisTemplate redisTemplate;
 
 	@Autowired
@@ -56,6 +58,13 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updateTopicStatus(String msgTopicId, int status) {
 		log.info("修改的短信主题主键为："+msgTopicId+"");
+		if(status == -1){
+			//删除短信主题时查看短信主题的患者是否已经发送过短信内容  已经发送则不能删除
+			MessagePatientVo messagePatientVo = messagePatientMapper.findBymsgTopicIdAndSendState(msgTopicId,1);
+			if (null != messagePatientVo ){
+				return ReturnFomart.retParam(5601,msgTopicId);
+			}
+		}
 		MessageTopicVo messageTopic=messageTopicMapper.findMsgTopicById(msgTopicId);
 		if (messageTopic == null){//短信主题不存在
 			log.info("短信主题不存在"+msgTopicId);
@@ -78,6 +87,7 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 		/*if (record.getMsgEndDate().before( record.getMsgStartDate())){
 
 		}*/
+		record.setCreateDate(new Date());
 		messageTopicMapper.addMsgTopic(record);
 		MessageTopicVo messageTopicVo = messageTopicMapper.findMsgTopicById(uuid);
 		log.info("添加的短信主题信息"+JSON.toJSONString(messageTopicVo));

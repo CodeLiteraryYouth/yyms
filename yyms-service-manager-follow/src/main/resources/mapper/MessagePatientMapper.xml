@@ -2,26 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leanin.mapper.MessagePatientMapper">
   <resultMap id="BaseResultMap" type="com.leanin.domain.vo.MessagePatientVo">
-    <id column="patient_msg_id"  property="patientMsgId" />
-    <result column="msg_topic_id"  property="msgTopicId" />
-    <result column="patient_id"  property="patientId" />
-    <result column="patient_name"  property="patientName" />
-    <result column="patient_sex"  property="patientSex" />
-    <result column="patient_age"  property="patientAge" />
-    <result column="patient_phone"  property="patientPhone" />
-    <result column="patient_id_card"  property="patientIdCard" />
-    <result column="patient_type"  property="patientType" />
-    <result column="area_code"  property="areaCode" />
-    <result column="send_type"  property="sendType" />
-    <result column="id_card"  property="idCard" />
-    <result column="inhos_no"  property="inhosNo" />
+    <id column="patient_msg_id" jdbcType="BIGINT" property="patientMsgId" />
+    <result column="msg_topic_id" jdbcType="VARCHAR" property="msgTopicId" />
+    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
+    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
+    <result column="patient_phone" jdbcType="VARCHAR" property="patientPhone" />
+    <result column="patient_id_card" jdbcType="VARCHAR" property="patientIdCard" />
+    <result column="patient_type" jdbcType="INTEGER" property="patientType" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="send_type" jdbcType="INTEGER" property="sendType" />
+    <result column="id_card" property="idCard" />
+    <result column="inhos_no" property="inhosNo" />
     <result column="open_id" property="openId" />
     <result column="patient_status" property="patientStatus" />
+    <result column="patient_ward" property="patientWard" />
+    <result column="patient_ward_id" property="patientWardId" />
+    <result column="patient_time" property="patientTime" />
+    <result column="illness_id" property="illnessId" />
+    <result column="illness_name" property="illnessName" />
   </resultMap>
   <sql id="Base_Column_List">
     patient_msg_id, msg_topic_id, patient_id, patient_name, patient_sex, patient_age, 
-    patient_phone, patient_id_card, patient_type, area_code,send_type,id_card,inhos_no,open_id,
-    patient_status
+    patient_phone, patient_id_card, patient_type, area_code,send_type,id_card,
+    inhos_no,open_id,patient_status,patient_ward,patient_ward_id,patient_time,
+    illness_id,illness_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -86,6 +92,15 @@
       <if test="msgTopicId != null ">
         and msg_topic_id = #{msgTopicId}
       </if>
+    </select>
+
+    <select id="findBymsgTopicIdAndSendState" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM `leanin_msg_patient`
+      WHERE msg_topic_id = #{msgTopicId}
+      AND send_type != #{sendState}
+      limit 1
     </select>
 
 

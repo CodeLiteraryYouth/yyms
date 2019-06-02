@@ -560,5 +560,6 @@
         where patient_status = 0
         and satisfy_plan_num =#{planSatisfyNum}
         and send_type != #{sendType}
+        limit 1
     </select>
 </mapper>

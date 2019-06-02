@@ -2,6 +2,7 @@ package com.leanin.mapper;
 
 import com.leanin.domain.analysis.DeptAnalysis;
 import com.leanin.domain.vo.MessageRecord;
+import com.leanin.domain.vo.MessageRecordVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,8 +14,8 @@ public interface MsgRecordMapper {
 
     void addMsgRecord(@Param("messageRecord") MessageRecord messageRecord);
 
-    List<MessageRecord> findMsgRecordList(@Param("planType") Integer planType,@Param("msgThem") String msgThem,
-                                          @Param("sendType") Integer sendType,@Param("patientId") String patientId);
+    List<MessageRecordVo> findMsgRecordList(@Param("planType") Integer planType, @Param("msgThem") String msgThem,
+                                            @Param("sendType") Integer sendType, @Param("patientId") String patientId);
 
     List<DeptAnalysis> deptFollowAnalysis(@Param("patientSource") Integer patientSource,
                                     @Param("planNum") String planNum,
