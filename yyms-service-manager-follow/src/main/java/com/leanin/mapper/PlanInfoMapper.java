@@ -17,7 +17,7 @@ public interface PlanInfoMapper {
 	 * @param planName
 	 * @return
 	 */
-	List<PlanInfoDto> findPlanList(@Param("planName") String planName, @Param("planType") int planType);
+	List<PlanInfoDto> findPlanList(@Param("planName") String planName, @Param("planType") int planType,@Param("userId") Long userId);
 	/**
 	 * 修改计划状态
 	 * @param planNum

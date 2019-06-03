@@ -27,7 +27,8 @@ public class PlanInfoController extends BaseController {
 	@GetMapping("findPlanList")
 	public DataOutResponse findPlanList(@RequestParam(required=false) int page, @RequestParam(required=false) int pageSize,
 										@RequestParam(required=false) String planName, @RequestParam(required=true) int planType) {
-		return planInfoService.findPlanList(page, pageSize, planName,planType);
+		LyOauth2Util.UserJwt user = getUser(request);
+		return planInfoService.findPlanList(page, pageSize, planName,planType,user.getId());
 	}
 
 	//查询所有计划信息

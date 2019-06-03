@@ -266,7 +266,7 @@ public class PlanPatientMQ {
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
             Integer rangeDays =Integer.parseInt((String) rulesMap.get("rangeDays")) ;//范围天数
-            if(((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
+            if(Math.abs((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
                 satisfyPatientVo.setFinishType(3);
             }
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
@@ -440,11 +440,10 @@ public class PlanPatientMQ {
                 planPatientVo.setNextDate(nextDate);//设置下次随访日期
                 if (planInfo.getPlanType() == 1){//随访计划存在过期  宣教不存在过期
                     Integer validDays = Integer.parseInt(rulesMap.get("validDays")+"");
-                    if (((nextDate.getTime() - (new Date().getTime())/(1*60*60*1000*24))) > validDays){//判断导入患者的时候是否过期
-                        planPatientVo.setPlanPatsStatus(3);
+                    if (((new Date().getTime()- nextDate.getTime())/(1*60*60*1000*24)) > validDays){//判断导入患者的时候是否过期
+                        planPatientVo.setPlanPatsStatus(12);// 患者失效
                     }
                 }
-
                 log.info("随访/宣教患者信息:{}",JSON.toJSONString(planPatientVo));
                 planPatientMapper.addPlanPatient(planPatientVo);//将数据存到数据中
 

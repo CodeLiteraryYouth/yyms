@@ -59,7 +59,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
 
 
     @Override
-    public DataOutResponse findPlanList(int page, int pageSize, String planName, int planType) {
+    public DataOutResponse findPlanList(int page, int pageSize, String planName, int planType,Long userId) {
         log.info("搜索的计划名称为:" + planName);
         if (page < 1){
             page = 1;
@@ -68,7 +68,7 @@ public class PlanInfoServiceImpl implements PlanInfoService {
             pageSize = 10;
         }
         PageHelper.startPage(page, pageSize);
-        List<PlanInfoDto> planList = planInfoMapper.findPlanList(planName, planType);
+        List<PlanInfoDto> planList = planInfoMapper.findPlanList(planName, planType,userId);
         PageInfo pageInfo = new PageInfo<>(planList);
         return ReturnFomart.retParam(200, pageInfo);
     }
@@ -123,9 +123,10 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         // 封装参数
         Map paramMap = new HashMap();
         //科室集合
-        String patsWardCode = planResult.getPatsWardCode();
-        if (patsWardCode != null){
-            List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
+//        String patsWardCode = planResult.getPatsWardCode();
+        String patsWardId = planResult.getPatsWardId();
+        if (patsWardId != null){
+            List<String> patsWardCodeList = JSON.parseArray(patsWardId, String.class);
             paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
         }
 

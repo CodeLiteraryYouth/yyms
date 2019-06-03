@@ -143,6 +143,9 @@
         <if test="planName != null">
             and plan_name like CONCAT('%',#{planName},'%')
         </if>
+        <if test="userId != null">
+            and ( plan_duty_per = #{userId} or plan_creater = #{userId})
+        </if>
         order by create_date desc
     </select>
     <select id="findPlanInfoById" parameterType="java.lang.String" resultMap="BaseResultMap">

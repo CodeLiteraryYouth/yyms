@@ -710,11 +710,11 @@
         AND lpp.patient_id = #{patientId}
         UNION ALL
         SELECT
-            loe.`send_time` as next_date,
-            loe.`send_user` as plan_duty_per,
-            lfi.`form_name`,
-            loe.`form_id`,
+            loe.`send_time` AS next_date,
             lau.admin_name,
+            loe.`form_id`,
+            lfi.`form_name`,
+            loe.`send_user` AS plan_duty_per,
             CASE loe.`form_status`
             WHEN 1 THEN '未读'
             WHEN 2 THEN '已读'

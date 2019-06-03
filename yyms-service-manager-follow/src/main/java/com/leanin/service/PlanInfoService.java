@@ -13,7 +13,7 @@ public interface PlanInfoService {
 	 * @param planName
 	 * @return
 	 */
-	DataOutResponse findPlanList(int page, int pageSize, String planName, int planType);
+	DataOutResponse findPlanList(int page, int pageSize, String planName, int planType,Long userId);
 	/**
 	 * 修改计划状态
 	 * @param planNum

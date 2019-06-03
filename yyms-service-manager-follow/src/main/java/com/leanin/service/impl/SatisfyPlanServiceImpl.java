@@ -104,9 +104,10 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
         // 封装参数
         Map paramMap = new HashMap();
         //科室集合
-        String patsWardCode = satisfyPlan.getPatientWard();
-        if (patsWardCode != null && !"[]".equals(patsWardCode)){
-            List<String> patsWardCodeList =JSON.parseArray(patsWardCode, String.class);
+//        String patsWardCode = satisfyPlan.getPatientWard();
+        String patientWardId = satisfyPlan.getPatientWardId();
+        if (patientWardId != null && !"[]".equals(patientWardId)){
+            List<String> patsWardCodeList =JSON.parseArray(patientWardId, String.class);
             paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
         }
         //疾病集合
