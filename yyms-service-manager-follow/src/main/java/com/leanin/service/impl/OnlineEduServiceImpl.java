@@ -68,7 +68,7 @@ public class OnlineEduServiceImpl implements OnlineEduService {
     @Transactional(rollbackFor = Exception.class)
     public DataOutResponse sendOnlineEdu(List<PatientInfoEduVo> patientInfoEduVos, HttpServletRequest request) {
         log.info("在线宣教发送的参数--->"+ JSON.toJSONString(patientInfoEduVos));
-//        LyOauth2Util.UserJwt user = getUser(request);
+        LyOauth2Util.UserJwt user = getUser(request);
         for (PatientInfoEduVo patientInfoEduVo : patientInfoEduVos) {
             //查询患者档案中是否有相同的患者
             PatientInfoVo patientInfoVo = patientInfoMapper.findByPatientIdAndSource(patientInfoEduVo.getPatientInfoId(), patientInfoEduVo.getPatientSource());
@@ -86,7 +86,7 @@ public class OnlineEduServiceImpl implements OnlineEduService {
             edu.setPatientId(patientInfoEduVo.getPatientInfoId());//患者主键
             edu.setPatientName(patientInfoEduVo.getPatientInfoName());//患者姓名
             edu.setFormId(patientInfoEduVo.getFormId());        //表单主键
-//            edu.setSendUser(user.getId());          //发送人id
+            edu.setSendUser(user.getId());          //发送人id
             edu.setBedNo(patientInfoEduVo.getBedNo());  //床位号
             edu.setInhosNo(patientInfoEduVo.getHosNo());//住院号
             edu.setInhosDate(patientInfoEduVo.getInhosDate());//住院日期

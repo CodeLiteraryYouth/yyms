@@ -10,7 +10,7 @@ public interface MessageTopicService {
 	 * @param msgTopicName
 	 * @return
 	 */
-	DataOutResponse findMsgTopicList(int page, int pageSize, String msgTopicName);
+	DataOutResponse findMsgTopicList(int page, int pageSize, String msgTopicName,Long uid);
 	/**
 	 * 修改短信主题状态
 	 * @param msgTopicId

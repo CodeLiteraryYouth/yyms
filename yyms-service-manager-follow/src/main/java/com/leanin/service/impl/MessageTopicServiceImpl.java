@@ -46,10 +46,10 @@ public class MessageTopicServiceImpl implements MessageTopicService {
 	RabbitTemplate rabbitTemplate;
 	
 	@Override
-	public DataOutResponse findMsgTopicList(int page, int pageSize, String msgTopicName) {
+	public DataOutResponse findMsgTopicList(int page, int pageSize, String msgTopicName,Long uid) {
 		log.info("短信主题名称为:"+msgTopicName);
 		PageHelper.startPage(page, pageSize);
-		List<MessageTopicVo> messageList=messageTopicMapper.findMsgTopicList(msgTopicName);
+		List<MessageTopicVo> messageList=messageTopicMapper.findMsgTopicList(msgTopicName,uid);
 		PageInfo pageInfo=new PageInfo<>(messageList);
 		return ReturnFomart.retParam(200, pageInfo);
 	}

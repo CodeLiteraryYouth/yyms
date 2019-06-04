@@ -10,7 +10,7 @@ public interface SatisfyPlanService {
 	 * @param satisfyPlanName
 	 * @return
 	 */
-	DataOutResponse findSatisfyPlanList(int page, int pageSize, String satisfyPlanName);
+	DataOutResponse findSatisfyPlanList(int page, int pageSize, String satisfyPlanName,Long uid);
 	/**
 	 * 更改满意度计划状态
 	 * @param planSatisfyNum

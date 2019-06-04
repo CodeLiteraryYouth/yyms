@@ -43,8 +43,8 @@
         from leanin_online_edu loe,leanin_admin_user lau,leanin_form_info lfi
         where loe.send_user = lau.admin_id
         and loe.form_id = lfi.form_num
-        and lau.admin_state = 1
-        and lfi.form_status = 0
+--         and lau.admin_state = 1
+        and lfi.form_status = 2
         <if test="patientId != null ">
             and loe.patient_id = #{patientId}
         </if>

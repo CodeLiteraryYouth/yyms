@@ -34,7 +34,8 @@ public class MessageTopicController extends BaseController {
 //	@PreAuthorize("hasAnyAuthority('root','findMsgPlan')")
 	@GetMapping("findMsgTopicList")
 	public DataOutResponse findMsgTopicList(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, @RequestParam(value="msgTopicName",required=false) String msgTopicName) {
-		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName);
+		LyOauth2Util.UserJwt user = getUser(request);
+		return messageTopicService.findMsgTopicList(page, pageSize, msgTopicName,user.getId());
 	}
 
 	/**

@@ -19,7 +19,7 @@ public interface MessageTopicMapper {
      * @param msgTopicTitle
      * @return
      */
-    List<MessageTopicVo> findMsgTopicList(@Param("msgTopicTitle") String msgTopicTitle);
+    List<MessageTopicVo> findMsgTopicList(@Param("msgTopicTitle") String msgTopicTitle,@Param("uid") Long uid);
     /**
      * 修改短信主题状态
      * @param msgTopicId

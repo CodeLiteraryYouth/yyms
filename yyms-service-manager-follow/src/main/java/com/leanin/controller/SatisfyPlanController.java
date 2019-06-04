@@ -31,7 +31,8 @@ public class SatisfyPlanController extends BaseController {
 //	@PreAuthorize("hasAnyAuthority('root','findStyPlan')")
 	@GetMapping("findSatisfyPlanList")
 	public DataOutResponse findSatisfyPlanList(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required=false) String satisfyPlanName) {
-		return satisfyPlanService.findSatisfyPlanList(page, pageSize, satisfyPlanName);
+		LyOauth2Util.UserJwt user = getUser(request);
+		return satisfyPlanService.findSatisfyPlanList(page, pageSize, satisfyPlanName,user.getId());
 	}
 
 	/**

@@ -14,7 +14,7 @@ public interface SatisfyPlanMapper {
 	 * @param satisfyPlanName
 	 * @return
 	 */
-	List<SatisfyPlanVo> findSatisfyPlanList(@Param("satisfyPlanName") String satisfyPlanName);
+	List<SatisfyPlanVo> findSatisfyPlanList(@Param("satisfyPlanName") String satisfyPlanName,@Param("uid") Long uid);
 	/**
 	 * 更改满意度计划状态
 	 * @param planSatisfyNum

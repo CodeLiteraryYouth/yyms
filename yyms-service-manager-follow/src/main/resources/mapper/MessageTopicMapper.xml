@@ -41,6 +41,9 @@
     <if test="msgTopicTitle != null">
          AND msg_topic_title like CONCAT('%',#{msgTopicTitle,jdbcType=VARCHAR},'%')
     </if>
+    <if test="uid != null">
+        and msg_topic_creater = #{uid}
+    </if>
   </select>
 
   <select id="findMsgTopicById" parameterType="java.lang.String" resultMap="BaseResultMap">

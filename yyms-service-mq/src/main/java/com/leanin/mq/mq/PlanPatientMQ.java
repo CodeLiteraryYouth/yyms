@@ -266,8 +266,8 @@ public class PlanPatientMQ {
             Date time = calendar.getTime();
             satisfyPatientVo.setPatientDateTime(time);
             Integer rangeDays =Integer.parseInt((String) rulesMap.get("rangeDays")) ;//范围天数
-            if(Math.abs((time.getTime()- new Date().getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
-                satisfyPatientVo.setFinishType(3);
+            if(((new Date().getTime() - time.getTime())/(1*60*60*1000*24)) > rangeDays){//判断是否过期
+                satisfyPatientVo.setFinishType(12);//患者失效
             }
             log.info("满意度患者信息:{}",JSON.toJSONString(satisfyPatientVo));
             satisfyPatientMapper.insertSelective(satisfyPatientVo);

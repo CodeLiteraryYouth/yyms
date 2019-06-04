@@ -87,7 +87,10 @@
     <include refid="Base_Column_List" />
     from leanin_satisfy_plan where satisfy_plan_status >= 0
     <if test="satisfyPlanName !=null">
-    	and plan_satisfy_name like CONCAT('%',#{satisfyPlanName},'%')
+        and plan_satisfy_name like CONCAT('%',#{satisfyPlanName},'%')
+    </if>
+    <if test="uid != null">
+      and (discover_person = #{uid} or plan_creater = #{uid})
     </if>
     order by create_date desc
   </select>

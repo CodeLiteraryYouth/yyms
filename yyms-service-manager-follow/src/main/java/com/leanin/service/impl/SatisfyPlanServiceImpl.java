@@ -50,10 +50,10 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public DataOutResponse findSatisfyPlanList(int page, int pageSize, String satisfyPlanName) {
+    public DataOutResponse findSatisfyPlanList(int page, int pageSize, String satisfyPlanName,Long uid) {
         log.info("搜索的满意度计划名称为:" + satisfyPlanName);
         PageHelper.startPage(page, pageSize);
-        List<SatisfyPlanVo> satisfyPlanList = satisfyPlanMapper.findSatisfyPlanList(satisfyPlanName);
+        List<SatisfyPlanVo> satisfyPlanList = satisfyPlanMapper.findSatisfyPlanList(satisfyPlanName,uid);
         PageInfo pageInfo = new PageInfo<>(satisfyPlanList);
         return ReturnFomart.retParam(200, pageInfo);
     }
