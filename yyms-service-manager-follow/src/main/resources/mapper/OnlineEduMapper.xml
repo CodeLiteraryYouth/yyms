@@ -16,6 +16,10 @@
         <result property="sendStatus" column="send_status"/>
         <result property="msgId" column="msg_id"/>
         <result property="phoneNum" column="phone_num"/>
+        <result property="patientDeptId" column="patient_dept_id"/>
+        <result property="patientDeptName" column="patient_dept_name"/>
+        <result property="patientDiagnosisIcd" column="patient_diagnosis_icd"/>
+        <result property="patientDiagnosisName" column="patient_diagnosis_name"/>
     </resultMap>
 
     <resultMap extends="Base" id="ExtResultMap" type="com.leanin.domain.vo.OnlineEduVo">
@@ -28,7 +32,7 @@
             <id property="formNum" column="form_num"/>
             <result property="formName" column="form_name"/>
         </association>
-        <collection property="wardInfoVos" column="sendUser" ofType="com.leanin.domain.vo.WardInfoVo"
+        <collection property="wardInfoVos" column="send_user" ofType="com.leanin.domain.vo.WardInfoVo"
                     select="com.leanin.mapper.WardInfoMapper.findByUserId">
         </collection>
     </resultMap>
@@ -44,7 +48,7 @@
         where loe.send_user = lau.admin_id
         and loe.form_id = lfi.form_num
 --         and lau.admin_state = 1
-        and lfi.form_status = 2
+        and loe.form_status = 2
         <if test="patientId != null ">
             and loe.patient_id = #{patientId}
         </if>

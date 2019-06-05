@@ -87,4 +87,14 @@ public class SatisfyFormStatServiceImpl implements SatisfyFormStatService {
         }
         return ReturnFomart.retParam(200,"操作成功");
     }
+
+    @Override
+    public DataOutResponse findByPlanNumAndformId(String planNum, String formId) {
+        log.info("满意度表单选项分析查询的参数-->"+"满意度计划号："+planNum+"满意度表单号:"+formId);
+        SatisfyFormStatDao dao = satisfyFormStatRepository.findBySatisfyFormNumAndSatisfyPlanNum(formId, planNum);
+        if (dao == null){
+            return ReturnFomart.retParam(2011,planNum+":"+formId);
+        }
+        return ReturnFomart.retParam(200,dao);
+    }
 }

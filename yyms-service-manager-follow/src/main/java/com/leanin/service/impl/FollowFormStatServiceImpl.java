@@ -96,4 +96,14 @@ public class FollowFormStatServiceImpl implements FollowFormStatService {
         }
         return ReturnFomart.retParam(200,"操作成功");
     }
+
+    @Override
+    public DataOutResponse findByFormIdAndPlanId(String planNum, String formId) {
+        log.info("查询随访表单选项统计传递的参数--->"+"计划号："+planNum+"表单号："+formId);
+        FollowFormStatDao dao = followFormStatRepository.findByFollowFormNumAndPlanNum(formId, planNum);
+        if (dao == null){
+            return ReturnFomart.retParam(2011,planNum+":"+formId);
+        }
+        return ReturnFomart.retParam(200,dao);
+    }
 }

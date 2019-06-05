@@ -74,4 +74,6 @@ public class  SatisfyPlanVo {
 
     private Integer importData;     //导入数据是否完成  1 未完成  2 已完成
 
+    private String planWardName;    //满意度负责科室名称
+
 }

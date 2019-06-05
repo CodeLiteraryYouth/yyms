@@ -82,6 +82,8 @@ public class PlanInfoVo implements Serializable {
 
     private Date overTime;      //计划结束时间
 
+    private String planWardName;    //计划负责科室
 
+    private String rulesName;       //规则名称
 
 }

@@ -65,42 +65,11 @@
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
         <result column="over_time" property="overTime"/>
-        <!--<id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
-        <result column="plan_name" jdbcType="VARCHAR" property="planName"/>
-        <result column="patient_info_source" jdbcType="INTEGER" property="patientInfoSource"/>
-        <result column="plan_begin_time" jdbcType="DATE" property="planBeginTime"/>
-        <result column="plan_end_time" jdbcType="DATE" property="planEndTime"/>
-        <result column="plan_ward_code" jdbcType="VARCHAR" property="planWardCode"/>
-        <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
-        <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
-        <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
-        <result column="plan_sex" jdbcType="INTEGER" property="planSex"/>
-        <result column="plan_age_interval" jdbcType="VARCHAR" property="planAgeInterval"/>
-        <result column="plan_exis_phone" jdbcType="INTEGER" property="planExisPhone"/>
-        <result column="plan_type" jdbcType="INTEGER" property="planType"/>
-        <result column="plan_status" jdbcType="INTEGER" property="planStatus"/>
-        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-        <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
-        <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
-        <result column="plan_creater" jdbcType="BIGINT" property="creater"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
-        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>-->
-        <!--<association property="formInfo" column="form_type_id" javaType="com.leanin.domain.vo.FormTypeVo"
-                        select="com.leanin.mapper.FormTypeMapper.findByFId">
-            <id column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
-            <result column="form_type_name" jdbcType="VARCHAR" property="formTypeName"/>
-        </association>-->
         <association property="formInfo" column="follow_form_num" javaType="com.leanin.domain.vo.FormInfoVo"
                         select="com.leanin.mapper.FormInfoMapper.findFormInfoById">
-            <!--<id column="form_num" jdbcType="VARCHAR" property="formNum"/>
-            <result column="form_name" jdbcType="VARCHAR" property="formName"/>-->
         </association>
         <association property="rulesInfo" column="rules_info_num" javaType="com.leanin.domain.vo.RulesInfoVo"
                         select="com.leanin.mapper.RulesInfoMapper.findRulesById">
-            <!--<id column="rules_info_id" jdbcType="BIGINT" property="rulesInfoId"/>
-            <result column="rules_info_type_name" jdbcType="INTEGER" property="rulesInfoTypeName"/>
-            <result column="rules_info_name" jdbcType="VARCHAR" property="rulesInfoName"/>-->
         </association>
         <association property="msgInfo" column="msg_id" javaType="com.leanin.domain.vo.MsgInfoVo"
                      select="com.leanin.mapper.MsgInfoMapper.findMsgInfoById">
@@ -461,5 +430,71 @@
             and rules_info_num = #{ruleId}
         </if>
         limit 1
+    </select>
+
+    <resultMap id="FollowBase" type="com.leanin.domain.vo.PlanInfoVo">
+        <id column="plan_num" jdbcType="VARCHAR" property="planNum"/>
+        <result column="plan_name" jdbcType="VARCHAR" property="planName"/>
+        <result column="patient_info_source" jdbcType="INTEGER" property="patientInfoSource"/>
+        <result column="plan_begin_time" jdbcType="DATE" property="planBeginTime"/>
+        <result column="plan_end_time" jdbcType="DATE" property="planEndTime"/>
+        <result column="plan_ward_code" jdbcType="VARCHAR" property="planWardCode"/>
+        <result column="plan_duty_per" jdbcType="BIGINT" property="planDutyPer"/>
+        <result column="plan_target" jdbcType="VARCHAR" property="planTarget"/>
+        <result column="plan_send_type" jdbcType="INTEGER" property="planSendType"/>
+        <result column="form_type_id" jdbcType="BIGINT" property="formTypeId"/>
+        <result column="follow_form_num" jdbcType="VARCHAR" property="followFormNum"/>
+        <result column="rules_info_num" jdbcType="VARCHAR" property="rulesInfoNum"/>
+        <result column="plan_sex" jdbcType="INTEGER" property="planSex"/>
+        <result column="plan_age_interval" jdbcType="VARCHAR" property="planAgeInterval"/>
+        <result column="plan_exis_phone" jdbcType="INTEGER" property="planExisPhone"/>
+        <result column="plan_type" jdbcType="INTEGER" property="planType"/>
+        <result column="plan_status" jdbcType="INTEGER" property="planStatus"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="disease_code" jdbcType="VARCHAR" property="diseaseCode"/>
+        <result column="pats_ward_code" jdbcType="VARCHAR" property="patsWardCode"/>
+        <result column="plan_creater" jdbcType="BIGINT" property="planCreater"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
+        <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
+        <result column="over_time" property="overTime"/>
+        <result column="admin_name" property="planDutyPerName"/>
+        <result column="ward_name" property="planWardName"/>
+        <result column="rules_info_type_name" property="rulesName"/>
+    </resultMap>
+
+    <select id="findFollowPlanByParam" resultMap="FollowBase">
+        SELECT
+            lpi.*,
+            lau.`admin_name`,
+            lwi.`ward_name`,
+            CASE lri.`rules_info_type_name`
+            WHEN 1 THEN '定期随访'
+            WHEN 2 THEN '定时随访'
+            WHEN 3 THEN '普通随访'
+            ELSE '其他随访' END AS rules_info_type_name
+        FROM `leanin_plan_info` lpi,`leanin_admin_user` lau,`leanin_ward_info` lwi,`leanin_rules_info` lri
+        WHERE lpi.`plan_ward_code` = lwi.`ward_id`
+        AND (plan_status = 0 or plan_status = -2)
+        AND lpi.`plan_duty_per` = lau.`admin_id`
+        AND lpi.`rules_info_num` = lri.`rules_info_id`
+        <if test="planName != null">
+            and lpi.plan_name like CONCAT('%',#{planName},'%')
+        </if>
+        <if test="rulesType != null">
+            and lri.`rules_info_type_name` = #{rulesType}
+        </if>
+        <if test="deptId != null">
+            and lpi.plan_ward_code = #{deptId}
+        </if>
+        <if test="userId != null">
+            and lpi.plan_duty_per =#{userId}
+        </if>
+        <if test="startDate != null">
+            and lpi.create_date &gt; #{startDate}
+        </if>
+        <if test="endDate != null">
+            and lpi.create_date &lt; #{endDate}
+        </if>
     </select>
 </mapper>

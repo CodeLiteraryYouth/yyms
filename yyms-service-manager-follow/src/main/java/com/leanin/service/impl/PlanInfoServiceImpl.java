@@ -294,4 +294,20 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         return ReturnFomart.retParam(200,list);
     }
 
+    @Override
+    public DataOutResponse findFollowPlanByParam(String planName, String deptId, Long userId, Integer rulesType, String startDate, String endDate,Integer page,Integer pageSize) {
+        if (page == null || page < 1 ){
+            page = 1;
+        }
+        if (pageSize == null || pageSize < 0){
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<PlanInfoVo> pageList = (Page<PlanInfoVo>) planInfoMapper.findFollowPlanByParam(planName,deptId,userId,rulesType,startDate,endDate);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
+    }
+
 }

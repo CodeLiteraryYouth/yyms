@@ -43,4 +43,6 @@ public interface SatisfyPlanService {
     DataOutResponse findAll(Long userId);
 
     DataOutResponse findByWard(String patientWard);
+
+    DataOutResponse findSatisfyPlanByParam(String planName, String deptId, Long userId, String startDate, String endDate, Integer page, Integer pageSize);
 }

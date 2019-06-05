@@ -79,4 +79,6 @@ public interface PlanInfoMapper {
     List<PlanInfoVo> findByWard(@Param("patientWard") String patientWard);
 
     PlanInfoVo findByParamId(@Param("msgId") String msgId,@Param("formId")String formId,@Param("ruleId")String ruleId);
+
+    List<PlanInfoVo> findFollowPlanByParam(@Param("planName") String planName,@Param("deptId") String deptId,@Param("userId") Long userId,@Param("rulesType") Integer rulesType,@Param("startDate") String startDate,@Param("endDate") String endDate);
 }

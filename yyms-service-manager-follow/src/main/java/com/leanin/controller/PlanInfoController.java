@@ -103,6 +103,21 @@ public class PlanInfoController extends BaseController {
 		return planInfoService.findByWard(patientWard);
 	}
 
+	/**
+	 * 查询随访计划  条件查询
+	 * @param planName  计划名称  模糊查询
+	 * @param deptId 科室id
+	 * @param userId 负责人id
+	 * @param rulesType 1 定期随访 2 定时随访 3 普通随访
+	 * @param startDate 开始时间 格式 yyyy-MM-dd HH:mm:ss
+	 * @param endDate 结束时间 格式 yyyy-MM-dd HH:mm:ss
+	 * @return
+	 */
+	@GetMapping("/findFollowPlanByParam")
+	public DataOutResponse findFollowPlanByParam(String planName,String deptId,Long userId,Integer rulesType,String startDate,String endDate,Integer page,Integer pageSize){
+		return planInfoService.findFollowPlanByParam(planName,deptId,userId,rulesType,startDate,endDate,page,pageSize);
+	}
+
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();

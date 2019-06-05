@@ -2,6 +2,7 @@ package com.leanin.service.impl;
 
 import java.util.*;
 
+import com.github.pagehelper.Page;
 import com.leanin.client.ManagerPatientClient;
 import com.leanin.config.RabbitMQConfig;
 import com.leanin.domain.plan.response.PlanResponseCode;
@@ -273,6 +274,22 @@ public class SatisfyPlanServiceImpl implements SatisfyPlanService {
     public DataOutResponse findByWard(String patientWard) {
         List<SatisfyPlanVo> list = satisfyPlanMapper.findByWard(patientWard);
         return ReturnFomart.retParam(200,list);
+    }
+
+    @Override
+    public DataOutResponse findSatisfyPlanByParam(String planName, String deptId, Long userId, String startDate, String endDate, Integer page, Integer pageSize) {
+        if (page == null || page < 1){
+            page = 1;
+        }
+        if (pageSize == null || pageSize < 0){
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<SatisfyPlanVo> pageList = (Page<SatisfyPlanVo>) satisfyPlanMapper.findSatisfyPlanByParam(planName,deptId,userId,startDate,endDate);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
     }
 
 }

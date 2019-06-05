@@ -201,7 +201,7 @@ public class WorkJob {
                                     patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                                 } else {
                                     patientDto.setSendType(3); //发送失败
-//                                    patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
+                                    patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
                                 }
                             }
                             //修改推送状态
@@ -244,7 +244,7 @@ public class WorkJob {
             }
         } else {
             patientDto.setSendType(3); //发送失败
-//            patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
+            patientDto.setPlanPatsStatus(1); //修改成待随访状态 宣教待阅读
         }
         MessageRecord messageRecord = new MessageRecord();
         messageRecord.setMsgSendId(null);//主键自增
@@ -460,7 +460,7 @@ public class WorkJob {
                         continue;
                     }
                     updateRecord(planPatientVo.getPlanPatsStatus(), planPatientVo, rulesInfo, timeSelect,
-                            timeChoosed, weeks, sendTimeDays, sendTimeMonths, planInfoDto);
+                            timeChoosed, weeks, sendTimeDays, sendTimeMonths, planInfoDto,validDays);
                 }
                 /*switch (planPatientVo.getPlanPatsStatus()) {
                     case -1: // -1 收案
@@ -505,7 +505,8 @@ public class WorkJob {
     }
 
     private boolean updateRecord(Integer status, PlanPatientVo planPatientVo, RulesInfoVo rulesInfo, String timeSelect,
-                                 Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths, PlanInfoDto planInfoDto) {
+                                 Integer timeChoosed, Integer weeks, Integer sendTimeDays, Integer sendTimeMonths, PlanInfoDto planInfoDto,
+                                 int validDays) {
         //填写失访记录
         planPatientVo.setPlanPatsStatus(status); // -1:收案 0：未发送表单或者短信前的状态 1：待随访 2：已完成；3:已过期; 4 无法接听 5 号码错误 6 拒绝接听 7 无人接听 8 家属接听 9 患者不合作 10 无联系电话 11 其他
 
@@ -518,10 +519,15 @@ public class WorkJob {
             followRecordMapper.addFollowRecord(planPatientVo);
             //计算下次随访时间
             Date date = setNextDate(new Date(), timeSelect, timeChoosed, weeks, sendTimeDays, sendTimeMonths);
+            int days =(int) (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24);
+            if(days > validDays){//大于有效期
+                planPatientVo.setPlanPatsStatus(12); //患者失效
+            }else{
+                planPatientVo.setPlanPatsStatus(0); //未发送状态
+            }
             //复位
             planPatientVo.setNextDate(date); //设置下次随访时间
             planPatientVo.setSendType(1); //未发送
-            planPatientVo.setPlanPatsStatus(0); //未发送状态
             planPatientVo.setFormStatus(1);     //表单填写 状态  修改为未填写
             planPatientVo.setHandleSugges("");
         }

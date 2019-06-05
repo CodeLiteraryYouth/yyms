@@ -77,6 +77,7 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_satisfy_id = #{patientSatisfyId,jdbcType=BIGINT}
+        and finish_type != 12
     </select>
 
     <select id="findList" resultMap="BaseResultMap">
@@ -84,6 +85,7 @@
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
         WHERE patient_status = 0
+        and finish_type != 12
         <if test="satisfyPlanNum != null ">
             AND satisfy_plan_num = #{satisfyPlanNum}
         </if>
@@ -439,6 +441,7 @@
         <include refid="Base_Column_List"/>
         FROM leanin_satisfy_patient
         WHERE patient_status = 0
+        and finish_type != 12
         AND satisfy_plan_num IN (
             SELECT sp.plan_satisfy_num
             FROM leanin_satisfy_plan sp
@@ -470,9 +473,9 @@
         <if test="myFollowReq.patName != null">
             AND patient_name like CONCAT('%',#{myFollowReq.patName},'%')
         </if>
-        <if test="myFollowReq.folStatus == 1">
-            AND send_type = 2
-        </if>
+<!--        <if test="myFollowReq.folStatus == 1">-->
+<!--            AND send_type = 2-->
+<!--        </if>-->
     </select>
 
     <select id="bindPatient" resultMap="BASE_MAP">
@@ -480,6 +483,7 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_status = 0
+        and finish_type != 12
         and id_card =#{idCard}
         and patient_phone = #{phoneNum}
         and patient_name = #{patientName}
@@ -490,6 +494,7 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_status = 0
+        and finish_type != 12
         and patient_satisfy_id = #{patientSatisfyId}
     </select>
 
@@ -498,6 +503,7 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_status = 0
+        and finish_type != 12
         <if test="satisfyPlanNum != null">
             and satisfy_plan_num = #{satisfyPlanNum}
         </if>
@@ -558,6 +564,7 @@
         <include refid="Base_Column_List"/>
         from leanin_satisfy_patient
         where patient_status = 0
+        and finish_type != 12
         and satisfy_plan_num =#{planSatisfyNum}
         and send_type != #{sendType}
         limit 1

@@ -82,11 +82,21 @@ public class SatisfyPlanController extends BaseController {
 		return satisfyPlanService.findByWard(patientWard);
 	}
 
-	//根据满意度状态查询满意度计划
-	/*@GetMapping("findListByParam")
-	public DataOutResponse findListByParam(String startDate,String endDate,Integer patientSource,String planNum){
-
-	}*/
+	/**
+	 * 条件查询满意度计划信息
+	 * @param planName 计划名称
+	 * @param deptId 科室id
+	 * @param userId 负责人id
+	 * @param startDate 开始时间 yyyy-MM-dd HH:mm:ss
+	 * @param endDate 结束时间 yyyy-MM-dd HH:mm:ss
+	 * @param page 当前页 默认第一页
+	 * @param pageSize 每页展示条数
+	 * @return
+	 */
+	@GetMapping("/findSatisfyPlanByParam")
+	public DataOutResponse findSatisfyPlanByParam(String planName,String deptId,Long userId,String startDate,String endDate,Integer page,Integer pageSize){
+		return satisfyPlanService.findSatisfyPlanByParam(planName,deptId,userId,startDate,endDate,page,pageSize);
+	}
 
 
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){

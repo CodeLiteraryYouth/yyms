@@ -58,4 +58,7 @@ public interface PlanInfoService {
     DataOutResponse findAllPlan(Integer planType,Long userId);
 
     DataOutResponse findByWard(String patientWard);
+
+    DataOutResponse findFollowPlanByParam(String planName, String deptId, Long userId, Integer rulesType, String startDate, String endDate,Integer page,Integer pageSize);
+
 }

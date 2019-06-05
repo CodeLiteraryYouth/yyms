@@ -11,4 +11,6 @@ import com.leanin.domain.response.DataOutResponse;
 public interface SatisfyFormStatService {
 
     DataOutResponse add(FormQuest formQuest);
+
+    DataOutResponse findByPlanNumAndformId(String planNum, String formId);
 }
