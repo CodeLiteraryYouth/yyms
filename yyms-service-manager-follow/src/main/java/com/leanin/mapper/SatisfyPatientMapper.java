@@ -43,7 +43,7 @@ public interface SatisfyPatientMapper {
 
     SatisfyPatientVo findByPnumAndPid(@Param("patientId") String patientId,@Param("satisfyPlanNum") String satisfyPlanNum);
 
-    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+    List<AnalysisVo> findCountByParam(@Param("patientSource") Integer patientSource,@Param("planNum") String planNum,@Param("dept") String dept,@Param("startDate") Date startDate,@Param("endDate") Date endDate,@Param("userId") Long userId);
 
     List<AnalysisVo> findUserCount(@Param("userId") Long userId,@Param("time") String time);
 

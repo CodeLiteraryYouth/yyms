@@ -60,6 +60,8 @@ public class FollowFormStatServiceImpl implements FollowFormStatService {
             followFormStatDao.setFollowFormContent(JSON.toJSONString(maps));//表单内容
             followFormStatDao.setFollowFormNum(formQuest.getFormNum()); //表单号
             followFormStatDao.setPlanNum(formQuest.getPlanNum()); //计划号
+            followFormStatDao.setFormTitle(formQuest.getFormTitle()); //计划号
+            followFormStatDao.setFormBottom(formQuest.getFormBottom()); //计划号
             followFormStatDao.setRequestCount(1L);//访问次数
             log.info("添加的随访表单选项统计"+JSON.toJSONString(followFormStatDao));
             FollowFormStatDao save = followFormStatRepository.save(followFormStatDao);

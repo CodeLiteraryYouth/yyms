@@ -31,7 +31,13 @@ public class FollowFormStatDao {
     private String planNum;   //计划号
 
     @Column(name = "request_count")
-    private Long requestCount;
+    private Long requestCount; //请求次数
+
+    @Column(name = "form_title")
+    private String formTitle;   //表单开头语
+
+    @Column(name = "form_bottom")
+    private String formBottom;  //表单结束语
 
 }
 

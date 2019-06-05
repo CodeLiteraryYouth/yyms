@@ -88,6 +88,10 @@ public class FormInfoServiceImpl implements FormInfoService {
 	@Transactional(rollbackFor=Exception.class)
 	public DataOutResponse updateFormInfo(FormInfoVo record) {
 		log.info("修改的表单信息为:"+ JSON.toJSONString(record));
+		PlanInfoVo planInfoVo = planInfoMapper.findByParamId(null, record.getFormNum(), null);
+		if (planInfoVo != null){
+			return ReturnFomart.retParam(3802,"随访表单已被使用不能修改");
+		}
 		//修改表单数据
 		formInfoMapper.updateFormInfo(record);
 		return ReturnFomart.retParam(200, record);

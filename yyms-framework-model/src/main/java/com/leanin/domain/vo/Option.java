@@ -17,4 +17,6 @@ public class Option {
     private Integer id;
 
     private Integer quantity;
+
+    private Integer fraction;
 }

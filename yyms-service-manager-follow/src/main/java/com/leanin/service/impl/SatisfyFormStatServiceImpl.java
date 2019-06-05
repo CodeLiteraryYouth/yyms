@@ -11,6 +11,7 @@ import com.leanin.service.SatisfyFormStatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class SatisfyFormStatServiceImpl implements SatisfyFormStatService {
     SatisfyFormStatRepository satisfyFormStatRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public DataOutResponse add(FormQuest formQuest) {
         SatisfyFormStatDao dao = satisfyFormStatRepository.findBySatisfyFormNumAndSatisfyPlanNum(formQuest.getFormNum(), formQuest.getPlanNum());
         if (dao == null){//没有表单记录则添加 表单记录
@@ -55,6 +57,8 @@ public class SatisfyFormStatServiceImpl implements SatisfyFormStatService {
             satisfyFormStatDao.setSatisfyFormNum(formQuest.getFormNum()); //表单号
             satisfyFormStatDao.setSatisfyPlanNum(formQuest.getPlanNum()); //计划号
             satisfyFormStatDao.setRequestCount(1L);//访问次数
+            satisfyFormStatDao.setSatisfyTitle(formQuest.getFormTitle());//访问次数
+            satisfyFormStatDao.setSatisfyBottom(formQuest.getFormBottom());//访问次数
             log.info("添加的满意度表单选项统计"+JSON.toJSONString(satisfyFormStatDao));
             satisfyFormStatRepository.save(satisfyFormStatDao);
         }else {

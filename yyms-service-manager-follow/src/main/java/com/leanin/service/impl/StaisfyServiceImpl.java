@@ -96,6 +96,10 @@ public class StaisfyServiceImpl implements SatisfyService {
 		if(CompareUtil.isEmpty(satisfyInfo)) {
 			return ReturnFomart.retParam(96, null);
 		}
+		SatisfyPlanVo satisfyPlanVo = satisfyPlanMapper.findByParamId(null,record.getSatisfyNum());
+		if (satisfyPlanVo != null ){
+			return ReturnFomart.retParam(3602,"满意度表单已被使用不能修改");
+		}
 		satisfyInfoMapper.updateSatisfyInfo(record);
 		return ReturnFomart.retParam(200, record);
 	}

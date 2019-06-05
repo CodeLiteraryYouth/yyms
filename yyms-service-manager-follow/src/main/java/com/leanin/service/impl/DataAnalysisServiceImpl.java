@@ -74,7 +74,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
                 dataMap = follow(dataMap,patientSource,planNum,dept,startDate,endDate,planType,formStatus,userId,isAll);
                 break;
             case 3://满意度数据分析
-                dataMap = satisfy(dataMap,patientSource,planNum,dept,startDate,endDate,isAll);
+                dataMap = satisfy(dataMap,patientSource,planNum,dept,startDate,endDate,userId,isAll);
                 break;
             default:
                 return ReturnFomart.retParam(2010,"数据不存在");
@@ -116,8 +116,8 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         return dataMap;
     }
 
-    private Map<Integer,Integer> satisfy(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Integer isAll){
-        List<AnalysisVo> list = satisfyPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate);
+    private Map<Integer,Integer> satisfy(Map<Integer,Integer> dataMap,Integer patientSource, String planNum, String dept,Date startDate,Date endDate,Long userId,Integer isAll){
+        List<AnalysisVo> list = satisfyPatientMapper.findCountByParam(patientSource, planNum, dept, startDate, endDate,userId);
         for (int i = -1; i < 12; i++) {
             int count =0;
             for (AnalysisVo analysisVo : list) {

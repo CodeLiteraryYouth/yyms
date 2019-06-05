@@ -17,4 +17,8 @@ public class FormQuest implements Serializable {
     private String planNum;
 
     private String optionContent;
+
+    private String formTitle;   //表单头
+
+    private String formBottom; //表单尾
 }

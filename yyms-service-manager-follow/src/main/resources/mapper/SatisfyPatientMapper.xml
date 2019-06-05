@@ -445,7 +445,8 @@
         AND satisfy_plan_num IN (
             SELECT sp.plan_satisfy_num
             FROM leanin_satisfy_plan sp
-            WHERE sp.discover_person =#{myFollowReq.userId} AND sp.satisfy_plan_status = 0
+            WHERE sp.discover_person = #{myFollowReq.userId}
+            AND sp.satisfy_plan_status = 0
             <if test="myFollowReq.planId != null">
                 AND sp.plan_satisfy_num = #{myFollowReq.planId}
             </if>
@@ -520,6 +521,7 @@
         WHERE lsp.patient_status = 0
           AND lsp.`satisfy_plan_num` = lspl.`plan_satisfy_num`
           and lspl.satisfy_plan_status = 0
+          and lspl.discover_person = #{userId}
           <if test="patientSource != null">
               and lsp.patient_type = #{patientSource}
           </if>

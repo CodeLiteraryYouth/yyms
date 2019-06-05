@@ -33,4 +33,7 @@ public class RemarkDao {
 
     @Column(name = "question_id")
     private String questionId;//题目id
+
+    @Column(name = "remarker_id")
+    private Long remarkerId;  //评论人id
 }

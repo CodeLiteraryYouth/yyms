@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "follow_form_stat")
+@Table(name = "satisfy_form_stat")
 public class SatisfyFormStatDao {
 
     @Id
@@ -31,5 +31,11 @@ public class SatisfyFormStatDao {
 
     @Column(name = "request_count")
     private Long requestCount; //请求次数
+
+    @Column(name = "satisfy_title")
+    private String satisfyTitle;    //满意度表单头
+
+    @Column(name = "satisfy_bottom")
+    private String satisfyBottom;   //满意度表单尾
 
 }

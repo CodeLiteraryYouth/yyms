@@ -79,10 +79,12 @@ public class ReturnFomart {
 
 
         messageMap.put("3601","满意度表单已被使用不能删除或者禁用");
+        messageMap.put("3602","满意度表单已被使用不能修改");
 
         messageMap.put("3701","随访规则已被使用不能删除或者禁用");
 
         messageMap.put("3801","随访表单已被使用不能删除或者禁用");
+        messageMap.put("3802","随访表单已被使用不能修改");
 
         messageMap.put("3901","分类下有随访表单不能删除或者禁用");
         messageMap.put("3902","分类下有宣教表单不能删除或者禁用");
