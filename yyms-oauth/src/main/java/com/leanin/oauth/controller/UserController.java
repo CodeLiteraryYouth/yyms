@@ -24,7 +24,7 @@ public class UserController extends BaseController implements UserControllerApi{
 //    @PreAuthorize("hasAnyAuthority('root','addUser')")
     @PostMapping("/addUser")
     public DataOutResponse addUser(@RequestBody AdminUserVo adminUserVo) {
-        return userService.addUser(adminUserVo,request);
+            return userService.addUser(adminUserVo,request);
     }
 
     /**

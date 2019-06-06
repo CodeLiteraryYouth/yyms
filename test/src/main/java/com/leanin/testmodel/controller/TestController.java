@@ -184,7 +184,7 @@ public class TestController extends BaseController implements TestApi  {
         String token_url="https://api.weixin.qq.com/cgi-bin/token?" +
                 "grant_type=client_credential&" +
                 "appid=" +"wx1f020aa42d92b635"+
-                "&secret="+"b8511f28b20390602cf63ce8c376f6fd";
+                "&secret="+"6dbd5dfb65d444d10a80fdfae1e5373b";
         //2.使用httpclient 发送请求
 //        String access_token = "20_B7Jihn0idl6BD1qK_-MQGS-VuMGZn7mITZeRUdMOrkayK61VcMFfY73tdLTMJ0MCQ-nbsNJFUBRO4COrCVx5TbkQJt7QmvSTy9nPjDXYDmkph5otML3cM_Kw1VaDFaHIcmaPstchUJh8q4OeIUZbABAVHM";
         String access_token = null;
@@ -252,5 +252,11 @@ public class TestController extends BaseController implements TestApi  {
         userWardDao.setCreateTime(new Date());
         UserWardDao save = userWardRepository.save(userWardDao);
         System.out.println(save);
+    }
+
+
+    @Test
+    public void test22(){
+
     }
 }
