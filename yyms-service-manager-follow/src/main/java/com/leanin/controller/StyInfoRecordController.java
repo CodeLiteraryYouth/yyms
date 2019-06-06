@@ -44,6 +44,17 @@ public class StyInfoRecordController extends BaseController {
         return styInfoRecordService.findById(satisfyRecordId);
     }
 
+    /**
+     * 根据计划号查询提交上的满意度表单信息
+     * @param planNum 计划号
+     * @param count 数量
+     * @return
+     */
+    @GetMapping("/findByPlanNumAndCount")
+    public DataOutResponse findByPlanNumAndCount(@RequestParam("planNum") String planNum,Integer count){
+        return styInfoRecordService.findByPlanNumAndCount(planNum,count);
+    }
+
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
         LyOauth2Util lyOauth2Util = new LyOauth2Util();

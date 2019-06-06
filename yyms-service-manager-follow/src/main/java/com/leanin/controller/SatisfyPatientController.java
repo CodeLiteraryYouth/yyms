@@ -63,8 +63,8 @@ public class SatisfyPatientController extends BaseController {
     @PostMapping("/updateByPid")
     public DataOutResponse updateByPid(@RequestParam("patientSatisfyId") Long patientSatisfyId, Integer finishType, String suggess,
                                        @RequestBody(required = false) StyInfoRecordVo styInfoRecordVo,Integer formStatus){
-//        LyOauth2Util.UserJwt user = getUser(request);
-//        styInfoRecordVo.setOperatingId(user.getId());
+        LyOauth2Util.UserJwt user = getUser(request);
+        styInfoRecordVo.setOperatingId(user.getId());
         return satisfyPatientService.updateByPid(patientSatisfyId,finishType,suggess,styInfoRecordVo,formStatus);
     }
 

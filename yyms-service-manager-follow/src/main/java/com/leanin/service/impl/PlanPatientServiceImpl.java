@@ -443,6 +443,8 @@ public class PlanPatientServiceImpl implements PlanPatientService {
     @Override
     public DataOutResponse updatePlanPatient(Long patientPlanId, Integer followType, String handleSugges,
                                              FormRecordVo formRecordVo,Integer formStatus) {
+
+
         PlanPatientVo patient = planPatientMapper.findPlanPatientById(patientPlanId);
         if (patient == null) {
             return ReturnFomart.retParam(300, "信息不存在");
@@ -450,7 +452,9 @@ public class PlanPatientServiceImpl implements PlanPatientService {
         if (patient.getFormStatus() != null){
             patient.setFormStatus(formStatus);//修改表单状态
         }
-        if (formRecordVo != null) {//表单处理记录
+        //
+        String formText = formRecordVo.getFormText();
+        if (formText != null) {//表单处理记录
             formRecordVo.setCreateTime(new Date());
             formRecordMapper.addFormRecord(formRecordVo);//添加表单记录
             log.info("添加随访表单后的表单对象"+JSON.toJSONString(formRecordVo));

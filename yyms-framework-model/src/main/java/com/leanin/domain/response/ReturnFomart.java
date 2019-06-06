@@ -118,6 +118,8 @@ public class ReturnFomart {
 
         messageMap.put("5601","短信主题内的患者已经发送过短信不能删除短信主题");
 
+        messageMap.put("5700","抽取表单数量大于提交表单数量，请重新填写抽取数量");
+
 
 
 

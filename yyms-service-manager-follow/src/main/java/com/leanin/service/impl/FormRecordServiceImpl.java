@@ -2,10 +2,7 @@ package com.leanin.service.impl;
 
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
-import com.leanin.domain.vo.FormInfoVo;
-import com.leanin.domain.vo.FormRecordVo;
-import com.leanin.domain.vo.PlanInfoVo;
-import com.leanin.domain.vo.PlanPatientVo;
+import com.leanin.domain.vo.*;
 import com.leanin.mapper.FormInfoMapper;
 import com.leanin.mapper.FormRecordMapper;
 import com.leanin.mapper.PlanInfoMapper;
@@ -13,6 +10,10 @@ import com.leanin.mapper.PlanPatientMapper;
 import com.leanin.service.FormRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class FormRecordServiceImpl implements FormRecordService {
@@ -63,6 +64,25 @@ public class FormRecordServiceImpl implements FormRecordService {
             return ReturnFomart.retParam(1,formRecordId);
         }
         return ReturnFomart.retParam(200,formRecordVo);
+    }
+
+    @Override
+    public DataOutResponse findByPlanNUmAndCount(String planNum, Integer count) {
+        List<FormRecordVo> formRecordVos = formRecordMapper.findByPlanNum(planNum);
+        if (count != null && (count > formRecordVos.size() || count <= 0)){//抽取表单数量大于提交表单数量
+            return ReturnFomart.retParam(5700,count);
+        }
+        if (count == null){
+            return ReturnFomart.retParam(200,formRecordVos);
+        }
+        Random random = new Random();
+        List<FormRecordVo> result =new ArrayList<>();
+        for (Integer i = 0; i < count; i++) {
+            int anInt = random.nextInt(formRecordVos.size());
+            result.add(formRecordVos.get(anInt));
+            formRecordVos.remove(anInt);
+        }
+        return ReturnFomart.retParam(200,result);
     }
 
 }

@@ -3,8 +3,12 @@ package com.leanin.controller;
 import com.leanin.domain.dao.RemarkDao;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.service.PlanRemarkService;
+import com.leanin.utils.LyOauth2Util;
+import com.leanin.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 计划评价
@@ -14,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/planRemark")
-public class PlanRemarkController {
+public class PlanRemarkController extends BaseController {
 
 
     @Autowired
@@ -27,6 +31,8 @@ public class PlanRemarkController {
      */
     @PostMapping("/addRemark")
     public DataOutResponse addRemark(@RequestBody RemarkDao remarkDao){
+        LyOauth2Util.UserJwt user = getUser(request);
+        remarkDao.setRemarkerId(user.getId());
         return planRemarkService.addRemark(remarkDao);
 //        return null;
     }
@@ -41,10 +47,15 @@ public class PlanRemarkController {
      * @param pageSize 每页展示条数 默认10条
      * @return
      */
-    @RequestMapping("/findByParam")
+    @GetMapping("/findByParam")
     public DataOutResponse findByParam(String planNum,String formNum,Integer planType,String questionId,Integer page,Integer pageSize){
         return planRemarkService.findByParam(planNum,formNum,planType,questionId,page,pageSize);
     }
 
+    private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
+        LyOauth2Util lyOauth2Util = new LyOauth2Util();
+        LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);
+        return userJwt;
+    }
 
 }

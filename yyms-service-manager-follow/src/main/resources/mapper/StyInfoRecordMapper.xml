@@ -45,6 +45,13 @@
         WHERE satisfy_id = #{satisfyRecordId}
     </select>
 
+    <select id="findByPlanNumAndCount" resultMap="BaseMap">
+            SELECT lsif.*
+            FROM `leanin_sty_info_record` lsif,`leanin_satisfy_patient` lsp
+            WHERE lsif.`plan_patient_id` = lsp.`patient_satisfy_id`
+            AND lsp.`satisfy_plan_num` =  #{planNum}
+    </select>
+
     <insert id="addRecord">
         insert into leanin_sty_info_record
         <trim prefix="(" suffix=" )" suffixOverrides=",">

@@ -131,4 +131,11 @@
         FROM `leanin_form_record`
         WHERE form_id = #{formRecordId}
     </select>
+    <select id="findByPlanNum" resultMap="BASE_MAP">
+        SELECT
+            lfr.*
+        FROM `leanin_form_record` lfr,`leanin_plan_patient` lpp
+        WHERE lfr.`patient_plan_id` = lpp.`patient_plan_id`
+        AND lpp.`plan_num` = #{planNum}
+    </select>
 </mapper>

@@ -25,6 +25,7 @@
     <result column="satisfy_plan_ward" jdbcType="VARCHAR" property="satisfyPlanWard" />
     <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
     <result column="msg_type" jdbcType="BIGINT" property="msgType" />
+    <result column="patient_ward_id"  property="patientWardId" />
     <result column="import_data" property="importData" />
   </resultMap>
 
@@ -33,7 +34,7 @@
     plan_satisfy_num, plan_satisfy_name, patient_type, plan_satisfy_begin_date, plan_satisfy_end_date, 
     patient_ward, discover_person, discover_target, discover_type, form_type_id, satisfy_num, 
     patient_sex, patient_age, patient_phone, area_code, plan_creater, create_date, satisfy_plan_status,
-    satisfy_rules_text, satisfy_disease_name,satisfy_plan_ward,msg_id,msg_type,import_data
+    satisfy_rules_text, satisfy_disease_name,satisfy_plan_ward,msg_id,msg_type,import_data,patient_ward_id
   </sql>
 
   <update id="updateImportData">

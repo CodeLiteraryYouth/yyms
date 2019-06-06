@@ -5,6 +5,8 @@ import com.leanin.domain.vo.FormRecordVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface FormRecordMapper {
 
@@ -13,4 +15,6 @@ public interface FormRecordMapper {
     FormRecordVo findFormRecordByPid(@Param("patientPlanId") Long patientPlanId);
 
     FormRecordVo findById(@Param("formRecordId") Long formRecordId);
+
+    List<FormRecordVo> findByPlanNum(@Param("planNum") String planNum);
 }

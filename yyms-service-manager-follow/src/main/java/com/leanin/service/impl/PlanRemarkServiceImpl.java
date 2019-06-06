@@ -1,15 +1,21 @@
 package com.leanin.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leanin.domain.dao.RemarkDao;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
+import com.leanin.mapper.PlanRemarkMapper;
 import com.leanin.repository.PlanRemarkRepository;
 import com.leanin.service.PlanRemarkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author CPJ.
@@ -22,6 +28,9 @@ public class PlanRemarkServiceImpl implements PlanRemarkService {
 
     @Autowired
     PlanRemarkRepository planRemarkRepository;
+
+    @Autowired
+    PlanRemarkMapper planRemarkMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -40,6 +49,10 @@ public class PlanRemarkServiceImpl implements PlanRemarkService {
             pageSize = 10;
         }
         PageHelper.startPage(page,pageSize);
-        return null;
+        Page<RemarkDao> pageList = (Page<RemarkDao>) planRemarkMapper.findByParam(planNum,formNum,planType,questionId);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
+        return ReturnFomart.retParam(200,result);
     }
 }

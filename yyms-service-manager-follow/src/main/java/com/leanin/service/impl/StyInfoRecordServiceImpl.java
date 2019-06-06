@@ -13,7 +13,10 @@ import com.leanin.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class StyInfoRecordServiceImpl implements StyInfoRecordService {
@@ -63,5 +66,24 @@ public class StyInfoRecordServiceImpl implements StyInfoRecordService {
             return ReturnFomart.retParam(1,satisfyRecordId);
         }
         return ReturnFomart.retParam(200,styInfoRecordVo);
+    }
+
+    @Override
+    public DataOutResponse findByPlanNumAndCount(String planNum, Integer count) {
+        List<StyInfoRecordVo> styInfoRecordVos = styInfoRecordMapper.findByPlanNumAndCount(planNum);
+        if (count != null && (count > styInfoRecordVos.size() || count <= 0)){//抽取表单数量大于提交表单数量
+            return ReturnFomart.retParam(5700,count);
+        }
+        if (count == null){
+            return ReturnFomart.retParam(200,styInfoRecordVos);
+        }
+        Random random = new Random();
+        List<StyInfoRecordVo> result =new ArrayList<>();
+        for (Integer i = 0; i < count; i++) {
+            int anInt = random.nextInt(styInfoRecordVos.size());
+            result.add(styInfoRecordVos.get(anInt));
+            styInfoRecordVos.remove(anInt);
+        }
+        return ReturnFomart.retParam(200,result);
     }
 }

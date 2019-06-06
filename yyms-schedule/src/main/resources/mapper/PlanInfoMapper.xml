@@ -26,8 +26,8 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="msg_id" jdbcType="VARCHAR" property="msgId"/>
         <result column="msg_type" jdbcType="BIGINT" property="msgType"/>
-        <result column="import_data" jdbcType="BIGINT" property="msgType"/>
-        <result column="pats_ward_id" jdbcType="BIGINT" property="msgType"/>
+        <result column="import_data"  property="importData"/>
+        <result column="pats_ward_id" property="patsWardId"/>
         <result column="over_time" property="overTime"/>
     </resultMap>
     <resultMap id="BlobResultMap" type="com.leanin.domain.dto.PlanInfoDto">

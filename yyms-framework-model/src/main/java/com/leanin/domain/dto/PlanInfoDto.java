@@ -87,6 +87,8 @@ public class PlanInfoDto {
 
 	private Integer unFinishCount;  //待完成人数
 
+	private String patsWardId;
+
 
 //	 	private String planNum;	//计划单号
 //

@@ -10,4 +10,6 @@ public interface StyInfoRecordService {
     DataOutResponse findStyInfoRecordByPid(Long planPatientId);
 
     DataOutResponse findById(String satisfyRecordId);
+
+    DataOutResponse findByPlanNumAndCount(String planNum, Integer count);
 }

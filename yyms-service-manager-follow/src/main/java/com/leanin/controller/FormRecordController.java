@@ -34,6 +34,17 @@ public class FormRecordController {
         return formRecordService.findById(formRecordId);
     }
 
+    /**
+     * 根据计划号查询提交表单的信息
+     * @param planNum 计划号
+     * @param count 数量
+     * @return
+     */
+    @GetMapping("/findByPlanNumAndCount")
+    public DataOutResponse findByPlanNumAndCount(@RequestParam("planNum") String planNum,Integer count){
+        return formRecordService.findByPlanNUmAndCount(planNum,count);
+    }
+
     /*//根据患者id查询表单信息
     @GetMapping("/findFormByplanPatientId")
     public DataOutResponse findFormByplanPatientId(@RequestParam Long planPatientId){

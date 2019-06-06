@@ -45,7 +45,7 @@ public class ImportPlanPatient {
 
 
 
-    //随访  宣教 计划导入患者
+    //随访  宣教 计划导入患者@Scheduled(cron = "0 0/1 * * * ? ")//每日 0:00:00  执行
     @Scheduled(cron = "0 0 0 * * ? ")//每日 0:00:00  执行
     @Transactional(rollbackFor = Exception.class)
     public void importFollowPatient(){
@@ -57,7 +57,8 @@ public class ImportPlanPatient {
         List<PlanInfoVo> PlanInfoVos = planInfoMapper.findByImportData(1);//1 导入未完成  2 导入完成
         for (PlanInfoVo planResult : PlanInfoVos) {
             Map paramMap =new HashMap();
-            String patsWardCode = planResult.getPatsWardCode();
+//            String patsWardCode = planResult.getPatsWardCode();
+            String patsWardCode = planResult.getPatsWardId();
             if (patsWardCode != null){
                 List<String> patsWardCodeList = JSON.parseArray(patsWardCode, String.class);
                 paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合
@@ -185,7 +186,8 @@ public class ImportPlanPatient {
             // 封装参数
             Map paramMap = new HashMap();
             //科室集合
-            String patsWardCode = satisfyPlan.getPatientWard();
+//            String patsWardCode = satisfyPlan.getPatientWard();
+            String patsWardCode = satisfyPlan.getPatientWardId();
             if (patsWardCode != null && !"[]".equals(patsWardCode)){
                 List<String> patsWardCodeList =JSON.parseArray(patsWardCode, String.class);
                 paramMap.put("patsWardCode", patsWardCodeList);// 患者随访科室编码 可能是集合

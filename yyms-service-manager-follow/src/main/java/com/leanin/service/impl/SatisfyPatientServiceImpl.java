@@ -91,7 +91,8 @@ public class SatisfyPatientServiceImpl implements SatisfyPatientService {
         if (satisfyPatientVo == null){
             return ReturnFomart.retParam(300,"信息不存在");
         }
-        if (styInfoRecordVo != null){//添加满意度表单填写信息
+        String satisfyText = styInfoRecordVo.getSatisfyText();
+        if (satisfyText != null){//添加满意度表单填写信息
             String uuid = UUIDUtils.getUUID();
             styInfoRecordVo.setSatisfyId(uuid);
             styInfoRecordVo.setFormStatus(formStatus);
