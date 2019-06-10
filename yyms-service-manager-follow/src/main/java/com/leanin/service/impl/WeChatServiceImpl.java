@@ -110,6 +110,7 @@ public class WeChatServiceImpl implements WeChatService {
         patient.setOpenId(patientWxDao.getOpenId());
         patientWxDao.setPatientName(patientWxDao.getPatientName());
         patient.setPhoneNum(patientWxDao.getPhoneNum());
+        patient.setPatientId(patientWxDao.getId().toString());
 
         PatientWxDao save = patientWxRepository.save(patient);
         log.info("修改后的微信绑定患者信息:{}",JSON.toJSONString(save));
