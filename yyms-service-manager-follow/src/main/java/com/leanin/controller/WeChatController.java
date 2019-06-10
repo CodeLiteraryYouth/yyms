@@ -35,6 +35,15 @@ public class WeChatController {
         return weChatService.updatePatientWx(patientWxDao);
     }
 
+    /**
+     * 根据patientId查询病人列表
+     * @param patientId
+     * @return
+     */
+    @GetMapping("/findHosList")
+    public DataOutResponse findHosList(@RequestParam String patientId) {
+        return weChatService.findHosList(patientId);
+    }
 
 
 }

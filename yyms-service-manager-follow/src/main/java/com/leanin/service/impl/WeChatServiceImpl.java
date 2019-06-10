@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -144,5 +146,13 @@ public class WeChatServiceImpl implements WeChatService {
 //            e.printStackTrace();
         }
         return openid;
+    }
+
+    @Override
+    public DataOutResponse findHosList(String patientId) {
+        log.info("patient的ID为:"+patientId);
+        List<String> listId= Arrays.asList(patientId.split(","));
+        List<PatientWxDao> patientList=patientWxMapper.findHosList(listId);
+        return ReturnFomart.retParam(200,patientList);
     }
 }

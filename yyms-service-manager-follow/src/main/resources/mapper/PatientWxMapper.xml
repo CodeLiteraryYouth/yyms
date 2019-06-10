@@ -55,4 +55,13 @@
         from leanin_patient_wx
         where id_card = #{idCard}
     </select>
+
+    <select id="findHosList" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from leanin_patient_wx where patient_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

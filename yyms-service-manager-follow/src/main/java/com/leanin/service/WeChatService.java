@@ -10,4 +10,11 @@ public interface WeChatService {
 
 
     DataOutResponse updatePatientWx(PatientWxDao patientWxDao);
+
+    /**
+     * 根据patientId查询病人列表
+     * @param patientId
+     * @return
+     */
+    DataOutResponse findHosList(String patientId);
 }
