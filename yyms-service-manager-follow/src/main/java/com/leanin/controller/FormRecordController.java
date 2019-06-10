@@ -45,6 +45,18 @@ public class FormRecordController {
         return formRecordService.findByPlanNUmAndCount(planNum,count);
     }
 
+    /**
+     * 根据身份证号查询随访表单提交记录
+     * @param idCard 身份证号
+     * @param page 当前页  默认第一页
+     * @param pageSize 每页显示条数 默认 10 条
+     * @return
+     */
+    @GetMapping("/findByIdCard")
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,Integer page,Integer pageSize){
+        return formRecordService.findByIdCard(idCard,page,pageSize);
+    }
+
     /*//根据患者id查询表单信息
     @GetMapping("/findFormByplanPatientId")
     public DataOutResponse findFormByplanPatientId(@RequestParam Long planPatientId){

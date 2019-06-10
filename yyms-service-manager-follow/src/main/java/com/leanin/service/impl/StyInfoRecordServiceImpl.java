@@ -1,5 +1,7 @@
 package com.leanin.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.SatisfyInfoVo;
@@ -13,10 +15,7 @@ import com.leanin.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class StyInfoRecordServiceImpl implements StyInfoRecordService {
@@ -84,6 +83,22 @@ public class StyInfoRecordServiceImpl implements StyInfoRecordService {
             result.add(styInfoRecordVos.get(anInt));
             styInfoRecordVos.remove(anInt);
         }
+        return ReturnFomart.retParam(200,result);
+    }
+
+    @Override
+    public DataOutResponse findByIdCard(String idCard, Integer page, Integer pageSize) {
+        if ( page == null || page < 1){
+            page = 1;
+        }
+        if (pageSize == null || pageSize < 0){
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<StyInfoRecordVo> pageList = (Page<StyInfoRecordVo>) styInfoRecordMapper.findByIdCard(idCard);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
         return ReturnFomart.retParam(200,result);
     }
 }

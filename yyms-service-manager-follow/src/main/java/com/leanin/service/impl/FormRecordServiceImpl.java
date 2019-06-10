@@ -1,5 +1,7 @@
 package com.leanin.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.leanin.domain.response.DataOutResponse;
 import com.leanin.domain.response.ReturnFomart;
 import com.leanin.domain.vo.*;
@@ -11,9 +13,7 @@ import com.leanin.service.FormRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class FormRecordServiceImpl implements FormRecordService {
@@ -82,6 +82,22 @@ public class FormRecordServiceImpl implements FormRecordService {
             result.add(formRecordVos.get(anInt));
             formRecordVos.remove(anInt);
         }
+        return ReturnFomart.retParam(200,result);
+    }
+
+    @Override
+    public DataOutResponse findByIdCard(String idCard, Integer page, Integer pageSize) {
+        if (page == null || page < 1 ){
+            page = 1;
+        }
+        if (pageSize == null || pageSize < 1){
+            pageSize = 10;
+        }
+        PageHelper.startPage(page,pageSize);
+        Page<FormRecordVo> pageList = (Page<FormRecordVo>) formRecordMapper.findByIdCard(idCard);
+        Map result = new HashMap();
+        result.put("totalCount",pageList.getTotal());
+        result.put("list",pageList.getResult());
         return ReturnFomart.retParam(200,result);
     }
 

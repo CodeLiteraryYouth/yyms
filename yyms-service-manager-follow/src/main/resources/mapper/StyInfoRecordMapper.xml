@@ -52,6 +52,15 @@
             AND lsp.`satisfy_plan_num` =  #{planNum}
     </select>
 
+
+    <select id="findByIdCard" resultMap="BaseMap">
+        SELECT
+            <include refid="BaseSql"/>
+        FROM `leanin_sty_info_record`
+        WHERE patient_id = #{idCard}
+        ORDER BY create_time DESC
+    </select>
+
     <insert id="addRecord">
         insert into leanin_sty_info_record
         <trim prefix="(" suffix=" )" suffixOverrides=",">

@@ -138,4 +138,17 @@
         WHERE lfr.`patient_plan_id` = lpp.`patient_plan_id`
         AND lpp.`plan_num` = #{planNum}
     </select>
+    <select id="findByIdCard" resultMap="BASE_MAP">
+        SELECT
+          lfr.*
+        FROM
+          `leanin_form_record` lfr
+        WHERE patient_plan_id IN
+          (SELECT
+            lpp.`patient_plan_id`
+          FROM
+            `leanin_plan_patient` lpp
+          WHERE lpp.`patient_id` = #{idCard})
+        order by create_time desc
+    </select>
 </mapper>

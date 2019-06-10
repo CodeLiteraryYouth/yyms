@@ -12,4 +12,6 @@ public interface StyInfoRecordService {
     DataOutResponse findById(String satisfyRecordId);
 
     DataOutResponse findByPlanNumAndCount(String planNum, Integer count);
+
+    DataOutResponse findByIdCard(String idCard, Integer page, Integer pageSize);
 }

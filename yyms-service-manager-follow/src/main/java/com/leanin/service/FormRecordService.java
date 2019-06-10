@@ -13,5 +13,8 @@ public interface FormRecordService {
 
     DataOutResponse findByPlanNUmAndCount(String planNum, Integer count);
 
+    DataOutResponse findByIdCard(String idCard, Integer page, Integer pageSize);
+
+
     /*DataOutResponse findFormByplanPatientId(Long planPatientId);*/
 }

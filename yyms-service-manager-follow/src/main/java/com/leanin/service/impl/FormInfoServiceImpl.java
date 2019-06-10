@@ -1,6 +1,7 @@
 package com.leanin.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leanin.domain.dto.CommonFormInfoDto;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -121,6 +124,22 @@ public class FormInfoServiceImpl implements FormInfoService {
 		formInfo.setShareStatus(status);
 		formInfoMapper.updateFormInfo(formInfo);
 		return ReturnFomart.retParam(200,formInfo);
+	}
+
+	@Override
+	public DataOutResponse findEduFormByIdCard(String idCard, Integer page, Integer pageSize) {
+		if (page == null || page < 1){
+			page = 1;
+		}
+		if (pageSize == null || pageSize < 0){
+			pageSize = 10;
+		}
+		PageHelper.startPage(page,pageSize);
+		Page<FormInfoVo> pageList = (Page<FormInfoVo>) formInfoMapper.findEduFormByIdCard(idCard);
+		Map result = new HashMap();
+		result.put("totalCount",pageList.getTotal());
+		result.put("list",pageList.getResult());
+		return ReturnFomart.retParam(200,result);
 	}
 
 	@Override

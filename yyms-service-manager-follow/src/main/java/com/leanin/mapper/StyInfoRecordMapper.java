@@ -18,4 +18,6 @@ public interface StyInfoRecordMapper {
     StyInfoRecordVo findById(@Param("satisfyRecordId") String satisfyRecordId);
 
     List<StyInfoRecordVo> findByPlanNumAndCount(@Param("planNum") String planNum);
+
+    List<StyInfoRecordVo> findByIdCard(@Param("idCard") String idCard);
 }

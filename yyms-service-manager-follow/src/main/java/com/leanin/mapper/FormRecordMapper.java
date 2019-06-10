@@ -17,4 +17,6 @@ public interface FormRecordMapper {
     FormRecordVo findById(@Param("formRecordId") Long formRecordId);
 
     List<FormRecordVo> findByPlanNum(@Param("planNum") String planNum);
+
+    List<FormRecordVo> findByIdCard(@Param("idCard") String idCard);
 }

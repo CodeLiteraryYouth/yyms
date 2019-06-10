@@ -70,4 +70,6 @@ public interface FormInfoService {
 	DataOutResponse findFormListByOpenid(String openid,Integer followStatus,Integer planType,Integer formStatus);
 
 	DataOutResponse shareForm(String forNum, Integer status);
+
+    DataOutResponse findEduFormByIdCard(String idCard, Integer page, Integer pageSize);
 }

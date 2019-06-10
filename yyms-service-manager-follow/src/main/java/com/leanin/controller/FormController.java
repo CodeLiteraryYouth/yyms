@@ -91,6 +91,18 @@ public class FormController extends BaseController {
 		return formInfoService.findFormListByOpenid(openid,followStatus,planType,formStatus);
 	}
 
+	/**
+	 * 根据身份证号查询宣教已读记录
+	 * @param idCard 身份证号
+	 * @param page 当前页 默认第一页
+	 * @param pageSize 每页展示条数 默认10条
+	 * @return
+	 */
+	@GetMapping("/findEduFormByIdCard")
+	public DataOutResponse findEduFormByIdCard(@RequestParam("idCard")String idCard,Integer page,Integer pageSize){
+		return formInfoService.findEduFormByIdCard(idCard,page,pageSize);
+	}
+
 	private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
 		LyOauth2Util lyOauth2Util = new LyOauth2Util();
 		LyOauth2Util.UserJwt userJwt= lyOauth2Util.getUserJwtFromHeader(httpServletRequest);

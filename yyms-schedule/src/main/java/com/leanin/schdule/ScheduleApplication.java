@@ -24,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 @MapperScan("com.leanin.schdule.mapper")	//扫描mapper包
 @EnableHystrix
 @EnableFeignClients //开始feignClient
+@EnableDiscoveryClient
+@EnableEurekaClient
 public class ScheduleApplication {
     public static void main(String[] args) {
         SpringApplication.run(ScheduleApplication.class, args);

@@ -251,6 +251,22 @@
       and lfi.form_num = #{formNum}
     </select>
 
+    <select id="findEduFormByIdCard" resultMap="Base">
+      SELECT
+          lfi.*
+      FROM `leanin_plan_patient` lpp,`leanin_plan_info` lpi,`leanin_form_info` lfi
+      WHERE lpi.`plan_type` = 1
+      AND lpp.`plan_num` = lpi.`plan_num`
+      AND lpp.`form_id` = lfi.`form_num`
+      AND lpp.`form_status` = 2
+      AND lpp.`patient_id` = #{idCard}
+      UNION ALL
+      SELECT lfi.*
+      FROM `leanin_online_edu` loe,`leanin_form_info` lfi
+      WHERE loe.form_id =lfi.`form_num`
+      AND loe.patient_id = #{idCard}
+    </select>
+
     <update id="updateFormStatus">
     update leanin_form_info set form_status=#{formStatus,jdbcType=INTEGER}
     where form_num = #{formNum,jdbcType=VARCHAR}

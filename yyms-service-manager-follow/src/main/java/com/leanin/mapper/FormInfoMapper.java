@@ -87,4 +87,6 @@ public interface FormInfoMapper {
 	List<FormInfoExt> findFormListByOpenidExt(@Param("openid")String openid,@Param("followStatus") Integer followStatus,@Param("planType") Integer planType,@Param("formStatus")Integer formStatus);
 
     FormInfoVo findFormInfoByIdAndStatus(@Param("formNum") String formNum,@Param("formStatus") Integer formStatus,@Param("planPatientId")Long planPatientId );
+
+    List<FormInfoVo> findEduFormByIdCard(@Param("idCard") String idCard);
 }

@@ -2,8 +2,7 @@
 wss:
   server:
     port: 8090
-    host: 192.168.0.104
-
+    host: 221.12.12.58
 server:
   port: 8085 #端口号
 spring:

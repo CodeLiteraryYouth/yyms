@@ -55,6 +55,18 @@ public class StyInfoRecordController extends BaseController {
         return styInfoRecordService.findByPlanNumAndCount(planNum,count);
     }
 
+    /**
+     * 根据身份证号
+     * @param idCard 身份证号
+     * @param page  当前页
+     * @param pageSize 每页展示条件
+     * @return
+     */
+    @GetMapping("/findByIdCard")
+    public DataOutResponse findByIdCard(@RequestParam("idCard") String idCard,Integer page,Integer pageSize){
+        return styInfoRecordService.findByIdCard(idCard,page,pageSize);
+    }
+
 
     private LyOauth2Util.UserJwt getUser(HttpServletRequest httpServletRequest){
         LyOauth2Util lyOauth2Util = new LyOauth2Util();
